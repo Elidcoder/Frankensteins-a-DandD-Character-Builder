@@ -3,12 +3,9 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'dart:io';
 
-Future<void> readJson() async {
-  final String response = await rootBundle.loadString('SRDspells.json');
-  final data = await json.decode(response);
-  final users = data['users'];
-  print(users);
-}
+const JsonDecoder decoder = JsonDecoder();
+const String filepath =
+    "C:\\Users\\arieh\\OneDrive\\Documents\\Dartwork\\frankenstein\\lib\\SRD.json";
 
 class Weapon {
   final String name;
@@ -50,10 +47,14 @@ const pageLinker = {
   4: RollDice(),
   5: CustomContent()
 };
-void main() => runApp(const Homepage());
+void main() => runApp(Homepage());
 
 class Homepage extends StatelessWidget {
-  const Homepage({Key? key}) : super(key: key);
+  Homepage({Key? key}) : super(key: key);
+
+  String jsonString = File(filepath).readAsStringSync();
+  late final Map<String, dynamic> jsonmap = decoder.convert(jsonString);
+
   static const String _title = 'Frankenstein\'s - a D&D 5e character builder';
   @override
   Widget build(BuildContext context) {
@@ -63,7 +64,7 @@ class Homepage extends StatelessWidget {
         appBar: AppBar(
           leading: IconButton(
               icon: const Icon(Icons.image),
-              tooltip: 'Put logo here',
+              tooltip: 'Put logo here$jsonmap',
               onPressed: () {}),
           title: const Center(child: Text(_title)),
           actions: <Widget>[
