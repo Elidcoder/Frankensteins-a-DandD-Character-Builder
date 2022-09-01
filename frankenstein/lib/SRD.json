@@ -1,0 +1,11 @@
+{
+    "Races": [
+        {
+            "Name": "Half-Orc",
+            "Strength": "2",
+            "Constitution": "1",
+            "Speed": "30",
+            "Darkvision": "60"
+        }
+    ]
+}
