@@ -10,6 +10,22 @@ Future<void> readJson() async {
   print(users);
 }
 
+class Weapon {
+  final String name;
+  final String? range;
+  final List<String>? tags;
+  final String damage;
+  final List<String> modifiers;
+
+  ///MAY REMOVE AND COMBINE WITH TAGS AND SET TO STRENGTH
+  Weapon(
+      {required this.name,
+      this.range,
+      this.tags,
+      required this.damage,
+      required this.modifiers});
+}
+
 class Spell {
   final String name;
   final String effect;
