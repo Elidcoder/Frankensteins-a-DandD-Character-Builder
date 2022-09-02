@@ -1,9 +1,27 @@
 {
+    "SRD": [
+    {
     "Spells": [
         {
             "Name": "Half-Orc",
             "Effect": "60",
-            "Level": 2
+            "Level": "2"
+        },
+        {
+            "Name": "Shield",
+            "Effect": "+5 AC for 2 turns",
+            "Level": "1"
         }
+    ],
+    "Weapons": [
+        {
+        "Name": "Spear",
+        "Damage": "1D6",
+        "Range": "20/60",
+        "Tags": ["Range", "Thrown", "Versatile"],
+        "Weight": 3
+        }
+    ]
+    }
     ]
 }

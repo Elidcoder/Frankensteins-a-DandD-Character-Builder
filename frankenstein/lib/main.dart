@@ -1,30 +1,11 @@
+///Imports
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'dart:io';
 
-const JsonDecoder decoder = JsonDecoder();
-const String filepath =
-    "C:\\Users\\arieh\\OneDrive\\Documents\\Dartwork\\frankenstein\\lib\\SRD.json";
-String jsonString = File(filepath).readAsStringSync();
-final Map<String, dynamic> jsonmap = decoder.convert(jsonString);
-
-class Weapon {
-  final String name;
-  final String? range;
-  final List<String>? tags;
-  final String damage;
-  final List<String> modifiers;
-
-  ///MAY REMOVE AND COMBINE WITH TAGS AND SET TO STRENGTH
-  Weapon(
-      {required this.name,
-      this.range,
-      this.tags,
-      required this.damage,
-      required this.modifiers});
-}
-
+//Classes to unload JSON into
 class Spell {
   final String name;
   final String effect;
@@ -41,18 +22,52 @@ class Spell {
       this.verbal});
 }
 
-const pageLinker = {
-  0: MainMenu(),
+class Weapon {
+  final String name;
+  final String? range;
+  final List<String>? tags;
+  final String damage;
+  final Int weight;
+
+  ///MAY REMOVE AND COMBINE WITH TAGS AND SET TO STRENGTH
+  Weapon(
+      {required this.name,
+      this.range,
+      this.tags,
+      required this.damage,
+      required this.weight});
+}
+
+const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
+//JSON unloading process
+const JsonDecoder decoder = JsonDecoder();
+const String filepath =
+    "C:\\Users\\arieh\\OneDrive\\Documents\\Dartwork\\frankenstein\\lib\\SRDspells.json";
+
+///file loaded as a string 'jsonString'
+String jsonString = File(filepath).readAsStringSync();
+
+///file decoded into 'jsonmap'
+final Map<String, dynamic> jsonmap = decoder.convert(jsonString);
+
+///file split into the spells, weapons etc...
+List<Map<String, String>> Spelllist = jsonmap[0];
+List<String> spellnames =
+    Spelllist.map((x) => x["name"] ?? "NULLLISISSUESSS").toList();
+Map<Weapon, dynamic> Weaponlists = jsonmap[1];
+
+var pageLinker = {
+  0: const MainMenu(),
   1: CreateACharacter(),
-  2: SearchForContent(),
-  3: MyCharacters(),
-  4: RollDice(),
-  5: CustomContent()
+  2: const SearchForContent(),
+  3: const MyCharacters(),
+  4: const RollDice(),
+  5: const CustomContent()
 };
-void main() => runApp(Homepage());
+void main() => runApp(const Homepage());
 
 class Homepage extends StatelessWidget {
-  Homepage({Key? key}) : super(key: key);
+  const Homepage({Key? key}) : super(key: key);
 
   //String jsonString = File(filepath).readAsStringSync();
   //late final Map<String, dynamic> jsonmap = decoder.convert(jsonString);
@@ -300,9 +315,13 @@ class MainMenu extends StatelessWidget {
   }
 }
 
-class CreateACharacter extends StatelessWidget {
-  const CreateACharacter({Key? key}) : super(key: key);
+class CreateACharacter extends StatefulWidget {
+  MainCreateCharacter createState() => MainCreateCharacter();
+}
 
+class MainCreateCharacter extends State<CreateACharacter> {
+  //const MainCreateCharacter({Key? key}) //: super(key: key);
+  String dropdownValue = spellnames.first;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -335,6 +354,42 @@ class CreateACharacter extends StatelessWidget {
             ],
           ),
         ),
+        body: TabBarView(children: [
+          Column(children: [
+            DropdownButton<String>(
+              onChanged: (String? value) {
+                // This is scalled when the user selects an item.
+                setState(() {
+                  dropdownValue = value!;
+                });
+              },
+              value: dropdownValue,
+              icon: const Icon(Icons.arrow_downward),
+              items: spellnames.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              elevation: 2,
+              style: const TextStyle(
+                  color: Colors.blue, fontWeight: FontWeight.w700),
+              underline: Container(
+                height: 1,
+                color: Colors.deepPurpleAccent,
+              ),
+            ),
+          ]),
+          Icon(Icons.directions_transit),
+          Icon(Icons.directions_bike),
+          Icon(Icons.directions_car),
+          Icon(Icons.directions_transit),
+          Icon(Icons.directions_bike),
+          Icon(Icons.directions_car),
+          Icon(Icons.directions_transit),
+          Icon(Icons.directions_bike),
+          Icon(Icons.directions_car),
+        ]),
       ),
     ));
   }
