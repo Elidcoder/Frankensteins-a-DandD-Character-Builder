@@ -6,6 +6,8 @@ import 'dart:io';
 const JsonDecoder decoder = JsonDecoder();
 const String filepath =
     "C:\\Users\\arieh\\OneDrive\\Documents\\Dartwork\\frankenstein\\lib\\SRD.json";
+String jsonString = File(filepath).readAsStringSync();
+final Map<String, dynamic> jsonmap = decoder.convert(jsonString);
 
 class Weapon {
   final String name;
@@ -52,8 +54,8 @@ void main() => runApp(Homepage());
 class Homepage extends StatelessWidget {
   Homepage({Key? key}) : super(key: key);
 
-  String jsonString = File(filepath).readAsStringSync();
-  late final Map<String, dynamic> jsonmap = decoder.convert(jsonString);
+  //String jsonString = File(filepath).readAsStringSync();
+  //late final Map<String, dynamic> jsonmap = decoder.convert(jsonString);
 
   static const String _title = 'Frankenstein\'s - a D&D 5e character builder';
   @override
