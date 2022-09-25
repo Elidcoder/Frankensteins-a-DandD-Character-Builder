@@ -5,14 +5,58 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'dart:io';
 
+dynamic topleftcornericonforbanner(int? x) {
+  if (x == 0) {
+    return const Icon(Icons.image);
+  }
+  return const Icon(Icons.home);
+}
+
+String topleftcornertextforbanner(int? x) {
+  if (x == 0) {
+    return "Put logo here";
+  }
+  return "Return to the main menu";
+}
+
+var pageLinker = {
+  0: const MainMenu(),
+  1: CreateACharacter(),
+  2: const SearchForContent(),
+  3: const MyCharacters(),
+  4: const RollDice(),
+  5: const CustomContent()
+};
+
+//CONTENT WILL BE ADDED IN ITS OWN FILE AND LINKED IN A SINGLE FILE WHICH CONTAINS ALL LINKED FILES AS WELL AS THEIR TYPE
+//THEY WILL ALL THEN BE IMPORTED AND SORTED INTO JOINED LISTS THROUGH A BETTER REPEATING FUNCTION E.G. FOR EVERY SPELL: READ, ADD TO SPELL LIST THEN FOR EVERY WEAPON....
 //Classes to unload JSON into
 class Spell {
+  //ADD SPELL TYPE THINGY
   final String name;
   final String effect;
   final int level;
   final String? verbal;
   final String? somatic;
   final String? material;
+  factory Spell.fromJson(Map<String, dynamic> data) {
+    // note the explicit cast to String
+    // this is required if robust lint rules are enabled
+    //COULD GO THROUGH EVERY DATA[SPELL[X,Y,Z*]] TO ALLOW LESS FILES TO BE ADDED WITH CONTENT
+    final name = data['Name'] as String;
+    final effect = data['Effect'] as String;
+    final level = data['Level'] as int?;
+    final verbal = data['Verbal'] as String?;
+    final somatic = data['Somatic'] as String?;
+    final material = data['Material'] as String?;
+    return Spell(
+        name: name,
+        effect: effect,
+        level: level ?? 0,
+        verbal: verbal ?? "None",
+        somatic: somatic ?? "None",
+        material: material ?? "None");
+  }
   Spell(
       {required this.name,
       required this.level,
@@ -38,7 +82,6 @@ class Weapon {
       required this.weight});
 }
 
-const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
 //JSON unloading process
 const JsonDecoder decoder = JsonDecoder();
 const String filepath =
@@ -48,22 +91,29 @@ const String filepath =
 String jsonString = File(filepath).readAsStringSync();
 
 ///file decoded into 'jsonmap'
-final Map<String, dynamic> jsonmap = decoder.convert(jsonString);
+final dynamic jsonmap = decoder.convert(jsonString);
+/*
+final Spell spell = Spell.fromJson(jsonmap);
+List<Spell> list = <Spell>[spell];
+*/
+List<Spell> list = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
+Spell listgetter(String spellname) {
+  //huge issue with adding content WITH DUPLICATE NAME AND (TYPE)
+  for (int x = 0; x < list.length; x++) {
+    if (list[x].name == spellname) {
+      return list[x];
+    }
+  }
+  //ADD SOMETHING FOR FAILED COMPARISONS
+  return list[0];
+}
 
 ///file split into the spells, weapons etc...
-List<Map<String, String>> Spelllist = jsonmap[0];
+/*List<Map<String, String>> Spelllist = jsonmap[0];
 List<String> spellnames =
     Spelllist.map((x) => x["name"] ?? "NULLLISISSUESSS").toList();
-Map<Weapon, dynamic> Weaponlists = jsonmap[1];
+Map<Weapon, dynamic> Weaponlists = jsonmap[1];*/
 
-var pageLinker = {
-  0: const MainMenu(),
-  1: CreateACharacter(),
-  2: const SearchForContent(),
-  3: const MyCharacters(),
-  4: const RollDice(),
-  5: const CustomContent()
-};
 void main() => runApp(const Homepage());
 
 class Homepage extends StatelessWidget {
@@ -81,7 +131,7 @@ class Homepage extends StatelessWidget {
         appBar: AppBar(
           leading: IconButton(
               icon: const Icon(Icons.image),
-              tooltip: 'Put logo here$jsonmap',
+              tooltip: 'Put logo here',
               onPressed: () {}),
           title: const Center(child: Text(_title)),
           actions: <Widget>[
@@ -111,8 +161,8 @@ class ScreenTop extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              icon: const Icon(Icons.home),
-              tooltip: 'Return to the main menu',
+              icon: topleftcornericonforbanner(pagechoice),
+              tooltip: topleftcornertextforbanner(pagechoice),
               onPressed: () {
                 if (pagechoice != 0) {
                   Navigator.push(
@@ -120,9 +170,9 @@ class ScreenTop extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) =>
                               const ScreenTop(pagechoice: 0)));
-                } else {
+                } /*else {
                   ////SHOW ISSUE LATER IF TIME
-                }
+                }*/
               }),
           title: const Center(child: Text(_title)),
           actions: <Widget>[
@@ -140,7 +190,6 @@ class ScreenTop extends StatelessWidget {
           ],
         ),
         //pick relevent call
-
         body: pageLinker[pagechoice],
       ),
     );
@@ -159,7 +208,7 @@ class MainMenu extends StatelessWidget {
             Expanded(
               child: Container(
                 color: Colors.blue,
-                child: Text(
+                child: const Text(
                   textAlign: TextAlign.center,
                   'Main Menu',
                   style: TextStyle(
@@ -178,10 +227,10 @@ class MainMenu extends StatelessWidget {
             OutlinedButton(
               style: OutlinedButton.styleFrom(
                 backgroundColor: Colors.blue,
-                padding: EdgeInsets.fromLTRB(55, 25, 55, 25),
-                shape: RoundedRectangleBorder(
+                padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
+                shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: BorderSide(
+                side: const BorderSide(
                     width: 5, color: Color.fromARGB(255, 7, 26, 239)),
               ),
               onPressed: () {
@@ -191,7 +240,7 @@ class MainMenu extends StatelessWidget {
                       builder: (context) => ScreenTop(pagechoice: 1)),
                 );
               },
-              child: Text(
+              child: const Text(
                 textAlign: TextAlign.center,
                 'Create a \ncharacter',
                 style: TextStyle(
@@ -204,10 +253,10 @@ class MainMenu extends StatelessWidget {
             OutlinedButton(
               style: OutlinedButton.styleFrom(
                 backgroundColor: Colors.blue,
-                padding: EdgeInsets.fromLTRB(55, 25, 55, 25),
-                shape: RoundedRectangleBorder(
+                padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
+                shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: BorderSide(
+                side: const BorderSide(
                     width: 5, color: Color.fromARGB(255, 7, 26, 239)),
               ),
               onPressed: () {
@@ -217,7 +266,7 @@ class MainMenu extends StatelessWidget {
                       builder: (context) => const ScreenTop(pagechoice: 2)),
                 );
               },
-              child: Text(
+              child: const Text(
                 textAlign: TextAlign.center,
                 'Search for\ncontent',
                 style: TextStyle(
@@ -230,10 +279,10 @@ class MainMenu extends StatelessWidget {
             OutlinedButton(
               style: OutlinedButton.styleFrom(
                 backgroundColor: Colors.blue,
-                padding: EdgeInsets.fromLTRB(55, 25, 55, 25),
-                shape: RoundedRectangleBorder(
+                padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
+                shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: BorderSide(
+                side: const BorderSide(
                     width: 5, color: Color.fromARGB(255, 7, 26, 239)),
               ),
               onPressed: () {
@@ -243,7 +292,7 @@ class MainMenu extends StatelessWidget {
                       builder: (context) => const ScreenTop(pagechoice: 3)),
                 );
               },
-              child: Text(
+              child: const Text(
                 textAlign: TextAlign.center,
                 'My \ncharacters',
                 style: TextStyle(
@@ -261,10 +310,10 @@ class MainMenu extends StatelessWidget {
             OutlinedButton(
               style: OutlinedButton.styleFrom(
                 backgroundColor: Colors.blue,
-                padding: EdgeInsets.fromLTRB(30, 42, 30, 42),
-                shape: RoundedRectangleBorder(
+                padding: const EdgeInsets.fromLTRB(30, 42, 30, 42),
+                shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: BorderSide(
+                side: const BorderSide(
                     width: 5, color: Color.fromARGB(255, 7, 26, 239)),
               ),
               onPressed: () {
@@ -274,7 +323,7 @@ class MainMenu extends StatelessWidget {
                       builder: (context) => const ScreenTop(pagechoice: 4)),
                 );
               },
-              child: Text(
+              child: const Text(
                 'Roll dice',
                 style: TextStyle(
                     fontSize: 45,
@@ -286,10 +335,10 @@ class MainMenu extends StatelessWidget {
             OutlinedButton(
               style: OutlinedButton.styleFrom(
                 backgroundColor: Colors.blue,
-                padding: EdgeInsets.fromLTRB(55, 25, 55, 25),
-                shape: RoundedRectangleBorder(
+                padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
+                shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: BorderSide(
+                side: const BorderSide(
                     width: 5, color: Color.fromARGB(255, 7, 26, 239)),
               ),
               onPressed: () {
@@ -299,7 +348,7 @@ class MainMenu extends StatelessWidget {
                       builder: (context) => const ScreenTop(pagechoice: 5)),
                 );
               },
-              child: Text(
+              child: const Text(
                 textAlign: TextAlign.center,
                 'Custom \ncontent',
                 style: TextStyle(
@@ -321,7 +370,7 @@ class CreateACharacter extends StatefulWidget {
 
 class MainCreateCharacter extends State<CreateACharacter> {
   //const MainCreateCharacter({Key? key}) //: super(key: key);
-  String dropdownValue = spellnames.first;
+  Spell spellExample = list.first;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -356,19 +405,107 @@ class MainCreateCharacter extends State<CreateACharacter> {
         ),
         body: TabBarView(children: [
           Column(children: [
+            const SizedBox(height: 60),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    side: const BorderSide(
+                        width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                  ),
+                  onPressed: () {},
+                  child: const Text(
+                    textAlign: TextAlign.center,
+                    'Character info',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white),
+                  ),
+                ),
+                const SizedBox(width: 80),
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    side: const BorderSide(
+                        width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                  ),
+                  onPressed: () {},
+                  child: const Text(
+                    textAlign: TextAlign.center,
+                    'Build Parameters',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white),
+                  ),
+                ),
+                const SizedBox(width: 80),
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    side: const BorderSide(
+                        width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                  ),
+                  onPressed: () {},
+                  child: const Text(
+                    textAlign: TextAlign.center,
+                    'Other build parameters',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                    width: 150,
+                    height: 50,
+                    child: TextField(
+                        cursorColor: Colors.blue,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                            hintText: "Enter data",
+                            hintStyle: const TextStyle(
+                                color: Color.fromARGB(255, 212, 208, 224)),
+                            filled: true,
+                            fillColor: const Color.fromARGB(255, 124, 112, 112),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(12))))),
+              ],
+            )
+          ]),
+          Column(children: [
             DropdownButton<String>(
               onChanged: (String? value) {
                 // This is scalled when the user selects an item.
                 setState(() {
-                  dropdownValue = value!;
+                  spellExample = listgetter(value!);
                 });
               },
-              value: dropdownValue,
+              value: spellExample.name,
               icon: const Icon(Icons.arrow_downward),
-              items: spellnames.map<DropdownMenuItem<String>>((String value) {
+              items: list.map<DropdownMenuItem<String>>((Spell value) {
                 return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
+                  value: value.name,
+                  child: Text(value.name),
                 );
               }).toList(),
               elevation: 2,
@@ -380,15 +517,14 @@ class MainCreateCharacter extends State<CreateACharacter> {
               ),
             ),
           ]),
-          Icon(Icons.directions_transit),
-          Icon(Icons.directions_bike),
-          Icon(Icons.directions_car),
-          Icon(Icons.directions_transit),
-          Icon(Icons.directions_bike),
-          Icon(Icons.directions_car),
-          Icon(Icons.directions_transit),
-          Icon(Icons.directions_bike),
-          Icon(Icons.directions_car),
+          const Icon(Icons.directions_bike),
+          const Icon(Icons.directions_car),
+          const Icon(Icons.directions_transit),
+          const Icon(Icons.directions_bike),
+          const Icon(Icons.directions_car),
+          const Icon(Icons.directions_transit),
+          const Icon(Icons.directions_bike),
+          const Icon(Icons.directions_car),
         ]),
       ),
     ));
@@ -408,7 +544,7 @@ class SearchForContent extends StatelessWidget {
             Expanded(
               child: Container(
                 color: Colors.blue,
-                child: Text(
+                child: const Text(
                   textAlign: TextAlign.center,
                   'Search for content',
                   style: TextStyle(
@@ -438,7 +574,7 @@ class MyCharacters extends StatelessWidget {
             Expanded(
               child: Container(
                 color: Colors.blue,
-                child: Text(
+                child: const Text(
                   textAlign: TextAlign.center,
                   'My Characters',
                   style: TextStyle(
