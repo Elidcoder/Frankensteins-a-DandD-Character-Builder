@@ -365,12 +365,14 @@ class MainMenu extends StatelessWidget {
 }
 
 class CreateACharacter extends StatefulWidget {
+  @override
   MainCreateCharacter createState() => MainCreateCharacter();
 }
 
 class MainCreateCharacter extends State<CreateACharacter> {
   //const MainCreateCharacter({Key? key}) //: super(key: key);
   Spell spellExample = list.first;
+  String? levellingMethod;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -518,113 +520,143 @@ class MainCreateCharacter extends State<CreateACharacter> {
             ),
           ]),
           Column(
+            //crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               const SizedBox(height: 60),
               Row(
                 children: [
                   Expanded(
                       child: Column(
-                    children: [
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                          side: const BorderSide(
-                              width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                          //mainAxisAlignment: MainAxisAlignment.center,
+                          //mainAxisAlignment: MainAxisAlignment.center,
+
+                          children: [
+                        OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5))),
+                            side: const BorderSide(
+                                width: 2,
+                                color: Color.fromARGB(255, 7, 26, 239)),
+                          ),
+                          onPressed: () {},
+                          child: const Text(
+                            textAlign: TextAlign.center,
+                            'Character info',
+                            style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white),
+                          ),
                         ),
-                        onPressed: () {},
-                        child: const Text(
-                          textAlign: TextAlign.center,
-                          'Character info',
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white),
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      SizedBox(
-                          width: 250,
-                          height: 50,
-                          child: TextField(
-                              cursorColor: Colors.blue,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                  hintText: "Enter character's name",
-                                  hintStyle: const TextStyle(
-                                      color:
-                                          Color.fromARGB(255, 212, 208, 224)),
-                                  filled: true,
-                                  fillColor:
-                                      const Color.fromARGB(255, 124, 112, 112),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius:
-                                          BorderRadius.circular(12))))),
-                      //ask level or exp
-                      //add switch + list tittle stuff for lvl/exp
-                      const SizedBox(height: 15),
-                      SizedBox(
-                          width: 250,
-                          height: 50,
-                          child: TextField(
-                              cursorColor: Colors.blue,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                  hintText: "Enter the player's name",
-                                  hintStyle: const TextStyle(
-                                      color:
-                                          Color.fromARGB(255, 212, 208, 224)),
-                                  filled: true,
-                                  fillColor:
-                                      const Color.fromARGB(255, 124, 112, 112),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius:
-                                          BorderRadius.circular(12))))),
-                      const SizedBox(height: 15),
-                      SizedBox(
-                          width: 250,
-                          height: 50,
-                          child: TextField(
-                              cursorColor: Colors.blue,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                  hintText: "Enter the level/exp",
-                                  hintStyle: const TextStyle(
-                                      color:
-                                          Color.fromARGB(255, 212, 208, 224)),
-                                  filled: true,
-                                  fillColor:
-                                      const Color.fromARGB(255, 124, 112, 112),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius:
-                                          BorderRadius.circular(12))))),
-                      const SizedBox(height: 15),
-                      SizedBox(
-                          width: 250,
-                          height: 50,
-                          child: TextField(
-                              cursorColor: Colors.blue,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                  hintText: "Enter the character's gender",
-                                  hintStyle: const TextStyle(
-                                      color:
-                                          Color.fromARGB(255, 212, 208, 224)),
-                                  filled: true,
-                                  fillColor:
-                                      const Color.fromARGB(255, 124, 112, 112),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius:
-                                          BorderRadius.circular(12))))),
-                    ],
-                  )),
+                        const SizedBox(height: 30),
+                        SizedBox(
+                            width: 250,
+                            height: 50,
+                            child: TextField(
+                                cursorColor: Colors.blue,
+                                style: const TextStyle(color: Colors.white),
+                                decoration: InputDecoration(
+                                    hintText: "Enter character's name",
+                                    hintStyle: const TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 212, 208, 224)),
+                                    filled: true,
+                                    fillColor: const Color.fromARGB(
+                                        255, 124, 112, 112),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius:
+                                            BorderRadius.circular(12))))),
+                        //ask level or exp
+                        //add switch + list tittle stuff for lvl/exp
+                        const SizedBox(height: 15),
+                        SizedBox(
+                            width: 250,
+                            height: 50,
+                            child: TextField(
+                                cursorColor: Colors.blue,
+                                style: const TextStyle(color: Colors.white),
+                                decoration: InputDecoration(
+                                    hintText: "Enter the player's name",
+                                    hintStyle: const TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 212, 208, 224)),
+                                    filled: true,
+                                    fillColor: const Color.fromARGB(
+                                        255, 124, 112, 112),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius:
+                                            BorderRadius.circular(12))))),
+                        const SizedBox(height: 15),
+                        SizedBox(
+                            width: 250,
+                            height: 50,
+                            child: TextField(
+                                cursorColor: Colors.blue,
+                                style: const TextStyle(color: Colors.white),
+                                decoration: InputDecoration(
+                                    hintText: "Enter the level/exp",
+                                    hintStyle: const TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 212, 208, 224)),
+                                    filled: true,
+                                    fillColor: const Color.fromARGB(
+                                        255, 124, 112, 112),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius:
+                                            BorderRadius.circular(12))))),
+                        const SizedBox(height: 15),
+                        SizedBox(
+                            width: 250,
+                            height: 50,
+                            child: TextField(
+                                cursorColor: Colors.blue,
+                                style: const TextStyle(color: Colors.white),
+                                decoration: InputDecoration(
+                                    hintText: "Enter the character's gender",
+                                    hintStyle: const TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 212, 208, 224)),
+                                    filled: true,
+                                    fillColor: const Color.fromARGB(
+                                        255, 124, 112, 112),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius:
+                                            BorderRadius.circular(12))))),
+                        Container(
+                            width: 300,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  RadioListTile(
+                                    title: const Text("Use experience"),
+                                    value: "Experience",
+                                    groupValue: levellingMethod,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        levellingMethod = value.toString();
+                                      });
+                                    },
+                                  ),
+                                  RadioListTile(
+                                    title: const Text("Use levels"),
+                                    value: "Levels",
+                                    groupValue: levellingMethod,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        levellingMethod = value.toString();
+                                      });
+                                    },
+                                  ),
+                                ]))
+                      ])),
                   Expanded(
                       child: Column(
                     children: [
