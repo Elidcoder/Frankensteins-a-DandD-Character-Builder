@@ -520,7 +520,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
             ),
           ]),
           Column(
-            //crossAxisAlignment: CrossAxisAlignment.end,
+            //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 60),
               Row(
@@ -600,25 +600,6 @@ class MainCreateCharacter extends State<CreateACharacter> {
                                 cursorColor: Colors.blue,
                                 style: const TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
-                                    hintText: "Enter the level/exp",
-                                    hintStyle: const TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 212, 208, 224)),
-                                    filled: true,
-                                    fillColor: const Color.fromARGB(
-                                        255, 124, 112, 112),
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide.none,
-                                        borderRadius:
-                                            BorderRadius.circular(12))))),
-                        const SizedBox(height: 15),
-                        SizedBox(
-                            width: 250,
-                            height: 50,
-                            child: TextField(
-                                cursorColor: Colors.blue,
-                                style: const TextStyle(color: Colors.white),
-                                decoration: InputDecoration(
                                     hintText: "Enter the character's gender",
                                     hintStyle: const TextStyle(
                                         color:
@@ -630,7 +611,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
                                         borderSide: BorderSide.none,
                                         borderRadius:
                                             BorderRadius.circular(12))))),
-                        Container(
+                        SizedBox(
                             width: 300,
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -645,15 +626,84 @@ class MainCreateCharacter extends State<CreateACharacter> {
                                       });
                                     },
                                   ),
-                                  RadioListTile(
-                                    title: const Text("Use levels"),
-                                    value: "Levels",
-                                    groupValue: levellingMethod,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        levellingMethod = value.toString();
-                                      });
-                                    },
+                                  Container(
+                                      child: levellingMethod == "Experience"
+                                          ? SizedBox(
+                                              width: 250,
+                                              height: 50,
+                                              child: TextField(
+                                                  cursorColor: Colors.blue,
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
+                                                  decoration: InputDecoration(
+                                                      hintText:
+                                                          "Enter the character's exp",
+                                                      hintStyle: const TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              212,
+                                                              208,
+                                                              224)),
+                                                      filled: true,
+                                                      fillColor:
+                                                          const Color.fromARGB(
+                                                              255, 124, 112, 112),
+                                                      border: OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide.none,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12)))))
+                                          : RadioListTile(
+                                              title: const Text("Use levels"),
+                                              value: "Levels",
+                                              groupValue: levellingMethod,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  levellingMethod =
+                                                      value.toString();
+                                                });
+                                              },
+                                            )),
+                                  Container(
+                                    child: levellingMethod == "Experience"
+                                        ? RadioListTile(
+                                            title: const Text("Use levels"),
+                                            value: "Levels",
+                                            groupValue: levellingMethod,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                levellingMethod =
+                                                    value.toString();
+                                              });
+                                            },
+                                          )
+                                        : SizedBox(
+                                            width: 250,
+                                            height: 50,
+                                            child: TextField(
+                                                cursorColor: Colors.blue,
+                                                style: const TextStyle(
+                                                    color: Colors.white),
+                                                decoration: InputDecoration(
+                                                    hintText:
+                                                        "Enter the character's level",
+                                                    hintStyle: const TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255,
+                                                            212,
+                                                            208,
+                                                            224)),
+                                                    filled: true,
+                                                    fillColor:
+                                                        const Color.fromARGB(
+                                                            255, 124, 112, 112),
+                                                    border: OutlineInputBorder(
+                                                        borderSide:
+                                                            BorderSide.none,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                12))))),
                                   ),
                                 ]))
                       ])),
