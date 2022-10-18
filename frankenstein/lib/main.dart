@@ -373,6 +373,22 @@ class MainCreateCharacter extends State<CreateACharacter> {
   //const MainCreateCharacter({Key? key}) //: super(key: key);
   Spell spellExample = list.first;
   String? levellingMethod;
+  //options in the initial menu initialised
+
+  bool? featsAllowed = false;
+  bool? averageHitPoints = false;
+  bool? multiclassing = false;
+  bool? milestoneLevelling = false;
+  bool? myCustomContent = false;
+  bool? optionalClassFeatures = false;
+
+  bool? criticalRoleContent = false;
+  bool? encumberanceRules = false;
+  bool? includeCoinsForWeight = false;
+  bool? unearthedArcanaContent = false;
+  bool? firearmsUsable = false;
+  bool? extraFeatAtLevel1 = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -611,6 +627,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
                                         borderSide: BorderSide.none,
                                         borderRadius:
                                             BorderRadius.circular(12))))),
+                        const SizedBox(height: 15),
                         SizedBox(
                             width: 300,
                             child: Column(
@@ -626,6 +643,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
                                       });
                                     },
                                   ),
+                                  const SizedBox(height: 15),
                                   Container(
                                       child: levellingMethod == "Experience"
                                           ? SizedBox(
@@ -665,6 +683,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
                                                 });
                                               },
                                             )),
+                                  const SizedBox(height: 15),
                                   Container(
                                     child: levellingMethod == "Experience"
                                         ? RadioListTile(
@@ -730,6 +749,80 @@ class MainCreateCharacter extends State<CreateACharacter> {
                               color: Colors.white),
                         ),
                       ),
+                      const SizedBox(height: 30),
+                      SizedBox(
+                        width: 325,
+                        child: Column(
+                          children: [
+                            CheckboxListTile(
+                              title: const Text('Feats in use'),
+                              value: featsAllowed,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  featsAllowed = value;
+                                });
+                              },
+                              secondary: const Icon(Icons.insert_photo),
+                            ),
+                            const SizedBox(height: 15),
+                            CheckboxListTile(
+                              title: const Text('Use average for hit dice'),
+                              value: averageHitPoints,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  averageHitPoints = value;
+                                });
+                              },
+                              secondary: const Icon(Icons.insert_photo),
+                            ),
+                            const SizedBox(height: 15),
+                            CheckboxListTile(
+                              title: const Text('Allow multiclassing'),
+                              value: multiclassing,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  multiclassing = value;
+                                });
+                              },
+                              secondary: const Icon(Icons.insert_photo),
+                            ),
+                            const SizedBox(height: 15),
+                            CheckboxListTile(
+                              title: const Text('Use milestone levelling'),
+                              value: milestoneLevelling,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  milestoneLevelling = value;
+                                });
+                              },
+                              secondary: const Icon(Icons.insert_photo),
+                            ),
+                            const SizedBox(height: 15),
+                            CheckboxListTile(
+                              title: const Text('Use created content'),
+                              value: myCustomContent,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  myCustomContent = value;
+                                });
+                              },
+                              secondary: const Icon(Icons.insert_photo),
+                            ),
+                            const SizedBox(height: 15),
+                            CheckboxListTile(
+                              title: const Text('Use optional class features'),
+                              value: optionalClassFeatures,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  optionalClassFeatures = value;
+                                });
+                              },
+                              secondary: const Icon(Icons.insert_photo),
+                            ),
+                            const SizedBox(height: 8),
+                          ],
+                        ),
+                      ),
                     ],
                   )),
                   Expanded(
@@ -755,6 +848,80 @@ class MainCreateCharacter extends State<CreateACharacter> {
                               color: Colors.white),
                         ),
                       ),
+                      const SizedBox(height: 30),
+                      SizedBox(
+                        width: 325,
+                        child: Column(
+                          children: [
+                            CheckboxListTile(
+                              title: const Text('Use critical role content'),
+                              value: criticalRoleContent,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  criticalRoleContent = value;
+                                });
+                              },
+                              secondary: const Icon(Icons.insert_photo),
+                            ),
+                            const SizedBox(height: 15),
+                            CheckboxListTile(
+                              title: const Text('Use encumberance rules'),
+                              value: encumberanceRules,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  encumberanceRules = value;
+                                });
+                              },
+                              secondary: const Icon(Icons.insert_photo),
+                            ),
+                            const SizedBox(height: 15),
+                            CheckboxListTile(
+                              title: const Text("Incude coins' weights"),
+                              value: includeCoinsForWeight,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  includeCoinsForWeight = value;
+                                });
+                              },
+                              secondary: const Icon(Icons.insert_photo),
+                            ),
+                            const SizedBox(height: 15),
+                            CheckboxListTile(
+                              title: const Text('Use UA content'),
+                              value: unearthedArcanaContent,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  unearthedArcanaContent = value;
+                                });
+                              },
+                              secondary: const Icon(Icons.insert_photo),
+                            ),
+                            const SizedBox(height: 15),
+                            CheckboxListTile(
+                              title: const Text('Allow firearms'),
+                              value: firearmsUsable,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  firearmsUsable = value;
+                                });
+                              },
+                              secondary: const Icon(Icons.insert_photo),
+                            ),
+                            const SizedBox(height: 15),
+                            CheckboxListTile(
+                              title: const Text('Give an extra feat at lvl 1'),
+                              value: extraFeatAtLevel1,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  extraFeatAtLevel1 = value;
+                                });
+                              },
+                              secondary: const Icon(Icons.insert_photo),
+                            ),
+                            const SizedBox(height: 8),
+                          ],
+                        ),
+                      ),
                     ],
                   ))
                 ],
@@ -763,6 +930,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
           ),
           //const Icon(Icons.directions_bike),
           const Icon(Icons.directions_car),
+          //ability scores
           const Icon(Icons.directions_transit),
           const Icon(Icons.directions_bike),
           const Icon(Icons.directions_car),
