@@ -28,6 +28,13 @@ var pageLinker = {
   5: const CustomContent()
 };
 
+class AbilityScore {
+  int value;
+  String name;
+
+  AbilityScore({required this.name, required this.value});
+}
+
 //CONTENT WILL BE ADDED IN ITS OWN FILE AND LINKED IN A SINGLE FILE WHICH CONTAINS ALL LINKED FILES AS WELL AS THEIR TYPE
 //THEY WILL ALL THEN BE IMPORTED AND SORTED INTO JOINED LISTS THROUGH A BETTER REPEATING FUNCTION E.G. FOR EVERY SPELL: READ, ADD TO SPELL LIST THEN FOR EVERY WEAPON....
 //Classes to unload JSON into
@@ -370,6 +377,15 @@ class CreateACharacter extends StatefulWidget {
 }
 
 class MainCreateCharacter extends State<CreateACharacter> {
+  AbilityScore strength = AbilityScore(name: "Strength", value: 8);
+  AbilityScore dexterity = AbilityScore(name: "Dexterity", value: 8);
+  AbilityScore constitution = AbilityScore(name: "Constitution", value: 8);
+  AbilityScore intelligence = AbilityScore(name: "Intelligence", value: 8);
+  AbilityScore wisdom = AbilityScore(name: "Wisdom", value: 8);
+  AbilityScore charisma = AbilityScore(name: "Charisma", value: 8);
+  //STR/DEX/CON/INT/WIS/CHAR
+  List<int> abilityScoreIncreases = [1, 0, 1, 0, 2, 0];
+
   //const MainCreateCharacter({Key? key}) //: super(key: key);
   Spell spellExample = list.first;
   String? levellingMethod;
@@ -931,7 +947,485 @@ class MainCreateCharacter extends State<CreateACharacter> {
           //const Icon(Icons.directions_bike),
           const Icon(Icons.directions_car),
           //ability scores
-          const Icon(Icons.directions_transit),
+          Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        strength.name,
+                        style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        dexterity.name,
+                        style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        constitution.name,
+                        style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        intelligence.name,
+                        style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        wisdom.name,
+                        style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        charisma.name,
+                        style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        (strength.value.toString()),
+                        style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        (dexterity.value.toString()),
+                        style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        (constitution.value.toString()),
+                        style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        (intelligence.value.toString()),
+                        style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        (wisdom.value.toString()),
+                        style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        (charisma.value.toString()),
+                        style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        "(+ ${abilityScoreIncreases[0]})",
+                        style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        "(+ ${abilityScoreIncreases[1]})",
+                        style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        "(+ ${abilityScoreIncreases[2]})",
+                        style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        "(+ ${abilityScoreIncreases[3]})",
+                        style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        "(+ ${abilityScoreIncreases[4]})",
+                        style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        "(+ ${abilityScoreIncreases[5]})",
+                        style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        (strength.value + abilityScoreIncreases[0]).toString(),
+                        style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        (dexterity.value + abilityScoreIncreases[1]).toString(),
+                        style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        (constitution.value + abilityScoreIncreases[2])
+                            .toString(),
+                        style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        (intelligence.value + abilityScoreIncreases[3])
+                            .toString(),
+                        style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        (wisdom.value + abilityScoreIncreases[4]).toString(),
+                        style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(30, 25, 30, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        side: const BorderSide(
+                            width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        (charisma.value + abilityScoreIncreases[5]).toString(),
+                        style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ]),
           const Icon(Icons.directions_bike),
           const Icon(Icons.directions_car),
           const Icon(Icons.directions_transit),
