@@ -93,10 +93,7 @@ String jsonString = File(filepath).readAsStringSync();
 
 ///file decoded into 'jsonmap'
 final dynamic jsonmap = decoder.convert(jsonString);
-/*
-final Spell spell = Spell.fromJson(jsonmap);
-List<Spell> list = <Spell>[spell];
-*/
+
 List<Spell> list = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
 Spell listgetter(String spellname) {
   //huge issue with adding content WITH DUPLICATE NAME AND (TYPE)
@@ -106,6 +103,7 @@ Spell listgetter(String spellname) {
     }
   }
   //ADD SOMETHING FOR FAILED COMPARISONS
+  ///fix really  really really
   return list[0];
 }
 
@@ -395,6 +393,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
   bool? unearthedArcanaContent = false;
   bool? firearmsUsable = false;
   bool? extraFeatAtLevel1 = false;
+  String? characterLevel = "1";
 
   @override
   Widget build(BuildContext context) {
@@ -577,7 +576,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
                                                 });
                                               },
                                             )),
-                                  const SizedBox(height: 15),
+                                  const SizedBox(height: 5),
                                   Container(
                                     child: levellingMethod == "Experience"
                                         ? RadioListTile(
@@ -592,32 +591,62 @@ class MainCreateCharacter extends State<CreateACharacter> {
                                             },
                                           )
                                         : SizedBox(
-                                            width: 250,
+                                            width: 50,
                                             height: 50,
-                                            child: TextField(
-                                                cursorColor: Colors.blue,
-                                                style: const TextStyle(
-                                                    color: Colors.white),
-                                                decoration: InputDecoration(
-                                                    hintText:
-                                                        "Enter the character's level",
-                                                    hintStyle: const TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255,
-                                                            212,
-                                                            208,
-                                                            224)),
-                                                    filled: true,
-                                                    fillColor:
-                                                        const Color.fromARGB(
-                                                            255, 124, 112, 112),
-                                                    border: OutlineInputBorder(
-                                                        borderSide:
-                                                            BorderSide.none,
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                12))))),
+                                            child: DropdownButton<String>(
+                                              value: characterLevel,
+                                              icon: const Icon(
+                                                  Icons.arrow_drop_down,
+                                                  color: Color.fromARGB(
+                                                      255, 7, 26, 239)),
+                                              elevation: 16,
+                                              style: const TextStyle(
+                                                  color: Colors.blue,
+                                                  fontWeight: FontWeight.w800,
+                                                  fontSize: 20),
+                                              underline: Container(
+                                                height: 2,
+                                                color: const Color.fromARGB(
+                                                    255, 7, 26, 239),
+                                              ),
+                                              onChanged: (String? value) {
+                                                // This is called when the user selects an item.
+                                                setState(() {
+                                                  characterLevel = value!;
+                                                });
+                                              },
+                                              items: [
+                                                "1",
+                                                "2",
+                                                "3",
+                                                "4",
+                                                "5",
+                                                "6",
+                                                "7",
+                                                "8",
+                                                "9",
+                                                "10",
+                                                "11",
+                                                "12",
+                                                "13",
+                                                "14",
+                                                "15",
+                                                "16",
+                                                "17",
+                                                "18",
+                                                "19",
+                                                "20"
+                                              ].map<DropdownMenuItem<String>>(
+                                                  (String value) {
+                                                return DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Center(
+                                                      child: Text(value)),
+                                                );
+                                              }).toList(),
+                                            )),
                                   ),
+                                  const SizedBox(height: 10),
                                 ]))
                       ])),
                   Expanded(
@@ -738,7 +767,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
                           'Other build parameters',
                           style: TextStyle(
                               fontSize: 25,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w600,
                               color: Colors.white),
                         ),
                       ),
@@ -826,7 +855,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
           Column(children: [
             DropdownButton<String>(
               onChanged: (String? value) {
-                // This is scalled when the user selects an item.
+                // This is called when the user selects an item.
                 setState(() {
                   spellExample = listgetter(value!);
                 });
@@ -847,6 +876,53 @@ class MainCreateCharacter extends State<CreateACharacter> {
                 color: Colors.deepPurpleAccent,
               ),
             ),
+            DropdownButton<String>(
+              value: characterLevel,
+              icon: const Icon(Icons.arrow_drop_down,
+                  color: Color.fromARGB(255, 7, 26, 239)),
+              elevation: 16,
+              style: const TextStyle(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 20),
+              underline: Container(
+                height: 2,
+                color: const Color.fromARGB(255, 7, 26, 239),
+              ),
+              onChanged: (String? value) {
+                // This is called when the user selects an item.
+                setState(() {
+                  characterLevel = value!;
+                });
+              },
+              items: [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12",
+                "13",
+                "14",
+                "15",
+                "16",
+                "17",
+                "18",
+                "19",
+                "20"
+              ].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Center(child: Text(value)),
+                );
+              }).toList(),
+            )
           ]),
 
           const Icon(Icons.directions_car),
@@ -967,13 +1043,8 @@ class MainCreateCharacter extends State<CreateACharacter> {
                                             color: Colors.white))
                                     : OutlinedButton(
                                         style: OutlinedButton.styleFrom(
-                                          backgroundColor: (abilityScoreCost(
-                                                      strength.value) >
-                                                  pointsRemaining)
-                                              ? const Color.fromARGB(
-                                                  150, 61, 33, 243)
-                                              : const Color.fromARGB(
-                                                  255, 64, 64, 67),
+                                          backgroundColor: const Color.fromARGB(
+                                              150, 61, 33, 243),
                                           shape: const RoundedRectangleBorder(
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(4))),
