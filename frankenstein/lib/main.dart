@@ -2,23 +2,9 @@
 import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:flutter/services.dart';
+//add this back if there are errors:
+//import 'package:flutter/services.dart';
 import 'dart:io';
-
-//replace with ternary thingy
-dynamic topleftcornericonforbanner(int? x) {
-  if (x == 0) {
-    return const Icon(Icons.image);
-  }
-  return const Icon(Icons.home);
-}
-
-String topleftcornertextforbanner(int? x) {
-  if (x == 0) {
-    return "Put logo here";
-  }
-  return "Return to the main menu";
-}
 
 int abilityScoreCost(int x) {
   if (x > 12) {
@@ -123,12 +109,6 @@ Spell listgetter(String spellname) {
   return list[0];
 }
 
-///file split into the spells, weapons etc...
-/*List<Map<String, String>> Spelllist = jsonmap[0];
-List<String> spellnames =
-    Spelllist.map((x) => x["name"] ?? "NULLLISISSUESSS").toList();
-Map<Weapon, dynamic> Weaponlists = jsonmap[1];*/
-
 void main() => runApp(const Homepage());
 
 class Homepage extends StatelessWidget {
@@ -176,8 +156,12 @@ class ScreenTop extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              icon: topleftcornericonforbanner(pagechoice),
-              tooltip: topleftcornertextforbanner(pagechoice),
+              icon: (pagechoice == 0)
+                  ? const Icon(Icons.image)
+                  : const Icon(Icons.home),
+              tooltip: (pagechoice == 0)
+                  ? "Put logo here"
+                  : "Return to the main menu",
               onPressed: () {
                 if (pagechoice != 0) {
                   Navigator.push(
@@ -185,9 +169,7 @@ class ScreenTop extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) =>
                               const ScreenTop(pagechoice: 0)));
-                } /*else {
-                  ////SHOW ISSUE LATER IF TIME
-                }*/
+                }
               }),
           title: const Center(child: Text(_title)),
           actions: <Widget>[
