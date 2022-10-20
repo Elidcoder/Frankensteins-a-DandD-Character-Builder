@@ -31,37 +31,47 @@ class AbilityScore {
 
 class Subrace {
   final String name;
-  final List<int> raceScoreIncrease;
+  final List<int> subRaceScoreIncrease;
   //final String sourceBook;
   final List<String>? languages;
   final List<String>? resistances;
   final List<String>? abilities;
+  final List<String>? proficiencies;
   final int darkVision;
+  final int walkingSpeed;
   factory Subrace.fromJson(Map<String, dynamic> data) {
     final name = data['Name'] as String;
-    final raceScoreIncrease = data['AbilityScoreMap'] as List<int>;
-    final languages = data['Languages'] as List<String>?;
+    final subRaceScoreIncrease =
+        data['AbilityScoreMap'].cast<int>() as List<int>;
+    final languages = data['Languages']?.cast<String>() as List<String>?;
     final darkVision = data['Darkvision'] as int?;
     //final sourceBook = data["Sourcebook"];
-    final resistances = data["Resistances"] as List<String>?;
-    final abilities = data['Abilities'] as List<String>?;
+    final resistances = data["Resistances"]?.cast<String>() as List<String>?;
+    final abilities = data['Abilities']?.cast<String>() as List<String>?;
+    final proficiencies =
+        data['Proficiencies']?.cast<String>() as List<String>?;
+    final walkingSpeed = data["WalkingSpeed"];
     return Subrace(
         name: name,
-        raceScoreIncrease: raceScoreIncrease,
+        subRaceScoreIncrease: subRaceScoreIncrease,
         languages: languages,
         darkVision: darkVision ?? 0,
+        walkingSpeed: walkingSpeed ?? 30,
         //sourceBook: sourceBook,
         resistances: resistances,
-        abilities: abilities);
+        abilities: abilities,
+        proficiencies: proficiencies);
   }
   Subrace(
       {required this.name,
-      required this.raceScoreIncrease,
+      required this.subRaceScoreIncrease,
       required this.darkVision,
+      required this.walkingSpeed,
       //required this.sourcebook,
       this.languages,
       this.resistances,
-      this.abilities});
+      this.abilities,
+      this.proficiencies});
 }
 
 class Race {
@@ -72,7 +82,9 @@ class Race {
   final List<Subrace>? subRaces;
   final List<String>? resistances;
   final List<String>? abilities;
+  final List<String>? proficiencies;
   final int darkVision;
+  final int walkingSpeed;
   factory Race.fromJson(Map<String, dynamic> data) {
     final name = data['Name'] as String;
     final raceScoreIncrease = data['AbilityScoreMap'].cast<int>() as List<int>;
@@ -85,25 +97,32 @@ class Race {
         .toList();
     final resistances = data["Resistances"]?.cast<String>() as List<String>?;
     final abilities = data['Abilities']?.cast<String>() as List<String>?;
+    final proficiencies =
+        data['Proficiencies']?.cast<String>() as List<String>?;
+    final walkingSpeed = data["WalkingSpeed"];
     return Race(
         name: name,
         raceScoreIncrease: raceScoreIncrease,
         languages: languages ?? ["Common"],
         darkVision: darkVision ?? 0,
+        walkingSpeed: walkingSpeed ?? 30,
         //sourceBook: sourceBook ?? "N/A",
         subRaces: subRaces,
         resistances: resistances,
-        abilities: abilities);
+        abilities: abilities,
+        proficiencies: proficiencies);
   }
   Race(
       {required this.name,
       required this.raceScoreIncrease,
       required this.languages,
       required this.darkVision,
+      required this.walkingSpeed,
       //required this.sourcebook,
       this.subRaces,
       this.resistances,
-      this.abilities});
+      this.abilities,
+      this.proficiencies});
 }
 
 //CONTENT WILL BE ADDED IN ITS OWN FILE AND LINKED IN A SINGLE FILE WHICH CONTAINS ALL LINKED FILES AS WELL AS THEIR TYPE
@@ -458,6 +477,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
   Spell spellExample = list.first;
   String? levellingMethod;
   Race raceExample = RACELIST.first;
+  Subrace? subraceExample;
   //options in the initial menu initialised
 
   bool? featsAllowed = false;
@@ -938,14 +958,18 @@ class MainCreateCharacter extends State<CreateACharacter> {
               onChanged: (String? value) {
                 // This is called when the user selects an item.
                 setState(() {
+                  //efficient this up at some point so ASI[i] isn't accessed twice
                   for (int i = 0; i < 6; i++) {
-                    abilityScoreIncreases[i] -=
-                        raceExample.raceScoreIncrease[i];
+                    abilityScoreIncreases[i] -= (abilityScoreIncreases[i] +
+                        ((subraceExample?.subRaceScoreIncrease[i]) ?? 0));
                   }
+
                   raceExample = RACELIST.singleWhere((x) => x.name == value);
+                  subraceExample = raceExample.subRaces?.first;
                   for (int i = 0; i < 6; i++) {
                     abilityScoreIncreases[i] +=
-                        raceExample.raceScoreIncrease[i];
+                        raceExample.raceScoreIncrease[i] +
+                            ((subraceExample?.subRaceScoreIncrease[i]) ?? 0);
                   }
                 });
               },
@@ -965,6 +989,45 @@ class MainCreateCharacter extends State<CreateACharacter> {
                 color: Colors.deepPurpleAccent,
               ),
             ),
+            raceExample.subRaces != null
+                ? DropdownButton<String>(
+                    onChanged: (String? value) {
+                      // This is called when the user selects an item.
+                      setState(() {
+                        for (int i = 0; i < 6; i++) {
+                          abilityScoreIncreases[i] -=
+                              subraceExample?.subRaceScoreIncrease[i] ?? 0;
+                        }
+                        subraceExample = raceExample.subRaces
+                            ?.singleWhere((x) => x.name == value);
+                        for (int i = 0; i < 6; i++) {
+                          abilityScoreIncreases[i] +=
+                              subraceExample?.subRaceScoreIncrease[i] ?? 0;
+                        }
+                      });
+                    },
+                    value: subraceExample?.name,
+                    icon: const Icon(Icons.arrow_downward),
+                    items: raceExample.subRaces
+                        ?.map<DropdownMenuItem<String>>((Subrace value) {
+                      return DropdownMenuItem<String>(
+                        value: value.name,
+                        child: Text(value.name),
+                      );
+                    }).toList(),
+                    elevation: 2,
+                    style: const TextStyle(
+                        color: Colors.blue, fontWeight: FontWeight.w700),
+                    underline: Container(
+                      height: 1,
+                      color: Colors.deepPurpleAccent,
+                    ),
+                  )
+                : Container(
+                    height: 50,
+                    width: 50,
+                    color: Colors.blue,
+                    child: const Center(child: Text("No Subraces")))
           ]),
 
           Column(children: [
