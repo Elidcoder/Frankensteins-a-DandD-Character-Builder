@@ -75,16 +75,16 @@ class Race {
   final int darkVision;
   factory Race.fromJson(Map<String, dynamic> data) {
     final name = data['Name'] as String;
-    final raceScoreIncrease = data['AbilityScoreMap'] as List<int>;
-    final languages = data['Languages'] as List<String>?;
+    final raceScoreIncrease = data['AbilityScoreMap'].cast<int>() as List<int>;
+    final languages = data['Languages'].cast<String>() as List<String>?;
     final darkVision = data['Darkvision'] as int?;
     //final sourceBook = data["Sourcebook"]?;
     final subRaceData = data['Subraces'] as List<dynamic>?;
     final subRaces = subRaceData
         ?.map((subRaceData) => Subrace.fromJson(subRaceData))
         .toList();
-    final resistances = data["Resistances"] as List<String>?;
-    final abilities = data['Abilities'] as List<String>?;
+    final resistances = data["Resistances"]?.cast<String>() as List<String>?;
+    final abilities = data['Abilities']?.cast<String>() as List<String>?;
     return Race(
         name: name,
         raceScoreIncrease: raceScoreIncrease,
@@ -171,6 +171,8 @@ String jsonString = File(filepath).readAsStringSync();
 ///file decoded into 'jsonmap'
 final dynamic jsonmap = decoder.convert(jsonString);
 
+// ignore: non_constant_identifier_names
+List<Race> RACELIST = [for (var x in jsonmap["Races"]) Race.fromJson(x)];
 List<Spell> list = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
 Spell listgetter(String spellname) {
   //huge issue with adding content WITH DUPLICATE NAME AND (TYPE)
@@ -450,11 +452,12 @@ class MainCreateCharacter extends State<CreateACharacter> {
   AbilityScore charisma = AbilityScore(name: "Charisma", value: 8);
   int pointsRemaining = 27;
   //STR/DEX/CON/INT/WIS/CHAR
-  List<int> abilityScoreIncreases = [1, 0, 1, 0, 2, 0];
+  List<int> abilityScoreIncreases = [1, 1, 1, 1, 1, 1];
 
   //const MainCreateCharacter({Key? key}) //: super(key: key);
   Spell spellExample = list.first;
   String? levellingMethod;
+  Race raceExample = RACELIST.first;
   //options in the initial menu initialised
 
   bool? featsAllowed = false;
@@ -514,7 +517,6 @@ class MainCreateCharacter extends State<CreateACharacter> {
                   Expanded(
                       child: Column(
                           //mainAxisAlignment: MainAxisAlignment.center,
-                          //mainAxisAlignment: MainAxisAlignment.center,
 
                           children: [
                         Container(
@@ -528,14 +530,15 @@ class MainCreateCharacter extends State<CreateACharacter> {
                             ),
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          child: const Text(
+                          child: const Center(
+                              child: Text(
                             textAlign: TextAlign.center,
                             "Character info",
                             style: TextStyle(
                                 fontSize: 35,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white),
-                          ),
+                          )),
                         ),
                         const SizedBox(height: 30),
                         SizedBox(
@@ -739,14 +742,15 @@ class MainCreateCharacter extends State<CreateACharacter> {
                           ),
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        child: const Text(
+                        child: const Center(
+                            child: Text(
                           textAlign: TextAlign.center,
                           "Build Parameters",
                           style: TextStyle(
                               fontSize: 35,
                               fontWeight: FontWeight.w700,
                               color: Colors.white),
-                        ),
+                        )),
                       ),
                       const SizedBox(height: 30),
                       SizedBox(
@@ -838,14 +842,15 @@ class MainCreateCharacter extends State<CreateACharacter> {
                           ),
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        child: const Text(
+                        child: const Center(
+                            child: Text(
                           textAlign: TextAlign.center,
                           "Rarer Parameters",
                           style: TextStyle(
                               fontSize: 35,
                               fontWeight: FontWeight.w700,
                               color: Colors.white),
-                        ),
+                        )),
                       ),
                       const SizedBox(height: 30),
                       SizedBox(
@@ -933,6 +938,40 @@ class MainCreateCharacter extends State<CreateACharacter> {
               onChanged: (String? value) {
                 // This is called when the user selects an item.
                 setState(() {
+                  for (int i = 0; i < 6; i++) {
+                    abilityScoreIncreases[i] -=
+                        raceExample.raceScoreIncrease[i];
+                  }
+                  raceExample = RACELIST.singleWhere((x) => x.name == value);
+                  for (int i = 0; i < 6; i++) {
+                    abilityScoreIncreases[i] +=
+                        raceExample.raceScoreIncrease[i];
+                  }
+                });
+              },
+              value: raceExample.name,
+              icon: const Icon(Icons.arrow_downward),
+              items: RACELIST.map<DropdownMenuItem<String>>((Race value) {
+                return DropdownMenuItem<String>(
+                  value: value.name,
+                  child: Text(value.name),
+                );
+              }).toList(),
+              elevation: 2,
+              style: const TextStyle(
+                  color: Colors.blue, fontWeight: FontWeight.w700),
+              underline: Container(
+                height: 1,
+                color: Colors.deepPurpleAccent,
+              ),
+            ),
+          ]),
+
+          Column(children: [
+            DropdownButton<String>(
+              onChanged: (String? value) {
+                // This is called when the user selects an item.
+                setState(() {
                   spellExample = listgetter(value!);
                 });
               },
@@ -1000,8 +1039,6 @@ class MainCreateCharacter extends State<CreateACharacter> {
               }).toList(),
             )
           ]),
-
-          const Icon(Icons.directions_car),
           const Icon(Icons.directions_bike),
           //ability scores
           Column(children: [
@@ -1167,7 +1204,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
                             (strength.value + abilityScoreIncreases[0])
                                 .toString(),
                             style: const TextStyle(
-                                fontSize: 45,
+                                fontSize: 50,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white),
                           ),
@@ -1323,7 +1360,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
                             (dexterity.value + abilityScoreIncreases[1])
                                 .toString(),
                             style: const TextStyle(
-                                fontSize: 45,
+                                fontSize: 50,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white),
                           ),
@@ -1480,7 +1517,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
                             (constitution.value + abilityScoreIncreases[2])
                                 .toString(),
                             style: const TextStyle(
-                                fontSize: 45,
+                                fontSize: 50,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white),
                           ),
@@ -1637,7 +1674,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
                             (intelligence.value + abilityScoreIncreases[3])
                                 .toString(),
                             style: const TextStyle(
-                                fontSize: 45,
+                                fontSize: 50,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white),
                           ),
@@ -1793,7 +1830,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
                             (wisdom.value + abilityScoreIncreases[4])
                                 .toString(),
                             style: const TextStyle(
-                                fontSize: 45,
+                                fontSize: 50,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white),
                           ),
@@ -1949,7 +1986,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
                             (charisma.value + abilityScoreIncreases[5])
                                 .toString(),
                             style: const TextStyle(
-                                fontSize: 45,
+                                fontSize: 50,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white),
                           ),
