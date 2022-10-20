@@ -29,6 +29,83 @@ class AbilityScore {
   AbilityScore({required this.name, required this.value});
 }
 
+class Subrace {
+  final String name;
+  final List<int> raceScoreIncrease;
+  //final String sourceBook;
+  final List<String>? languages;
+  final List<String>? resistances;
+  final List<String>? abilities;
+  final int darkVision;
+  factory Subrace.fromJson(Map<String, dynamic> data) {
+    final name = data['Name'] as String;
+    final raceScoreIncrease = data['AbilityScoreMap'] as List<int>;
+    final languages = data['Languages'] as List<String>?;
+    final darkVision = data['Darkvision'] as int?;
+    //final sourceBook = data["Sourcebook"];
+    final resistances = data["Resistances"] as List<String>?;
+    final abilities = data['Abilities'] as List<String>?;
+    return Subrace(
+        name: name,
+        raceScoreIncrease: raceScoreIncrease,
+        languages: languages,
+        darkVision: darkVision ?? 0,
+        //sourceBook: sourceBook,
+        resistances: resistances,
+        abilities: abilities);
+  }
+  Subrace(
+      {required this.name,
+      required this.raceScoreIncrease,
+      required this.darkVision,
+      //required this.sourcebook,
+      this.languages,
+      this.resistances,
+      this.abilities});
+}
+
+class Race {
+  final String name;
+  final List<int> raceScoreIncrease;
+  //final String sourceBook;
+  final List<String> languages;
+  final List<Subrace>? subRaces;
+  final List<String>? resistances;
+  final List<String>? abilities;
+  final int darkVision;
+  factory Race.fromJson(Map<String, dynamic> data) {
+    final name = data['Name'] as String;
+    final raceScoreIncrease = data['AbilityScoreMap'] as List<int>;
+    final languages = data['Languages'] as List<String>?;
+    final darkVision = data['Darkvision'] as int?;
+    //final sourceBook = data["Sourcebook"]?;
+    final subRaceData = data['Subraces'] as List<dynamic>?;
+    final subRaces = subRaceData
+        ?.map((subRaceData) => Subrace.fromJson(subRaceData))
+        .toList();
+    final resistances = data["Resistances"] as List<String>?;
+    final abilities = data['Abilities'] as List<String>?;
+    return Race(
+        name: name,
+        raceScoreIncrease: raceScoreIncrease,
+        languages: languages ?? ["Common"],
+        darkVision: darkVision ?? 0,
+        //sourceBook: sourceBook ?? "N/A",
+        subRaces: subRaces,
+        resistances: resistances,
+        abilities: abilities);
+  }
+  Race(
+      {required this.name,
+      required this.raceScoreIncrease,
+      required this.languages,
+      required this.darkVision,
+      //required this.sourcebook,
+      this.subRaces,
+      this.resistances,
+      this.abilities});
+}
+
 //CONTENT WILL BE ADDED IN ITS OWN FILE AND LINKED IN A SINGLE FILE WHICH CONTAINS ALL LINKED FILES AS WELL AS THEIR TYPE
 //THEY WILL ALL THEN BE IMPORTED AND SORTED INTO JOINED LISTS THROUGH A BETTER REPEATING FUNCTION E.G. FOR EVERY SPELL: READ, ADD TO SPELL LIST THEN FOR EVERY WEAPON....
 //Classes to unload JSON into
@@ -232,7 +309,7 @@ class MainMenu extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ScreenTop(pagechoice: 1)),
+                      builder: (context) => const ScreenTop(pagechoice: 1)),
                 );
               },
               child: const Text(
@@ -440,23 +517,22 @@ class MainCreateCharacter extends State<CreateACharacter> {
                           //mainAxisAlignment: MainAxisAlignment.center,
 
                           children: [
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                            padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5))),
-                            side: const BorderSide(
-                                width: 2,
-                                color: Color.fromARGB(255, 7, 26, 239)),
+                        Container(
+                          width: 280,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            border: Border.all(
+                              color: const Color.fromARGB(255, 7, 26, 239),
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(5),
                           ),
-                          onPressed: () {},
                           child: const Text(
                             textAlign: TextAlign.center,
-                            'Character info',
+                            "Character info",
                             style: TextStyle(
-                                fontSize: 25,
+                                fontSize: 35,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white),
                           ),
@@ -652,22 +728,22 @@ class MainCreateCharacter extends State<CreateACharacter> {
                   Expanded(
                       child: Column(
                     children: [
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                          side: const BorderSide(
-                              width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      Container(
+                        width: 325,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          border: Border.all(
+                            color: const Color.fromARGB(255, 7, 26, 239),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(5),
                         ),
-                        onPressed: () {},
                         child: const Text(
                           textAlign: TextAlign.center,
-                          'Build Parameters',
+                          "Build Parameters",
                           style: TextStyle(
-                              fontSize: 25,
+                              fontSize: 35,
                               fontWeight: FontWeight.w700,
                               color: Colors.white),
                         ),
@@ -751,23 +827,23 @@ class MainCreateCharacter extends State<CreateACharacter> {
                   Expanded(
                       child: Column(
                     children: [
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                          side: const BorderSide(
-                              width: 2, color: Color.fromARGB(255, 7, 26, 239)),
+                      Container(
+                        width: 325,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          border: Border.all(
+                            color: const Color.fromARGB(255, 7, 26, 239),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(5),
                         ),
-                        onPressed: () {},
                         child: const Text(
                           textAlign: TextAlign.center,
-                          'Other build parameters',
+                          "Rarer Parameters",
                           style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w600,
+                              fontSize: 35,
+                              fontWeight: FontWeight.w700,
                               color: Colors.white),
                         ),
                       ),
@@ -1969,7 +2045,7 @@ class RollDice extends StatelessWidget {
             Expanded(
               child: Container(
                 color: Colors.blue,
-                child: Text(
+                child: const Text(
                   textAlign: TextAlign.center,
                   'Roll dice',
                   style: TextStyle(
@@ -1999,7 +2075,7 @@ class CustomContent extends StatelessWidget {
             Expanded(
               child: Container(
                 color: Colors.blue,
-                child: Text(
+                child: const Text(
                   textAlign: TextAlign.center,
                   'Custom content',
                   style: TextStyle(

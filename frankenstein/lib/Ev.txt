@@ -1,1 +1,4 @@
 Ternary operators for radio class and leveling via exp vs levels  - https://www.fluttercampus.com/guide/131/how-to-use-conditional-statement-if-else-on-widget-in-flutter/
+Json and mapping into classes-https://codewithandrea.com/articles/parse-json-dart/
+Null operations - https://flutterigniter.com/checking-null-aware-operators-dart/
+togglebuttons use more
