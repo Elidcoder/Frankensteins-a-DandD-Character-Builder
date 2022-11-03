@@ -13,7 +13,16 @@ int abilityScoreCost(int x) {
   return 1;
 }
 
-var pageLinker = {
+final Map<int, Widget> PAGELINKER = {
+  0: const MainMenu(),
+  1: CreateACharacter(),
+  2: const SearchForContent(),
+  3: const MyCharacters(),
+  4: const RollDice(),
+  5: const CustomContent()
+};
+
+final Map<int, Widget> EDITABLE_ABILITYSCORE_WIDGETS = {
   0: const MainMenu(),
   1: CreateACharacter(),
   2: const SearchForContent(),
@@ -193,6 +202,7 @@ final dynamic jsonmap = decoder.convert(jsonString);
 // ignore: non_constant_identifier_names
 List<Race> RACELIST = [for (var x in jsonmap["Races"]) Race.fromJson(x)];
 List<Spell> list = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
+//get rid of this later{
 Spell listgetter(String spellname) {
   //huge issue with adding content WITH DUPLICATE NAME AND (TYPE)
   for (int x = 0; x < list.length; x++) {
@@ -203,7 +213,7 @@ Spell listgetter(String spellname) {
   //ADD SOMETHING FOR FAILED COMPARISONS
   ///fix really  really really
   return list[0];
-}
+} //}
 
 void main() => runApp(const Homepage());
 
@@ -283,7 +293,7 @@ class ScreenTop extends StatelessWidget {
           ],
         ),
         //pick relevent call
-        body: pageLinker[pagechoice],
+        body: PAGELINKER[pagechoice],
       ),
     );
   }
@@ -462,6 +472,7 @@ class CreateACharacter extends StatefulWidget {
   MainCreateCharacter createState() => MainCreateCharacter();
 }
 
+//null op here to locate if called by editor (to edit char so will contain info) or otherwise
 class MainCreateCharacter extends State<CreateACharacter> {
   AbilityScore strength = AbilityScore(name: "Strength", value: 8);
   AbilityScore dexterity = AbilityScore(name: "Dexterity", value: 8);
@@ -486,7 +497,6 @@ class MainCreateCharacter extends State<CreateACharacter> {
   bool? milestoneLevelling = false;
   bool? myCustomContent = false;
   bool? optionalClassFeatures = false;
-
   bool? criticalRoleContent = false;
   bool? encumberanceRules = false;
   bool? includeCoinsForWeight = false;
@@ -495,10 +505,11 @@ class MainCreateCharacter extends State<CreateACharacter> {
   bool? extraFeatAtLevel1 = false;
   String? characterLevel = "1";
 
+  List<bool> isSelected = [false, false, false, false, false, false];
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: DefaultTabController(
+    return DefaultTabController(
       length: 10,
       child: Scaffold(
         appBar: AppBar(
@@ -528,6 +539,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
           ),
         ),
         body: TabBarView(children: [
+          //basics
           Column(
             //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -952,84 +964,109 @@ class MainCreateCharacter extends State<CreateACharacter> {
               )
             ],
           ),
+          //race
+          Column(
+            children: [
+              DropdownButton<String>(
+                onChanged: (String? value) {
+                  // This is called when the user selects an item.
+                  setState(() {
+                    //efficient this up at some point so ASI[i] isn't accessed twice
+                    for (int i = 0; i < 6; i++) {
+                      abilityScoreIncreases[i] -= (abilityScoreIncreases[i] +
+                          ((subraceExample?.subRaceScoreIncrease[i]) ?? 0));
+                    }
 
-          Column(children: [
-            DropdownButton<String>(
-              onChanged: (String? value) {
-                // This is called when the user selects an item.
-                setState(() {
-                  //efficient this up at some point so ASI[i] isn't accessed twice
-                  for (int i = 0; i < 6; i++) {
-                    abilityScoreIncreases[i] -= (abilityScoreIncreases[i] +
-                        ((subraceExample?.subRaceScoreIncrease[i]) ?? 0));
-                  }
-
-                  raceExample = RACELIST.singleWhere((x) => x.name == value);
-                  subraceExample = raceExample.subRaces?.first;
-                  for (int i = 0; i < 6; i++) {
-                    abilityScoreIncreases[i] +=
-                        raceExample.raceScoreIncrease[i] +
-                            ((subraceExample?.subRaceScoreIncrease[i]) ?? 0);
-                  }
-                });
-              },
-              value: raceExample.name,
-              icon: const Icon(Icons.arrow_downward),
-              items: RACELIST.map<DropdownMenuItem<String>>((Race value) {
-                return DropdownMenuItem<String>(
-                  value: value.name,
-                  child: Text(value.name),
-                );
-              }).toList(),
-              elevation: 2,
-              style: const TextStyle(
-                  color: Colors.blue, fontWeight: FontWeight.w700),
-              underline: Container(
-                height: 1,
-                color: Colors.deepPurpleAccent,
+                    raceExample = RACELIST.singleWhere((x) => x.name == value);
+                    subraceExample = raceExample.subRaces?.first;
+                    for (int i = 0; i < 6; i++) {
+                      abilityScoreIncreases[i] +=
+                          raceExample.raceScoreIncrease[i] +
+                              ((subraceExample?.subRaceScoreIncrease[i]) ?? 0);
+                    }
+                  });
+                },
+                value: raceExample.name,
+                icon: const Icon(Icons.arrow_downward),
+                items: RACELIST.map<DropdownMenuItem<String>>((Race value) {
+                  return DropdownMenuItem<String>(
+                    value: value.name,
+                    child: Text(value.name),
+                  );
+                }).toList(),
+                elevation: 2,
+                style: const TextStyle(
+                    color: Colors.blue, fontWeight: FontWeight.w700),
+                underline: Container(
+                  height: 1,
+                  color: Colors.deepPurpleAccent,
+                ),
               ),
-            ),
-            raceExample.subRaces != null
-                ? DropdownButton<String>(
-                    onChanged: (String? value) {
-                      // This is called when the user selects an item.
-                      setState(() {
-                        for (int i = 0; i < 6; i++) {
-                          abilityScoreIncreases[i] -=
-                              subraceExample?.subRaceScoreIncrease[i] ?? 0;
-                        }
-                        subraceExample = raceExample.subRaces
-                            ?.singleWhere((x) => x.name == value);
-                        for (int i = 0; i < 6; i++) {
-                          abilityScoreIncreases[i] +=
-                              subraceExample?.subRaceScoreIncrease[i] ?? 0;
-                        }
-                      });
-                    },
-                    value: subraceExample?.name,
-                    icon: const Icon(Icons.arrow_downward),
-                    items: raceExample.subRaces
-                        ?.map<DropdownMenuItem<String>>((Subrace value) {
-                      return DropdownMenuItem<String>(
-                        value: value.name,
-                        child: Text(value.name),
-                      );
-                    }).toList(),
-                    elevation: 2,
-                    style: const TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.w700),
-                    underline: Container(
-                      height: 1,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                  )
-                : Container(
-                    height: 50,
-                    width: 50,
-                    color: Colors.blue,
-                    child: const Center(child: Text("No Subraces")))
-          ]),
-
+              raceExample.subRaces != null
+                  ? DropdownButton<String>(
+                      onChanged: (String? value) {
+                        // This is called when the user selects an item.
+                        setState(() {
+                          for (int i = 0; i < 6; i++) {
+                            abilityScoreIncreases[i] -=
+                                subraceExample?.subRaceScoreIncrease[i] ?? 0;
+                          }
+                          subraceExample = raceExample.subRaces
+                              ?.singleWhere((x) => x.name == value);
+                          for (int i = 0; i < 6; i++) {
+                            abilityScoreIncreases[i] +=
+                                subraceExample?.subRaceScoreIncrease[i] ?? 0;
+                          }
+                        });
+                      },
+                      value: subraceExample?.name,
+                      icon: const Icon(Icons.arrow_downward),
+                      items: raceExample.subRaces
+                          ?.map<DropdownMenuItem<String>>((Subrace value) {
+                        return DropdownMenuItem<String>(
+                          value: value.name,
+                          child: Text(value.name),
+                        );
+                      }).toList(),
+                      elevation: 2,
+                      style: const TextStyle(
+                          color: Colors.blue, fontWeight: FontWeight.w700),
+                      underline: Container(
+                        height: 1,
+                        color: Colors.deepPurpleAccent,
+                      ),
+                    )
+                  : Container(
+                      height: 50,
+                      width: 50,
+                      color: Colors.blue,
+                      child: const Center(child: Text("No Subraces"))),
+              //codebook
+              ToggleButtons(
+                children: const <Widget>[
+                  Text("Strength"),
+                  Text("Dexterity"),
+                  Text("Constitution"),
+                  Text("Strength"),
+                  Text("Dexterity"),
+                  Text("Constitution")
+                ],
+                selectedColor: Colors.white,
+                fillColor: const Color.fromARGB(255, 59, 165, 63),
+                /*textStyle: TextStyle(
+                  fontSize: 25,
+                ),*/
+                onPressed: (int index) {
+                  setState(() {
+                    isSelected = [false, false, false, false, false, false];
+                    isSelected[index] = !isSelected[index];
+                  });
+                },
+                isSelected: isSelected,
+              ),
+            ],
+          ),
+          //class
           Column(children: [
             DropdownButton<String>(
               onChanged: (String? value) {
@@ -2068,7 +2105,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
           const Icon(Icons.directions_car),
         ]),
       ),
-    ));
+    );
   }
 }
 

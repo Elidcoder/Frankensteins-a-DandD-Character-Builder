@@ -4,3 +4,6 @@ Null operations - https://flutterigniter.com/checking-null-aware-operators-dart/
 wierd class json with lists in lists being dynamic https://stackoverflow.com/questions/50245187/type-listdynamic-is-not-a-subtype-of-type-listint-where
 more null and more operations - https://dart.dev/codelabs/dart-cheatsheet
 togglebuttons use more, singlewhere and WHERE should be used later
+run in release mode with - flutter run --release
+https://stackoverflow.com/questions/61061194/flutter-generating-multiple-dropdown-in-for-loop-based-on-list-length - wierd multi issue
+! flips bools
