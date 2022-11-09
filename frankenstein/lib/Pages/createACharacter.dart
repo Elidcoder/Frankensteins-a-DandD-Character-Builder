@@ -94,6 +94,13 @@ class MainCreateCharacter extends State<CreateACharacter> {
   @override
   Widget build(BuildContext context) {
     mystery1slist = [
+      const SizedBox(
+          height: 30,
+          child: Text("Choose which score(s) to increase by 1",
+              style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800))),
       ToggleButtons(
         selectedColor: const Color.fromARGB(255, 0, 79, 206),
         color: Colors.blue,
@@ -133,6 +140,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
           Text(" Charisma ")
         ],
       ),
+      const SizedBox(height: 5),
       ToggleButtons(
         selectedColor: const Color.fromARGB(255, 0, 79, 206),
         color: Colors.blue,
@@ -172,6 +180,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
           Text(" Charisma ")
         ],
       ),
+      const SizedBox(height: 5),
       ToggleButtons(
         selectedColor: const Color.fromARGB(255, 0, 79, 206),
         color: Colors.blue,
@@ -211,6 +220,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
           Text(" Charisma ")
         ],
       ),
+      const SizedBox(height: 5),
       ToggleButtons(
         selectedColor: const Color.fromARGB(255, 0, 79, 206),
         color: Colors.blue,
@@ -250,6 +260,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
           Text(" Charisma ")
         ],
       ),
+      const SizedBox(height: 5),
       ToggleButtons(
         selectedColor: const Color.fromARGB(255, 0, 79, 206),
         color: Colors.blue,
@@ -288,9 +299,17 @@ class MainCreateCharacter extends State<CreateACharacter> {
           Text(" Wisdom "),
           Text(" Charisma ")
         ],
-      )
+      ),
+      const SizedBox(height: 5),
     ];
     mystery2slist = [
+      const SizedBox(
+          height: 30,
+          child: Text("Choose which score(s) to increase by 2",
+              style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800))),
       ToggleButtons(
         selectedColor: const Color.fromARGB(255, 0, 79, 206),
         color: Colors.blue,
@@ -330,6 +349,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
           Text(" Charisma ")
         ],
       ),
+      const SizedBox(height: 5),
       ToggleButtons(
         selectedColor: const Color.fromARGB(255, 0, 79, 206),
         color: Colors.blue,
@@ -369,6 +389,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
           Text(" Charisma ")
         ],
       ),
+      const SizedBox(height: 5),
       ToggleButtons(
         selectedColor: const Color.fromARGB(255, 0, 79, 206),
         color: Colors.blue,
@@ -408,6 +429,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
           Text(" Charisma ")
         ],
       ),
+      const SizedBox(height: 5),
       ToggleButtons(
         selectedColor: const Color.fromARGB(255, 0, 79, 206),
         color: Colors.blue,
@@ -447,6 +469,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
           Text(" Charisma ")
         ],
       ),
+      const SizedBox(height: 5),
       ToggleButtons(
         selectedColor: const Color.fromARGB(255, 0, 79, 206),
         color: Colors.blue,
@@ -948,6 +971,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
           //race
           Column(
             children: [
+              const SizedBox(height: 20),
               DropdownButton<String>(
                 onChanged: (String? value) {
                   // This is called when the user selects an item.
@@ -1054,25 +1078,33 @@ class MainCreateCharacter extends State<CreateACharacter> {
                         color: Colors.deepPurpleAccent,
                       ),
                     )
-                  : Container(
-                      height: 50,
-                      width: 50,
-                      color: Colors.blue,
-                      child: const Center(child: Text("No Subraces"))),
+                  : const SizedBox(),
               //codebook
+              initialRace.mystery1S + (subraceExample?.mystery1S ?? 0) == 0
+                  ? const SizedBox(height: 0)
+                  : Expanded(
+                      child: Column(
+                        children: mystery1slist.sublist(
+                            0,
+                            2 *
+                                    (initialRace.mystery1S +
+                                        (subraceExample?.mystery1S ?? 0)) +
+                                1),
+                      ),
+                    ),
+              initialRace.mystery2S + (subraceExample?.mystery2S ?? 0) == 0
+                  ? const SizedBox(height: 2)
+                  : Expanded(
+                      child: Column(
+                        children: mystery2slist.sublist(
+                            0,
+                            2 *
+                                    (initialRace.mystery2S +
+                                        (subraceExample?.mystery2S ?? 0)) +
+                                1),
+                      ),
+                    ),
 
-              Expanded(
-                child: Column(
-                  children: mystery1slist.sublist(0,
-                      initialRace.mystery1S + (subraceExample?.mystery1S ?? 0)),
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: mystery2slist.sublist(0,
-                      initialRace.mystery2S + (subraceExample?.mystery2S ?? 0)),
-                ),
-              ),
               /*
               Expanded(
                 child: Column(
