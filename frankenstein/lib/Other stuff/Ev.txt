@@ -6,4 +6,4 @@ more null and more operations - https://dart.dev/codelabs/dart-cheatsheet
 togglebuttons use more, singlewhere and WHERE should be used later
 run in release mode with - flutter run --release
 https://stackoverflow.com/questions/61061194/flutter-generating-multiple-dropdown-in-for-loop-based-on-list-length - wierd multi issue
-! flips bools
+! flips bools and is the bang operator

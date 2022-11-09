@@ -11,6 +11,8 @@ class Subrace {
   final List<String>? proficiencies;
   final int darkVision;
   final int walkingSpeed;
+  final int mystery1S;
+  final int mystery2S;
   factory Subrace.fromJson(Map<String, dynamic> data) {
     final name = data['Name'] as String;
     final subRaceScoreIncrease =
@@ -23,7 +25,11 @@ class Subrace {
     final proficiencies =
         data['Proficiencies']?.cast<String>() as List<String>?;
     final walkingSpeed = data["WalkingSpeed"];
+    final mystery1S = data["Mystery1S"] as int;
+    final mystery2S = data["Mystery2S"] as int;
     return Subrace(
+        mystery2S: mystery2S,
+        mystery1S: mystery1S,
         name: name,
         subRaceScoreIncrease: subRaceScoreIncrease,
         languages: languages,
@@ -39,6 +45,8 @@ class Subrace {
       required this.subRaceScoreIncrease,
       required this.darkVision,
       required this.walkingSpeed,
+      required this.mystery1S,
+      required this.mystery2S,
       //required this.sourcebook,
       this.languages,
       this.resistances,
@@ -57,6 +65,8 @@ class Race {
   final List<String>? proficiencies;
   final int darkVision;
   final int walkingSpeed;
+  final int mystery1S;
+  final int mystery2S;
   factory Race.fromJson(Map<String, dynamic> data) {
     final name = data['Name'] as String;
     final raceScoreIncrease = data['AbilityScoreMap'].cast<int>() as List<int>;
@@ -72,17 +82,23 @@ class Race {
     final proficiencies =
         data['Proficiencies']?.cast<String>() as List<String>?;
     final walkingSpeed = data["WalkingSpeed"];
+    final mystery1S = data["Mystery1S"] as int;
+    final mystery2S = data["Mystery2S"] as int;
+
     return Race(
-        name: name,
-        raceScoreIncrease: raceScoreIncrease,
-        languages: languages ?? ["Common"],
-        darkVision: darkVision ?? 0,
-        walkingSpeed: walkingSpeed ?? 30,
-        //sourceBook: sourceBook ?? "N/A",
-        subRaces: subRaces,
-        resistances: resistances,
-        abilities: abilities,
-        proficiencies: proficiencies);
+      name: name,
+      raceScoreIncrease: raceScoreIncrease,
+      languages: languages ?? ["Common"],
+      darkVision: darkVision ?? 0,
+      walkingSpeed: walkingSpeed ?? 30,
+      //sourceBook: sourceBook ?? "N/A",
+      subRaces: subRaces,
+      resistances: resistances,
+      abilities: abilities,
+      proficiencies: proficiencies,
+      mystery2S: mystery2S,
+      mystery1S: mystery1S,
+    );
   }
   Race(
       {required this.name,
@@ -90,6 +106,8 @@ class Race {
       required this.languages,
       required this.darkVision,
       required this.walkingSpeed,
+      required this.mystery1S,
+      required this.mystery2S,
       //required this.sourcebook,
       this.subRaces,
       this.resistances,

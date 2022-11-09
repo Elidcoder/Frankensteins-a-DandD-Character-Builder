@@ -1,10 +1,5 @@
-///Imports
-import 'dart:ffi';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-//add this back if there are errors:
-//import 'package:flutter/services.dart';
-import 'dart:io';
+import "package:frankenstein/globals.dart";
 
 int abilityScoreCost(int x) {
   if (x > 12) {
@@ -13,196 +8,6 @@ int abilityScoreCost(int x) {
   return 1;
 }
 
-final Map<int, Widget> PAGELINKER = {
-  0: const MainMenu(),
-  1: CreateACharacter(),
-  2: const SearchForContent(),
-  3: const MyCharacters(),
-  4: const RollDice(),
-  5: const CustomContent()
-};
-
-final Map<int, Widget> EDITABLE_ABILITYSCORE_WIDGETS = {
-  0: const MainMenu(),
-  1: CreateACharacter(),
-  2: const SearchForContent(),
-  3: const MyCharacters(),
-  4: const RollDice(),
-  5: const CustomContent()
-};
-
-class AbilityScore {
-  int value;
-  String name;
-
-  AbilityScore({required this.name, required this.value});
-}
-
-class Subrace {
-  final String name;
-  final List<int> subRaceScoreIncrease;
-  //final String sourceBook;
-  final List<String>? languages;
-  final List<String>? resistances;
-  final List<String>? abilities;
-  final List<String>? proficiencies;
-  final int darkVision;
-  final int walkingSpeed;
-  factory Subrace.fromJson(Map<String, dynamic> data) {
-    final name = data['Name'] as String;
-    final subRaceScoreIncrease =
-        data['AbilityScoreMap'].cast<int>() as List<int>;
-    final languages = data['Languages']?.cast<String>() as List<String>?;
-    final darkVision = data['Darkvision'] as int?;
-    //final sourceBook = data["Sourcebook"];
-    final resistances = data["Resistances"]?.cast<String>() as List<String>?;
-    final abilities = data['Abilities']?.cast<String>() as List<String>?;
-    final proficiencies =
-        data['Proficiencies']?.cast<String>() as List<String>?;
-    final walkingSpeed = data["WalkingSpeed"];
-    return Subrace(
-        name: name,
-        subRaceScoreIncrease: subRaceScoreIncrease,
-        languages: languages,
-        darkVision: darkVision ?? 0,
-        walkingSpeed: walkingSpeed ?? 30,
-        //sourceBook: sourceBook,
-        resistances: resistances,
-        abilities: abilities,
-        proficiencies: proficiencies);
-  }
-  Subrace(
-      {required this.name,
-      required this.subRaceScoreIncrease,
-      required this.darkVision,
-      required this.walkingSpeed,
-      //required this.sourcebook,
-      this.languages,
-      this.resistances,
-      this.abilities,
-      this.proficiencies});
-}
-
-class Race {
-  final String name;
-  final List<int> raceScoreIncrease;
-  //final String sourceBook;
-  final List<String> languages;
-  final List<Subrace>? subRaces;
-  final List<String>? resistances;
-  final List<String>? abilities;
-  final List<String>? proficiencies;
-  final int darkVision;
-  final int walkingSpeed;
-  factory Race.fromJson(Map<String, dynamic> data) {
-    final name = data['Name'] as String;
-    final raceScoreIncrease = data['AbilityScoreMap'].cast<int>() as List<int>;
-    final languages = data['Languages'].cast<String>() as List<String>?;
-    final darkVision = data['Darkvision'] as int?;
-    //final sourceBook = data["Sourcebook"]?;
-    final subRaceData = data['Subraces'] as List<dynamic>?;
-    final subRaces = subRaceData
-        ?.map((subRaceData) => Subrace.fromJson(subRaceData))
-        .toList();
-    final resistances = data["Resistances"]?.cast<String>() as List<String>?;
-    final abilities = data['Abilities']?.cast<String>() as List<String>?;
-    final proficiencies =
-        data['Proficiencies']?.cast<String>() as List<String>?;
-    final walkingSpeed = data["WalkingSpeed"];
-    return Race(
-        name: name,
-        raceScoreIncrease: raceScoreIncrease,
-        languages: languages ?? ["Common"],
-        darkVision: darkVision ?? 0,
-        walkingSpeed: walkingSpeed ?? 30,
-        //sourceBook: sourceBook ?? "N/A",
-        subRaces: subRaces,
-        resistances: resistances,
-        abilities: abilities,
-        proficiencies: proficiencies);
-  }
-  Race(
-      {required this.name,
-      required this.raceScoreIncrease,
-      required this.languages,
-      required this.darkVision,
-      required this.walkingSpeed,
-      //required this.sourcebook,
-      this.subRaces,
-      this.resistances,
-      this.abilities,
-      this.proficiencies});
-}
-
-//CONTENT WILL BE ADDED IN ITS OWN FILE AND LINKED IN A SINGLE FILE WHICH CONTAINS ALL LINKED FILES AS WELL AS THEIR TYPE
-//THEY WILL ALL THEN BE IMPORTED AND SORTED INTO JOINED LISTS THROUGH A BETTER REPEATING FUNCTION E.G. FOR EVERY SPELL: READ, ADD TO SPELL LIST THEN FOR EVERY WEAPON....
-//Classes to unload JSON into
-class Spell {
-  //ADD SPELL TYPE THINGY
-  final String name;
-  final String effect;
-  final int level;
-  final String? verbal;
-  final String? somatic;
-  final String? material;
-  factory Spell.fromJson(Map<String, dynamic> data) {
-    // note the explicit cast to String
-    // this is required if robust lint rules are enabled
-    //COULD GO THROUGH EVERY DATA[SPELL[X,Y,Z*]] TO ALLOW LESS FILES TO BE ADDED WITH CONTENT
-    final name = data['Name'] as String;
-    final effect = data['Effect'] as String;
-    final level = data['Level'] as int?;
-    final verbal = data['Verbal'] as String?;
-    final somatic = data['Somatic'] as String?;
-    final material = data['Material'] as String?;
-    return Spell(
-        name: name,
-        effect: effect,
-        level: level ?? 0,
-        verbal: verbal ?? "None",
-        somatic: somatic ?? "None",
-        material: material ?? "None");
-  }
-  Spell(
-      {required this.name,
-      required this.level,
-      required this.effect,
-      this.material,
-      this.somatic,
-      this.verbal});
-}
-
-class Weapon {
-  final String name;
-  final String? range;
-  final List<String>? tags;
-  final String damage;
-  final Int weight;
-
-  ///MAY REMOVE AND COMBINE WITH TAGS AND SET TO STRENGTH
-  Weapon(
-      {required this.name,
-      this.range,
-      this.tags,
-      required this.damage,
-      required this.weight});
-}
-
-//JSON unloading process
-const JsonDecoder decoder = JsonDecoder();
-const String filepath =
-    "C:\\Users\\arieh\\OneDrive\\Documents\\Dartwork\\frankenstein\\lib\\SRDspells.json";
-
-///file loaded as a string 'jsonString'
-String jsonString = File(filepath).readAsStringSync();
-
-///file decoded into 'jsonmap'
-final dynamic jsonmap = decoder.convert(jsonString);
-
-// ignore: non_constant_identifier_names
-List<Race> RACELIST = [for (var x in jsonmap["Races"]) Race.fromJson(x)];
-List<Spell> list = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
-//get rid of this later{
 Spell listgetter(String spellname) {
   //huge issue with adding content WITH DUPLICATE NAME AND (TYPE)
   for (int x = 0; x < list.length; x++) {
@@ -215,256 +20,11 @@ Spell listgetter(String spellname) {
   return list[0];
 } //}
 
-void main() => runApp(const Homepage());
+class AbilityScore {
+  int value;
+  String name;
 
-class Homepage extends StatelessWidget {
-  const Homepage({Key? key}) : super(key: key);
-
-  //String jsonString = File(filepath).readAsStringSync();
-  //late final Map<String, dynamic> jsonmap = decoder.convert(jsonString);
-
-  static const String _title = 'Frankenstein\'s - a D&D 5e character builder';
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: _title,
-      home: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-              icon: const Icon(Icons.image),
-              tooltip: 'Put logo here',
-              onPressed: () {}),
-          title: const Center(child: Text(_title)),
-          actions: <Widget>[
-            IconButton(
-                icon: const Icon(Icons.settings),
-                tooltip: 'settings??',
-                onPressed: () {}),
-          ],
-        ),
-        //appBar: AppBar(title: const Text(_title)),
-
-        //appBar: AppBar(title: new Center(child: const Text(_title))),
-        body: const MainMenu(),
-      ),
-    );
-  }
-}
-
-class ScreenTop extends StatelessWidget {
-  final int? pagechoice;
-  const ScreenTop({Key? key, this.pagechoice}) : super(key: key);
-  static const String _title = 'Frankenstein\'s - a D&D 5e character builder';
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: _title,
-      home: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-              icon: (pagechoice == 0)
-                  ? const Icon(Icons.image)
-                  : const Icon(Icons.home),
-              tooltip: (pagechoice == 0)
-                  ? "Put logo here"
-                  : "Return to the main menu",
-              onPressed: () {
-                if (pagechoice != 0) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const ScreenTop(pagechoice: 0)));
-                }
-              }),
-          title: const Center(child: Text(_title)),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.arrow_back),
-              tooltip: 'Return to the previous page',
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            IconButton(
-                icon: const Icon(Icons.settings),
-                tooltip: 'Settings??',
-                onPressed: () {}),
-          ],
-        ),
-        //pick relevent call
-        body: PAGELINKER[pagechoice],
-      ),
-    );
-  }
-}
-
-class MainMenu extends StatelessWidget {
-  const MainMenu({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                color: Colors.blue,
-                child: const Text(
-                  textAlign: TextAlign.center,
-                  'Main Menu',
-                  style: TextStyle(
-                      fontSize: 45,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white),
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 100),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: const BorderSide(
-                    width: 5, color: Color.fromARGB(255, 7, 26, 239)),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ScreenTop(pagechoice: 1)),
-                );
-              },
-              child: const Text(
-                textAlign: TextAlign.center,
-                'Create a \ncharacter',
-                style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white),
-              ),
-            ),
-            const SizedBox(width: 100),
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: const BorderSide(
-                    width: 5, color: Color.fromARGB(255, 7, 26, 239)),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ScreenTop(pagechoice: 2)),
-                );
-              },
-              child: const Text(
-                textAlign: TextAlign.center,
-                'Search for\ncontent',
-                style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white),
-              ),
-            ),
-            const SizedBox(width: 100),
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: const BorderSide(
-                    width: 5, color: Color.fromARGB(255, 7, 26, 239)),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ScreenTop(pagechoice: 3)),
-                );
-              },
-              child: const Text(
-                textAlign: TextAlign.center,
-                'My \ncharacters',
-                style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 100),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: const EdgeInsets.fromLTRB(30, 42, 30, 42),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: const BorderSide(
-                    width: 5, color: Color.fromARGB(255, 7, 26, 239)),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ScreenTop(pagechoice: 4)),
-                );
-              },
-              child: const Text(
-                'Roll dice',
-                style: TextStyle(
-                    fontSize: 45,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white),
-              ),
-            ),
-            const SizedBox(width: 100),
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: const BorderSide(
-                    width: 5, color: Color.fromARGB(255, 7, 26, 239)),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ScreenTop(pagechoice: 5)),
-                );
-              },
-              child: const Text(
-                textAlign: TextAlign.center,
-                'Custom \ncontent',
-                style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
+  AbilityScore({required this.name, required this.value});
 }
 
 class CreateACharacter extends StatefulWidget {
@@ -482,12 +42,12 @@ class MainCreateCharacter extends State<CreateACharacter> {
   AbilityScore charisma = AbilityScore(name: "Charisma", value: 8);
   int pointsRemaining = 27;
   //STR/DEX/CON/INT/WIS/CHAR
-  List<int> abilityScoreIncreases = [1, 1, 1, 1, 1, 1];
 
   //const MainCreateCharacter({Key? key}) //: super(key: key);
   Spell spellExample = list.first;
   String? levellingMethod;
-  Race raceExample = RACELIST.first;
+  Race initialRace = RACELIST.first;
+  List<int> abilityScoreIncreases = RACELIST.first.raceScoreIncrease;
   Subrace? subraceExample;
   //options in the initial menu initialised
 
@@ -504,11 +64,68 @@ class MainCreateCharacter extends State<CreateACharacter> {
   bool? firearmsUsable = false;
   bool? extraFeatAtLevel1 = false;
   String? characterLevel = "1";
-
+  List<List<bool>>? optionalOnesStates = [
+  ];
+  List<Widget> optionalOnes = [];
+  List<Widget> listings =
+      List<Widget>.filled(RACELIST.first.mystery1S, const Text("jklfjkgj"));
   List<bool> isSelected = [false, false, false, false, false, false];
+  @override
+  initState() {
+    // this is called when the class is initialized or called for the first time
+    super.initState();
+    optionalOnesStates = List.filled(
+        initialRace.mystery1S + (subraceExample?.mystery1S ?? 0),
+        [false, false, false, false, false, false]);
+    for (int i = 0;
+        i < initialRace.mystery1S + (subraceExample?.mystery1S ?? 0);
+        i++) {
+      optionalOnes.add(ToggleButtons(
+        selectedColor: const Color.fromARGB(255, 0, 79, 206),
+        color: Colors.blue,
+        fillColor: const Color.fromARGB(162, 0, 255, 8),
+        textStyle: const TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.w700,
+        ),
+        borderColor: const Color.fromARGB(255, 7, 26, 239),
+        borderRadius: BorderRadius.circular(20),
+        borderWidth: 1.5,
+        onPressed: (int index) {
+          setState(() {
+            if (optionalOnesStates![i][index]) {
+              abilityScoreIncreases[index] -= 1;
+            } else {
+              abilityScoreIncreases[index] += 1;
+              for (int buttonIndex = 0;
+                  buttonIndex < optionalOnesStates![i].length;
+                  buttonIndex++) {
+                if (optionalOnesStates![i][buttonIndex]) {
+                  optionalOnesStates![i][buttonIndex] = false;
+                  abilityScoreIncreases[buttonIndex] -= 1;
+                }
+              }
+            }
+            optionalOnesStates![i][index] = !optionalOnesStates![i][index];
+          });
+        },
+        isSelected: optionalOnesStates![i],
+        children: const <Widget>[
+          Text(" Strength "),
+          Text(" Dexterity "),
+          Text(" Constitution "),
+          Text(" Intelligence "),
+          Text(" Wisdom "),
+          Text(" Charisma ")
+        ],
+      ));
+    } //  this is the material super constructor for init state to link your instance initState to the global initState context
+  }
 
   @override
   Widget build(BuildContext context) {
+    //int z = 5;
+
     return DefaultTabController(
       length: 10,
       child: Scaffold(
@@ -977,16 +594,68 @@ class MainCreateCharacter extends State<CreateACharacter> {
                           ((subraceExample?.subRaceScoreIncrease[i]) ?? 0));
                     }
 
-                    raceExample = RACELIST.singleWhere((x) => x.name == value);
-                    subraceExample = raceExample.subRaces?.first;
+                    initialRace = RACELIST.singleWhere((x) => x.name == value);
+                    subraceExample = initialRace.subRaces?.first;
                     for (int i = 0; i < 6; i++) {
                       abilityScoreIncreases[i] +=
-                          raceExample.raceScoreIncrease[i] +
+                          initialRace.raceScoreIncrease[i] +
                               ((subraceExample?.subRaceScoreIncrease[i]) ?? 0);
+
+                      optionalOnes = [];
+                      optionalOnesStates = List.filled(
+                          initialRace.mystery1S +
+                              (subraceExample?.mystery1S ?? 0),
+                          [false, false, false, false, false, false]);
+                      for (int i = 0;
+                          i <
+                              initialRace.mystery1S +
+                                  (subraceExample?.mystery1S ?? 0);
+                          i++) {
+                        optionalOnes.add(ToggleButtons(
+                          selectedColor: const Color.fromARGB(255, 0, 79, 206),
+                          color: Colors.blue,
+                          fillColor: const Color.fromARGB(162, 0, 255, 8),
+                          textStyle: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          borderColor: const Color.fromARGB(255, 7, 26, 239),
+                          borderRadius: BorderRadius.circular(20),
+                          borderWidth: 1.5,
+                          onPressed: (int index) {
+                            setState(() {
+                              if (optionalOnesStates![i][index]) {
+                                abilityScoreIncreases[index] -= 1;
+                              } else {
+                                abilityScoreIncreases[index] += 1;
+                                for (int buttonIndex = 0;
+                                    buttonIndex < optionalOnesStates![i].length;
+                                    buttonIndex++) {
+                                  if (optionalOnesStates![i][buttonIndex]) {
+                                    optionalOnesStates![i][buttonIndex] = false;
+                                    abilityScoreIncreases[buttonIndex] -= 1;
+                                  }
+                                }
+                              }
+                              optionalOnesStates![i][index] =
+                                  !optionalOnesStates![i][index];
+                            });
+                          },
+                          isSelected: optionalOnesStates![i],
+                          children: const <Widget>[
+                            Text(" Strength "),
+                            Text(" Dexterity "),
+                            Text(" Constitution "),
+                            Text(" Intelligence "),
+                            Text(" Wisdom "),
+                            Text(" Charisma ")
+                          ],
+                        ));
+                      }
                     }
                   });
                 },
-                value: raceExample.name,
+                value: initialRace.name,
                 icon: const Icon(Icons.arrow_downward),
                 items: RACELIST.map<DropdownMenuItem<String>>((Race value) {
                   return DropdownMenuItem<String>(
@@ -1002,7 +671,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
                   color: Colors.deepPurpleAccent,
                 ),
               ),
-              raceExample.subRaces != null
+              initialRace.subRaces != null
                   ? DropdownButton<String>(
                       onChanged: (String? value) {
                         // This is called when the user selects an item.
@@ -1011,17 +680,72 @@ class MainCreateCharacter extends State<CreateACharacter> {
                             abilityScoreIncreases[i] -=
                                 subraceExample?.subRaceScoreIncrease[i] ?? 0;
                           }
-                          subraceExample = raceExample.subRaces
+                          subraceExample = initialRace.subRaces
                               ?.singleWhere((x) => x.name == value);
                           for (int i = 0; i < 6; i++) {
                             abilityScoreIncreases[i] +=
                                 subraceExample?.subRaceScoreIncrease[i] ?? 0;
                           }
+                          optionalOnes = [];
+                          optionalOnesStates = List.filled(
+                              initialRace.mystery1S +
+                                  (subraceExample?.mystery1S ?? 0),
+                              [false, false, false, false, false, false]);
+                          for (int i = 0;
+                              i <
+                                  initialRace.mystery1S +
+                                      (subraceExample?.mystery1S ?? 0);
+                              i++) {
+                            optionalOnes.add(ToggleButtons(
+                              selectedColor:
+                                  const Color.fromARGB(255, 0, 79, 206),
+                              color: Colors.blue,
+                              fillColor: const Color.fromARGB(162, 0, 255, 8),
+                              textStyle: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              borderColor:
+                                  const Color.fromARGB(255, 7, 26, 239),
+                              borderRadius: BorderRadius.circular(20),
+                              borderWidth: 1.5,
+                              onPressed: (int index) {
+                                setState(() {
+                                  if (optionalOnesStates![i][index]) {
+                                    abilityScoreIncreases[index] -= 1;
+                                  } else {
+                                    abilityScoreIncreases[index] += 1;
+                                    for (int buttonIndex = 0;
+                                        buttonIndex <
+                                            optionalOnesStates![i].length;
+                                        buttonIndex++) {
+                                      if (optionalOnesStates![i][buttonIndex]) {
+                                        optionalOnesStates![i][buttonIndex] =
+                                            false;
+                                        abilityScoreIncreases[buttonIndex] -= 1;
+                                      }
+                                    }
+                                  }
+                                  optionalOnesStates![i][index] =
+                                      !optionalOnesStates![i][index];
+                                });
+                              },
+                              isSelected: optionalOnesStates![i],
+                              children: const <Widget>[
+                                Text(" Strength "),
+                                Text(" Dexterity "),
+                                Text(" Constitution "),
+                                Text(" Intelligence "),
+                                Text(" Wisdom "),
+                                Text(" Charisma ")
+                              ],
+                            ));
+                          }
                         });
                       },
                       value: subraceExample?.name,
                       icon: const Icon(Icons.arrow_downward),
-                      items: raceExample.subRaces
+                      items: initialRace.subRaces
                           ?.map<DropdownMenuItem<String>>((Subrace value) {
                         return DropdownMenuItem<String>(
                           value: value.name,
@@ -1043,13 +767,16 @@ class MainCreateCharacter extends State<CreateACharacter> {
                       child: const Center(child: Text("No Subraces"))),
               //codebook
               ToggleButtons(
-                selectedColor: Colors.white,
-                disabledColor: Colors.blue,
-                fillColor: const Color.fromARGB(255, 59, 165, 63),
+                selectedColor: const Color.fromARGB(255, 0, 79, 206),
+                color: Colors.blue,
+                fillColor: const Color.fromARGB(162, 0, 255, 8),
                 textStyle: const TextStyle(
-                  fontSize: 25,
+                  fontSize: 22,
                   fontWeight: FontWeight.w700,
                 ),
+                borderColor: const Color.fromARGB(255, 7, 26, 239),
+                borderRadius: BorderRadius.circular(20),
+                borderWidth: 1.5,
                 onPressed: (int index) {
                   setState(() {
                     if (isSelected[index]) {
@@ -1070,17 +797,16 @@ class MainCreateCharacter extends State<CreateACharacter> {
                 },
                 isSelected: isSelected,
                 children: const <Widget>[
-                  Text("Strength",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                      )),
-                  Text("Dexterity"),
-                  Text("Constitution"),
-                  Text("Strength"),
-                  Text("Dexterity"),
-                  Text("Constitution")
+                  Text(" Strength "),
+                  Text(" Dexterity "),
+                  Text(" Constitution "),
+                  Text(" Intelligence "),
+                  Text(" Wisdom "),
+                  Text(" Charisma ")
                 ],
               ),
+              Text("List: $optionalOnesStates"),
+              Text("List: $isSelected")
             ],
           ),
           //class
@@ -2114,134 +1840,16 @@ class MainCreateCharacter extends State<CreateACharacter> {
               ],
             )
           ]),
-
-          const Icon(Icons.directions_bike),
+          //spells
+          Column(
+            children: optionalOnes,
+          ),
           const Icon(Icons.directions_car),
           const Icon(Icons.directions_transit),
           const Icon(Icons.directions_bike),
           const Icon(Icons.directions_car),
         ]),
       ),
-    );
-  }
-}
-
-class SearchForContent extends StatelessWidget {
-  const SearchForContent({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                color: Colors.blue,
-                child: const Text(
-                  textAlign: TextAlign.center,
-                  'Search for content',
-                  style: TextStyle(
-                      fontSize: 45,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class MyCharacters extends StatelessWidget {
-  const MyCharacters({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                color: Colors.blue,
-                child: const Text(
-                  textAlign: TextAlign.center,
-                  'My Characters',
-                  style: TextStyle(
-                      fontSize: 45,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class RollDice extends StatelessWidget {
-  const RollDice({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                color: Colors.blue,
-                child: const Text(
-                  textAlign: TextAlign.center,
-                  'Roll dice',
-                  style: TextStyle(
-                      fontSize: 45,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class CustomContent extends StatelessWidget {
-  const CustomContent({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                color: Colors.blue,
-                child: const Text(
-                  textAlign: TextAlign.center,
-                  'Custom content',
-                  style: TextStyle(
-                      fontSize: 45,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }

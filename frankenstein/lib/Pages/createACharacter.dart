@@ -42,13 +42,14 @@ class MainCreateCharacter extends State<CreateACharacter> {
   AbilityScore charisma = AbilityScore(name: "Charisma", value: 8);
   int pointsRemaining = 27;
   //STR/DEX/CON/INT/WIS/CHAR
-  List<int> abilityScoreIncreases = [1, 1, 1, 1, 1, 1];
 
   //const MainCreateCharacter({Key? key}) //: super(key: key);
   Spell spellExample = list.first;
   String? levellingMethod;
-  Race raceExample = RACELIST.first;
+  Race initialRace = RACELIST.first;
+  List<int> abilityScoreIncreases = RACELIST.first.raceScoreIncrease;
   Subrace? subraceExample;
+
   //options in the initial menu initialised
 
   bool? featsAllowed = false;
@@ -64,11 +65,428 @@ class MainCreateCharacter extends State<CreateACharacter> {
   bool? firearmsUsable = false;
   bool? extraFeatAtLevel1 = false;
   String? characterLevel = "1";
-
+  List<List<bool>>? optionalOnesStates = [
+    [false, false, false, false, false, false],
+    [false, false, false, false, false, false],
+    [false, false, false, false, false, false],
+    [false, false, false, false, false, false],
+    [false, false, false, false, false, false]
+  ];
+  List<List<bool>>? optionalTwosStates = [
+    [false, false, false, false, false, false],
+    [false, false, false, false, false, false],
+    [false, false, false, false, false, false],
+    [false, false, false, false, false, false],
+    [false, false, false, false, false, false]
+  ];
+  List<Widget> mystery1slist = [];
+  List<Widget> mystery2slist = [];
+  //List<Widget> listings =List<Widget>.filled(RACELIST.first.mystery1S, const Text("jklfjkgj"));
   List<bool> isSelected = [false, false, false, false, false, false];
+  @override
+  initState() {
+    // this is called when the class is initialized or called for the first time
+    super.initState();
+
+    // this is the material super constructor for init state to link your instance initState to the global initState context
+  }
 
   @override
   Widget build(BuildContext context) {
+    mystery1slist = [
+      ToggleButtons(
+        selectedColor: const Color.fromARGB(255, 0, 79, 206),
+        color: Colors.blue,
+        fillColor: const Color.fromARGB(162, 0, 255, 8),
+        textStyle: const TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.w700,
+        ),
+        borderColor: const Color.fromARGB(255, 7, 26, 239),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderWidth: 1.5,
+        onPressed: (int index) {
+          setState(() {
+            if (optionalOnesStates![0][index]) {
+              abilityScoreIncreases[index] -= 1;
+            } else {
+              abilityScoreIncreases[index] += 1;
+              for (int buttonIndex = 0;
+                  buttonIndex < optionalOnesStates![0].length;
+                  buttonIndex++) {
+                if (optionalOnesStates![0][buttonIndex]) {
+                  optionalOnesStates![0][buttonIndex] = false;
+                  abilityScoreIncreases[buttonIndex] -= 1;
+                }
+              }
+            }
+            optionalOnesStates![0][index] = !optionalOnesStates![0][index];
+          });
+        },
+        isSelected: optionalOnesStates![0],
+        children: const <Widget>[
+          Text(" Strength "),
+          Text(" Dexterity "),
+          Text(" Constitution "),
+          Text(" Intelligence "),
+          Text(" Wisdom "),
+          Text(" Charisma ")
+        ],
+      ),
+      ToggleButtons(
+        selectedColor: const Color.fromARGB(255, 0, 79, 206),
+        color: Colors.blue,
+        fillColor: const Color.fromARGB(162, 0, 255, 8),
+        textStyle: const TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.w700,
+        ),
+        borderColor: const Color.fromARGB(255, 7, 26, 239),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderWidth: 1.5,
+        onPressed: (int index) {
+          setState(() {
+            if (optionalOnesStates![1][index]) {
+              abilityScoreIncreases[index] -= 1;
+            } else {
+              abilityScoreIncreases[index] += 1;
+              for (int buttonIndex = 0;
+                  buttonIndex < optionalOnesStates![1].length;
+                  buttonIndex++) {
+                if (optionalOnesStates![1][buttonIndex]) {
+                  optionalOnesStates![1][buttonIndex] = false;
+                  abilityScoreIncreases[buttonIndex] -= 1;
+                }
+              }
+            }
+            optionalOnesStates![1][index] = !optionalOnesStates![1][index];
+          });
+        },
+        isSelected: optionalOnesStates![1],
+        children: const <Widget>[
+          Text(" Strength "),
+          Text(" Dexterity "),
+          Text(" Constitution "),
+          Text(" Intelligence "),
+          Text(" Wisdom "),
+          Text(" Charisma ")
+        ],
+      ),
+      ToggleButtons(
+        selectedColor: const Color.fromARGB(255, 0, 79, 206),
+        color: Colors.blue,
+        fillColor: const Color.fromARGB(162, 0, 255, 8),
+        textStyle: const TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.w700,
+        ),
+        borderColor: const Color.fromARGB(255, 7, 26, 239),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderWidth: 1.5,
+        onPressed: (int index) {
+          setState(() {
+            if (optionalOnesStates![2][index]) {
+              abilityScoreIncreases[index] -= 1;
+            } else {
+              abilityScoreIncreases[index] += 1;
+              for (int buttonIndex = 0;
+                  buttonIndex < optionalOnesStates![2].length;
+                  buttonIndex++) {
+                if (optionalOnesStates![2][buttonIndex]) {
+                  optionalOnesStates![2][buttonIndex] = false;
+                  abilityScoreIncreases[buttonIndex] -= 1;
+                }
+              }
+            }
+            optionalOnesStates![2][index] = !optionalOnesStates![2][index];
+          });
+        },
+        isSelected: optionalOnesStates![2],
+        children: const <Widget>[
+          Text(" Strength "),
+          Text(" Dexterity "),
+          Text(" Constitution "),
+          Text(" Intelligence "),
+          Text(" Wisdom "),
+          Text(" Charisma ")
+        ],
+      ),
+      ToggleButtons(
+        selectedColor: const Color.fromARGB(255, 0, 79, 206),
+        color: Colors.blue,
+        fillColor: const Color.fromARGB(162, 0, 255, 8),
+        textStyle: const TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.w700,
+        ),
+        borderColor: const Color.fromARGB(255, 7, 26, 239),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderWidth: 1.5,
+        onPressed: (int index) {
+          setState(() {
+            if (optionalOnesStates![3][index]) {
+              abilityScoreIncreases[index] -= 1;
+            } else {
+              abilityScoreIncreases[index] += 1;
+              for (int buttonIndex = 0;
+                  buttonIndex < optionalOnesStates![3].length;
+                  buttonIndex++) {
+                if (optionalOnesStates![3][buttonIndex]) {
+                  optionalOnesStates![3][buttonIndex] = false;
+                  abilityScoreIncreases[buttonIndex] -= 1;
+                }
+              }
+            }
+            optionalOnesStates![3][index] = !optionalOnesStates![3][index];
+          });
+        },
+        isSelected: optionalOnesStates![3],
+        children: const <Widget>[
+          Text(" Strength "),
+          Text(" Dexterity "),
+          Text(" Constitution "),
+          Text(" Intelligence "),
+          Text(" Wisdom "),
+          Text(" Charisma ")
+        ],
+      ),
+      ToggleButtons(
+        selectedColor: const Color.fromARGB(255, 0, 79, 206),
+        color: Colors.blue,
+        fillColor: const Color.fromARGB(162, 0, 255, 8),
+        textStyle: const TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.w700,
+        ),
+        borderColor: const Color.fromARGB(255, 7, 26, 239),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderWidth: 1.5,
+        onPressed: (int index) {
+          setState(() {
+            if (optionalOnesStates![4][index]) {
+              abilityScoreIncreases[index] -= 1;
+            } else {
+              abilityScoreIncreases[index] += 1;
+              for (int buttonIndex = 0;
+                  buttonIndex < optionalOnesStates![4].length;
+                  buttonIndex++) {
+                if (optionalOnesStates![4][buttonIndex]) {
+                  optionalOnesStates![4][buttonIndex] = false;
+                  abilityScoreIncreases[buttonIndex] -= 1;
+                }
+              }
+            }
+            optionalOnesStates![4][index] = !optionalOnesStates![4][index];
+          });
+        },
+        isSelected: optionalOnesStates![4],
+        children: const <Widget>[
+          Text(" Strength "),
+          Text(" Dexterity "),
+          Text(" Constitution "),
+          Text(" Intelligence "),
+          Text(" Wisdom "),
+          Text(" Charisma ")
+        ],
+      )
+    ];
+    mystery2slist = [
+      ToggleButtons(
+        selectedColor: const Color.fromARGB(255, 0, 79, 206),
+        color: Colors.blue,
+        fillColor: const Color.fromARGB(162, 0, 255, 8),
+        textStyle: const TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.w700,
+        ),
+        borderColor: const Color.fromARGB(255, 7, 26, 239),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderWidth: 1.5,
+        onPressed: (int index) {
+          setState(() {
+            if (optionalTwosStates![0][index]) {
+              abilityScoreIncreases[index] -= 2;
+            } else {
+              abilityScoreIncreases[index] += 2;
+              for (int buttonIndex = 0;
+                  buttonIndex < optionalTwosStates![0].length;
+                  buttonIndex++) {
+                if (optionalTwosStates![0][buttonIndex]) {
+                  optionalTwosStates![0][buttonIndex] = false;
+                  abilityScoreIncreases[buttonIndex] -= 2;
+                }
+              }
+            }
+            optionalTwosStates![0][index] = !optionalTwosStates![0][index];
+          });
+        },
+        isSelected: optionalTwosStates![0],
+        children: const <Widget>[
+          Text(" Strength "),
+          Text(" Dexterity "),
+          Text(" Constitution "),
+          Text(" Intelligence "),
+          Text(" Wisdom "),
+          Text(" Charisma ")
+        ],
+      ),
+      ToggleButtons(
+        selectedColor: const Color.fromARGB(255, 0, 79, 206),
+        color: Colors.blue,
+        fillColor: const Color.fromARGB(162, 0, 255, 8),
+        textStyle: const TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.w700,
+        ),
+        borderColor: const Color.fromARGB(255, 7, 26, 239),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderWidth: 1.5,
+        onPressed: (int index) {
+          setState(() {
+            if (optionalTwosStates![1][index]) {
+              abilityScoreIncreases[index] -= 2;
+            } else {
+              abilityScoreIncreases[index] += 2;
+              for (int buttonIndex = 0;
+                  buttonIndex < optionalTwosStates![1].length;
+                  buttonIndex++) {
+                if (optionalTwosStates![1][buttonIndex]) {
+                  optionalTwosStates![1][buttonIndex] = false;
+                  abilityScoreIncreases[buttonIndex] -= 2;
+                }
+              }
+            }
+            optionalTwosStates![1][index] = !optionalTwosStates![1][index];
+          });
+        },
+        isSelected: optionalTwosStates![1],
+        children: const <Widget>[
+          Text(" Strength "),
+          Text(" Dexterity "),
+          Text(" Constitution "),
+          Text(" Intelligence "),
+          Text(" Wisdom "),
+          Text(" Charisma ")
+        ],
+      ),
+      ToggleButtons(
+        selectedColor: const Color.fromARGB(255, 0, 79, 206),
+        color: Colors.blue,
+        fillColor: const Color.fromARGB(162, 0, 255, 8),
+        textStyle: const TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.w700,
+        ),
+        borderColor: const Color.fromARGB(255, 7, 26, 239),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderWidth: 1.5,
+        onPressed: (int index) {
+          setState(() {
+            if (optionalTwosStates![2][index]) {
+              abilityScoreIncreases[index] -= 2;
+            } else {
+              abilityScoreIncreases[index] += 2;
+              for (int buttonIndex = 0;
+                  buttonIndex < optionalTwosStates![2].length;
+                  buttonIndex++) {
+                if (optionalTwosStates![2][buttonIndex]) {
+                  optionalTwosStates![2][buttonIndex] = false;
+                  abilityScoreIncreases[buttonIndex] -= 2;
+                }
+              }
+            }
+            optionalTwosStates![2][index] = !optionalTwosStates![2][index];
+          });
+        },
+        isSelected: optionalTwosStates![2],
+        children: const <Widget>[
+          Text(" Strength "),
+          Text(" Dexterity "),
+          Text(" Constitution "),
+          Text(" Intelligence "),
+          Text(" Wisdom "),
+          Text(" Charisma ")
+        ],
+      ),
+      ToggleButtons(
+        selectedColor: const Color.fromARGB(255, 0, 79, 206),
+        color: Colors.blue,
+        fillColor: const Color.fromARGB(162, 0, 255, 8),
+        textStyle: const TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.w700,
+        ),
+        borderColor: const Color.fromARGB(255, 7, 26, 239),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderWidth: 1.5,
+        onPressed: (int index) {
+          setState(() {
+            if (optionalTwosStates![3][index]) {
+              abilityScoreIncreases[index] -= 2;
+            } else {
+              abilityScoreIncreases[index] += 2;
+              for (int buttonIndex = 0;
+                  buttonIndex < optionalTwosStates![3].length;
+                  buttonIndex++) {
+                if (optionalTwosStates![3][buttonIndex]) {
+                  optionalTwosStates![3][buttonIndex] = false;
+                  abilityScoreIncreases[buttonIndex] -= 2;
+                }
+              }
+            }
+            optionalTwosStates![3][index] = !optionalTwosStates![3][index];
+          });
+        },
+        isSelected: optionalTwosStates![3],
+        children: const <Widget>[
+          Text(" Strength "),
+          Text(" Dexterity "),
+          Text(" Constitution "),
+          Text(" Intelligence "),
+          Text(" Wisdom "),
+          Text(" Charisma ")
+        ],
+      ),
+      ToggleButtons(
+        selectedColor: const Color.fromARGB(255, 0, 79, 206),
+        color: Colors.blue,
+        fillColor: const Color.fromARGB(162, 0, 255, 8),
+        textStyle: const TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.w700,
+        ),
+        borderColor: const Color.fromARGB(255, 7, 26, 239),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderWidth: 1.5,
+        onPressed: (int index) {
+          setState(() {
+            if (optionalTwosStates![4][index]) {
+              abilityScoreIncreases[index] -= 2;
+            } else {
+              abilityScoreIncreases[index] += 2;
+              for (int buttonIndex = 0;
+                  buttonIndex < optionalTwosStates![4].length;
+                  buttonIndex++) {
+                if (optionalTwosStates![4][buttonIndex]) {
+                  optionalTwosStates![4][buttonIndex] = false;
+                  abilityScoreIncreases[buttonIndex] -= 2;
+                }
+              }
+            }
+            optionalTwosStates![4][index] = !optionalTwosStates![4][index];
+          });
+        },
+        isSelected: optionalTwosStates![4],
+        children: const <Widget>[
+          Text(" Strength "),
+          Text(" Dexterity "),
+          Text(" Constitution "),
+          Text(" Intelligence "),
+          Text(" Wisdom "),
+          Text(" Charisma ")
+        ],
+      )
+    ];
     return DefaultTabController(
       length: 10,
       child: Scaffold(
@@ -120,7 +538,8 @@ class MainCreateCharacter extends State<CreateACharacter> {
                               color: const Color.fromARGB(255, 7, 26, 239),
                               width: 2,
                             ),
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
                           ),
                           child: const Center(
                               child: Text(
@@ -133,64 +552,64 @@ class MainCreateCharacter extends State<CreateACharacter> {
                           )),
                         ),
                         const SizedBox(height: 30),
-                        SizedBox(
+                        const SizedBox(
                             width: 250,
                             height: 50,
                             child: TextField(
                                 cursorColor: Colors.blue,
-                                style: const TextStyle(color: Colors.white),
+                                style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                     hintText: "Enter character's name",
-                                    hintStyle: const TextStyle(
+                                    hintStyle: TextStyle(
                                         color:
                                             Color.fromARGB(255, 212, 208, 224)),
                                     filled: true,
-                                    fillColor: const Color.fromARGB(
-                                        255, 124, 112, 112),
+                                    fillColor:
+                                        Color.fromARGB(255, 124, 112, 112),
                                     border: OutlineInputBorder(
                                         borderSide: BorderSide.none,
-                                        borderRadius:
-                                            BorderRadius.circular(12))))),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(12)))))),
                         //ask level or exp
                         //add switch + list tittle stuff for lvl/exp
                         const SizedBox(height: 15),
-                        SizedBox(
+                        const SizedBox(
                             width: 250,
                             height: 50,
                             child: TextField(
                                 cursorColor: Colors.blue,
-                                style: const TextStyle(color: Colors.white),
+                                style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                     hintText: "Enter the player's name",
-                                    hintStyle: const TextStyle(
+                                    hintStyle: TextStyle(
                                         color:
                                             Color.fromARGB(255, 212, 208, 224)),
                                     filled: true,
-                                    fillColor: const Color.fromARGB(
-                                        255, 124, 112, 112),
+                                    fillColor:
+                                        Color.fromARGB(255, 124, 112, 112),
                                     border: OutlineInputBorder(
                                         borderSide: BorderSide.none,
-                                        borderRadius:
-                                            BorderRadius.circular(12))))),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(12)))))),
                         const SizedBox(height: 15),
-                        SizedBox(
+                        const SizedBox(
                             width: 250,
                             height: 50,
                             child: TextField(
                                 cursorColor: Colors.blue,
-                                style: const TextStyle(color: Colors.white),
+                                style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                     hintText: "Enter the character's gender",
-                                    hintStyle: const TextStyle(
+                                    hintStyle: TextStyle(
                                         color:
                                             Color.fromARGB(255, 212, 208, 224)),
                                     filled: true,
-                                    fillColor: const Color.fromARGB(
-                                        255, 124, 112, 112),
+                                    fillColor:
+                                        Color.fromARGB(255, 124, 112, 112),
                                     border: OutlineInputBorder(
                                         borderSide: BorderSide.none,
-                                        borderRadius:
-                                            BorderRadius.circular(12))))),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(12)))))),
                         const SizedBox(height: 15),
                         SizedBox(
                             width: 300,
@@ -332,7 +751,8 @@ class MainCreateCharacter extends State<CreateACharacter> {
                             color: const Color.fromARGB(255, 7, 26, 239),
                             width: 2,
                           ),
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(5)),
                         ),
                         child: const Center(
                             child: Text(
@@ -432,7 +852,8 @@ class MainCreateCharacter extends State<CreateACharacter> {
                             color: const Color.fromARGB(255, 7, 26, 239),
                             width: 2,
                           ),
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(5)),
                         ),
                         child: const Center(
                             child: Text(
@@ -532,21 +953,41 @@ class MainCreateCharacter extends State<CreateACharacter> {
                   // This is called when the user selects an item.
                   setState(() {
                     //efficient this up at some point so ASI[i] isn't accessed twice
-                    for (int i = 0; i < 6; i++) {
-                      abilityScoreIncreases[i] -= (abilityScoreIncreases[i] +
-                          ((subraceExample?.subRaceScoreIncrease[i]) ?? 0));
-                    }
+                    //can actually speed this up but only if asi isn't used elsewhere
+                    abilityScoreIncreases = [0, 0, 0, 0, 0, 0];
 
-                    raceExample = RACELIST.singleWhere((x) => x.name == value);
-                    subraceExample = raceExample.subRaces?.first;
+                    /*
+                    for (int i = 0; i < 6; i++) {
+                      abilityScoreIncreases[i] -=
+                          (initialRace.raceScoreIncrease[i] +
+                              ((subraceExample?.subRaceScoreIncrease[i]) ?? 0));
+                    }
+*/
+                    initialRace = RACELIST.singleWhere((x) => x.name == value);
+                    subraceExample = initialRace.subRaces?.first;
                     for (int i = 0; i < 6; i++) {
                       abilityScoreIncreases[i] +=
-                          raceExample.raceScoreIncrease[i] +
+                          initialRace.raceScoreIncrease[i] +
                               ((subraceExample?.subRaceScoreIncrease[i]) ?? 0);
+
+                      optionalOnesStates = [
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false]
+                      ];
+                      optionalTwosStates = [
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false]
+                      ];
                     }
                   });
                 },
-                value: raceExample.name,
+                value: initialRace.name,
                 icon: const Icon(Icons.arrow_downward),
                 items: RACELIST.map<DropdownMenuItem<String>>((Race value) {
                   return DropdownMenuItem<String>(
@@ -562,26 +1003,43 @@ class MainCreateCharacter extends State<CreateACharacter> {
                   color: Colors.deepPurpleAccent,
                 ),
               ),
-              raceExample.subRaces != null
+              initialRace.subRaces != null
                   ? DropdownButton<String>(
                       onChanged: (String? value) {
                         // This is called when the user selects an item.
                         setState(() {
-                          for (int i = 0; i < 6; i++) {
+                          //may cauase issues later
+                          abilityScoreIncreases = [0, 0, 0, 0, 0, 0];
+                          /*for (int i = 0; i < 6; i++) {
                             abilityScoreIncreases[i] -=
                                 subraceExample?.subRaceScoreIncrease[i] ?? 0;
-                          }
-                          subraceExample = raceExample.subRaces
+                          }*/
+                          subraceExample = initialRace.subRaces
                               ?.singleWhere((x) => x.name == value);
                           for (int i = 0; i < 6; i++) {
                             abilityScoreIncreases[i] +=
-                                subraceExample?.subRaceScoreIncrease[i] ?? 0;
+                                (subraceExample?.subRaceScoreIncrease[i] ?? 0) +
+                                    initialRace.raceScoreIncrease[i];
                           }
+                          optionalOnesStates = [
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false]
+                          ];
+                          optionalTwosStates = [
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false]
+                          ];
                         });
                       },
                       value: subraceExample?.name,
                       icon: const Icon(Icons.arrow_downward),
-                      items: raceExample.subRaces
+                      items: initialRace.subRaces
                           ?.map<DropdownMenuItem<String>>((Subrace value) {
                         return DropdownMenuItem<String>(
                           value: value.name,
@@ -602,45 +1060,25 @@ class MainCreateCharacter extends State<CreateACharacter> {
                       color: Colors.blue,
                       child: const Center(child: Text("No Subraces"))),
               //codebook
-              ToggleButtons(
-                selectedColor: Colors.white,
-                disabledColor: Colors.blue,
-                fillColor: const Color.fromARGB(255, 59, 165, 63),
-                textStyle: const TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w700,
+
+              Expanded(
+                child: Column(
+                  children: mystery1slist.sublist(0,
+                      initialRace.mystery1S + (subraceExample?.mystery1S ?? 0)),
                 ),
-                onPressed: (int index) {
-                  setState(() {
-                    if (isSelected[index]) {
-                      abilityScoreIncreases[index] -= 1;
-                    } else {
-                      abilityScoreIncreases[index] += 1;
-                      for (int buttonIndex = 0;
-                          buttonIndex < isSelected.length;
-                          buttonIndex++) {
-                        if (isSelected[buttonIndex]) {
-                          isSelected[buttonIndex] = false;
-                          abilityScoreIncreases[buttonIndex] -= 1;
-                        }
-                      }
-                    }
-                    isSelected[index] = !isSelected[index];
-                  });
-                },
-                isSelected: isSelected,
-                children: const <Widget>[
-                  Text("Strength",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                      )),
-                  Text("Dexterity"),
-                  Text("Constitution"),
-                  Text("Strength"),
-                  Text("Dexterity"),
-                  Text("Constitution")
-                ],
               ),
+              Expanded(
+                child: Column(
+                  children: mystery2slist.sublist(0,
+                      initialRace.mystery2S + (subraceExample?.mystery2S ?? 0)),
+                ),
+              ),
+              /*
+              Expanded(
+                child: Column(
+                  children: [Text("List: $optionalOnesStates")],
+                ),
+              ),*/
             ],
           ),
           //class
@@ -755,7 +1193,8 @@ class MainCreateCharacter extends State<CreateACharacter> {
                               color: const Color.fromARGB(255, 7, 26, 239),
                               width: 2,
                             ),
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
                           ),
                           child: Column(children: [
                             Text(
@@ -874,7 +1313,8 @@ class MainCreateCharacter extends State<CreateACharacter> {
                               color: const Color.fromARGB(255, 7, 26, 239),
                               width: 2,
                             ),
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
                           ),
                           child: Text(
                             textAlign: TextAlign.center,
@@ -911,7 +1351,8 @@ class MainCreateCharacter extends State<CreateACharacter> {
                               color: const Color.fromARGB(255, 7, 26, 239),
                               width: 2,
                             ),
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
                           ),
                           child: Column(children: [
                             Text(
@@ -1030,7 +1471,8 @@ class MainCreateCharacter extends State<CreateACharacter> {
                               color: const Color.fromARGB(255, 7, 26, 239),
                               width: 2,
                             ),
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
                           ),
                           child: Text(
                             textAlign: TextAlign.center,
@@ -1067,7 +1509,8 @@ class MainCreateCharacter extends State<CreateACharacter> {
                               color: const Color.fromARGB(255, 7, 26, 239),
                               width: 2,
                             ),
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
                           ),
                           child: Column(children: [
                             Text(
@@ -1187,7 +1630,8 @@ class MainCreateCharacter extends State<CreateACharacter> {
                               color: const Color.fromARGB(255, 7, 26, 239),
                               width: 2,
                             ),
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
                           ),
                           child: Text(
                             textAlign: TextAlign.center,
@@ -1224,7 +1668,8 @@ class MainCreateCharacter extends State<CreateACharacter> {
                               color: const Color.fromARGB(255, 7, 26, 239),
                               width: 2,
                             ),
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
                           ),
                           child: Column(children: [
                             Text(
@@ -1344,7 +1789,8 @@ class MainCreateCharacter extends State<CreateACharacter> {
                               color: const Color.fromARGB(255, 7, 26, 239),
                               width: 2,
                             ),
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
                           ),
                           child: Text(
                             textAlign: TextAlign.center,
@@ -1381,7 +1827,8 @@ class MainCreateCharacter extends State<CreateACharacter> {
                               color: const Color.fromARGB(255, 7, 26, 239),
                               width: 2,
                             ),
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
                           ),
                           child: Column(children: [
                             Text(
@@ -1500,7 +1947,8 @@ class MainCreateCharacter extends State<CreateACharacter> {
                               color: const Color.fromARGB(255, 7, 26, 239),
                               width: 2,
                             ),
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
                           ),
                           child: Text(
                             textAlign: TextAlign.center,
@@ -1537,7 +1985,8 @@ class MainCreateCharacter extends State<CreateACharacter> {
                               color: const Color.fromARGB(255, 7, 26, 239),
                               width: 2,
                             ),
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
                           ),
                           child: Column(children: [
                             Text(
@@ -1656,7 +2105,8 @@ class MainCreateCharacter extends State<CreateACharacter> {
                               color: const Color.fromARGB(255, 7, 26, 239),
                               width: 2,
                             ),
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
                           ),
                           child: Text(
                             textAlign: TextAlign.center,
@@ -1674,8 +2124,8 @@ class MainCreateCharacter extends State<CreateACharacter> {
               ],
             )
           ]),
-
-          const Icon(Icons.directions_bike),
+          //spells
+          const Icon(Icons.directions_car),
           const Icon(Icons.directions_car),
           const Icon(Icons.directions_transit),
           const Icon(Icons.directions_bike),

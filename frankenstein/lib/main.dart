@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 //add this back if there are errors:
 //import 'package:flutter/services.dart';
 //import 'dart:io';
-import 'Pages/customContent.dart';
-import 'Pages/createACharacter.dart';
-import 'Pages/myCharacters.dart';
-import 'Pages/rollDice.dart';
-import 'Pages/searchForContent.dart';
+import 'pages/customContent.dart';
+import 'pages/createACharacter.dart';
+import 'pages/myCharacters.dart';
+import 'pages/rollDice.dart';
+import 'pages/searchForContent.dart';
 
 final Map<int, Widget> PAGELINKER = {
   0: const MainMenu(),
