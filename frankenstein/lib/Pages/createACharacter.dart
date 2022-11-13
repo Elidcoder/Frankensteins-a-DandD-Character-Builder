@@ -33,28 +33,22 @@ class CreateACharacter extends StatefulWidget {
 }
 
 //null op here to locate if called by editor (to edit char so will contain info) or otherwise
-class MainCreateCharacter extends State<CreateACharacter> {
-  AbilityScore strength = AbilityScore(name: "Strength", value: 8);
-  AbilityScore dexterity = AbilityScore(name: "Dexterity", value: 8);
-  AbilityScore constitution = AbilityScore(name: "Constitution", value: 8);
-  AbilityScore intelligence = AbilityScore(name: "Intelligence", value: 8);
-  AbilityScore wisdom = AbilityScore(name: "Wisdom", value: 8);
-  AbilityScore charisma = AbilityScore(name: "Charisma", value: 8);
-  int pointsRemaining = 27;
-  //STR/DEX/CON/INT/WIS/CHAR
-
-  //const MainCreateCharacter({Key? key}) //: super(key: key);
+class MainCreateCharacter extends State<CreateACharacter>
+    with AutomaticKeepAliveClientMixin {
+  //random stsuff
+  @override
+  bool get wantKeepAlive => true;
   Spell spellExample = list.first;
   String? levellingMethod;
-  Race initialRace = RACELIST.first;
-  List<int> abilityScoreIncreases = RACELIST.first.raceScoreIncrease;
-  Subrace? subraceExample;
-
-  //options in the initial menu initialised
-
-  bool? featsAllowed = false;
+  //Basics variables initialised
+  String? characterLevel = "1";
+  String characterName = "";
+  String playerName = "";
+  String characterGender = "";
+  int characterExperiance = 0;
+  bool? featsAllowed = true;
   bool? averageHitPoints = false;
-  bool? multiclassing = false;
+  bool? multiclassing = true;
   bool? milestoneLevelling = false;
   bool? myCustomContent = false;
   bool? optionalClassFeatures = false;
@@ -64,7 +58,10 @@ class MainCreateCharacter extends State<CreateACharacter> {
   bool? unearthedArcanaContent = false;
   bool? firearmsUsable = false;
   bool? extraFeatAtLevel1 = false;
-  String? characterLevel = "1";
+  Subrace? subraceExample;
+  //Race variables initialised
+  Race initialRace = RACELIST.first;
+  List<int> abilityScoreIncreases = RACELIST.first.raceScoreIncrease;
   List<List<bool>>? optionalOnesStates = [
     [false, false, false, false, false, false],
     [false, false, false, false, false, false],
@@ -81,18 +78,19 @@ class MainCreateCharacter extends State<CreateACharacter> {
   ];
   List<Widget> mystery1slist = [];
   List<Widget> mystery2slist = [];
-  //List<Widget> listings =List<Widget>.filled(RACELIST.first.mystery1S, const Text("jklfjkgj"));
-  List<bool> isSelected = [false, false, false, false, false, false];
-  @override
-  initState() {
-    // this is called when the class is initialized or called for the first time
-    super.initState();
-
-    // this is the material super constructor for init state to link your instance initState to the global initState context
-  }
+  //Ability score variables initialised
+  AbilityScore strength = AbilityScore(name: "Strength", value: 8);
+  AbilityScore dexterity = AbilityScore(name: "Dexterity", value: 8);
+  AbilityScore constitution = AbilityScore(name: "Constitution", value: 8);
+  AbilityScore intelligence = AbilityScore(name: "Intelligence", value: 8);
+  AbilityScore wisdom = AbilityScore(name: "Wisdom", value: 8);
+  AbilityScore charisma = AbilityScore(name: "Charisma", value: 8);
+  int pointsRemaining = 27;
+  //STR/DEX/CON/INT/WIS/CHAR
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     mystery1slist = [
       const SizedBox(
           height: 30,
@@ -547,6 +545,7 @@ class MainCreateCharacter extends State<CreateACharacter> {
               const SizedBox(height: 60),
               Row(
                 children: [
+                  //decide on the color of T.boxes
                   Expanded(
                       child: Column(
                           //mainAxisAlignment: MainAxisAlignment.center,
@@ -575,24 +574,28 @@ class MainCreateCharacter extends State<CreateACharacter> {
                           )),
                         ),
                         const SizedBox(height: 30),
-                        const SizedBox(
-                            width: 250,
-                            height: 50,
-                            child: TextField(
-                                cursorColor: Colors.blue,
-                                style: TextStyle(color: Colors.white),
-                                decoration: InputDecoration(
-                                    hintText: "Enter character's name",
-                                    hintStyle: TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 212, 208, 224)),
-                                    filled: true,
-                                    fillColor:
-                                        Color.fromARGB(255, 124, 112, 112),
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide.none,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(12)))))),
+                        SizedBox(
+                          width: 250,
+                          height: 50,
+                          child: TextField(
+                              cursorColor: Colors.blue,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                  hintText: "Enter character's name",
+                                  hintStyle: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      color:
+                                          Color.fromARGB(255, 212, 208, 224)),
+                                  filled: true,
+                                  fillColor: Color.fromARGB(211, 42, 63, 226),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(12)))),
+                              onChanged: (characterNameEnteredValue) {
+                                characterName = characterNameEnteredValue;
+                              }),
+                        ),
                         //ask level or exp
                         //add switch + list tittle stuff for lvl/exp
                         const SizedBox(height: 15),

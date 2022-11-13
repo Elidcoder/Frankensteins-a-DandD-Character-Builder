@@ -7,3 +7,23 @@ togglebuttons use more, singlewhere and WHERE should be used later
 run in release mode with - flutter run --release
 https://stackoverflow.com/questions/61061194/flutter-generating-multiple-dropdown-in-for-loop-based-on-list-length - wierd multi issue
 ! flips bools and is the bang operator
+BDS liscence
+look later to learn more dart - https://dart.dev/guides/language/language-tour
+Pass the sourcebook as an input into the actual creation itself later
+also deal with tthe abilities in the background for outputting the pdf
+to fix the json and use later - https://docs.flutter.dev/cookbook/persistence/reading-writing-files
+background full class:
+{
+                                "Name": "Acrobatics",
+                                
+                                "Features": ["Library Access: Though others must often endure extensive interviews and significant fees to gain access to even the most common archives in your library, you have free and easy access to the majority of the library, though it might also have repositories of lore that are too valuable, magical, or secret to permit anyone immediate access.You have a working knowledge of your cloister's personnel and bureaucracy, and you know how to navigate those connections with some ease.Additionally, you are likely to gain preferential treatment at other libraries across the Realms, as professional courtesy shown to a fellow scholar."],
+                                "NumberOfSkillChoices": 2,
+                                "OptionalSkillProfieciencies":,
+                                "InitialSkillProficiencies":,
+                                "ToolProficiencies":,
+                                "NumberOfLanguageChoices": 2,
+                                "OptionalLanguages":,
+                                "InitialLanguages":
+                                
+                        }
+PDF for later-https://pspdfkit.com/guides/flutter/pdf-generation/?utm_source=google&utm_medium=paid_search&utm_campaign=hybrid&utm_content=flutter-pdf-generation&utm_term=flutter%20create%20pdf&gclid=CjwKCAiAvK2bBhB8EiwAZUbP1KE0-N-ocyldrkIJtlXnd33CQo0BOnaj9XxlrqI3gkdl5PM5Cs94wRoCTD4QAvD_BwE
