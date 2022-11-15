@@ -1,18 +1,33 @@
+Cheecky links:
 Ternary operators for radio class and leveling via exp vs levels  - https://www.fluttercampus.com/guide/131/how-to-use-conditional-statement-if-else-on-widget-in-flutter/
 Json and mapping into classes-https://codewithandrea.com/articles/parse-json-dart/
 Null operations - https://flutterigniter.com/checking-null-aware-operators-dart/
 wierd class json with lists in lists being dynamic https://stackoverflow.com/questions/50245187/type-listdynamic-is-not-a-subtype-of-type-listint-where
 more null and more operations - https://dart.dev/codelabs/dart-cheatsheet
-togglebuttons use more, singlewhere and WHERE should be used later
-run in release mode with - flutter run --release
 https://stackoverflow.com/questions/61061194/flutter-generating-multiple-dropdown-in-for-loop-based-on-list-length - wierd multi issue
-! flips bools and is the bang operator
-BDS liscence
+to fix the json and use later - https://docs.flutter.dev/cookbook/persistence/reading-writing-files
+
+
+Usefull later:
 look later to learn more dart - https://dart.dev/guides/language/language-tour
+PDF for later-https://pspdfkit.com/guides/flutter/pdf-generation/?utm_source=google&utm_medium=paid_search&utm_campaign=hybrid&utm_content=flutter-pdf-generation&utm_term=flutter%20create%20pdf&gclid=CjwKCAiAvK2bBhB8EiwAZUbP1KE0-N-ocyldrkIJtlXnd33CQo0BOnaj9XxlrqI3gkdl5PM5Cs94wRoCTD4QAvD_BwE
+run in release mode with - flutter run --release
+! flips bools and is the bang operator
+
+
+End Checklist:
+togglebuttons use more, singlewhere and WHERE should be used later
+BDS liscence
 Pass the sourcebook as an input into the actual creation itself later
 also deal with tthe abilities in the background for outputting the pdf
-to fix the json and use later - https://docs.flutter.dev/cookbook/persistence/reading-writing-files
-background full class:
+also remove all unnecessary returns with .. / ... and add static/final more
+
+
+Notes:
+'Feature' where reselecting the same item resets everything
+
+Old code:
+Json fullish backgound:
 {
                                 "Name": "Acrobatics",
                                 
@@ -26,4 +41,3 @@ background full class:
                                 "InitialLanguages":
                                 
                         }
-PDF for later-https://pspdfkit.com/guides/flutter/pdf-generation/?utm_source=google&utm_medium=paid_search&utm_campaign=hybrid&utm_content=flutter-pdf-generation&utm_term=flutter%20create%20pdf&gclid=CjwKCAiAvK2bBhB8EiwAZUbP1KE0-N-ocyldrkIJtlXnd33CQo0BOnaj9XxlrqI3gkdl5PM5Cs94wRoCTD4QAvD_BwE

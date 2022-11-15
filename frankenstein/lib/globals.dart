@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import "dart:collection";
 import 'dart:io';
 
 class Subrace {
@@ -151,6 +151,8 @@ class Spell {
       this.verbal});
 }
 
+//NO CASE SHOULD HAVE NUMBEROFSKILLCHOICES>OPTIONALSKILLPROFICIENCIES.LENGTH
+//shoev question marks to make bond/flawetc optional
 class Background {
   final String name;
   final int? numberOfSkillChoices;
@@ -158,24 +160,22 @@ class Background {
   final List<String>? initialSkillProficiencies;
   final List<String>? optionalSkillProficiencies;
   final List<String>? toolProficiencies;
-
-  final List<String>? personalityTrait;
-  final List<String>? ideal;
-  final List<String>? bond;
-  final List<String>? flaw;
-
+  final List<String> personalityTrait;
+  final List<String> ideal;
+  final List<String> bond;
+  final List<String> flaw;
   //make classes for every equipment type
   final List<String>? equipment;
   factory Background.fromJson(Map<String, dynamic> data) {
     final name = data['Name'] as String;
 
     final personalityTrait =
-        data['PersonalityTrait']?.cast<String>() as List<String>?;
-    final ideal = data['Ideal']?.cast<String>() as List<String>?;
-    final bond = data['Bond']?.cast<String>() as List<String>?;
-    final flaw = data['Flaw']?.cast<String>() as List<String>?;
+        data['PersonalityTrait'].cast<String>() as List<String>;
+    final ideal = data['Ideal'].cast<String>() as List<String>;
+    final bond = data['Bond'].cast<String>() as List<String>;
+    final flaw = data['Flaw'].cast<String>() as List<String>;
 
-    final numberOfSkillChoices = data['NumberOfSkillChoices'] as int;
+    final numberOfSkillChoices = data['NumberOfSkillChoices'] as int?;
     //final sourceBook = data["Sourcebook"];
     final features = data["Features"]?.cast<String>() as List<String>?;
     final equipment = data["Equipment"]?.cast<String>() as List<String>?;
@@ -186,7 +186,6 @@ class Background {
         data['InitialSkillProficiencies']?.cast<String>() as List<String>?;
     final optionalSkillProficiencies =
         data['OptionalSkillProficiencies']?.cast<String>() as List<String>?;
-
     return Background(
       name: name,
       personalityTrait: personalityTrait,
@@ -214,7 +213,6 @@ class Background {
     this.equipment,
     this.optionalSkillProficiencies,
     this.toolProficiencies,
-
     //required this.sourcebook,});
   });
 }
@@ -252,6 +250,6 @@ final dynamic jsonmap = decoder.convert(jsonString);
 List<Race> RACELIST = [for (var x in jsonmap["Races"]) Race.fromJson(x)];
 List<Spell> list = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
 // ignore: non_constant_identifier_names
-List<Spell> BACKGROUNDLIST = [
-  for (var x in jsonmap["Background"]) Spell.fromJson(x)
+List<Background> BACKGROUNDLIST = [
+  for (var x in jsonmap["Background"]) Background.fromJson(x)
 ];

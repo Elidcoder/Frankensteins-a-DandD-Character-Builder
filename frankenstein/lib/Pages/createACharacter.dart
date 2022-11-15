@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import "package:frankenstein/globals.dart";
+import "dart:collection";
 
 int abilityScoreCost(int x) {
   if (x > 12) {
@@ -62,14 +63,14 @@ class MainCreateCharacter extends State<CreateACharacter>
   //Race variables initialised
   Race initialRace = RACELIST.first;
   List<int> abilityScoreIncreases = RACELIST.first.raceScoreIncrease;
-  List<List<bool>>? optionalOnesStates = [
+  static List<List<bool>>? optionalOnesStates = [
     [false, false, false, false, false, false],
     [false, false, false, false, false, false],
     [false, false, false, false, false, false],
     [false, false, false, false, false, false],
     [false, false, false, false, false, false]
   ];
-  List<List<bool>>? optionalTwosStates = [
+  static List<List<bool>>? optionalTwosStates = [
     [false, false, false, false, false, false],
     [false, false, false, false, false, false],
     [false, false, false, false, false, false],
@@ -78,6 +79,24 @@ class MainCreateCharacter extends State<CreateACharacter>
   ];
   List<Widget> mystery1slist = [];
   List<Widget> mystery2slist = [];
+  //Background variables initialised
+  Background currentBackground = BACKGROUNDLIST.first;
+  String backgroundPersonalityTrait =
+      BACKGROUNDLIST.first.personalityTrait.first;
+  String backgroundIdeal = BACKGROUNDLIST.first.ideal.first;
+  String backgroundBond = BACKGROUNDLIST.first.bond.first;
+  String backgroundFlaw = BACKGROUNDLIST.first.flaw.first;
+  //creates an array where it auto selects the first (n) possible skills initially
+  List<bool> backgroundSkillChoices =
+      List.filled(BACKGROUNDLIST.first.numberOfSkillChoices ?? 0, true) +
+          List.filled(
+              (BACKGROUNDLIST.first.optionalSkillProficiencies?.length ?? 0) -
+                  (BACKGROUNDLIST.first.numberOfSkillChoices ?? 0),
+              false);
+
+  Queue<int>? selectedSkillsQ = Queue<int>.from(
+      Iterable.generate(BACKGROUNDLIST.first.numberOfSkillChoices ?? 0));
+
   //Ability score variables initialised
   AbilityScore strength = AbilityScore(name: "Strength", value: 8);
   AbilityScore dexterity = AbilityScore(name: "Dexterity", value: 8);
@@ -91,7 +110,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    mystery1slist = [
+    final mystery1slist = [
       const SizedBox(
           height: 30,
           child: Text("Choose which score(s) to increase by 1",
@@ -300,7 +319,7 @@ class MainCreateCharacter extends State<CreateACharacter>
       ),
       const SizedBox(height: 5),
     ];
-    mystery2slist = [
+    final mystery2slist = [
       const SizedBox(
           height: 30,
           child: Text("Choose which score(s) to increase by 2",
@@ -1083,18 +1102,17 @@ class MainCreateCharacter extends State<CreateACharacter>
                     )
                   : const SizedBox(),
               //codebook
-              initialRace.mystery1S + (subraceExample?.mystery1S ?? 0) == 0
-                  ? const SizedBox(height: 0)
-                  : Expanded(
-                      child: Column(
-                        children: mystery1slist.sublist(
-                            0,
-                            2 *
-                                    (initialRace.mystery1S +
-                                        (subraceExample?.mystery1S ?? 0)) +
-                                1),
-                      ),
-                    ),
+              if (initialRace.mystery1S + (subraceExample?.mystery1S ?? 0) != 0)
+                Expanded(
+                  child: Column(
+                    children: mystery1slist.sublist(
+                        0,
+                        2 *
+                                (initialRace.mystery1S +
+                                    (subraceExample?.mystery1S ?? 0)) +
+                            1),
+                  ),
+                ),
               initialRace.mystery2S + (subraceExample?.mystery2S ?? 0) == 0
                   ? const SizedBox(height: 2)
                   : Expanded(
@@ -1189,7 +1207,230 @@ class MainCreateCharacter extends State<CreateACharacter>
               }).toList(),
             )
           ]),
-          const Icon(Icons.directions_bike),
+          //Background
+          Column(
+            children: [
+              const SizedBox(height: 20),
+              DropdownButton<String>(
+                onChanged: (String? value) {
+                  // This is called when the user selects an item.
+                  setState(() {
+                    currentBackground =
+                        BACKGROUNDLIST.singleWhere((x) => x.name == value);
+                    backgroundPersonalityTrait =
+                        currentBackground.personalityTrait.first;
+                    backgroundIdeal = currentBackground.ideal.first;
+                    backgroundBond = currentBackground.bond.first;
+                    backgroundFlaw = currentBackground.flaw.first;
+                    backgroundSkillChoices = List.filled(
+                            currentBackground.numberOfSkillChoices ?? 0, true) +
+                        List.filled(
+                            (currentBackground
+                                        .optionalSkillProficiencies?.length ??
+                                    0) -
+                                (currentBackground.numberOfSkillChoices ?? 0),
+                            false);
+                    selectedSkillsQ = Queue<int>.from(Iterable.generate(
+                        currentBackground.numberOfSkillChoices ?? 0));
+                    //
+                  });
+                },
+                value: currentBackground.name,
+                icon: const Icon(Icons.arrow_downward),
+                items: BACKGROUNDLIST
+                    .map<DropdownMenuItem<String>>((Background value) {
+                  return DropdownMenuItem<String>(
+                    value: value.name,
+                    child: Text(value.name),
+                  );
+                }).toList(),
+                elevation: 2,
+                style: const TextStyle(
+                    color: Colors.blue, fontWeight: FontWeight.w700),
+                underline: Container(
+                  height: 1,
+                  color: Colors.deepPurpleAccent,
+                ),
+              ),
+              //Personality Trait
+              const SizedBox(height: 10),
+              const Text("Select your character's personality trait",
+                  style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800)),
+              DropdownButton<String>(
+                onChanged: (String? value) {
+                  // This is called when the user selects an item.
+                  setState(() {
+                    backgroundPersonalityTrait = currentBackground
+                        .personalityTrait
+                        .singleWhere((x) => x == value);
+                  });
+                },
+                value: backgroundPersonalityTrait,
+                icon: const Icon(Icons.arrow_downward),
+                items: currentBackground.personalityTrait
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                elevation: 2,
+                style: const TextStyle(
+                    color: Colors.blue, fontWeight: FontWeight.w700),
+                underline: Container(
+                  height: 1,
+                  color: Colors.deepPurpleAccent,
+                ),
+              ),
+
+              //Ideal
+              const SizedBox(height: 10),
+              const Text("Select your character's ideal",
+                  style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800)),
+              DropdownButton<String>(
+                onChanged: (String? value) {
+                  // This is called when the user selects an item.
+                  setState(() {
+                    backgroundIdeal =
+                        currentBackground.ideal.singleWhere((x) => x == value);
+                  });
+                },
+                value: backgroundIdeal,
+                icon: const Icon(Icons.arrow_downward),
+                items: currentBackground.ideal
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                elevation: 2,
+                style: const TextStyle(
+                    color: Colors.blue, fontWeight: FontWeight.w700),
+                underline: Container(
+                  height: 1,
+                  color: Colors.deepPurpleAccent,
+                ),
+              ),
+
+              //Bond
+              const SizedBox(height: 10),
+              const Text("Select your character's bond",
+                  style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800)),
+              DropdownButton<String>(
+                onChanged: (String? value) {
+                  // This is called when the user selects an item.
+                  setState(() {
+                    backgroundBond =
+                        currentBackground.bond.singleWhere((x) => x == value);
+                  });
+                },
+                value: backgroundBond,
+                icon: const Icon(Icons.arrow_downward),
+                items: currentBackground.bond
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                elevation: 2,
+                style: const TextStyle(
+                    color: Colors.blue, fontWeight: FontWeight.w700),
+                underline: Container(
+                  height: 1,
+                  color: Colors.deepPurpleAccent,
+                ),
+              ),
+
+              //Flaw
+              const SizedBox(height: 10),
+              const Text("Select your character's flaw",
+                  style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800)),
+              DropdownButton<String>(
+                onChanged: (String? value) {
+                  // This is called when the user selects an item.
+                  setState(() {
+                    backgroundFlaw =
+                        currentBackground.flaw.singleWhere((x) => x == value);
+                  });
+                },
+                value: backgroundFlaw,
+                icon: const Icon(Icons.arrow_downward),
+                items: currentBackground.flaw
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                elevation: 2,
+                style: const TextStyle(
+                    color: Colors.blue, fontWeight: FontWeight.w700),
+                underline: Container(
+                  height: 1,
+                  color: Colors.deepPurpleAccent,
+                ),
+              ),
+
+              //really poor programming in general with the over use of ! - try fix although it isn't an issue this way
+              if (currentBackground.numberOfSkillChoices != null)
+                Text(
+                    "Pick ${(currentBackground.numberOfSkillChoices)} skill(s) to gain proficiency in",
+                    style: const TextStyle(
+                        color: Colors.blue,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800)),
+              const SizedBox(
+                height: 7,
+              ),
+              if (currentBackground.numberOfSkillChoices != null)
+                ToggleButtons(
+                    selectedColor: const Color.fromARGB(255, 0, 79, 206),
+                    color: Colors.blue,
+                    fillColor: const Color.fromARGB(162, 0, 255, 8),
+                    textStyle: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    borderColor: const Color.fromARGB(255, 7, 26, 239),
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    borderWidth: 1.5,
+                    onPressed: (int index) {
+                      setState(() {
+                        //bsckgroundskillchoices
+                        if (selectedSkillsQ!.contains(index)) {
+                          selectedSkillsQ!.remove(index);
+                          backgroundSkillChoices[index] = false;
+                        } else {
+                          if (selectedSkillsQ!.length ==
+                              currentBackground.numberOfSkillChoices) {
+                            int removed = selectedSkillsQ!.removeFirst();
+                            backgroundSkillChoices[removed] = false;
+                          }
+                          selectedSkillsQ!.add(index);
+                          backgroundSkillChoices[index] = true;
+                        }
+                      });
+                    },
+                    isSelected: backgroundSkillChoices,
+                    children: currentBackground.optionalSkillProficiencies!
+                        .map((x) => Text(" $x "))
+                        .toList()),
+            ],
+          ),
           //ability scores
           Column(children: [
             const SizedBox(height: 40),
