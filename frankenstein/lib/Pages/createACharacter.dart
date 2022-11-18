@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import "package:frankenstein/globals.dart";
 import "dart:collection";
+import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 
 int abilityScoreCost(int x) {
   if (x > 12) {
@@ -1318,7 +1319,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                   color: Colors.deepPurpleAccent,
                 ),
               ),
-
               //Bond
               const SizedBox(height: 10),
               const Text("Select your character's bond",
@@ -1351,7 +1351,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                   color: Colors.deepPurpleAccent,
                 ),
               ),
-
               //Flaw
               const SizedBox(height: 10),
               const Text("Select your character's flaw",
@@ -1384,7 +1383,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                   color: Colors.deepPurpleAccent,
                 ),
               ),
-
               //really poor programming in general with the over use of ! - try fix although it isn't an issue this way
               if (currentBackground.numberOfSkillChoices != null)
                 Text(
@@ -1396,13 +1394,13 @@ class MainCreateCharacter extends State<CreateACharacter>
               const SizedBox(
                 height: 7,
               ),
-              if (currentBackground.numberOfSkillChoices != null)
+              /*if (currentBackground.numberOfSkillChoices != null)
                 ToggleButtons(
                     selectedColor: const Color.fromARGB(255, 0, 79, 206),
                     color: Colors.blue,
                     fillColor: const Color.fromARGB(162, 0, 255, 8),
                     textStyle: const TextStyle(
-                      fontSize: 22,
+                      fontSize: 18,
                       fontWeight: FontWeight.w700,
                     ),
                     borderColor: const Color.fromARGB(255, 7, 26, 239),
@@ -1428,7 +1426,105 @@ class MainCreateCharacter extends State<CreateACharacter>
                     isSelected: backgroundSkillChoices,
                     children: currentBackground.optionalSkillProficiencies!
                         .map((x) => Text(" $x "))
+                        .toList()),*/
+              if (currentBackground.numberOfSkillChoices != null)
+                ToggleButtons(
+                    selectedColor: const Color.fromARGB(255, 0, 79, 206),
+                    color: Colors.blue,
+                    textStyle: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        color: Colors.white),
+                    //color: Color.fromARGB(255, 15, 124, 174)
+                    fillColor: const Color.fromARGB(162, 0, 255, 8),
+                    borderColor: const Color.fromARGB(255, 7, 26, 239),
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    borderWidth: 1.5,
+                    onPressed: (int index) {
+                      setState(() {
+                        //bsckgroundskillchoices
+                        if (selectedSkillsQ!.contains(index)) {
+                          selectedSkillsQ!.remove(index);
+                          backgroundSkillChoices[index] = false;
+                        } else {
+                          if (selectedSkillsQ!.length ==
+                              currentBackground.numberOfSkillChoices) {
+                            int removed = selectedSkillsQ!.removeFirst();
+                            backgroundSkillChoices[removed] = false;
+                          }
+                          selectedSkillsQ!.add(index);
+                          backgroundSkillChoices[index] = true;
+                        }
+                      });
+                    },
+                    isSelected: backgroundSkillChoices,
+                    children: currentBackground.optionalSkillProficiencies!
+                        .map((x) => Text(" $x "))
                         .toList()),
+
+              if (currentBackground.numberOfLanguageChoices != null)
+                Text(
+                    "Pick ${(currentBackground.numberOfLanguageChoices)} language(s) to learn",
+                    style: const TextStyle(
+                        color: Colors.blue,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800)),
+              const SizedBox(
+                height: 7,
+              ),
+              if (currentBackground.numberOfLanguageChoices != null)
+                MultiSelectContainer(
+                    prefix: MultiSelectPrefix(
+                        selectedPrefix: const Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: Icon(
+                            Icons.check,
+                            color: Color.fromARGB(255, 0, 255, 8),
+                            size: 20,
+                          ),
+                        ),
+                        enabledPrefix: const Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: Icon(
+                            //Icons.do_disturb_alt_sharp,
+                            Icons.close,
+                            size: 20,
+                            color: Color.fromARGB(255, 158, 154, 154),
+                          ),
+                        )),
+                    textStyles: const MultiSelectTextStyles(
+                        textStyle: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                            color: Colors.white),
+                        selectedTextStyle: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                          //color: Color.fromARGB(255, 15, 124, 174)
+                        )),
+                    itemsDecoration: MultiSelectDecorations(
+                      selectedDecoration: BoxDecoration(
+                          gradient: const LinearGradient(colors: [
+                            Color.fromARGB(220, 52, 46, 243),
+                            Color.fromARGB(220, 0, 242, 255)
+                          ]),
+                          border: Border.all(
+                              width: 0.8,
+                              color: const Color.fromARGB(220, 63, 254, 73)),
+                          borderRadius: BorderRadius.circular(15)),
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 124, 112, 112),
+                          border: Border.all(
+                              color: const Color.fromARGB(255, 61, 59, 59)),
+                          borderRadius: BorderRadius.circular(15)),
+                    ),
+                    maxSelectableCount:
+                        currentBackground.numberOfLanguageChoices,
+                    items: [
+                      for (var x in LANGUAGELIST)
+                        MultiSelectCard(value: x, label: x)
+                    ],
+                    onChange: (allSelectedItems, selectedItem) {}),
             ],
           ),
           //ability scores
@@ -2402,8 +2498,9 @@ class MainCreateCharacter extends State<CreateACharacter>
           ]),
           //spells
           const Icon(Icons.directions_car),
-          const Icon(Icons.directions_car),
-          const Icon(Icons.directions_transit),
+          const Icon(Icons.directions_bike),
+
+          const Icon(Icons.directions_bike),
           const Icon(Icons.directions_bike),
           const Icon(Icons.directions_car),
         ]),

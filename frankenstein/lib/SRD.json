@@ -20,6 +20,9 @@
                 "Weight": 3
                 }
             ],
+        "Languages": [
+       "Elvish","Common","Infernal"
+        ],
         "Races": [
                 {
                         "Name": "Human",

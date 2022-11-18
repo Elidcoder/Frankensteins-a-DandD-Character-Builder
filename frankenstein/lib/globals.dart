@@ -156,6 +156,7 @@ class Spell {
 class Background {
   final String name;
   final int? numberOfSkillChoices;
+  final int? numberOfLanguageChoices;
   final List<String>? features;
   final List<String>? initialSkillProficiencies;
   final List<String>? optionalSkillProficiencies;
@@ -176,6 +177,7 @@ class Background {
     final flaw = data['Flaw'].cast<String>() as List<String>;
 
     final numberOfSkillChoices = data['NumberOfSkillChoices'] as int?;
+    final numberOfLanguageChoices = data['NumberOfLanguageChoices'] as int?;
     //final sourceBook = data["Sourcebook"];
     final features = data["Features"]?.cast<String>() as List<String>?;
     final equipment = data["Equipment"]?.cast<String>() as List<String>?;
@@ -194,6 +196,7 @@ class Background {
       flaw: flaw,
       equipment: equipment,
       optionalSkillProficiencies: optionalSkillProficiencies,
+      numberOfLanguageChoices: numberOfLanguageChoices,
       numberOfSkillChoices: numberOfSkillChoices,
       toolProficiencies: toolProficiencies,
       initialSkillProficiencies: initialSkillProficiencies,
@@ -208,6 +211,7 @@ class Background {
     required this.bond,
     required this.flaw,
     this.numberOfSkillChoices,
+    this.numberOfLanguageChoices,
     this.initialSkillProficiencies,
     this.features,
     this.equipment,
@@ -253,3 +257,5 @@ List<Spell> list = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
 List<Background> BACKGROUNDLIST = [
   for (var x in jsonmap["Background"]) Background.fromJson(x)
 ];
+// ignore: non_constant_identifier_names
+List<String> LANGUAGELIST = jsonmap["Languages"].cast<String>() as List<String>;

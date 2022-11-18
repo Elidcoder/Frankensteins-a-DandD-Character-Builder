@@ -6,7 +6,7 @@ wierd class json with lists in lists being dynamic https://stackoverflow.com/que
 more null and more operations - https://dart.dev/codelabs/dart-cheatsheet
 https://stackoverflow.com/questions/61061194/flutter-generating-multiple-dropdown-in-for-loop-based-on-list-length - wierd multi issue
 to fix the json and use later - https://docs.flutter.dev/cookbook/persistence/reading-writing-files
-
+https://pub.dev/packages/flutter_multi_select_items - uses of multi list amd multi list
 
 Usefull later:
 look later to learn more dart - https://dart.dev/guides/language/language-tour
@@ -21,7 +21,7 @@ BDS liscence
 Pass the sourcebook as an input into the actual creation itself later
 also deal with tthe abilities in the background for outputting the pdf
 also remove all unnecessary returns with .. / ... and add static/final more
-
+change the toggle buttons to look more in theme
 
 Notes:
 'Feature' where reselecting the same item resets everything
