@@ -1461,7 +1461,59 @@ class MainCreateCharacter extends State<CreateACharacter>
                     children: currentBackground.optionalSkillProficiencies!
                         .map((x) => Text(" $x "))
                         .toList()),
-
+              if (currentBackground.numberOfSkillChoices != null)
+                MultiSelectContainer(
+                    prefix: MultiSelectPrefix(
+                        selectedPrefix: const Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: Icon(
+                            Icons.check,
+                            color: Color.fromARGB(255, 0, 255, 8),
+                            size: 20,
+                          ),
+                        ),
+                        enabledPrefix: const Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: Icon(
+                            //Icons.do_disturb_alt_sharp,
+                            Icons.close,
+                            size: 20,
+                            color: Color.fromARGB(255, 158, 154, 154),
+                          ),
+                        )),
+                    textStyles: const MultiSelectTextStyles(
+                        textStyle: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                            color: Colors.white),
+                        selectedTextStyle: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                          //color: Color.fromARGB(255, 15, 124, 174)
+                        )),
+                    itemsDecoration: MultiSelectDecorations(
+                      selectedDecoration: BoxDecoration(
+                          gradient: const LinearGradient(colors: [
+                            Color.fromARGB(220, 52, 46, 243),
+                            Color.fromARGB(220, 0, 242, 255)
+                          ]),
+                          border: Border.all(
+                              width: 0.8,
+                              color: const Color.fromARGB(220, 63, 254, 73)),
+                          borderRadius: BorderRadius.circular(15)),
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 124, 112, 112),
+                          border: Border.all(
+                              color: const Color.fromARGB(255, 61, 59, 59)),
+                          borderRadius: BorderRadius.circular(15)),
+                    ),
+                    maxSelectableCount: currentBackground.numberOfSkillChoices,
+                    items: [
+                      for (var x
+                          in currentBackground.optionalSkillProficiencies ?? [])
+                        MultiSelectCard(value: x, label: x)
+                    ],
+                    onChange: (allSelectedItems, selectedItem) {}),
               if (currentBackground.numberOfLanguageChoices != null)
                 Text(
                     "Pick ${(currentBackground.numberOfLanguageChoices)} language(s) to learn",

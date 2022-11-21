@@ -2,6 +2,33 @@ import 'dart:convert';
 import "dart:collection";
 import 'dart:io';
 
+// ignore: non_constant_identifier_names
+Set<Proficiency> PROFICIENCYLIST = <Proficiency>{};
+
+class Proficiency {
+  final String name;
+  final String category;
+  final int proficiencyTreeDepth;
+  //final String sourceBook;
+  factory Proficiency.fromJson(Map<String, dynamic> data) {
+    final name = data['Name'] as String;
+    final proficiencyTreeDepth = data['ProficiencyTreeDepth'] as int;
+    final category = data['Category'] as String;
+
+    return Proficiency(
+        category: category,
+        name: name,
+        proficiencyTreeDepth: proficiencyTreeDepth
+        //sourceBook: sourceBook,
+        );
+  }
+  Proficiency(
+      {required this.name,
+      required this.category,
+      //required this.sourcebook,
+      required this.proficiencyTreeDepth});
+}
+
 class Subrace {
   final String name;
   final List<int> subRaceScoreIncrease;
@@ -116,6 +143,104 @@ class Race {
       this.proficiencies});
 }
 
+//classes
+class Class {
+  final String name;
+  final int spellLevelCoefficient;
+  final int maxHitDiceRoll;
+  final bool? roundDown;
+
+  final int numberOfSkillChoices;
+  final List<String> optionsForSkillProficiencies;
+  final List<String>? spellsAndSpellSlots; //replace with list both or 2 lists
+
+  final List<String> savingThrowProficiencies;
+  final List<List<String>>
+      equipmentOptions; //replace string => equipment//2 options for every one
+  final List<List<Proficiency>>
+      proficiencies; //replace string with equipment (parent of) armour/tools/weapons
+
+  final List<List<String>> gainAtEachLevel; //replace string with something?
+  //final String sourceBook;
+
+  factory Class.fromJson(Map<String, dynamic> data) {
+    final name = data['Name'] as String;
+    final spellLevelCoefficient = data['SpellLevelCoefficient'] as int;
+    final maxHitDiceRoll = data['MaxHitDiceRoll'] as int;
+    final roundDown = data['RoundDown'] as bool?;
+    final numberOfSkillChoices = data['NumberOfSkillChoices'] as int;
+
+    final spellsAndSpellSlots =
+        data["SpellsAndSpellSlots"]?.cast<String>() as List<String>?;
+    final optionsForSkillProficiencies =
+        data["OptionsForSkillProficiencies"].cast<String>() as List<String>;
+    final savingThrowProficiencies =
+        data["SavingThrowProficiencies"].cast<String>() as List<String>;
+
+    final equipmentOptions =
+        data['EquipmentOptions'].cast<List<String>>() as List<List<String>>;
+    final proficiencies = data['Proficiencies'].cast<List<Proficiency>>()
+        as List<List<Proficiency>>;
+    final gainAtEachLevel =
+        data['GainAtEachLevel'].cast<List<String>>() as List<List<String>>;
+
+    return Class(
+        spellLevelCoefficient: spellLevelCoefficient,
+        maxHitDiceRoll: maxHitDiceRoll,
+        name: name,
+        roundDown: roundDown,
+        numberOfSkillChoices: numberOfSkillChoices,
+        optionsForSkillProficiencies: optionsForSkillProficiencies,
+        savingThrowProficiencies: savingThrowProficiencies,
+        spellsAndSpellSlots: spellsAndSpellSlots,
+        //sourceBook: sourceBook,
+        equipmentOptions: equipmentOptions,
+        gainAtEachLevel: gainAtEachLevel,
+        proficiencies: proficiencies);
+  }
+  Class(
+      {required this.name,
+      required this.spellLevelCoefficient,
+      required this.maxHitDiceRoll,
+      this.roundDown,
+      this.spellsAndSpellSlots,
+      required this.numberOfSkillChoices,
+      required this.optionsForSkillProficiencies,
+      //required this.sourcebook,
+      required this.savingThrowProficiencies,
+      required this.equipmentOptions,
+      required this.gainAtEachLevel,
+      required this.proficiencies});
+}
+
+class Subclass {
+  final String name;
+  final int spellLevelCoefficient;
+  final bool? roundDown;
+  final List<List<String>> gainAtEachLevel; //replace string with something?
+  //final String sourceBook;
+  factory Subclass.fromJson(Map<String, dynamic> data) {
+    final name = data['Name'] as String;
+    final spellLevelCoefficient = data['SpellLevelCoefficient'] as int;
+    final roundDown = data['RoundDown'] as bool?;
+    final gainAtEachLevel =
+        data['GainAtEachLevel'].cast<List<String>>() as List<List<String>>;
+    return Subclass(
+      spellLevelCoefficient: spellLevelCoefficient,
+      name: name,
+      roundDown: roundDown,
+      //sourceBook: sourceBook,
+      gainAtEachLevel: gainAtEachLevel,
+    );
+  }
+  Subclass(
+      {required this.name,
+      required this.spellLevelCoefficient,
+      this.roundDown,
+      //required this.sourcebook,
+      required this.gainAtEachLevel});
+}
+
 class Spell {
   //ADD SPELL TYPE THINGY
   final String name;
@@ -156,6 +281,7 @@ class Spell {
 class Background {
   final String name;
   final int? numberOfSkillChoices;
+
   final int? numberOfLanguageChoices;
   final List<String>? features;
   final List<String>? initialSkillProficiencies;
@@ -249,6 +375,8 @@ String jsonString = File(filepath).readAsStringSync();
 
 ///file decoded into 'jsonmap'
 final dynamic jsonmap = decoder.convert(jsonString);
+// ignore: non_constant_identifier_names
+Set<String> LANGUAGELIST = jsonmap["Languages"].cast<String>() as Set<String>;
 
 // ignore: non_constant_identifier_names
 List<Race> RACELIST = [for (var x in jsonmap["Races"]) Race.fromJson(x)];
@@ -257,5 +385,3 @@ List<Spell> list = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
 List<Background> BACKGROUNDLIST = [
   for (var x in jsonmap["Background"]) Background.fromJson(x)
 ];
-// ignore: non_constant_identifier_names
-List<String> LANGUAGELIST = jsonmap["Languages"].cast<String>() as List<String>;
