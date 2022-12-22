@@ -107,6 +107,13 @@ class MainCreateCharacter extends State<CreateACharacter>
   AbilityScore charisma = AbilityScore(name: "Charisma", value: 8);
   int pointsRemaining = 27;
   //STR/DEX/CON/INT/WIS/CHAR
+  //BackgroundVariables
+  String characterAge = "";
+  String characterHeight = "";
+  String characterWeight = "";
+  String characterEyes = "";
+  String characterSkin = "";
+  String characterHair = "";
 
   @override
   Widget build(BuildContext context) {
@@ -2550,10 +2557,304 @@ class MainCreateCharacter extends State<CreateACharacter>
           ]),
           //spells
           const Icon(Icons.directions_car),
+          //Equipment
           const Icon(Icons.directions_bike),
-
+          //Boons and magic items
           const Icon(Icons.directions_bike),
-          const Icon(Icons.directions_bike),
+          //Backstory
+          Column(children: [
+            const SizedBox(
+              height: 20,
+              width: 10,
+            ),
+            const Text(
+              textAlign: TextAlign.center,
+              "Character Information:",
+              style: TextStyle(
+                  fontSize: 35,
+                  fontWeight: FontWeight.w700,
+                  color: Color.fromARGB(255, 0, 168, 252)),
+            ),
+            const SizedBox(
+              height: 10,
+              width: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    const Text(
+                      textAlign: TextAlign.center,
+                      "Age:",
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w700,
+                          color: Color.fromARGB(255, 0, 168, 252)),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: 250,
+                      height: 50,
+                      child: TextField(
+                          cursorColor: Colors.blue,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                              hintText: "Enter character's age",
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  color: Color.fromARGB(255, 212, 208, 224)),
+                              filled: true,
+                              fillColor: Color.fromARGB(211, 42, 63, 226),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)))),
+                          onChanged: (characterAgeEnteredValue) {
+                            characterAge = characterAgeEnteredValue;
+                          }),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      textAlign: TextAlign.center,
+                      "Eyes:",
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w700,
+                          color: Color.fromARGB(255, 0, 168, 252)),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: 250,
+                      height: 50,
+                      child: TextField(
+                          cursorColor: Colors.blue,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                              hintText: "Describe your character's eyes",
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  color: Color.fromARGB(255, 212, 208, 224)),
+                              filled: true,
+                              fillColor: Color.fromARGB(211, 42, 63, 226),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)))),
+                          onChanged: (characterEyeEnteredValue) {
+                            characterEyes = characterEyeEnteredValue;
+                          }),
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 10, height: 100),
+                Column(
+                  children: [
+                    const Text(
+                      textAlign: TextAlign.center,
+                      "Height:",
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w700,
+                          color: Color.fromARGB(255, 0, 168, 252)),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: 250,
+                      height: 50,
+                      child: TextField(
+                          cursorColor: Colors.blue,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                              hintText: "Enter character's height",
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  color: Color.fromARGB(255, 212, 208, 224)),
+                              filled: true,
+                              fillColor: Color.fromARGB(211, 42, 63, 226),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)))),
+                          onChanged: (characterHeightEnteredValue) {
+                            characterHeight = characterHeightEnteredValue;
+                          }),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      textAlign: TextAlign.center,
+                      "Skin:",
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w700,
+                          color: Color.fromARGB(255, 0, 168, 252)),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: 250,
+                      height: 50,
+                      child: TextField(
+                          cursorColor: Colors.blue,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                              hintText: "Describe your character's skin",
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  color: Color.fromARGB(255, 212, 208, 224)),
+                              filled: true,
+                              fillColor: Color.fromARGB(211, 42, 63, 226),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)))),
+                          onChanged: (characterSkinEnteredValue) {
+                            characterSkin = characterSkinEnteredValue;
+                          }),
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 10, height: 100),
+                Column(
+                  children: [
+                    const Text(
+                      textAlign: TextAlign.center,
+                      "Weight:",
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w700,
+                          color: Color.fromARGB(255, 0, 168, 252)),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: 250,
+                      height: 50,
+                      child: TextField(
+                          cursorColor: Colors.blue,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                              hintText: "Enter character's weight",
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  color: Color.fromARGB(255, 212, 208, 224)),
+                              filled: true,
+                              fillColor: Color.fromARGB(211, 42, 63, 226),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)))),
+                          onChanged: (characterWeightEnteredValue) {
+                            characterWeight = characterWeightEnteredValue;
+                          }),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      textAlign: TextAlign.center,
+                      "Hair:",
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w700,
+                          color: Color.fromARGB(255, 0, 168, 252)),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: 250,
+                      height: 50,
+                      child: TextField(
+                          cursorColor: Colors.blue,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                              hintText: "Describe your character's Hair",
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  color: Color.fromARGB(255, 212, 208, 224)),
+                              filled: true,
+                              fillColor: Color.fromARGB(211, 42, 63, 226),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)))),
+                          onChanged: (characterHairEnteredValue) {
+                            characterHair = characterHairEnteredValue;
+                          }),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              textAlign: TextAlign.center,
+              "Backstory:",
+              style: TextStyle(
+                  fontSize: 35,
+                  fontWeight: FontWeight.w700,
+                  color: Color.fromARGB(255, 0, 168, 252)),
+            ),
+            const SizedBox(height: 5),
+            SizedBox(
+              width: 1000,
+              height: 100,
+              child: TextField(
+                  maxLines: 10000,
+                  minLines: 4,
+                  cursorColor: Colors.blue,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: Color.fromARGB(255, 126, 122, 122)),
+                  decoration: const InputDecoration(
+                      hintText:
+                          "Write out your character's backstory. This should be a description of their past, including but not limited to: Who raised them/ how were they raised, any serious traumas or achievements in their life and then linking to justify your/ having another, reason for being in the campaign.",
+                      hintStyle: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: Color.fromARGB(255, 126, 122, 122)),
+                      filled: false,
+                      //fillColor: Color.fromARGB(211, 42, 63, 226),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 126, 122, 122)),
+                          borderRadius: BorderRadius.all(Radius.circular(12)))),
+                  onChanged: (characterEyeEnteredValue) {
+                    characterEyes = characterEyeEnteredValue;
+                  }),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              textAlign: TextAlign.center,
+              "Additional Features:",
+              style: TextStyle(
+                  fontSize: 35,
+                  fontWeight: FontWeight.w700,
+                  color: Color.fromARGB(255, 0, 168, 252)),
+            ),
+            const SizedBox(height: 5),
+            SizedBox(
+              width: 1000,
+              height: 100,
+              child: TextField(
+                  maxLines: 10000,
+                  minLines: 4,
+                  cursorColor: Colors.blue,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: Color.fromARGB(255, 126, 122, 122)),
+                  decoration: const InputDecoration(
+                      hintText:
+                          "Write any additional features, skills or abilities which are not a part of the character's race/class/background etc. These should have been agreed apon by your DM or whoever is running the game.",
+                      hintStyle: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: Color.fromARGB(255, 126, 122, 122)),
+                      filled: false,
+                      //fillColor: Color.fromARGB(211, 42, 63, 226),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 126, 122, 122)),
+                          borderRadius: BorderRadius.all(Radius.circular(12)))),
+                  onChanged: (characterEyeEnteredValue) {
+                    characterEyes = characterEyeEnteredValue;
+                  }),
+            ),
+          ]),
+          //Finishing up
           const Icon(Icons.directions_car),
         ]),
       ),

@@ -1,4 +1,22 @@
 {
+        
+        "Proficiencies": [
+                {
+                        "ProficiencyTree":["Skill","Perception"]
+                },
+                {
+                        "ProficiencyTree":["Weapon","Martial","Melee","Shortsword"]
+                },
+                {
+                        "ProficiencyTree":["Weapon","Martial","Melee","LongSword"]
+                },
+                {
+                        "ProficiencyTree":["Weapon","Martial","Ranged","Shortbow"]
+                },
+                {
+                        "ProficiencyTree":["Weapon","Martial","Ranged","Longbow"]
+                }
+                ],
         "Spells": [
         {
                 "Name": "Half-Orc",
@@ -49,7 +67,7 @@
                         "AbilityScoreMap": [0,2,0,0,0,0],
                         "Abilities": ["You have advantage on saving throws against being charmed, and magic can’t put you to sleep.","Elves don’t need to sleep. Instead, they meditate deeply, remaining semiconscious, for 4 hours a day. (The Common word for such meditation is “trance.”) While meditating, you can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. After resting in this way, you gain the same benefit that a human does from 8 hours of sleep."],
                         "Darkvision": 60,
-                        "Proficiencies": [ "Perception"],
+                        "SkillProficiencies": [ "Perception"],
                         "Resistances":["Fire"],
                         "Languages": ["Common", "Elvish"],
                         "Mystery1S": 0,
@@ -58,7 +76,7 @@
                                 {
                                         "Name": "Eladrin",
                                         "AbilityScoreMap": [0,0,0,1,0,0],
-                                        "Proficiencies": [ "Longsword", "Shortsword", "Shortbow", "Longbow"],
+                                        "SkillProficiencies": [ "Longsword", "Shortsword", "Shortbow", "Longbow"],
                                         "Abilities": ["You can cast the misty step spell once using this trait. You regain the ability to do so when you finish a short or long rest."],
                                         "Mystery1S": 1,
                         "Mystery2S": 0
@@ -67,7 +85,7 @@
                                 {
                                         "Name": "Wood Elf",
                                         "AbilityScoreMap": [0,0,0,0,1,0],
-                                        "Proficiencies": [ "Longsword", "Shortsword", "Shortbow", "Longbow"],
+                                        "SkillProficiencies": [ "Longsword", "Shortsword", "Shortbow", "Longbow"],
                                         "WalkingSpeed": 35,
                                         "Abilities": ["You can attempt to hide even when you are only lightly obscured by foliage, heavy rain, falling snow, mist, and other natural phenomena."],
                                         "Mystery1S": 0,
@@ -107,7 +125,7 @@
                                 
                         }
                 ],
-        "Proficiencies": [
+        "ProficiencyNames": [
                 {
                         "Name": "Acrobatics",
                         "RelevantAbility": "dexterity"

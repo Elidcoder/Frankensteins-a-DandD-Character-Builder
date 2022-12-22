@@ -1,33 +1,33 @@
 import 'dart:convert';
-import "dart:collection";
 import 'dart:io';
 
-// ignore: non_constant_identifier_names
-Set<Proficiency> PROFICIENCYLIST = <Proficiency>{};
-
 class Proficiency {
-  final String name;
-  final String category;
-  final int proficiencyTreeDepth;
+  final List<String> proficiencyTree;
   //final String sourceBook;
   factory Proficiency.fromJson(Map<String, dynamic> data) {
-    final name = data['Name'] as String;
-    final proficiencyTreeDepth = data['ProficiencyTreeDepth'] as int;
-    final category = data['Category'] as String;
+    final proficiencyTree =
+        data['ProficiencyTree'].cast<String>() as List<String>;
 
-    return Proficiency(
-        category: category,
-        name: name,
-        proficiencyTreeDepth: proficiencyTreeDepth
+    return Proficiency(proficiencyTree: proficiencyTree
         //sourceBook: sourceBook,
         );
   }
-  Proficiency(
-      {required this.name,
-      required this.category,
-      //required this.sourcebook,
-      required this.proficiencyTreeDepth});
+  Proficiency({
+    required this.proficiencyTree,
+    //required this.sourcebook,});
+  });
 }
+
+///file loaded as a string 'jsonString'
+String jsonString = File(filepath).readAsStringSync();
+
+///file decoded into 'jsonmap'
+final dynamic jsonmap = decoder.convert(jsonString);
+// ignore: non_constant_identifier_names
+List<String> LANGUAGELIST = jsonmap["Languages"].cast<String>() as List<String>;
+// ignore: non_constant_identifier_names
+List<Proficiency> PROFICIENCYLIST =
+    jsonmap["Proficiencies"].cast<Proficiency>() as List<Proficiency>;
 
 class Subrace {
   final String name;
@@ -36,7 +36,7 @@ class Subrace {
   final List<String>? languages;
   final List<String>? resistances;
   final List<String>? abilities;
-  final List<String>? proficiencies;
+  final List<Proficiency>? proficienciesGained;
   final int darkVision;
   final int walkingSpeed;
   final int mystery1S;
@@ -50,8 +50,12 @@ class Subrace {
     //final sourceBook = data["Sourcebook"];
     final resistances = data["Resistances"]?.cast<String>() as List<String>?;
     final abilities = data['Abilities']?.cast<String>() as List<String>?;
-    final proficiencies =
-        data['Proficiencies']?.cast<String>() as List<String>?;
+    final proficienciesGainedNames =
+        data["GainedProficiencies"]?.cast<String>() as List<String>?;
+    final proficienciesGained = (proficienciesGainedNames?.map((thisprof) =>
+            (PROFICIENCYLIST.singleWhere(
+                (listprof) => listprof.proficiencyTree.last == thisprof))))
+        ?.toList();
     final walkingSpeed = data["WalkingSpeed"];
     final mystery1S = data["Mystery1S"] as int;
     final mystery2S = data["Mystery2S"] as int;
@@ -66,7 +70,7 @@ class Subrace {
         //sourceBook: sourceBook,
         resistances: resistances,
         abilities: abilities,
-        proficiencies: proficiencies);
+        proficienciesGained: proficienciesGained);
   }
   Subrace(
       {required this.name,
@@ -79,7 +83,7 @@ class Subrace {
       this.languages,
       this.resistances,
       this.abilities,
-      this.proficiencies});
+      this.proficienciesGained});
 }
 
 class Race {
@@ -90,7 +94,7 @@ class Race {
   final List<Subrace>? subRaces;
   final List<String>? resistances;
   final List<String>? abilities;
-  final List<String>? proficiencies;
+  final List<Proficiency>? proficienciesGained;
   final int darkVision;
   final int walkingSpeed;
   final int mystery1S;
@@ -107,8 +111,12 @@ class Race {
         .toList();
     final resistances = data["Resistances"]?.cast<String>() as List<String>?;
     final abilities = data['Abilities']?.cast<String>() as List<String>?;
-    final proficiencies =
-        data['Proficiencies']?.cast<String>() as List<String>?;
+    final proficienciesGainedNames =
+        data["GainedProficiencies"]?.cast<String>() as List<String>?;
+    final proficienciesGained = (proficienciesGainedNames?.map((thisprof) =>
+            (PROFICIENCYLIST.singleWhere(
+                (listprof) => listprof.proficiencyTree.last == thisprof))))
+        ?.toList();
     final walkingSpeed = data["WalkingSpeed"];
     final mystery1S = data["Mystery1S"] as int;
     final mystery2S = data["Mystery2S"] as int;
@@ -123,7 +131,7 @@ class Race {
       subRaces: subRaces,
       resistances: resistances,
       abilities: abilities,
-      proficiencies: proficiencies,
+      proficienciesGained: proficienciesGained,
       mystery2S: mystery2S,
       mystery1S: mystery1S,
     );
@@ -140,7 +148,7 @@ class Race {
       this.subRaces,
       this.resistances,
       this.abilities,
-      this.proficiencies});
+      this.proficienciesGained});
 }
 
 //classes
@@ -157,8 +165,8 @@ class Class {
   final List<String> savingThrowProficiencies;
   final List<List<String>>
       equipmentOptions; //replace string => equipment//2 options for every one
-  final List<List<Proficiency>>
-      proficiencies; //replace string with equipment (parent of) armour/tools/weapons
+  final List<Proficiency>?
+      proficienciesGained; //replace string with equipment (parent of) armour/tools/weapons
 
   final List<List<String>> gainAtEachLevel; //replace string with something?
   //final String sourceBook;
@@ -179,8 +187,12 @@ class Class {
 
     final equipmentOptions =
         data['EquipmentOptions'].cast<List<String>>() as List<List<String>>;
-    final proficiencies = data['Proficiencies'].cast<List<Proficiency>>()
-        as List<List<Proficiency>>;
+    final proficienciesGainedNames =
+        data["GainedProficiencies"]?.cast<String>() as List<String>?;
+    final proficienciesGained = (proficienciesGainedNames?.map((thisprof) =>
+            (PROFICIENCYLIST.singleWhere(
+                (listprof) => listprof.proficiencyTree.last == thisprof))))
+        ?.toList();
     final gainAtEachLevel =
         data['GainAtEachLevel'].cast<List<String>>() as List<List<String>>;
 
@@ -196,7 +208,7 @@ class Class {
         //sourceBook: sourceBook,
         equipmentOptions: equipmentOptions,
         gainAtEachLevel: gainAtEachLevel,
-        proficiencies: proficiencies);
+        proficienciesGained: proficienciesGained);
   }
   Class(
       {required this.name,
@@ -210,7 +222,7 @@ class Class {
       required this.savingThrowProficiencies,
       required this.equipmentOptions,
       required this.gainAtEachLevel,
-      required this.proficiencies});
+      required this.proficienciesGained});
 }
 
 class Subclass {
@@ -284,7 +296,7 @@ class Background {
 
   final int? numberOfLanguageChoices;
   final List<String>? features;
-  final List<String>? initialSkillProficiencies;
+  final List<Proficiency>? initialProficiencies;
   final List<String>? optionalSkillProficiencies;
   final List<String>? toolProficiencies;
   final List<String> personalityTrait;
@@ -310,8 +322,12 @@ class Background {
 
     final toolProficiencies =
         data['ToolProficiencies']?.cast<String>() as List<String>?;
-    final initialSkillProficiencies =
-        data['InitialSkillProficiencies']?.cast<String>() as List<String>?;
+    final proficienciesGainedNames =
+        data["InitialProficiencies"]?.cast<String>() as List<String>?;
+    final initialProficiencies = (proficienciesGainedNames?.map((thisprof) =>
+            (PROFICIENCYLIST.singleWhere(
+                (listprof) => listprof.proficiencyTree.last == thisprof))))
+        ?.toList();
     final optionalSkillProficiencies =
         data['OptionalSkillProficiencies']?.cast<String>() as List<String>?;
     return Background(
@@ -325,7 +341,7 @@ class Background {
       numberOfLanguageChoices: numberOfLanguageChoices,
       numberOfSkillChoices: numberOfSkillChoices,
       toolProficiencies: toolProficiencies,
-      initialSkillProficiencies: initialSkillProficiencies,
+      initialProficiencies: initialProficiencies,
       //sourceBook: sourceBook,
       features: features,
     );
@@ -338,7 +354,7 @@ class Background {
     required this.flaw,
     this.numberOfSkillChoices,
     this.numberOfLanguageChoices,
-    this.initialSkillProficiencies,
+    this.initialProficiencies,
     this.features,
     this.equipment,
     this.optionalSkillProficiencies,
@@ -370,18 +386,12 @@ const JsonDecoder decoder = JsonDecoder();
 const String filepath =
     "C:\\Users\\arieh\\OneDrive\\Documents\\Dartwork\\frankenstein\\lib\\SRD.json";
 
-///file loaded as a string 'jsonString'
-String jsonString = File(filepath).readAsStringSync();
-
-///file decoded into 'jsonmap'
-final dynamic jsonmap = decoder.convert(jsonString);
-// ignore: non_constant_identifier_names
-Set<String> LANGUAGELIST = jsonmap["Languages"].cast<String>() as Set<String>;
-
+//for every background,race(sub),class(sub)
 // ignore: non_constant_identifier_names
 List<Race> RACELIST = [for (var x in jsonmap["Races"]) Race.fromJson(x)];
 List<Spell> list = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
 // ignore: non_constant_identifier_names
 List<Background> BACKGROUNDLIST = [
+  //There is large issue IDK and cant remember what else wsas in the fix
   for (var x in jsonmap["Background"]) Background.fromJson(x)
 ];
