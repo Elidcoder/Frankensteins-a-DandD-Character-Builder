@@ -19,8 +19,8 @@ class Proficiency {
 }
 
 ///file loaded as a string 'jsonString'
-String jsonString = File(filepath).readAsStringSync();
-
+String jsonString = File("assets/SRD.json").readAsStringSync();
+//String data =  rootBundle.loadString('assets/$path.json')
 ///file decoded into 'jsonmap'
 final dynamic jsonmap = decoder.convert(jsonString);
 // ignore: non_constant_identifier_names
@@ -32,7 +32,7 @@ List<Proficiency> PROFICIENCYLIST =
 class Subrace {
   final String name;
   final List<int> subRaceScoreIncrease;
-  //final String sourceBook;
+  final String sourceBook;
   final List<String>? languages;
   final List<String>? resistances;
   final List<String>? abilities;
@@ -47,7 +47,7 @@ class Subrace {
         data['AbilityScoreMap'].cast<int>() as List<int>;
     final languages = data['Languages']?.cast<String>() as List<String>?;
     final darkVision = data['Darkvision'] as int?;
-    //final sourceBook = data["Sourcebook"];
+    final sourceBook = data["Sourcebook"] as String;
     final resistances = data["Resistances"]?.cast<String>() as List<String>?;
     final abilities = data['Abilities']?.cast<String>() as List<String>?;
     final proficienciesGainedNames =
@@ -67,7 +67,7 @@ class Subrace {
         languages: languages,
         darkVision: darkVision ?? 0,
         walkingSpeed: walkingSpeed ?? 30,
-        //sourceBook: sourceBook,
+        sourceBook: sourceBook,
         resistances: resistances,
         abilities: abilities,
         proficienciesGained: proficienciesGained);
@@ -79,7 +79,7 @@ class Subrace {
       required this.walkingSpeed,
       required this.mystery1S,
       required this.mystery2S,
-      //required this.sourcebook,
+      required this.sourceBook,
       this.languages,
       this.resistances,
       this.abilities,
@@ -89,7 +89,7 @@ class Subrace {
 class Race {
   final String name;
   final List<int> raceScoreIncrease;
-  //final String sourceBook;
+  final String sourceBook;
   final List<String> languages;
   final List<Subrace>? subRaces;
   final List<String>? resistances;
@@ -104,7 +104,7 @@ class Race {
     final raceScoreIncrease = data['AbilityScoreMap'].cast<int>() as List<int>;
     final languages = data['Languages'].cast<String>() as List<String>?;
     final darkVision = data['Darkvision'] as int?;
-    //final sourceBook = data["Sourcebook"]?;
+    final sourceBook = data["Sourcebook"] as String?;
     final subRaceData = data['Subraces'] as List<dynamic>?;
     final subRaces = subRaceData
         ?.map((subRaceData) => Subrace.fromJson(subRaceData))
@@ -127,7 +127,7 @@ class Race {
       languages: languages ?? ["Common"],
       darkVision: darkVision ?? 0,
       walkingSpeed: walkingSpeed ?? 30,
-      //sourceBook: sourceBook ?? "N/A",
+      sourceBook: sourceBook ?? "N/A",
       subRaces: subRaces,
       resistances: resistances,
       abilities: abilities,
@@ -144,7 +144,7 @@ class Race {
       required this.walkingSpeed,
       required this.mystery1S,
       required this.mystery2S,
-      //required this.sourcebook,
+      required this.sourceBook,
       this.subRaces,
       this.resistances,
       this.abilities,
@@ -169,7 +169,7 @@ class Class {
       proficienciesGained; //replace string with equipment (parent of) armour/tools/weapons
 
   final List<List<String>> gainAtEachLevel; //replace string with something?
-  //final String sourceBook;
+  final String sourceBook;
 
   factory Class.fromJson(Map<String, dynamic> data) {
     final name = data['Name'] as String;
@@ -177,6 +177,7 @@ class Class {
     final maxHitDiceRoll = data['MaxHitDiceRoll'] as int;
     final roundDown = data['RoundDown'] as bool?;
     final numberOfSkillChoices = data['NumberOfSkillChoices'] as int;
+    final sourceBook = data["Sourcebook"] as String;
 
     final spellsAndSpellSlots =
         data["SpellsAndSpellSlots"]?.cast<String>() as List<String>?;
@@ -205,7 +206,7 @@ class Class {
         optionsForSkillProficiencies: optionsForSkillProficiencies,
         savingThrowProficiencies: savingThrowProficiencies,
         spellsAndSpellSlots: spellsAndSpellSlots,
-        //sourceBook: sourceBook,
+        sourceBook: sourceBook,
         equipmentOptions: equipmentOptions,
         gainAtEachLevel: gainAtEachLevel,
         proficienciesGained: proficienciesGained);
@@ -218,7 +219,7 @@ class Class {
       this.spellsAndSpellSlots,
       required this.numberOfSkillChoices,
       required this.optionsForSkillProficiencies,
-      //required this.sourcebook,
+      required this.sourceBook,
       required this.savingThrowProficiencies,
       required this.equipmentOptions,
       required this.gainAtEachLevel,
@@ -230,18 +231,19 @@ class Subclass {
   final int spellLevelCoefficient;
   final bool? roundDown;
   final List<List<String>> gainAtEachLevel; //replace string with something?
-  //final String sourceBook;
+  final String sourceBook;
   factory Subclass.fromJson(Map<String, dynamic> data) {
     final name = data['Name'] as String;
     final spellLevelCoefficient = data['SpellLevelCoefficient'] as int;
     final roundDown = data['RoundDown'] as bool?;
+    final sourceBook = data["Sourcebook"] as String;
     final gainAtEachLevel =
         data['GainAtEachLevel'].cast<List<String>>() as List<List<String>>;
     return Subclass(
       spellLevelCoefficient: spellLevelCoefficient,
       name: name,
       roundDown: roundDown,
-      //sourceBook: sourceBook,
+      sourceBook: sourceBook,
       gainAtEachLevel: gainAtEachLevel,
     );
   }
@@ -249,7 +251,7 @@ class Subclass {
       {required this.name,
       required this.spellLevelCoefficient,
       this.roundDown,
-      //required this.sourcebook,
+      required this.sourceBook,
       required this.gainAtEachLevel});
 }
 
@@ -293,6 +295,7 @@ class Spell {
 class Background {
   final String name;
   final int? numberOfSkillChoices;
+  final String sourceBook;
 
   final int? numberOfLanguageChoices;
   final List<String>? features;
@@ -307,6 +310,7 @@ class Background {
   final List<String>? equipment;
   factory Background.fromJson(Map<String, dynamic> data) {
     final name = data['Name'] as String;
+    final sourceBook = data["Sourcebook"] as String;
 
     final personalityTrait =
         data['PersonalityTrait'].cast<String>() as List<String>;
@@ -342,11 +346,12 @@ class Background {
       numberOfSkillChoices: numberOfSkillChoices,
       toolProficiencies: toolProficiencies,
       initialProficiencies: initialProficiencies,
-      //sourceBook: sourceBook,
+      sourceBook: sourceBook,
       features: features,
     );
   }
   Background({
+    required this.sourceBook,
     required this.name,
     required this.personalityTrait,
     required this.ideal,
@@ -383,8 +388,8 @@ class Weapon {
 */
 const JsonDecoder decoder = JsonDecoder();
 //make this maintainable
-const String filepath =
-    "C:\\Users\\arieh\\OneDrive\\Documents\\Dartwork\\frankenstein\\lib\\SRD.json";
+//const String filepath =
+//  "C:\\Users\\arieh\\OneDrive\\Documents\\Dartwork\\frankenstein\\lib\\SRD.json";
 
 //for every background,race(sub),class(sub)
 // ignore: non_constant_identifier_names
@@ -395,3 +400,4 @@ List<Background> BACKGROUNDLIST = [
   //There is large issue IDK and cant remember what else wsas in the fix
   for (var x in jsonmap["Background"]) Background.fromJson(x)
 ];
+List<Class> CLASSLIST = [for (var x in jsonmap["Classes"]) Class.fromJson(x)];

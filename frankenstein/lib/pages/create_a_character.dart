@@ -80,6 +80,11 @@ class MainCreateCharacter extends State<CreateACharacter>
   ];
   List<Widget> mystery1slist = [];
   List<Widget> mystery2slist = [];
+
+  //Class variables initialised
+  List<dynamic>?
+      widgetsColumn; //can we initialise early? or reinitialise each time or something
+
   //Background variables initialised
   Background currentBackground = BACKGROUNDLIST.first;
   String backgroundPersonalityTrait =
