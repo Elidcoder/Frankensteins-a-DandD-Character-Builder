@@ -11,6 +11,7 @@ import 'pages/my_characters.dart';
 import 'pages/roll_dice.dart';
 import 'pages/search_for_content.dart';
 
+// ignore: non_constant_identifier_names
 final Map<int, Widget> PAGELINKER = {
   0: const MainMenu(),
   1: CreateACharacter(),

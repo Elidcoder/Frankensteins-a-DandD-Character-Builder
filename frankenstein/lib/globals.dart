@@ -151,12 +151,13 @@ class Race {
       this.proficienciesGained});
 }
 
-//classes
+//classes - PROFICIENCY LIST NEEDS FIXING
 class Class {
   final String name;
-  final int spellLevelCoefficient;
+  final String classType;
   final int maxHitDiceRoll;
   final bool? roundDown;
+  final String mainOrSpellcastingAbility;
 
   final int numberOfSkillChoices;
   final List<String> optionsForSkillProficiencies;
@@ -165,7 +166,8 @@ class Class {
   final List<String> savingThrowProficiencies;
   final List<List<String>>
       equipmentOptions; //replace string => equipment//2 options for every one
-  final List<Proficiency>?
+  //Wrong change later
+  final List<String>?
       proficienciesGained; //replace string with equipment (parent of) armour/tools/weapons
 
   final List<List<String>> gainAtEachLevel; //replace string with something?
@@ -173,7 +175,9 @@ class Class {
 
   factory Class.fromJson(Map<String, dynamic> data) {
     final name = data['Name'] as String;
-    final spellLevelCoefficient = data['SpellLevelCoefficient'] as int;
+    final mainOrSpellcastingAbility =
+        data["MainOrSpellcastingAbility"] as String;
+    final classType = data['ClassType'] as String;
     final maxHitDiceRoll = data['MaxHitDiceRoll'] as int;
     final roundDown = data['RoundDown'] as bool?;
     final numberOfSkillChoices = data['NumberOfSkillChoices'] as int;
@@ -188,17 +192,18 @@ class Class {
 
     final equipmentOptions =
         data['EquipmentOptions'].cast<List<String>>() as List<List<String>>;
-    final proficienciesGainedNames =
+    final proficienciesGained =
         data["GainedProficiencies"]?.cast<String>() as List<String>?;
-    final proficienciesGained = (proficienciesGainedNames?.map((thisprof) =>
+    /*final proficienciesGained = (proficienciesGainedNames?.map((thisprof) =>
             (PROFICIENCYLIST.singleWhere(
                 (listprof) => listprof.proficiencyTree.last == thisprof))))
-        ?.toList();
+        ?.toList();*/
     final gainAtEachLevel =
         data['GainAtEachLevel'].cast<List<String>>() as List<List<String>>;
 
     return Class(
-        spellLevelCoefficient: spellLevelCoefficient,
+        mainOrSpellcastingAbility: mainOrSpellcastingAbility,
+        classType: classType,
         maxHitDiceRoll: maxHitDiceRoll,
         name: name,
         roundDown: roundDown,
@@ -213,7 +218,8 @@ class Class {
   }
   Class(
       {required this.name,
-      required this.spellLevelCoefficient,
+      required this.mainOrSpellcastingAbility,
+      required this.classType,
       required this.maxHitDiceRoll,
       this.roundDown,
       this.spellsAndSpellSlots,
@@ -228,28 +234,32 @@ class Class {
 
 class Subclass {
   final String name;
-  final int spellLevelCoefficient;
+  final String classType;
   final bool? roundDown;
+  final String mainOrSpellcastingAbility;
   final List<List<String>> gainAtEachLevel; //replace string with something?
   final String sourceBook;
   factory Subclass.fromJson(Map<String, dynamic> data) {
     final name = data['Name'] as String;
-    final spellLevelCoefficient = data['SpellLevelCoefficient'] as int;
+    final mainOrSpellcastingAbility =
+        data["MainOrSpellcastingAbility"] as String;
+    final classType = data['ClassType'] as String;
     final roundDown = data['RoundDown'] as bool?;
     final sourceBook = data["Sourcebook"] as String;
     final gainAtEachLevel =
         data['GainAtEachLevel'].cast<List<String>>() as List<List<String>>;
     return Subclass(
-      spellLevelCoefficient: spellLevelCoefficient,
-      name: name,
-      roundDown: roundDown,
-      sourceBook: sourceBook,
-      gainAtEachLevel: gainAtEachLevel,
-    );
+        classType: classType,
+        name: name,
+        roundDown: roundDown,
+        sourceBook: sourceBook,
+        gainAtEachLevel: gainAtEachLevel,
+        mainOrSpellcastingAbility: mainOrSpellcastingAbility);
   }
   Subclass(
       {required this.name,
-      required this.spellLevelCoefficient,
+      required this.classType,
+      required this.mainOrSpellcastingAbility,
       this.roundDown,
       required this.sourceBook,
       required this.gainAtEachLevel});
@@ -400,4 +410,5 @@ List<Background> BACKGROUNDLIST = [
   //There is large issue IDK and cant remember what else wsas in the fix
   for (var x in jsonmap["Background"]) Background.fromJson(x)
 ];
+// ignore: non_constant_identifier_names
 List<Class> CLASSLIST = [for (var x in jsonmap["Classes"]) Class.fromJson(x)];

@@ -137,11 +137,13 @@
                 {
                         "Name": "Fighter",
                         "Sourcebook": "Player's Handbook",
-                        "SpellLevelCoefficient": 0,
+                        "ClassType": "Martial",
                         "MaxHitDiceRoll": 10,
+                        "MainOrSpellcastingAbility":"Strength",
                         "SavingThrowProficiencies":["Strength","Constitution"],
-                        "GainedProficiencies": ["Simple Weapons", "Martial Weapons"],
+                        "GainedProficiencies": ["Simple Weapons", "Martial Weapons", "Shields","Armour"],
                         "NumberOfSkillChoices":2,
+                        "EquipmentOptions":[],
                         "OptionsForSkillProficiencies":["Acrobatics", "Animal Handling", "Athletics", "History", "Insight", "Intimidation", "Perception", "Survival"],
                         "GainAtEachLevel":[
                                 [
@@ -159,6 +161,26 @@
                                                 ["Level", "2"],
                                                 ["Bonus", "Action Surge","You can push yourself beyond your normal limits for a moment. On your turn, you can take one additional action. Once you use this feature, you must finish a short or long rest before you can use it again."]    
                                         ]
+                                ]
+                        ]
+                        
+                },
+                {
+                        "Name": "Wizard",
+                        "Sourcebook": "Player's Handbook",
+                        "ClassType": "Full Caster",
+                        "MaxHitDiceRoll": 6,
+                        "MainOrSpellcastingAbility":"Intelligence",
+                        "SavingThrowProficiencies":["Intelligence","Wisdom"],
+                        "GainedProficiencies": ["Daggers", "Darts", "Slings", "Quarterstaffs", "Light crossbows"],
+                        "NumberOfSkillChoices":2,
+                        "EquipmentOptions":[],
+                        "OptionsForSkillProficiencies":["Arcana", "History", "Insight", "Investigation", "Medicine", "Religion"],
+                        "GainAtEachLevel":[
+                                [
+                                        [["Level", "1"], 
+                                        ["Bonus", "Ritual Casting", "You can cast a wizard spell as a ritual if that spell has the ritual tag and you have the spell in your spellbook. You don’t need to have the spell prepared."], 
+                                        ["Bonus","Arcane Recovery","You have learned to regain some of your magical energy by studying your spellbook. Once per day when you finish a short rest, you can choose expended spell slots to recover. The spell slots can have a combined level that is equal to or less than half your wizard level (rounded up), and none of the slots can be 6th level or higher. For example, if you're a 4th-level wizard, you can recover up to two levels worth of spell slots. You can recover either a 2nd-level spell slot or two 1st-level spell slots."]]
                                 ]
                         ]
                         

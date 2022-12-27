@@ -10,6 +10,7 @@ int abilityScoreCost(int x) {
   return 1;
 }
 
+//Map<String, String> characterTypeReturner = {0.0:"Martial",1.0:"Full Caster", 0.5: "Half Caster", 0.3:"Third caster"};
 Spell listgetter(String spellname) {
   //huge issue with adding content WITH DUPLICATE NAME AND (TYPE)
   for (int x = 0; x < list.length; x++) {
@@ -82,8 +83,12 @@ class MainCreateCharacter extends State<CreateACharacter>
   List<Widget> mystery2slist = [];
 
   //Class variables initialised
-  List<dynamic>?
-      widgetsColumn; //can we initialise early? or reinitialise each time or something
+  List<Widget> widgetsInPlay = []; //added to each time a class is selected
+  List<dynamic> selections =
+      []; //added to each time a class is selected and entries changed as options are
+  List<int> levelsPerClass = List.filled(CLASSLIST.length, 0);
+  List<String> selectedWords = [];
+  List<String> words = ["eli", "this", "works"];
 
   //Background variables initialised
   Background currentBackground = BACKGROUNDLIST.first;
@@ -1148,78 +1153,302 @@ class MainCreateCharacter extends State<CreateACharacter>
             ],
           ),
           //class
-          Column(children: [
-            DropdownButton<String>(
-              onChanged: (String? value) {
-                // This is called when the user selects an item.
-                setState(() {
-                  spellExample = listgetter(value!);
-                });
-              },
-              value: spellExample.name,
-              icon: const Icon(Icons.arrow_downward),
-              items: list.map<DropdownMenuItem<String>>((Spell value) {
-                return DropdownMenuItem<String>(
-                  value: value.name,
-                  child: Text(value.name),
-                );
-              }).toList(),
-              elevation: 2,
-              style: const TextStyle(
-                  color: Colors.blue, fontWeight: FontWeight.w700),
-              underline: Container(
-                height: 1,
-                color: Colors.deepPurpleAccent,
+          DefaultTabController(
+            length: 2,
+            child: Scaffold(
+              appBar: AppBar(
+                title: Center(
+                  child: Text(
+                      '${int.parse(characterLevel ?? "1") - levelsPerClass.reduce((value, element) => value + element)} class levels available but unselected',
+                      style: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white)),
+                ),
+                bottom: const TabBar(
+                  tabs: [
+                    Tab(child: Text("Choose your classes")),
+                    Tab(
+                        child: Text(
+                            "Make your selections for each level in your class")),
+                  ],
+                ),
               ),
+              body: TabBarView(children: [
+                SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Wrap(
+                    spacing: 8.0,
+                    runSpacing: 8.0,
+                    alignment: WrapAlignment.center,
+                    children:
+                        // This is the list of buttons
+                        List.generate(CLASSLIST.length, (index) {
+                      return Container(
+                          width: (["Martial", "Third Caster"]
+                                  .contains(CLASSLIST[index].classType))
+                              ? 210
+                              : 225,
+                          height: 168,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            border: Border.all(
+                              color: const Color.fromARGB(255, 7, 26, 239),
+                              width: 2,
+                            ),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(CLASSLIST[index].name,
+                                  style: const TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white)),
+                              Text("Class type: ${CLASSLIST[index].classType}",
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white)),
+                              (["Martial", "Third Caster"]
+                                      .contains(CLASSLIST[index].classType))
+                                  ? Text(
+                                      "Main ability: ${CLASSLIST[index].mainOrSpellcastingAbility}",
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white))
+                                  : Text(
+                                      "Spellcasting ability: ${CLASSLIST[index].mainOrSpellcastingAbility}",
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white)),
+                              Text(
+                                  "Hit die: D${CLASSLIST[index].maxHitDiceRoll}",
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white)),
+                              Text(
+                                  "Saves: ${CLASSLIST[index].savingThrowProficiencies.join(",")}",
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white)),
+                              const SizedBox(height: 7),
+                              OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    backgroundColor: (int.parse(
+                                                characterLevel ?? "1") ==
+                                            levelsPerClass.reduce(
+                                                (value, element) =>
+                                                    value + element))
+                                        ? const Color.fromARGB(247, 56, 53, 52)
+                                        : const Color.fromARGB(
+                                            150, 61, 33, 243),
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4))),
+                                    side: const BorderSide(
+                                        width: 3,
+                                        color:
+                                            Color.fromARGB(255, 10, 126, 54)),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      if (int.parse(characterLevel ?? "1") >
+                                          levelsPerClass.reduce(
+                                              (value, element) =>
+                                                  value + element)) {
+                                        levelsPerClass[index]++;
+                                      }
+                                    });
+                                  },
+                                  child: const Icon(Icons.add,
+                                      color: Colors.white, size: 35))
+                            ],
+                          ));
+                    }),
+                    /*Expanded(
+                      child: ListView.builder(
+                        itemCount: CLASSLIST.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                              width: 210,
+                              height: 168,
+                              decoration: BoxDecoration(
+                                color: Colors.blue,
+                                border: Border.all(
+                                  color: const Color.fromARGB(255, 7, 26, 239),
+                                  width: 2,
+                                ),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                              ),
+                              child: Column(
+                                children: [
+                                  Text(CLASSLIST[index].name,
+                                      style: const TextStyle(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white)),
+                                  Text(
+                                      "Class type: ${CLASSLIST[index].classType}",
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white)),
+                                  (["Martial", "Third Caster"]
+                                          .contains(CLASSLIST[index].classType))
+                                      ? Text(
+                                          "Main ability: ${CLASSLIST[index].mainOrSpellcastingAbility}",
+                                          style: const TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white))
+                                      : Text(
+                                          "Spellcasting ability: ${CLASSLIST[index].mainOrSpellcastingAbility}",
+                                          style: const TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white)),
+                                  Text(
+                                      "Hit die: D${CLASSLIST[index].maxHitDiceRoll}",
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white)),
+                                  Text(
+                                      "Saves: ${CLASSLIST[index].savingThrowProficiencies.join(",")}",
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white)),
+                                  const SizedBox(height: 7),
+                                  OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        backgroundColor:
+                                            (int.parse(characterLevel ?? "1") ==
+                                                    levelsPerClass.reduce(
+                                                        (value, element) =>
+                                                            value + element))
+                                                ? const Color.fromARGB(
+                                                    247, 56, 53, 52)
+                                                : const Color.fromARGB(
+                                                    150, 61, 33, 243),
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(4))),
+                                        side: const BorderSide(
+                                            width: 3,
+                                            color: Color.fromARGB(
+                                                255, 10, 126, 54)),
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          if (int.parse(characterLevel ?? "1") >
+                                              levelsPerClass.reduce(
+                                                  (value, element) =>
+                                                      value + element)) {
+                                            levelsPerClass[index]++;
+                                          }
+                                        });
+                                      },
+                                      child: const Icon(Icons.add,
+                                          color: Colors.white, size: 35))
+                                ],
+                              ));
+                        },
+                      ),
+                    )*/
+                  ),
+                ),
+                Column(children: [
+                  Container(
+                      width: 210,
+                      height: 168,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 7, 26, 239),
+                          width: 2,
+                        ),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(CLASSLIST.first.name,
+                              style: const TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white)),
+                          Text("Class type: ${CLASSLIST.first.classType}",
+                              style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white)),
+                          (["Martial", "Third Caster"]
+                                  .contains(CLASSLIST.first.classType))
+                              ? Text(
+                                  "Main ability: ${CLASSLIST.first.mainOrSpellcastingAbility}",
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white))
+                              : Text(
+                                  "Spellcasting ability: ${CLASSLIST.first.mainOrSpellcastingAbility}",
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white)),
+                          Text("Hit die: D${CLASSLIST.first.maxHitDiceRoll}",
+                              style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white)),
+                          Text(
+                              "Saves: ${CLASSLIST.first.savingThrowProficiencies.join(",")}",
+                              style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white)),
+                          const SizedBox(height: 7),
+                          OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor: (int.parse(
+                                            characterLevel ?? "1") ==
+                                        levelsPerClass.reduce(
+                                            (value, element) =>
+                                                value + element))
+                                    ? const Color.fromARGB(247, 56, 53, 52)
+                                    : const Color.fromARGB(150, 61, 33, 243),
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(4))),
+                                side: const BorderSide(
+                                    width: 3,
+                                    color: Color.fromARGB(255, 10, 126, 54)),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  if (int.parse(characterLevel ?? "1") >
+                                      levelsPerClass.reduce((value, element) =>
+                                          value + element)) {
+                                    levelsPerClass.first++;
+                                  }
+                                });
+                              },
+                              child: const Icon(Icons.add,
+                                  color: Colors.white, size: 35))
+                        ],
+                      )),
+                ])
+              ]),
             ),
-            DropdownButton<String>(
-              value: characterLevel,
-              icon: const Icon(Icons.arrow_drop_down,
-                  color: Color.fromARGB(255, 7, 26, 239)),
-              elevation: 16,
-              style: const TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 20),
-              underline: Container(
-                height: 2,
-                color: const Color.fromARGB(255, 7, 26, 239),
-              ),
-              onChanged: (String? value) {
-                // This is called when the user selects an item.
-                setState(() {
-                  characterLevel = value!;
-                });
-              },
-              items: [
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "7",
-                "8",
-                "9",
-                "10",
-                "11",
-                "12",
-                "13",
-                "14",
-                "15",
-                "16",
-                "17",
-                "18",
-                "19",
-                "20"
-              ].map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Center(child: Text(value)),
-                );
-              }).toList(),
-            )
-          ]),
+          ),
           //Background
           Column(
             children: [
@@ -2561,7 +2790,79 @@ class MainCreateCharacter extends State<CreateACharacter>
             )
           ]),
           //spells
-          const Icon(Icons.directions_car),
+
+          Column(children: [
+            DropdownButton<String>(
+              onChanged: (String? value) {
+                // This is called when the user selects an item.
+                setState(() {
+                  spellExample = listgetter(value!);
+                });
+              },
+              value: spellExample.name,
+              icon: const Icon(Icons.arrow_downward),
+              items: list.map<DropdownMenuItem<String>>((Spell value) {
+                return DropdownMenuItem<String>(
+                  value: value.name,
+                  child: Text(value.name),
+                );
+              }).toList(),
+              elevation: 2,
+              style: const TextStyle(
+                  color: Colors.blue, fontWeight: FontWeight.w700),
+              underline: Container(
+                height: 1,
+                color: Colors.deepPurpleAccent,
+              ),
+            ),
+            DropdownButton<String>(
+              value: characterLevel,
+              icon: const Icon(Icons.arrow_drop_down,
+                  color: Color.fromARGB(255, 7, 26, 239)),
+              elevation: 16,
+              style: const TextStyle(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 20),
+              underline: Container(
+                height: 2,
+                color: const Color.fromARGB(255, 7, 26, 239),
+              ),
+              onChanged: (String? value) {
+                // This is called when the user selects an item.
+                setState(() {
+                  characterLevel = value!;
+                });
+              },
+              items: [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12",
+                "13",
+                "14",
+                "15",
+                "16",
+                "17",
+                "18",
+                "19",
+                "20"
+              ].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Center(child: Text(value)),
+                );
+              }).toList(),
+            )
+          ]),
           //Equipment
           const Icon(Icons.directions_bike),
           //Boons and magic items
@@ -2786,7 +3087,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                 )
               ],
             ),
-            const SizedBox(height: 10),
             const Text(
               textAlign: TextAlign.center,
               "Backstory:",
@@ -2822,7 +3122,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                     characterEyes = characterEyeEnteredValue;
                   }),
             ),
-            const SizedBox(height: 10),
             const Text(
               textAlign: TextAlign.center,
               "Additional Features:",
