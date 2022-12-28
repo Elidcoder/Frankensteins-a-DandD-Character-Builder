@@ -41,3 +41,5 @@ Json fullish backgound:
                                 "InitialLanguages":
                                 
                         }
+debugPrint("${CLASSLIST.first.gainAtEachLevel[0]}");
+//bug stuff

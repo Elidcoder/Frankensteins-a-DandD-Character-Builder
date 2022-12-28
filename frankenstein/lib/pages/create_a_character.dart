@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frankenstein/characterCreationGlobals.dart';
 import "package:frankenstein/globals.dart";
 import "dart:collection";
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
@@ -8,6 +9,109 @@ int abilityScoreCost(int x) {
     return 2;
   }
   return 1;
+}
+
+class AbilityScore {
+  int value;
+  String name;
+
+  AbilityScore({required this.name, required this.value});
+}
+
+//would love to pass in a character class here
+//Many parts remain unfinished but should be completed as their relevent tabs are
+//value, ACLIST, SPEEDMAP, INT, WIS, STR, DEX,CAR,CON,CURRENCY
+Widget? leveGainParser(
+    List<dynamic> x,
+    List<List<dynamic>> ACLIST,
+    Map<String, List<String>> SPEEDMAP,
+    AbilityScore INT,
+    AbilityScore WIS,
+    AbilityScore STR,
+    AbilityScore DEX,
+    AbilityScore CAR,
+    AbilityScore CON,
+    Map<String, int> CURRENCY,
+    Class SELECTEDCLASS,
+    List<String> FEATURESANDTRAITS) {
+  //Levelup(class?)
+  debugPrint("${x[0]}");
+  if (x[0] == "Level") {
+    // ("Level", "numb")
+    return Text(
+      "${SELECTEDCLASS.name} Level ${x[1]} choice(s):",
+      style: const TextStyle(
+          fontSize: 25,
+          fontWeight: FontWeight.w700,
+          color: Color.fromARGB(255, 0, 168, 252)),
+    );
+  } else if (x[0] == "Nothing") {
+    // ("Nothing", "numb")
+    return Text(
+      "No choices needed for ${SELECTEDCLASS.name} level ${x[1]}",
+      style: const TextStyle(
+          fontSize: 25,
+          fontWeight: FontWeight.w700,
+          color: Color.fromARGB(255, 0, 168, 252)),
+    );
+  } else if (x[0] == "Bonus") {
+    // ("Bonus","String description")
+    FEATURESANDTRAITS.add(x[1]);
+  } else if (x[0] == "AC") {
+    // ("AC","intelligence + 2", "RQUIREMENT")
+    ACLIST.add([x[1], x[2]]);
+  } /* else if (x[0] == "ACModifier") {
+    //("ACModifier", "2/intelligence", "armour"(requirement))
+    SPEEDLIST.append([x[1], x[2]]);
+  }*/
+  else if (x[0] == "Speed") {
+    //note base speed is given by race
+    //("speed", (w/s/c/f/h), numb/expression")
+    SPEEDMAP[x[1]]?.add(x[2]);
+  } else if (x[0] == "AttributeBoost") {
+    if (x[1] == "Intelligence") {
+      INT.value += int.parse(x[2]);
+    } else if (x[1] == "Strength") {
+      STR.value += int.parse(x[2]);
+    } else if (x[1] == "Constitution") {
+      CON.value += int.parse(x[2]);
+    } else if (x[1] == "Dexterity") {
+      DEX.value += int.parse(x[2]);
+    } else if (x[1] == "Wisdom") {
+      WIS.value += int.parse(x[2]);
+    } else if (x[1] == "charisma") {
+      CAR.value += int.parse(x[2]);
+    }
+    //do this later
+  } /*else if (x[0] == "Equipment") {
+    //note base speed is given by race
+    //("speed", "10", "(w/s/c/f)")
+    SPEEDLIST.append([x[1], x[2]]);
+  }*/
+  else if (x[0] == "Money") {
+    //("Money", "Copper Pieces", "10")
+    CURRENCY[x[1]] = CURRENCY[x[1]]! + int.parse(x[2]);
+  } //deal with these later
+  /*else if (x[0] == "Spell") {
+    ///
+  } else if (x[0] == "ASI") {
+    ("ASI")
+      ASINUMB ++;
+  } else if (x[0] == "Feat") {
+    ("Feat","Any/ featname")
+    if (x[1]== "Any"){
+      FEATNUMB ++;
+    }
+    else{
+      FEATLIST.add(correct feat)
+    }
+      
+  }*/
+  /*else if (x[0] == "Choice") {
+    //note base speed is given by race
+    //("speed", "10", "(w/s/c/f)")
+    SPEEDLIST.append([x[1], x[2]]);
+  }*/
 }
 
 //Map<String, String> characterTypeReturner = {0.0:"Martial",1.0:"Full Caster", 0.5: "Half Caster", 0.3:"Third caster"};
@@ -23,13 +127,6 @@ Spell listgetter(String spellname) {
   return list[0];
 } //}
 
-class AbilityScore {
-  int value;
-  String name;
-
-  AbilityScore({required this.name, required this.value});
-}
-
 class CreateACharacter extends StatefulWidget {
   @override
   MainCreateCharacter createState() => MainCreateCharacter();
@@ -41,6 +138,26 @@ class MainCreateCharacter extends State<CreateACharacter>
   //random stsuff
   @override
   bool get wantKeepAlive => true;
+  Widget bufferWidget = const Text("BUFFERWIDGET");
+  List<String> featuresAndTraits = [];
+  Map<String, List<String>> speedBonusMap = {
+    "Hover": [],
+    "Flying": [],
+    "Walking": [],
+    "Swimming": [],
+    "Climbing": []
+  };
+  Map<String, int> currencyStored = {
+    "Copper Pieces": 0,
+    "Silver Pieces": 0,
+    "Electrum Pieces": 0,
+    "Gold Pieces": 0,
+    "Platinum Pieces": 0
+  };
+  //list of string + a condition
+  List<List<dynamic>> ACList = [
+    ["10 + dexterity"]
+  ];
   Spell spellExample = list.first;
   String? levellingMethod;
   //Basics variables initialised
@@ -789,8 +906,17 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                 "18",
                                                 "19",
                                                 "20"
-                                              ].map<DropdownMenuItem<String>>(
-                                                  (String value) {
+                                              ]
+                                                  .where((element) =>
+                                                      int.parse(element) >=
+                                                      int.parse(
+                                                          characterLevel ??
+                                                              "1"))
+                                                  .toList()
+                                                  .map<
+                                                          DropdownMenuItem<
+                                                              String>>(
+                                                      (String value) {
                                                 return DropdownMenuItem<String>(
                                                   value: value,
                                                   child: Center(
@@ -1241,7 +1367,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               OutlinedButton(
                                   style: OutlinedButton.styleFrom(
                                     backgroundColor: (int.parse(
-                                                characterLevel ?? "1") ==
+                                                characterLevel ?? "1") <=
                                             levelsPerClass.reduce(
                                                 (value, element) =>
                                                     value + element))
@@ -1262,6 +1388,60 @@ class MainCreateCharacter extends State<CreateACharacter>
                                           levelsPerClass.reduce(
                                               (value, element) =>
                                                   value + element)) {
+                                        /*widgetsInPlay.addAll([
+                                          for (var x in CLASSLIST[index]
+                                                  .gainAtEachLevel[
+                                              levelsPerClass[index]])
+                                            leveGainParser(
+                                                x,
+                                                ACList,
+                                                speedBonusMap,
+                                                intelligence,
+                                                wisdom,
+                                                strength,
+                                                dexterity,
+                                                charisma,
+                                                constitution,
+                                                currencyStored,
+                                                CLASSLIST[index])
+                                        ].whereType<Widget>().toList());*/
+
+                                        for (List<dynamic> x
+                                            in CLASSLIST[index].gainAtEachLevel[
+                                                levelsPerClass[index]]) {
+                                          if (leveGainParser(
+                                                  x,
+                                                  ACList,
+                                                  speedBonusMap,
+                                                  intelligence,
+                                                  wisdom,
+                                                  strength,
+                                                  dexterity,
+                                                  charisma,
+                                                  constitution,
+                                                  currencyStored,
+                                                  CLASSLIST[index],
+                                                  featuresAndTraits) !=
+                                              null) {
+                                            widgetsInPlay.add(leveGainParser(
+                                                x,
+                                                ACList,
+                                                speedBonusMap,
+                                                intelligence,
+                                                wisdom,
+                                                strength,
+                                                dexterity,
+                                                charisma,
+                                                constitution,
+                                                currencyStored,
+                                                CLASSLIST[index],
+                                                featuresAndTraits)!);
+
+                                            if (x[0] == "Choice") {
+                                              selections.add([]);
+                                            }
+                                          }
+                                        }
                                         levelsPerClass[index]++;
                                       }
                                     });
@@ -1365,87 +1545,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                     )*/
                   ),
                 ),
-                Column(children: [
-                  Container(
-                      width: 210,
-                      height: 168,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        border: Border.all(
-                          color: const Color.fromARGB(255, 7, 26, 239),
-                          width: 2,
-                        ),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
-                      ),
-                      child: Column(
-                        children: [
-                          Text(CLASSLIST.first.name,
-                              style: const TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white)),
-                          Text("Class type: ${CLASSLIST.first.classType}",
-                              style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white)),
-                          (["Martial", "Third Caster"]
-                                  .contains(CLASSLIST.first.classType))
-                              ? Text(
-                                  "Main ability: ${CLASSLIST.first.mainOrSpellcastingAbility}",
-                                  style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white))
-                              : Text(
-                                  "Spellcasting ability: ${CLASSLIST.first.mainOrSpellcastingAbility}",
-                                  style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white)),
-                          Text("Hit die: D${CLASSLIST.first.maxHitDiceRoll}",
-                              style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white)),
-                          Text(
-                              "Saves: ${CLASSLIST.first.savingThrowProficiencies.join(",")}",
-                              style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white)),
-                          const SizedBox(height: 7),
-                          OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                backgroundColor: (int.parse(
-                                            characterLevel ?? "1") ==
-                                        levelsPerClass.reduce(
-                                            (value, element) =>
-                                                value + element))
-                                    ? const Color.fromARGB(247, 56, 53, 52)
-                                    : const Color.fromARGB(150, 61, 33, 243),
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4))),
-                                side: const BorderSide(
-                                    width: 3,
-                                    color: Color.fromARGB(255, 10, 126, 54)),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  if (int.parse(characterLevel ?? "1") >
-                                      levelsPerClass.reduce((value, element) =>
-                                          value + element)) {
-                                    levelsPerClass.first++;
-                                  }
-                                });
-                              },
-                              child: const Icon(Icons.add,
-                                  color: Colors.white, size: 35))
-                        ],
-                      )),
-                ])
+                Column(
+                    children: widgetsInPlay
+                        .where((element) => element != bufferWidget)
+                        .toList())
               ]),
             ),
           ),

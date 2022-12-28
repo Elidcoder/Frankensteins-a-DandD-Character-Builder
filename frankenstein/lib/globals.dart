@@ -170,7 +170,7 @@ class Class {
   final List<String>?
       proficienciesGained; //replace string with equipment (parent of) armour/tools/weapons
 
-  final List<List<String>> gainAtEachLevel; //replace string with something?
+  final List<List<dynamic>> gainAtEachLevel; //replace string with something?
   final String sourceBook;
 
   factory Class.fromJson(Map<String, dynamic> data) {
@@ -198,8 +198,9 @@ class Class {
             (PROFICIENCYLIST.singleWhere(
                 (listprof) => listprof.proficiencyTree.last == thisprof))))
         ?.toList();*/
-    final gainAtEachLevel =
-        data['GainAtEachLevel'].cast<List<String>>() as List<List<String>>;
+    final ganAtEachLevel =
+        data['GainAtEachLevel'].cast<List<dynamic>>() as List<List<dynamic>>;
+    final gainAtEachLevel = ganAtEachLevel.cast<List<List<dynamic>>>();
 
     return Class(
         mainOrSpellcastingAbility: mainOrSpellcastingAbility,
@@ -213,7 +214,8 @@ class Class {
         spellsAndSpellSlots: spellsAndSpellSlots,
         sourceBook: sourceBook,
         equipmentOptions: equipmentOptions,
-        gainAtEachLevel: gainAtEachLevel,
+        gainAtEachLevel: (data['GainAtEachLevel'].cast<List<dynamic>>()),
+        //.cast<List<List<dynamic>>>()
         proficienciesGained: proficienciesGained);
   }
   Class(
@@ -237,7 +239,8 @@ class Subclass {
   final String classType;
   final bool? roundDown;
   final String mainOrSpellcastingAbility;
-  final List<List<String>> gainAtEachLevel; //replace string with something?
+  final List<List<List<String>>>
+      gainAtEachLevel; //replace string with something?
   final String sourceBook;
   factory Subclass.fromJson(Map<String, dynamic> data) {
     final name = data['Name'] as String;
@@ -246,8 +249,8 @@ class Subclass {
     final classType = data['ClassType'] as String;
     final roundDown = data['RoundDown'] as bool?;
     final sourceBook = data["Sourcebook"] as String;
-    final gainAtEachLevel =
-        data['GainAtEachLevel'].cast<List<String>>() as List<List<String>>;
+    final gainAtEachLevel = data['GainAtEachLevel'].cast<List<List<String>>>()
+        as List<List<List<String>>>;
     return Subclass(
         classType: classType,
         name: name,

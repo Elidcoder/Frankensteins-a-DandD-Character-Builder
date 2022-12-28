@@ -156,12 +156,16 @@
                                                         ["Bonus", "Ambush", "When you make a Dexterity (Stealth) check or an initiative roll, you can expend one superiority die and add the die to the roll, provided you aren't incapacitated."]
                                                 ]
                                         ]
+                                ]
                                         ,
                                         [
                                                 ["Level", "2"],
                                                 ["Bonus", "Action Surge","You can push yourself beyond your normal limits for a moment. On your turn, you can take one additional action. Once you use this feature, you must finish a short or long rest before you can use it again."]    
+                                        ],
+                                        [
+                                                ["Nothing", "3"]
                                         ]
-                                ]
+                                
                         ]
                         
                 },
