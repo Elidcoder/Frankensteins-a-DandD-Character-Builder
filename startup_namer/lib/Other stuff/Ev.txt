@@ -43,4 +43,3 @@ Json fullish backgound:
                         }
 debugPrint("${CLASSLIST.first.gainAtEachLevel[0]}");
 //bug stuff
-flutter create . -> rebuilds the windows file 

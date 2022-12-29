@@ -1,13 +1,10 @@
 List<dynamic> a = [];
-
+String b = "ELI";
 void main() {
   //List<int> b = [for (var x in a) a.indexOf(x)];
-  a.add([
-    [
-      1,
-      [1]
-    ],
-    [1]
-  ]);
-  print(a);
+  if (!["ELI"].contains(b)) {
+    print("$b not in [rli]");
+  } else {
+    print("$b in [ELI]");
+  }
 }

@@ -167,32 +167,19 @@ class _ChoiceRowState extends State<ChoiceRow> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Scaffold(
-      body: Center(
-          child: Container(
-        height: 60,
-        width: 400,
-        decoration: BoxDecoration(
-          color: Colors.red,
-          border: Border.all(
-            color: const Color.fromARGB(255, 7, 26, 239),
-            width: 2,
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
+      home: Scaffold(
+        body: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(x![0]), Text("Working"),
+            // Call the buildRows method to create a row of buttons for each element in the x list
+            ...buildRows(context, x?.sublist(1)),
+            // Display the selections
+            Text(selections.toString()),
+          ],
         ),
-        child: Column(children: [
-          Text(x![0]),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Call the buildRows method to create a row of buttons for each element in the x list
-              ...buildRows(context, x?.sublist(1)),
-              // Display the selections
-            ],
-          )
-        ]),
-      )),
-    ));
+      ),
+    );
   }
 
   List<Widget> buildRows(
@@ -200,7 +187,7 @@ class _ChoiceRowState extends State<ChoiceRow> {
     return [
       for (var input in inputStringLists!)
         //check it isn't a choice
-        if (!["Choice"].contains(input![0]))
+        if (!["Choice"].contains(x![0]))
           OutlinedButton(
               style: OutlinedButton.styleFrom(
                 backgroundColor:
@@ -231,7 +218,7 @@ class _ChoiceRowState extends State<ChoiceRow> {
             child: Row(
               children: [
                 // Recursively call the buildRows method to create buttons for the inner list
-                ...buildRows(context, input.sublist(2)),
+                ...buildRows(context, input),
               ],
             ),
           )
