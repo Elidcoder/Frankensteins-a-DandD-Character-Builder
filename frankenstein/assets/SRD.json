@@ -149,7 +149,7 @@
                                 [
                                         ["Level", "1"], 
                                         ["Bonus", "Second Wind", "You have a limited well of stamina that you can draw on to protect yourself from harm. On your turn, you can use a bonus action to regain hit points equal to 1d10 + your fighter level. Once you use this feature, you must finish a short or long rest before you can use it again."], 
-                                        ["Choice", 
+                                        ["Choice", "Choose your fighting style",
                                                 ["ACBonus","Defense","1", "Armour"],
                                                 ["Bonus","Interception","When a creature you can see hits a target, other than you, within 5 feet of you with an attack, you can use your reaction to reduce the damage the target takes by 1d10 + your proficiency bonus (to a minimum of 0 damage). You must be wielding a shield or a simple or martial weapon to use this reaction."],
                                                 ["Choice", "Superior Technique",
