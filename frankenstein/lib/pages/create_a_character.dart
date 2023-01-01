@@ -146,53 +146,50 @@ class ChoiceRow extends StatefulWidget {
   final List<dynamic>? x;
 
   // Declare a map to hold the selections
-  final Map<String, List<dynamic>>? selections;
+  //final Map<String, List<dynamic>>? selections;
 
-  ChoiceRow({this.x, this.selections});
-
+  ChoiceRow({this.x, this.allSelected});
+  dynamic selected;
+  final List<dynamic>? allSelected;
   @override
   _ChoiceRowState createState() =>
-      _ChoiceRowState(x: x, selections: selections);
+      _ChoiceRowState(x: x, allSelected: allSelected);
 }
 
 class _ChoiceRowState extends State<ChoiceRow> {
   // Declare the input list of strings or lists of strings
   final List<dynamic>? x;
+  dynamic selected;
+  final List<dynamic>? allSelected;
 
-  // Declare a map to hold the selections
-  Map<String, List<dynamic>>? selections;
-
-  _ChoiceRowState({this.x, this.selections});
+  _ChoiceRowState({this.x, this.allSelected});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-      body: Center(
-          child: Container(
-        height: 60,
-        width: 400,
-        decoration: BoxDecoration(
-          color: Colors.red,
-          border: Border.all(
-            color: const Color.fromARGB(255, 7, 26, 239),
-            width: 2,
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
-        ),
-        child: Column(children: [
-          Text(x![0]),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Call the buildRows method to create a row of buttons for each element in the x list
-              ...buildRows(context, x?.sublist(1)),
-              // Display the selections
-            ],
-          )
-        ]),
-      )),
-    ));
+            body: SizedBox(
+      height: 100,
+      child: Column(children: [
+        Text(x![0],
+            style: const TextStyle(
+                color: Colors.blue, fontSize: 18, fontWeight: FontWeight.w700)),
+        SizedBox(
+            height: 50,
+            child: Center(
+                child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: [
+                // Call the buildRows method to create a row of buttons for each element in the x list
+                ...buildRows(context, x?.sublist(1)),
+                // Display the selections
+              ],
+            )))
+      ]),
+    )
+            //),
+            ));
   }
 
   List<Widget> buildRows(
@@ -203,37 +200,51 @@ class _ChoiceRowState extends State<ChoiceRow> {
         if (!["Choice"].contains(input![0]))
           OutlinedButton(
               style: OutlinedButton.styleFrom(
-                backgroundColor:
-                    selections![input.join()]?.contains(input) == true
-                        ? Colors.blue
-                        : null, //<-- SEE HERE
+                backgroundColor: (selected == input)
+                    ? const Color.fromARGB(255, 73, 244, 113)
+                    : null, //<-- SEE HERE
               ),
               onPressed: () {
-                // When the button is pressed, update the selections map
                 setState(() {
-                  if (selections![input.join()]?.contains(input) == true) {
-                    selections![input.join()]!.remove(input);
-                    if (selections![input.join()]!.isEmpty) {
-                      selections!.remove(input.join());
+                  if (selected != null) {
+                    //unparse selected
+                    allSelected?.remove(input);
+                    if (selected == input) {
+                      selected = null;
+                    } else {
+                      selected = input;
+                      allSelected?.add(input);
                     }
                   } else {
-                    if (selections![input.join()] == null) {
-                      selections![input.join()] = [input];
-                    } else {
-                      selections![input.join()]!.add(input);
-                    }
+                    selected = input;
+                    allSelected?.add(input);
                   }
                 });
               },
               child: Text(input[1]))
         else
-          Expanded(
-            child: Row(
-              children: [
-                // Recursively call the buildRows method to create buttons for the inner list
-                ...buildRows(context, input.sublist(2)),
-              ],
+          Container(
+            height: 40,
+            decoration: BoxDecoration(
+              //color: Colors.pink,
+              border: Border.all(
+                color: const Color.fromARGB(255, 7, 26, 239),
+                width: 1,
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
             ),
+            child: Column(children: [
+              Text(input[1],
+                  style: const TextStyle(
+                      color: Colors.blue,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700)),
+              Row(
+                children: [
+                  ...buildRows(context, input.sublist(2)),
+                ],
+              )
+            ]),
           )
     ];
   }
@@ -245,7 +256,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   //random stsuff
   @override
   bool get wantKeepAlive => true;
-  Widget bufferWidget = const Text("BUFFERWIDGET");
+  //Widget bufferWidget = const Text("BUFFERWIDGET");
   List<String> featuresAndTraits = [];
   Map<String, List<String>> speedBonusMap = {
     "Hover": [],
@@ -311,6 +322,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   List<Widget> widgetsInPlay = []; //added to each time a class is selected
   List<int> levelsPerClass = List.filled(CLASSLIST.length, 0);
   Map<String, List<dynamic>> selections = {};
+  List<dynamic> allSelected = [];
   List<String> words = ["eli", "this", "works"];
 
   //Background variables initialised
@@ -1409,7 +1421,7 @@ class MainCreateCharacter extends State<CreateACharacter>
               appBar: AppBar(
                 title: Center(
                   child: Text(
-                      '${int.parse(characterLevel ?? "1") - levelsPerClass.reduce((value, element) => value + element)} class levels available but unselected',
+                      '${int.parse(characterLevel ?? "1") - levelsPerClass.reduce((value, element) => value + element)} class level(s) available but unselected', //and ${widgetsInPlay.length - levelsPerClass.reduce((value, element) => value + element) - allSelected.length} choice(s)
                       style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w600,
@@ -1512,34 +1524,43 @@ class MainCreateCharacter extends State<CreateACharacter>
                                           levelsPerClass.reduce(
                                               (value, element) =>
                                                   value + element)) {
-                                        /*widgetsInPlay.addAll([
-                                          for (var x in CLASSLIST[index]
-                                                  .gainAtEachLevel[
-                                              levelsPerClass[index]])
-                                            leveGainParser(
-                                                x,
-                                                ACList,
-                                                speedBonusMap,
-                                                intelligence,
-                                                wisdom,
-                                                strength,
-                                                dexterity,
-                                                charisma,
-                                                constitution,
-                                                currencyStored,
-                                                CLASSLIST[index])
-                                        ].whereType<Widget>().toList());*/
-
-                                        for (List<dynamic> x
-                                            in CLASSLIST[index].gainAtEachLevel[
-                                                levelsPerClass[index]]) {
-                                          if (x[0] == "Choice") {
-                                            widgetsInPlay.add(Expanded(
-                                                child: ChoiceRow(
+                                        if ((CLASSLIST[index]
+                                                .gainAtEachLevel[
+                                                    levelsPerClass[index]]
+                                                .where((element) =>
+                                                    element[0] == "Choice")
+                                                .toList())
+                                            .isEmpty) {
+                                          widgetsInPlay.add(Text(
+                                            "No choices needed for ${CLASSLIST[index].name} level ${CLASSLIST[index].gainAtEachLevel[levelsPerClass[index]][0][1]}",
+                                            style: const TextStyle(
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color.fromARGB(
+                                                    255, 0, 168, 252)),
+                                          ));
+                                        } else {
+                                          widgetsInPlay.add(Text(
+                                            "${CLASSLIST[index].name} Level ${CLASSLIST[index].gainAtEachLevel[levelsPerClass[index]][0][1]} choice(s):",
+                                            style: const TextStyle(
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color.fromARGB(
+                                                    255, 0, 168, 252)),
+                                          ));
+                                          for (List<dynamic> x
+                                              in CLASSLIST[index]
+                                                      .gainAtEachLevel[
+                                                  levelsPerClass[index]]) {
+                                            if (x[0] == "Choice") {
+                                              widgetsInPlay.add(SizedBox(
+                                                  height: 80,
+                                                  child: ChoiceRow(
                                                     x: x.sublist(1),
-                                                    selections: selections)));
-                                          }
-                                          if (leveGainParser(
+                                                    allSelected: allSelected,
+                                                  )));
+                                            } else {
+                                              leveGainParser(
                                                   x,
                                                   ACList,
                                                   speedBonusMap,
@@ -1551,25 +1572,12 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   constitution,
                                                   currencyStored,
                                                   CLASSLIST[index],
-                                                  featuresAndTraits) !=
-                                              null) {
-                                            widgetsInPlay.add(leveGainParser(
-                                                x,
-                                                ACList,
-                                                speedBonusMap,
-                                                intelligence,
-                                                wisdom,
-                                                strength,
-                                                dexterity,
-                                                charisma,
-                                                constitution,
-                                                currencyStored,
-                                                CLASSLIST[index],
-                                                featuresAndTraits)!);
+                                                  featuresAndTraits);
+                                            }
                                           }
                                         }
-                                        levelsPerClass[index]++;
                                       }
+                                      levelsPerClass[index]++;
                                     });
                                   },
                                   child: const Icon(Icons.add,
@@ -3100,7 +3108,32 @@ class MainCreateCharacter extends State<CreateACharacter>
                 )
               ])),
           //spells
-
+          DefaultTabController(
+            length: 2,
+            child: Scaffold(
+              appBar: AppBar(
+                title: const Center(
+                  child: Text(" X spells available",
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white)),
+                ),
+                bottom: const TabBar(
+                  tabs: [
+                    Tab(
+                        child: Text(
+                            "Choose your spells from regular progression")),
+                    Tab(
+                        child: Text(
+                            "Make your selections for bonus spells gained elsewhere")),
+                  ],
+                ),
+              ),
+              body: const TabBarView(children: [Text("PAGE1"), Text("PAGE")]),
+            ),
+          ),
+          //Equipment
           Column(children: [
             DropdownButton<String>(
               onChanged: (String? value) {
@@ -3173,8 +3206,6 @@ class MainCreateCharacter extends State<CreateACharacter>
               }).toList(),
             )
           ]),
-          //Equipment
-          const Icon(Icons.directions_bike),
           //Boons and magic items
           const Icon(Icons.directions_bike),
           //Backstory

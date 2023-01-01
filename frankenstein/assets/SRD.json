@@ -22,14 +22,14 @@
                 ],
         "Spells": [
         {
-                "Name": "Half-Orc",
-                "Effect": "60",
-                "Level": 2
-        },
-        {
                 "Name": "Shield",
-                "Effect": "+5 AC for 2 turns",
-                "Level": 1
+                "Effect": "An invisible barrier of magical force appears and protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from magic missile.",
+                "Level": 1,
+                "Somatic":true,
+                "Verbal":true,
+                "SpellSchool":"Abjuration",
+                "CastingTime": ["Reaction",1],
+                "AvailableTo":["Wizard","Sorcerer", "Battle Smith", "The Hexblade","Artillerist"]
         }
         ],
         "Weapons": [
@@ -154,7 +154,7 @@
                                                 ["Bonus","Interception","When a creature you can see hits a target, other than you, within 5 feet of you with an attack, you can use your reaction to reduce the damage the target takes by 1d10 + your proficiency bonus (to a minimum of 0 damage). You must be wielding a shield or a simple or martial weapon to use this reaction."],
                                                 ["Choice", "Superior Technique",
                                                         ["Bonus", "Ambush", "When you make a Dexterity (Stealth) check or an initiative roll, you can expend one superiority die and add the die to the roll, provided you aren't incapacitated."],
-                                                        ["Bonus", "BAMBUSH", "L"]
+                                                        ["Bonus", "Brace", "L"]
                                                 ]
                                         ]
                                 ]
@@ -183,9 +183,9 @@
                         "OptionsForSkillProficiencies":["Arcana", "History", "Insight", "Investigation", "Medicine", "Religion"],
                         "GainAtEachLevel":[
                                 [
-                                        [["Level", "1"], 
+                                        ["Level", "1"], 
                                         ["Bonus", "Ritual Casting", "You can cast a wizard spell as a ritual if that spell has the ritual tag and you have the spell in your spellbook. You don’t need to have the spell prepared."], 
-                                        ["Bonus","Arcane Recovery","You have learned to regain some of your magical energy by studying your spellbook. Once per day when you finish a short rest, you can choose expended spell slots to recover. The spell slots can have a combined level that is equal to or less than half your wizard level (rounded up), and none of the slots can be 6th level or higher. For example, if you're a 4th-level wizard, you can recover up to two levels worth of spell slots. You can recover either a 2nd-level spell slot or two 1st-level spell slots."]]
+                                        ["Bonus","Arcane Recovery","You have learned to regain some of your magical energy by studying your spellbook. Once per day when you finish a short rest, you can choose expended spell slots to recover. The spell slots can have a combined level that is equal to or less than half your wizard level (rounded up), and none of the slots can be 6th level or higher. For example, if you're a 4th-level wizard, you can recover up to two levels worth of spell slots. You can recover either a 2nd-level spell slot or two 1st-level spell slots."]
                                 ]
                         ]
                         

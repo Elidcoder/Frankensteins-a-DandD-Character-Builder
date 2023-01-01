@@ -194,13 +194,6 @@ class Class {
         data['EquipmentOptions'].cast<List<String>>() as List<List<String>>;
     final proficienciesGained =
         data["GainedProficiencies"]?.cast<String>() as List<String>?;
-    /*final proficienciesGained = (proficienciesGainedNames?.map((thisprof) =>
-            (PROFICIENCYLIST.singleWhere(
-                (listprof) => listprof.proficiencyTree.last == thisprof))))
-        ?.toList();*/
-    final ganAtEachLevel =
-        data['GainAtEachLevel'].cast<List<dynamic>>() as List<List<dynamic>>;
-    final gainAtEachLevel = ganAtEachLevel.cast<List<List<dynamic>>>();
 
     return Class(
         mainOrSpellcastingAbility: mainOrSpellcastingAbility,
@@ -272,32 +265,39 @@ class Spell {
   //ADD SPELL TYPE THINGY
   final String name;
   final String effect;
+  final String spellSchool;
   final int level;
-  final String? verbal;
-  final String? somatic;
+  final bool? verbal;
+  final bool? somatic;
   final String? material;
+  final List<dynamic> castingTime;
+  final List<String> availableTo;
   factory Spell.fromJson(Map<String, dynamic> data) {
     // note the explicit cast to String
     // this is required if robust lint rules are enabled
     //COULD GO THROUGH EVERY DATA[SPELL[X,Y,Z*]] TO ALLOW LESS FILES TO BE ADDED WITH CONTENT
-    final name = data['Name'] as String;
-    final effect = data['Effect'] as String;
     final level = data['Level'] as int?;
-    final verbal = data['Verbal'] as String?;
-    final somatic = data['Somatic'] as String?;
+    final verbal = data['Verbal'] as bool?;
+    final somatic = data['Somatic'] as bool?;
     final material = data['Material'] as String?;
     return Spell(
-        name: name,
-        effect: effect,
+        name: data['Name'],
+        effect: data['Effect'],
         level: level ?? 0,
-        verbal: verbal ?? "None",
-        somatic: somatic ?? "None",
-        material: material ?? "None");
+        verbal: verbal ?? false,
+        somatic: somatic ?? false,
+        material: material ?? "None",
+        spellSchool: data["SpellSchool"],
+        castingTime: data["CastingTime"].cast<dynamic>(),
+        availableTo: data["AvailableTo"].cast<String>());
   }
   Spell(
       {required this.name,
       required this.level,
       required this.effect,
+      required this.castingTime,
+      required this.availableTo,
+      required this.spellSchool,
       this.material,
       this.somatic,
       this.verbal});
