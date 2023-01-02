@@ -147,17 +147,19 @@ class CreateACharacter extends StatefulWidget {
 }
 
 class SpellSelections extends StatefulWidget {
-  SpellSelections();
+  final Class? classSelected;
+  SpellSelections({this.classSelected});
   @override
-  _SpellSelectionsState createState() => _SpellSelectionsState();
+  _SpellSelectionsState createState() =>
+      _SpellSelectionsState(classSelected: classSelected);
 }
 
 class _SpellSelectionsState extends State<SpellSelections> {
   // Declare the input list of strings or lists of strings
-  List<Spell> allAvailableSpells = [
-    for (var x in SPELLLIST)
-      if (isAllowedContent(x)) x
-  ]; //filter if class available
+  final Class? classSelected;
+  _SpellSelectionsState({this.classSelected});
+  List<Spell> chosenSpells = [];
+
   List<String> spellSchoolsSelected = [
     "Abjuration",
     "Conjuration",
@@ -177,565 +179,596 @@ class _SpellSelectionsState extends State<SpellSelections> {
     "Ritual"
   ];
   bool ritualsSelected = true;
-
-  _SpellSelectionsState();
+  //filter if class available
+  static List<Spell> allAvailableSpells = [
+    for (var x in SPELLLIST
+        /*.where((element) => element.availableTo.contains(classSelected))
+        .toList()*/
+        )
+      if (isAllowedContent(x)) x
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
-            body: Column(children: [
-      const Text("{Classname} spell choices",
-          style: TextStyle(
-              color: Colors.blue, fontSize: 22, fontWeight: FontWeight.w700)),
-      //Spell Schools (Abjuration,Conjuration,Divination,Enchantment)
-      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        OutlinedButton(
-            style: OutlinedButton.styleFrom(
-                backgroundColor: (spellSchoolsSelected.contains("Abjuration")
-                    ? Colors.blue
-                    : Colors.grey)),
-            onPressed: () {
-              setState(() {
-                if (spellSchoolsSelected.contains("Abjuration")) {
-                  spellSchoolsSelected.remove("Abjuration");
-                } else {
-                  spellSchoolsSelected.add("Abjuration");
-                }
-              });
-            },
-            child: const Text("Abjuration",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700))),
-        OutlinedButton(
-            style: OutlinedButton.styleFrom(
-                backgroundColor: (spellSchoolsSelected.contains("Conjuration")
-                    ? Colors.blue
-                    : Colors.grey)),
-            onPressed: () {
-              setState(() {
-                if (spellSchoolsSelected.contains("Conjuration")) {
-                  spellSchoolsSelected.remove("Conjuration");
-                } else {
-                  spellSchoolsSelected.add("Conjuration");
-                }
-              });
-            },
-            child: const Text("Conjuration",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700))),
-        OutlinedButton(
-            style: OutlinedButton.styleFrom(
-                backgroundColor: (spellSchoolsSelected.contains("Divination")
-                    ? Colors.blue
-                    : Colors.grey)),
-            onPressed: () {
-              setState(() {
-                if (spellSchoolsSelected.contains("Divination")) {
-                  spellSchoolsSelected.remove("Divination");
-                } else {
-                  spellSchoolsSelected.add("Divination");
-                }
-              });
-            },
-            child: const Text("Divination",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700))),
-        OutlinedButton(
-            style: OutlinedButton.styleFrom(
-                backgroundColor: (spellSchoolsSelected.contains("Enchantment")
-                    ? Colors.blue
-                    : Colors.grey)),
-            onPressed: () {
-              setState(() {
-                if (spellSchoolsSelected.contains("Enchantment")) {
-                  spellSchoolsSelected.remove("Enchantment");
-                } else {
-                  spellSchoolsSelected.add("Enchantment");
-                }
-              });
-            },
-            child: const Text("Enchantment",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700))),
-      ]),
-      //Spell Schools (Evocation,Illusion,Necromancy,Transmutation)
-      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        OutlinedButton(
-            style: OutlinedButton.styleFrom(
-                backgroundColor: (spellSchoolsSelected.contains("Evocation")
-                    ? Colors.blue
-                    : Colors.grey)),
-            onPressed: () {
-              setState(() {
-                if (spellSchoolsSelected.contains("Evocation")) {
-                  spellSchoolsSelected.remove("Evocation");
-                } else {
-                  spellSchoolsSelected.add("Evocation");
-                }
-              });
-            },
-            child: const Text("Evocation",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700))),
-        OutlinedButton(
-            style: OutlinedButton.styleFrom(
-                backgroundColor: (spellSchoolsSelected.contains("Illusion")
-                    ? Colors.blue
-                    : Colors.grey)),
-            onPressed: () {
-              setState(() {
-                if (spellSchoolsSelected.contains("Illusion")) {
-                  spellSchoolsSelected.remove("Illusion");
-                } else {
-                  spellSchoolsSelected.add("Illusion");
-                }
-              });
-            },
-            child: const Text("Illusion",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700))),
-        OutlinedButton(
-            style: OutlinedButton.styleFrom(
-                backgroundColor: (spellSchoolsSelected.contains("Necromancy")
-                    ? Colors.blue
-                    : Colors.grey)),
-            onPressed: () {
-              setState(() {
-                if (spellSchoolsSelected.contains("Necromancy")) {
-                  spellSchoolsSelected.remove("Necromancy");
-                } else {
-                  spellSchoolsSelected.add("Necromancy");
-                }
-              });
-            },
-            child: const Text("Necromancy",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700))),
-        OutlinedButton(
-            style: OutlinedButton.styleFrom(
-                backgroundColor: (spellSchoolsSelected.contains("Transmutation")
-                    ? Colors.blue
-                    : Colors.grey)),
-            onPressed: () {
-              setState(() {
-                if (spellSchoolsSelected.contains("Transmutation")) {
-                  spellSchoolsSelected.remove("Transmutation");
-                } else {
-                  spellSchoolsSelected.add("Transmutation");
-                }
-              });
-            },
-            child: const Text("Transmutation",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700)))
-      ]),
-      //Levels 0-9 and main space
-      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        //levels 0-4
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+    return SizedBox(
+        height: 281,
+        width: 485,
+        child: MaterialApp(
+            home: Scaffold(
+                body: Column(children: [
+          Text("${classSelected?.name} spell choices",
+              style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700)),
+          //Spell Schools (Abjuration,Conjuration,Divination,Enchantment)
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                    backgroundColor: (spellLevelsSelected.contains(0)
-                        ? Colors.blue
-                        : Colors.grey)),
+                    backgroundColor:
+                        (spellSchoolsSelected.contains("Abjuration")
+                            ? Colors.blue
+                            : Colors.grey)),
                 onPressed: () {
                   setState(() {
-                    if (spellLevelsSelected.contains(0)) {
-                      spellLevelsSelected.remove(0);
+                    if (spellSchoolsSelected.contains("Abjuration")) {
+                      spellSchoolsSelected.remove("Abjuration");
                     } else {
-                      spellLevelsSelected.add(0);
+                      spellSchoolsSelected.add("Abjuration");
                     }
                   });
                 },
-                child: const Text("0",
+                child: const Text("Abjuration",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 15,
                         fontWeight: FontWeight.w700))),
             OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                    backgroundColor: (spellLevelsSelected.contains(1)
-                        ? Colors.blue
-                        : Colors.grey)),
+                    backgroundColor:
+                        (spellSchoolsSelected.contains("Conjuration")
+                            ? Colors.blue
+                            : Colors.grey)),
                 onPressed: () {
                   setState(() {
-                    if (spellLevelsSelected.contains(1)) {
-                      spellLevelsSelected.remove(1);
+                    if (spellSchoolsSelected.contains("Conjuration")) {
+                      spellSchoolsSelected.remove("Conjuration");
                     } else {
-                      spellLevelsSelected.add(1);
+                      spellSchoolsSelected.add("Conjuration");
                     }
                   });
                 },
-                child: const Text("1",
+                child: const Text("Conjuration",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 15,
                         fontWeight: FontWeight.w700))),
             OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                    backgroundColor: (spellLevelsSelected.contains(2)
-                        ? Colors.blue
-                        : Colors.grey)),
+                    backgroundColor:
+                        (spellSchoolsSelected.contains("Divination")
+                            ? Colors.blue
+                            : Colors.grey)),
                 onPressed: () {
                   setState(() {
-                    if (spellLevelsSelected.contains(2)) {
-                      spellLevelsSelected.remove(2);
+                    if (spellSchoolsSelected.contains("Divination")) {
+                      spellSchoolsSelected.remove("Divination");
                     } else {
-                      spellLevelsSelected.add(2);
+                      spellSchoolsSelected.add("Divination");
                     }
                   });
                 },
-                child: const Text("2",
+                child: const Text("Divination",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 15,
                         fontWeight: FontWeight.w700))),
             OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                    backgroundColor: (spellLevelsSelected.contains(3)
-                        ? Colors.blue
-                        : Colors.grey)),
+                    backgroundColor:
+                        (spellSchoolsSelected.contains("Enchantment")
+                            ? Colors.blue
+                            : Colors.grey)),
                 onPressed: () {
                   setState(() {
-                    if (spellLevelsSelected.contains(3)) {
-                      spellLevelsSelected.remove(3);
+                    if (spellSchoolsSelected.contains("Enchantment")) {
+                      spellSchoolsSelected.remove("Enchantment");
                     } else {
-                      spellLevelsSelected.add(3);
+                      spellSchoolsSelected.add("Enchantment");
                     }
                   });
                 },
-                child: const Text("3",
+                child: const Text("Enchantment",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 15,
                         fontWeight: FontWeight.w700))),
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    backgroundColor: (spellLevelsSelected.contains(4)
-                        ? Colors.blue
-                        : Colors.grey)),
-                onPressed: () {
-                  setState(() {
-                    if (spellLevelsSelected.contains(4)) {
-                      spellLevelsSelected.remove(4);
-                    } else {
-                      spellLevelsSelected.add(4);
-                    }
-                  });
-                },
-                child: const Text("4",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700)))
-          ],
-        ),
-        //main space
-        Container(
-          height: 140,
-          width: 300,
-          decoration: BoxDecoration(
-            color: Colors.grey,
-            border: Border.all(
-              color: Colors.black,
-              width: 3,
-            ),
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-          ),
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: allAvailableSpells.length,
-            itemBuilder: (context, index) {
-              return OutlinedButton(
-                onPressed: () {
-                  // Code to handle button press
-                },
-                child: Text(allAvailableSpells[index].name),
-              );
-            },
-          ),
-        ),
-        //levels 5-9
-        Column(
-          children: [
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    backgroundColor: (spellLevelsSelected.contains(5)
-                        ? Colors.blue
-                        : Colors.grey)),
-                onPressed: () {
-                  setState(() {
-                    if (spellLevelsSelected.contains(5)) {
-                      spellLevelsSelected.remove(5);
-                    } else {
-                      spellLevelsSelected.add(5);
-                    }
-                  });
-                },
-                child: const Text("5",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700))),
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    backgroundColor: (spellLevelsSelected.contains(6)
-                        ? Colors.blue
-                        : Colors.grey)),
-                onPressed: () {
-                  setState(() {
-                    if (spellLevelsSelected.contains(6)) {
-                      spellLevelsSelected.remove(6);
-                    } else {
-                      spellLevelsSelected.add(6);
-                    }
-                  });
-                },
-                child: const Text("6",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700))),
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    backgroundColor: (spellLevelsSelected.contains(7)
-                        ? Colors.blue
-                        : Colors.grey)),
-                onPressed: () {
-                  setState(() {
-                    if (spellLevelsSelected.contains(7)) {
-                      spellLevelsSelected.remove(7);
-                    } else {
-                      spellLevelsSelected.add(7);
-                    }
-                  });
-                },
-                child: const Text("7",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700))),
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    backgroundColor: (spellLevelsSelected.contains(8)
-                        ? Colors.blue
-                        : Colors.grey)),
-                onPressed: () {
-                  setState(() {
-                    if (spellLevelsSelected.contains(8)) {
-                      spellLevelsSelected.remove(8);
-                    } else {
-                      spellLevelsSelected.add(8);
-                    }
-                  });
-                },
-                child: const Text("8",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700))),
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    backgroundColor: (spellLevelsSelected.contains(9)
-                        ? Colors.blue
-                        : Colors.grey)),
-                onPressed: () {
-                  setState(() {
-                    if (spellLevelsSelected.contains(9)) {
-                      spellLevelsSelected.remove(9);
-                    } else {
-                      spellLevelsSelected.add(9);
-                    }
-                  });
-                },
-                child: const Text("9",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700)))
-          ],
-        )
-      ]),
-      //casting time, rituals and select all/none
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          //Unselect all
-          OutlinedButton(
-              style:
-                  OutlinedButton.styleFrom(backgroundColor: Colors.lightBlue),
-              onPressed: () {
-                setState(() {
-                  ritualsSelected = false;
-                  castingTimesSelected.clear();
-                  spellSchoolsSelected.clear();
-                  spellLevelsSelected.clear();
-                });
-              },
-              child: const Text("Unpick\n    all",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700))),
-
-          //Casting time and rituals
-          Column(children: [
-//Action, BA and reaction
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                      backgroundColor: (castingTimesSelected.contains("Action")
-                          ? Colors.blue
-                          : Colors.grey)),
-                  onPressed: () {
-                    setState(() {
-                      if (castingTimesSelected.contains("Action")) {
-                        castingTimesSelected.remove("Action");
-                      } else {
-                        castingTimesSelected.add("Action");
-                      }
-                    });
-                  },
-                  child: const Text("Action",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700))),
-              OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                      backgroundColor:
-                          (castingTimesSelected.contains("Bonus Action")
-                              ? Colors.blue
-                              : Colors.grey)),
-                  onPressed: () {
-                    setState(() {
-                      if (castingTimesSelected.contains("Bonus Action")) {
-                        castingTimesSelected.remove("Bonus Action");
-                      } else {
-                        castingTimesSelected.add("Bonus Action");
-                      }
-                    });
-                  },
-                  child: const Text("Bonus Action",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700))),
-              OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                      backgroundColor:
-                          (castingTimesSelected.contains("Reaction")
-                              ? Colors.blue
-                              : Colors.grey)),
-                  onPressed: () {
-                    setState(() {
-                      if (castingTimesSelected.contains("Reaction")) {
-                        castingTimesSelected.remove("Reaction");
-                      } else {
-                        castingTimesSelected.add("Reaction");
-                      }
-                    });
-                  },
-                  child: const Text("Reaction",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700))),
-            ]),
-            //Other options and rituals
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                      backgroundColor: (castingTimesSelected.contains("Other")
-                          ? Colors.blue
-                          : Colors.grey)),
-                  onPressed: () {
-                    setState(() {
-                      if (castingTimesSelected.contains("Other")) {
-                        castingTimesSelected.remove("Other");
-                      } else {
-                        castingTimesSelected.add("Other");
-                      }
-                    });
-                  },
-                  child: const Text("Other Casting Times",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700))),
-              OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                      backgroundColor:
-                          (ritualsSelected ? Colors.blue : Colors.grey)),
-                  onPressed: () {
-                    setState(() {
-                      ritualsSelected = !ritualsSelected;
-                    });
-                  },
-                  child: const Text("Ritual",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700)))
-            ])
           ]),
-
-          //Select all
-          OutlinedButton(
-              style:
-                  OutlinedButton.styleFrom(backgroundColor: Colors.lightBlue),
-              onPressed: () {
-                setState(() {
-                  ritualsSelected = true;
-                  castingTimesSelected = [
-                    "Action",
-                    "Reaction",
-                    "Bonus Action",
-                    "Other",
-                    "Ritual"
-                  ];
-                  spellSchoolsSelected = [
-                    "Abjuration",
-                    "Conjuration",
-                    "Divination",
-                    "Enchantment",
-                    "Evocation",
-                    "Illusion",
-                    "Necromancy",
-                    "Transmutation"
-                  ];
-                  spellLevelsSelected = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-                });
-              },
-              child: const Center(
-                  child: Text("Select\n   all",
+          //Spell Schools (Evocation,Illusion,Necromancy,Transmutation)
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                    backgroundColor: (spellSchoolsSelected.contains("Evocation")
+                        ? Colors.blue
+                        : Colors.grey)),
+                onPressed: () {
+                  setState(() {
+                    if (spellSchoolsSelected.contains("Evocation")) {
+                      spellSchoolsSelected.remove("Evocation");
+                    } else {
+                      spellSchoolsSelected.add("Evocation");
+                    }
+                  });
+                },
+                child: const Text("Evocation",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700))),
+            OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                    backgroundColor: (spellSchoolsSelected.contains("Illusion")
+                        ? Colors.blue
+                        : Colors.grey)),
+                onPressed: () {
+                  setState(() {
+                    if (spellSchoolsSelected.contains("Illusion")) {
+                      spellSchoolsSelected.remove("Illusion");
+                    } else {
+                      spellSchoolsSelected.add("Illusion");
+                    }
+                  });
+                },
+                child: const Text("Illusion",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700))),
+            OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                    backgroundColor:
+                        (spellSchoolsSelected.contains("Necromancy")
+                            ? Colors.blue
+                            : Colors.grey)),
+                onPressed: () {
+                  setState(() {
+                    if (spellSchoolsSelected.contains("Necromancy")) {
+                      spellSchoolsSelected.remove("Necromancy");
+                    } else {
+                      spellSchoolsSelected.add("Necromancy");
+                    }
+                  });
+                },
+                child: const Text("Necromancy",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700))),
+            OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                    backgroundColor:
+                        (spellSchoolsSelected.contains("Transmutation")
+                            ? Colors.blue
+                            : Colors.grey)),
+                onPressed: () {
+                  setState(() {
+                    if (spellSchoolsSelected.contains("Transmutation")) {
+                      spellSchoolsSelected.remove("Transmutation");
+                    } else {
+                      spellSchoolsSelected.add("Transmutation");
+                    }
+                  });
+                },
+                child: const Text("Transmutation",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700)))
+          ]),
+          //Levels 0-9 and main space
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            //levels 0-4
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor: (spellLevelsSelected.contains(0)
+                            ? Colors.blue
+                            : Colors.grey)),
+                    onPressed: () {
+                      setState(() {
+                        if (spellLevelsSelected.contains(0)) {
+                          spellLevelsSelected.remove(0);
+                        } else {
+                          spellLevelsSelected.add(0);
+                        }
+                      });
+                    },
+                    child: const Text("0",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700))),
+                OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor: (spellLevelsSelected.contains(1)
+                            ? Colors.blue
+                            : Colors.grey)),
+                    onPressed: () {
+                      setState(() {
+                        if (spellLevelsSelected.contains(1)) {
+                          spellLevelsSelected.remove(1);
+                        } else {
+                          spellLevelsSelected.add(1);
+                        }
+                      });
+                    },
+                    child: const Text("1",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700))),
+                OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor: (spellLevelsSelected.contains(2)
+                            ? Colors.blue
+                            : Colors.grey)),
+                    onPressed: () {
+                      setState(() {
+                        if (spellLevelsSelected.contains(2)) {
+                          spellLevelsSelected.remove(2);
+                        } else {
+                          spellLevelsSelected.add(2);
+                        }
+                      });
+                    },
+                    child: const Text("2",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700))),
+                OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor: (spellLevelsSelected.contains(3)
+                            ? Colors.blue
+                            : Colors.grey)),
+                    onPressed: () {
+                      setState(() {
+                        if (spellLevelsSelected.contains(3)) {
+                          spellLevelsSelected.remove(3);
+                        } else {
+                          spellLevelsSelected.add(3);
+                        }
+                      });
+                    },
+                    child: const Text("3",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700))),
+                OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor: (spellLevelsSelected.contains(4)
+                            ? Colors.blue
+                            : Colors.grey)),
+                    onPressed: () {
+                      setState(() {
+                        if (spellLevelsSelected.contains(4)) {
+                          spellLevelsSelected.remove(4);
+                        } else {
+                          spellLevelsSelected.add(4);
+                        }
+                      });
+                    },
+                    child: const Text("4",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700)))
+              ],
+            ),
+            //main space
+            Container(
+              height: 140,
+              width: 300,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                border: Border.all(
+                  color: Colors.black,
+                  width: 3,
+                ),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+              ),
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: allAvailableSpells.length,
+                itemBuilder: (context, index) {
+                  return OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor:
+                            (chosenSpells.contains(allAvailableSpells[index])
+                                ? Colors.green
+                                : Colors.grey)),
+                    onPressed: () {
+                      setState(() {
+                        if (chosenSpells.contains(allAvailableSpells[index])) {
+                          chosenSpells.remove(allAvailableSpells[index]);
+                        } else {
+                          chosenSpells.add(allAvailableSpells[index]);
+                        }
+                      });
+                      // Code to handle button press
+                    },
+                    child: Text(allAvailableSpells[index].name),
+                  );
+                },
+              ),
+            ),
+            //levels 5-9
+            Column(
+              children: [
+                OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor: (spellLevelsSelected.contains(5)
+                            ? Colors.blue
+                            : Colors.grey)),
+                    onPressed: () {
+                      setState(() {
+                        if (spellLevelsSelected.contains(5)) {
+                          spellLevelsSelected.remove(5);
+                        } else {
+                          spellLevelsSelected.add(5);
+                        }
+                      });
+                    },
+                    child: const Text("5",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700))),
+                OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor: (spellLevelsSelected.contains(6)
+                            ? Colors.blue
+                            : Colors.grey)),
+                    onPressed: () {
+                      setState(() {
+                        if (spellLevelsSelected.contains(6)) {
+                          spellLevelsSelected.remove(6);
+                        } else {
+                          spellLevelsSelected.add(6);
+                        }
+                      });
+                    },
+                    child: const Text("6",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700))),
+                OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor: (spellLevelsSelected.contains(7)
+                            ? Colors.blue
+                            : Colors.grey)),
+                    onPressed: () {
+                      setState(() {
+                        if (spellLevelsSelected.contains(7)) {
+                          spellLevelsSelected.remove(7);
+                        } else {
+                          spellLevelsSelected.add(7);
+                        }
+                      });
+                    },
+                    child: const Text("7",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700))),
+                OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor: (spellLevelsSelected.contains(8)
+                            ? Colors.blue
+                            : Colors.grey)),
+                    onPressed: () {
+                      setState(() {
+                        if (spellLevelsSelected.contains(8)) {
+                          spellLevelsSelected.remove(8);
+                        } else {
+                          spellLevelsSelected.add(8);
+                        }
+                      });
+                    },
+                    child: const Text("8",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700))),
+                OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor: (spellLevelsSelected.contains(9)
+                            ? Colors.blue
+                            : Colors.grey)),
+                    onPressed: () {
+                      setState(() {
+                        if (spellLevelsSelected.contains(9)) {
+                          spellLevelsSelected.remove(9);
+                        } else {
+                          spellLevelsSelected.add(9);
+                        }
+                      });
+                    },
+                    child: const Text("9",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700)))
+              ],
+            )
+          ]),
+          //casting time, rituals and select all/none
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              //Unselect all
+              OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                      backgroundColor: Colors.lightBlue),
+                  onPressed: () {
+                    setState(() {
+                      ritualsSelected = false;
+                      castingTimesSelected.clear();
+                      spellSchoolsSelected.clear();
+                      spellLevelsSelected.clear();
+                    });
+                  },
+                  child: const Text("Unpick\n    all",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
-                          fontWeight: FontWeight.w700)))),
-        ],
-      )
-    ])));
+                          fontWeight: FontWeight.w700))),
+
+              //Casting time and rituals
+              Column(children: [
+//Action, BA and reaction
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor:
+                              (castingTimesSelected.contains("Action")
+                                  ? Colors.blue
+                                  : Colors.grey)),
+                      onPressed: () {
+                        setState(() {
+                          if (castingTimesSelected.contains("Action")) {
+                            castingTimesSelected.remove("Action");
+                          } else {
+                            castingTimesSelected.add("Action");
+                          }
+                        });
+                      },
+                      child: const Text("Action",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700))),
+                  OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor:
+                              (castingTimesSelected.contains("Bonus Action")
+                                  ? Colors.blue
+                                  : Colors.grey)),
+                      onPressed: () {
+                        setState(() {
+                          if (castingTimesSelected.contains("Bonus Action")) {
+                            castingTimesSelected.remove("Bonus Action");
+                          } else {
+                            castingTimesSelected.add("Bonus Action");
+                          }
+                        });
+                      },
+                      child: const Text("Bonus Action",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700))),
+                  OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor:
+                              (castingTimesSelected.contains("Reaction")
+                                  ? Colors.blue
+                                  : Colors.grey)),
+                      onPressed: () {
+                        setState(() {
+                          if (castingTimesSelected.contains("Reaction")) {
+                            castingTimesSelected.remove("Reaction");
+                          } else {
+                            castingTimesSelected.add("Reaction");
+                          }
+                        });
+                      },
+                      child: const Text("Reaction",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700))),
+                ]),
+                //Other options and rituals
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor:
+                              (castingTimesSelected.contains("Other")
+                                  ? Colors.blue
+                                  : Colors.grey)),
+                      onPressed: () {
+                        setState(() {
+                          if (castingTimesSelected.contains("Other")) {
+                            castingTimesSelected.remove("Other");
+                          } else {
+                            castingTimesSelected.add("Other");
+                          }
+                        });
+                      },
+                      child: const Text("Other Casting Times",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700))),
+                  OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor:
+                              (ritualsSelected ? Colors.blue : Colors.grey)),
+                      onPressed: () {
+                        setState(() {
+                          ritualsSelected = !ritualsSelected;
+                        });
+                      },
+                      child: const Text("Ritual",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700)))
+                ])
+              ]),
+
+              //Select all
+              OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                      backgroundColor: Colors.lightBlue),
+                  onPressed: () {
+                    setState(() {
+                      ritualsSelected = true;
+                      castingTimesSelected = [
+                        "Action",
+                        "Reaction",
+                        "Bonus Action",
+                        "Other",
+                        "Ritual"
+                      ];
+                      spellSchoolsSelected = [
+                        "Abjuration",
+                        "Conjuration",
+                        "Divination",
+                        "Enchantment",
+                        "Evocation",
+                        "Illusion",
+                        "Necromancy",
+                        "Transmutation"
+                      ];
+                      spellLevelsSelected = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+                    });
+                  },
+                  child: const Center(
+                      child: Text("Select\n   all",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700)))),
+            ],
+          )
+        ]))));
   }
 }
 
@@ -3728,8 +3761,16 @@ class MainCreateCharacter extends State<CreateACharacter>
                   ],
                 ),
               ),
-              body:
-                  TabBarView(children: [SpellSelections(), const Text("PAGE")]),
+              body: TabBarView(children: [
+                SingleChildScrollView(
+                    child: Column(
+                  children: CLASSLIST
+                      .where((s) => levelsPerClass[CLASSLIST.indexOf(s)] != 0)
+                      .map((s) => SpellSelections(classSelected: s))
+                      .toList(),
+                )),
+                const Text("PAGE")
+              ]),
             ),
           ),
           //Equipment

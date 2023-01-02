@@ -39,7 +39,7 @@
                 "Verbal":true,
                 "SpellSchool":"Abjuration",
                 "CastingTime": ["Reaction",1],
-                "AvailableTo":["Wizard","Sorcerer", "Battle Smith", "The Hexblade","Artillerist"]
+                "AvailableTo":["Sorcerer", "Battle Smith", "The Hexblade","Artillerist"]
               },
               {
                 "Name": "spell placeholder 2",
