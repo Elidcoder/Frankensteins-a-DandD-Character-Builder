@@ -153,6 +153,8 @@ class Race {
 
 //classes - PROFICIENCY LIST NEEDS FIXING
 class Class {
+  final String? spellsKnownFormula;
+  final List<int>? spellsKnownPerLevel;
   final String name;
   final String classType;
   final int maxHitDiceRoll;
@@ -194,7 +196,6 @@ class Class {
         data['EquipmentOptions'].cast<List<String>>() as List<List<String>>;
     final proficienciesGained =
         data["GainedProficiencies"]?.cast<String>() as List<String>?;
-
     return Class(
         mainOrSpellcastingAbility: mainOrSpellcastingAbility,
         classType: classType,
@@ -208,8 +209,9 @@ class Class {
         sourceBook: sourceBook,
         equipmentOptions: equipmentOptions,
         gainAtEachLevel: (data['GainAtEachLevel'].cast<List<dynamic>>()),
-        //.cast<List<List<dynamic>>>()
-        proficienciesGained: proficienciesGained);
+        proficienciesGained: proficienciesGained,
+        spellsKnownFormula: data["SpellKnownFormula"],
+        spellsKnownPerLevel: data["SpellsKnownPerLevel"]?.cast<int>());
   }
   Class(
       {required this.name,
@@ -218,6 +220,8 @@ class Class {
       required this.maxHitDiceRoll,
       this.roundDown,
       this.spellsAndSpellSlots,
+      this.spellsKnownFormula,
+      this.spellsKnownPerLevel,
       required this.numberOfSkillChoices,
       required this.optionsForSkillProficiencies,
       required this.sourceBook,
@@ -415,3 +419,5 @@ List<Background> BACKGROUNDLIST = [
 ];
 // ignore: non_constant_identifier_names
 List<Class> CLASSLIST = [for (var x in jsonmap["Classes"]) Class.fromJson(x)];
+// ignore: non_constant_identifier_names
+List<Spell> SPELLLIST = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];

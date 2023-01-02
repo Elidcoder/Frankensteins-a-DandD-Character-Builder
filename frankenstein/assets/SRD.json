@@ -30,7 +30,57 @@
                 "SpellSchool":"Abjuration",
                 "CastingTime": ["Reaction",1],
                 "AvailableTo":["Wizard","Sorcerer", "Battle Smith", "The Hexblade","Artillerist"]
-        }
+        },
+        {
+                "Name": "spell placeholder 1",
+                "Effect": "An invisible barrier of magical force appears and protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from magic missile.",
+                "Level": 1,
+                "Somatic":true,
+                "Verbal":true,
+                "SpellSchool":"Abjuration",
+                "CastingTime": ["Reaction",1],
+                "AvailableTo":["Wizard","Sorcerer", "Battle Smith", "The Hexblade","Artillerist"]
+              },
+              {
+                "Name": "spell placeholder 2",
+                "Effect": "An invisible barrier of magical force appears and protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from magic missile.",
+                "Level": 1,
+                "Somatic":true,
+                "Verbal":true,
+                "SpellSchool":"Abjuration",
+                "CastingTime": ["Reaction",1],
+                "AvailableTo":["Wizard","Sorcerer", "Battle Smith", "The Hexblade","Artillerist"]
+              },
+              {
+                "Name": "spell placeholder 3",
+                "Effect": "An invisible barrier of magical force appears and protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from magic missile.",
+                "Level": 1,
+                "Somatic":true,
+                "Verbal":true,
+                "SpellSchool":"Abjuration",
+                "CastingTime": ["Reaction",1],
+                "AvailableTo":["Wizard","Sorcerer", "Battle Smith", "The Hexblade","Artillerist"]
+              },
+              {
+                "Name": "spell placeholder 4",
+                "Effect": "An invisible barrier of magical force appears and protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from magic missile.",
+                "Level": 1,
+                "Somatic":true,
+                "Verbal":true,
+                "SpellSchool":"Abjuration",
+                "CastingTime": ["Reaction",1],
+                "AvailableTo":["Wizard","Sorcerer", "Battle Smith", "The Hexblade","Artillerist"]
+              },
+              {
+                "Name": "spell placeholder 5",
+                "Effect": "An invisible barrier of magical force appears and protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from magic missile.",
+                "Level": 1,
+                "Somatic":true,
+                "Verbal":true,
+                "SpellSchool":"Abjuration",
+                "CastingTime": ["Reaction",1],
+                "AvailableTo":["Wizard","Sorcerer", "Battle Smith", "The Hexblade","Artillerist"]
+              }
         ],
         "Weapons": [
                 {
@@ -44,8 +94,7 @@
         "Languages": [
        "Elvish","Common","Infernal"
         ],
-        "Races": [
-                {
+        "Races": [{
                         "Name": "Human",
                         "AbilityScoreMap": [1,1,1,1,1,1],
                         "Sourcebook": "Player's Handbook",
@@ -53,8 +102,7 @@
                         "Mystery1S": 0,
                         "Mystery2S": 2
 
-                },
-                {
+                }, {
                         "Name": "Tiefling",
                         "AbilityScoreMap": [0,0,0,1,0,2],
                         "Sourcebook": "Player's Handbook",
@@ -64,8 +112,7 @@
                         "Languages": ["Common", "Infernal"],
                         "Mystery1S": 2,
                         "Mystery2S": 0
-                },
-                {
+                },{
                         "Name": "Elf",
                         "AbilityScoreMap": [0,2,0,0,0,0],
                         "Sourcebook": "Player's Handbook",
@@ -76,18 +123,16 @@
                         "Languages": ["Common", "Elvish"],
                         "Mystery1S": 0,
                         "Mystery2S": 0,
-                        "Subraces": [
-                                {
+                        "Subraces": [ {
                                         "Name": "Eladrin",
                                         "AbilityScoreMap": [0,0,0,1,0,0],
                                         "Sourcebook": "Player's Handbook",
                                         "SkillProficiencies": [ "Longsword", "Shortsword", "Shortbow", "Longbow"],
                                         "Abilities": ["You can cast the misty step spell once using this trait. You regain the ability to do so when you finish a short or long rest."],
                                         "Mystery1S": 1,
-                        "Mystery2S": 0
+                                        "Mystery2S": 0
                                 
-                                },
-                                {
+                                },{
                                         "Name": "Wood Elf",
                                         "AbilityScoreMap": [0,0,0,0,1,0],
                                         "Sourcebook": "Player's Handbook",
@@ -97,13 +142,8 @@
                                         "Mystery1S": 0,
                                         "Mystery2S": 1
                                 }
-
-
-
-
                         ]
-                }
-                ],
+                }],
                 "Background":[
                         {
                                 "Name": "Acolyte",
@@ -172,6 +212,7 @@
                 },
                 {
                         "Name": "Wizard",
+                        "SpellsKnownFormula": "level + intelligence",
                         "Sourcebook": "Player's Handbook",
                         "ClassType": "Full Caster",
                         "MaxHitDiceRoll": 6,

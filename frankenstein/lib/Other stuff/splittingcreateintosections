@@ -5,3 +5,15 @@ ADD THE PARSER TO THE RACE
 GET A REQUIREMENT FUNCTION GOING FOR THINGS E.G. AC, EQUIP ETC..
 a parser to take in a set like "intelligence + 2" and decode it at sheet creation
 DEAL WITH ROGUE (S)VS OPTIONAL S FOR PROFFESSIONAL LOOK
+multiple gains from a single array 
+fix >2 choice stacks
+spacers for neater UI
+hovers to everything
+correct parser at all for things gained
+isAllowedContend returns allowed content
+
+
+small:
+main page should be centered
+basics menu needs to be mega fixed
+ability scores should be main/cross axis aligned
