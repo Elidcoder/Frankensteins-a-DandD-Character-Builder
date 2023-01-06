@@ -147,17 +147,24 @@ class CreateACharacter extends StatefulWidget {
 }
 
 class SpellSelections extends StatefulWidget {
-  final Class? classSelected;
-  SpellSelections({this.classSelected});
+  //final Class? classSelected;
+  List<dynamic> thisDescription;
+  List<Spell> allSpells;
+  SpellSelections(this.allSpells, this.thisDescription);
   @override
   _SpellSelectionsState createState() =>
-      _SpellSelectionsState(classSelected: classSelected);
+      //_SpellSelectionsState(allSpells, classSelected: classSelected);
+      _SpellSelectionsState(allSpells, thisDescription);
 }
 
 class _SpellSelectionsState extends State<SpellSelections> {
   // Declare the input list of strings or lists of strings
-  final Class? classSelected;
-  _SpellSelectionsState({this.classSelected});
+  //final Class? classSelected;
+  List<Spell> allSpellsSelected;
+  //CURENTLY: [name, [spelllist]]
+  List<dynamic> thisDescription;
+  //_SpellSelectionsState(this.allSpellsSelected, {this.classSelected});
+  _SpellSelectionsState(this.allSpellsSelected, this.thisDescription);
   List<Spell> chosenSpells = [];
 
   List<String> spellSchoolsSelected = [
@@ -196,7 +203,8 @@ class _SpellSelectionsState extends State<SpellSelections> {
         child: MaterialApp(
             home: Scaffold(
                 body: Column(children: [
-          Text("${classSelected?.name} spell choices",
+          //REPLACE
+          Text("${thisDescription[0]} spell choices",
               style: TextStyle(
                   color: Colors.blue,
                   fontSize: 22,
@@ -487,16 +495,26 @@ class _SpellSelectionsState extends State<SpellSelections> {
                 itemBuilder: (context, index) {
                   return OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                        backgroundColor:
-                            (chosenSpells.contains(allAvailableSpells[index])
-                                ? Colors.green
-                                : Colors.grey)),
+                        backgroundColor: (thisDescription.last
+                                .contains(allAvailableSpells[index])
+                            ? Colors.green
+                            : (allSpellsSelected
+                                    .contains(allAvailableSpells[index])
+                                ? Colors.grey
+                                : Colors.white))),
                     onPressed: () {
                       setState(() {
-                        if (chosenSpells.contains(allAvailableSpells[index])) {
-                          chosenSpells.remove(allAvailableSpells[index]);
+                        if (thisDescription.last
+                            .contains(allAvailableSpells[index])) {
+                          thisDescription.last
+                              .remove(allAvailableSpells[index]);
+                          allSpellsSelected.remove(allAvailableSpells[index]);
                         } else {
-                          chosenSpells.add(allAvailableSpells[index]);
+                          if (!allSpellsSelected
+                              .contains(allAvailableSpells[index])) {
+                            thisDescription.last.add(allAvailableSpells[index]);
+                            allSpellsSelected.add(allAvailableSpells[index]);
+                          }
                         }
                       });
                       // Code to handle button press
@@ -776,9 +794,6 @@ class ChoiceRow extends StatefulWidget {
   // Declare the input list of strings or lists of strings
   final List<dynamic>? x;
 
-  // Declare a map to hold the selections
-  //final Map<String, List<dynamic>>? selections;
-
   ChoiceRow({this.x, this.allSelected});
   dynamic selected;
   final List<dynamic>? allSelected;
@@ -814,7 +829,6 @@ class _ChoiceRowState extends State<ChoiceRow> {
               children: [
                 // Call the buildRows method to create a row of buttons for each element in the x list
                 ...buildRows(context, x?.sublist(1)),
-                // Display the selections
               ],
             )))
       ]),
@@ -983,6 +997,9 @@ class MainCreateCharacter extends State<CreateACharacter>
   AbilityScore charisma = AbilityScore(name: "Charisma", value: 8);
   int pointsRemaining = 27;
   //STR/DEX/CON/INT/WIS/CHAR
+  //Spell variables
+  List<Spell> allSpellsSelected = [];
+  List<List<dynamic>> allSpellsSelectedAsListsOfThings = [];
   //BackgroundVariables
   String characterAge = "";
   String characterHeight = "";
@@ -1912,14 +1929,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                     //efficient this up at some point so ASI[i] isn't accessed twice
                     //can actually speed this up but only if asi isn't used elsewhere
                     abilityScoreIncreases = [0, 0, 0, 0, 0, 0];
-
-                    /*
-                    for (int i = 0; i < 6; i++) {
-                      abilityScoreIncreases[i] -=
-                          (initialRace.raceScoreIncrease[i] +
-                              ((subraceExample?.subRaceScoreIncrease[i]) ?? 0));
-                    }
-*/
                     initialRace = RACELIST.singleWhere((x) => x.name == value);
                     subraceExample = initialRace.subRaces?.first;
                     for (int i = 0; i < 6; i++) {
@@ -2206,6 +2215,11 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   featuresAndTraits);
                                             }
                                           }
+                                        }
+                                        //check if it's a spellcaster
+                                        if (levelsPerClass[index] == 0) {
+                                          allSpellsSelectedAsListsOfThings
+                                              .add([CLASSLIST[index].name, []]);
                                         }
                                         levelsPerClass[index]++;
                                       }
@@ -3762,13 +3776,63 @@ class MainCreateCharacter extends State<CreateACharacter>
                 ),
               ),
               body: TabBarView(children: [
-                SingleChildScrollView(
-                    child: Column(
-                  children: CLASSLIST
-                      .where((s) => levelsPerClass[CLASSLIST.indexOf(s)] != 0)
-                      .map((s) => SpellSelections(classSelected: s))
-                      .toList(),
-                )),
+                Row(children: [
+                  Expanded(
+                      child: Column(children: [
+                    if (allSpellsSelected
+                            .where((element) => element.level == 1)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      const Text("Level 1 Spells"),
+                    if (allSpellsSelected
+                            .where((element) => element.level == 1)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      SizedBox(
+                          height: 100,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: allSpellsSelected
+                                    .where((element) => element.level == 1)
+                                    .toList()
+                                    .length -
+                                1,
+                            itemBuilder: (context, index) {
+                              return OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                    backgroundColor: Colors.white),
+                                onPressed: () {},
+                                child: Text(allSpellsSelected
+                                    .where((element) => element.level == 1)
+                                    .toList()[index]
+                                    .name),
+                              );
+                            },
+                          )),
+                  ])),
+                  /*Expanded(
+                    child: SingleChildScrollView(
+                        child: Column(
+                      children: CLASSLIST
+                          .where(
+                              (s) => levelsPerClass[CLASSLIST.indexOf(s)] != 0)
+                          .map((s) => SpellSelections(allSpellsSelected,
+                              classSelected: s))
+                          .toList(),
+                    )),
+                  ),*/
+                  Expanded(
+                    child: SingleChildScrollView(
+                        child: Column(
+                      children: allSpellsSelectedAsListsOfThings
+                          .map((s) => SpellSelections(allSpellsSelected, s))
+                          .toList(),
+                    )),
+                  )
+                ]),
                 const Text("PAGE")
               ]),
             ),

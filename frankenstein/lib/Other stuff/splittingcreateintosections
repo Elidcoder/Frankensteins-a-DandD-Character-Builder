@@ -14,8 +14,14 @@ isAllowedContend returns allowed content
 
 
 small:
+Pass in variables to recursive building without the ? stuff
 main page should be centered
 basics menu needs to be mega fixed
 ability scores should be main/cross axis aligned
 many issues with the race page and lacks of features
 custom background
+mystery lists need to be swapped for functional code that isn't hogging memory
+Feats:
+ASI list (if even) total numb and feats have maximum numb
+Subclasses:
+store a future area
