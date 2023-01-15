@@ -161,11 +161,10 @@ class _SpellSelectionsState extends State<SpellSelections> {
   // Declare the input list of strings or lists of strings
   //final Class? classSelected;
   List<Spell> allSpellsSelected;
-  //CURENTLY: [name, [spelllist]]
+  //CURENTLY: [name, [spelllist], numb, formula]
   List<dynamic> thisDescription;
   //_SpellSelectionsState(this.allSpellsSelected, {this.classSelected});
   _SpellSelectionsState(this.allSpellsSelected, this.thisDescription);
-  List<Spell> chosenSpells = [];
 
   List<String> spellSchoolsSelected = [
     "Abjuration",
@@ -495,7 +494,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                 itemBuilder: (context, index) {
                   return OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                        backgroundColor: (thisDescription.last
+                        backgroundColor: (thisDescription[1]
                                 .contains(allAvailableSpells[index])
                             ? Colors.green
                             : (allSpellsSelected
@@ -503,20 +502,28 @@ class _SpellSelectionsState extends State<SpellSelections> {
                                 ? Colors.grey
                                 : Colors.white))),
                     onPressed: () {
-                      setState(() {
-                        if (thisDescription.last
-                            .contains(allAvailableSpells[index])) {
-                          thisDescription.last
-                              .remove(allAvailableSpells[index]);
-                          allSpellsSelected.remove(allAvailableSpells[index]);
-                        } else {
-                          if (!allSpellsSelected
+                      setState(
+                        () {
+                          if (thisDescription[1]
                               .contains(allAvailableSpells[index])) {
-                            thisDescription.last.add(allAvailableSpells[index]);
-                            allSpellsSelected.add(allAvailableSpells[index]);
+                            thisDescription[1]
+                                .remove(allAvailableSpells[index]);
+                            allSpellsSelected.remove(allAvailableSpells[index]);
+                            thisDescription[2]++;
+                          } else {
+                            if (thisDescription[2] > 0) {
+                              if (!allSpellsSelected
+                                  .contains(allAvailableSpells[index])) {
+                                thisDescription[1]
+                                    .add(allAvailableSpells[index]);
+                                allSpellsSelected
+                                    .add(allAvailableSpells[index]);
+                                thisDescription[2]--;
+                              }
+                            }
                           }
-                        }
-                      });
+                        },
+                      );
                       // Code to handle button press
                     },
                     child: Text(allAvailableSpells[index].name),
@@ -968,7 +975,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   List<int> levelsPerClass = List.filled(CLASSLIST.length, 0);
   Map<String, List<dynamic>> selections = {};
   List<dynamic> allSelected = [];
-  List<String> words = ["eli", "this", "works"];
+  Map<String, String> classSubclassMapper = {};
 
   //Background variables initialised
   Background currentBackground = BACKGROUNDLIST.first;
@@ -1432,7 +1439,7 @@ class MainCreateCharacter extends State<CreateACharacter>
     ];
 
     return DefaultTabController(
-      length: 10,
+      length: 11,
       child: Scaffold(
         appBar: AppBar(
           title: const Center(
@@ -1452,10 +1459,11 @@ class MainCreateCharacter extends State<CreateACharacter>
               Tab(child: Text("Class")),
               Tab(child: Text("Backround")),
               Tab(child: Text("Ability scores")),
+              Tab(child: Text("ASI's and Feats")),
               Tab(child: Text("Spells")),
               Tab(child: Text("Equipment")),
-              Tab(child: Text("Boons and magic items")),
               Tab(child: Text("Backstory")),
+              Tab(child: Text("Boons and magic items")),
               Tab(child: Text("Finishing up")),
             ],
           ),
@@ -2218,8 +2226,55 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         }
                                         //check if it's a spellcaster
                                         if (levelsPerClass[index] == 0) {
-                                          allSpellsSelectedAsListsOfThings
-                                              .add([CLASSLIST[index].name, []]);
+                                          allSpellsSelectedAsListsOfThings.add([
+                                            CLASSLIST[index].name,
+                                            [],
+                                            levelZeroGetSpellsKnown(index),
+                                            CLASSLIST[index]
+                                                    .spellsKnownFormula ??
+                                                CLASSLIST[index]
+                                                    .spellsKnownPerLevel
+                                          ]);
+                                        } else {
+                                          var a = classSubclassMapper[
+                                              CLASSLIST[index].name];
+                                          for (var x = 0;
+                                              x <
+                                                  allSpellsSelectedAsListsOfThings
+                                                      .length;
+                                              x++) {
+                                            if (allSpellsSelectedAsListsOfThings[
+                                                    x][0] ==
+                                                CLASSLIST[index].name) {
+                                              allSpellsSelectedAsListsOfThings[
+                                                      x][2] =
+                                                  getSpellsKnown(
+                                                      index,
+                                                      allSpellsSelectedAsListsOfThings[
+                                                          x]);
+                                            } else if (a != null) {
+                                              if (allSpellsSelectedAsListsOfThings[
+                                                      x][0] ==
+                                                  a) {
+                                                allSpellsSelectedAsListsOfThings[
+                                                        x][2] =
+                                                    getSpellsKnown(
+                                                        index,
+                                                        allSpellsSelectedAsListsOfThings[
+                                                            x]);
+                                              }
+                                            }
+                                          }
+
+                                          allSpellsSelectedAsListsOfThings.add([
+                                            CLASSLIST[index].name,
+                                            [],
+                                            levelZeroGetSpellsKnown(index),
+                                            CLASSLIST[index]
+                                                    .spellsKnownFormula ??
+                                                CLASSLIST[index]
+                                                    .spellsKnownPerLevel
+                                          ]);
                                         }
                                         levelsPerClass[index]++;
                                       }
@@ -3752,6 +3807,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                   ],
                 )
               ])),
+          //ASI + FEAT
+          Row(
+            children: [],
+          ),
           //spells
           DefaultTabController(
             length: 2,
@@ -3780,26 +3839,57 @@ class MainCreateCharacter extends State<CreateACharacter>
                   Expanded(
                       child: Column(children: [
                     if (allSpellsSelected
+                            .where((element) => element.level == 0)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      const Text("Cantrips:"),
+                    if (allSpellsSelected
+                            .where((element) => element.level == 0)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      SizedBox(
+                          height: 50,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: allSpellsSelected
+                                .where((element) => element.level == 0)
+                                .toList()
+                                .length,
+                            itemBuilder: (context, index) {
+                              return OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                    backgroundColor: Colors.white),
+                                onPressed: () {},
+                                child: Text(allSpellsSelected
+                                    .where((element) => element.level == 0)
+                                    .toList()[index]
+                                    .name),
+                              );
+                            },
+                          )),
+                    if (allSpellsSelected
                             .where((element) => element.level == 1)
                             .toList()
                             .isEmpty ==
                         false)
-                      const Text("Level 1 Spells"),
+                      const Text("Level 1 Spells:"),
                     if (allSpellsSelected
                             .where((element) => element.level == 1)
                             .toList()
                             .isEmpty ==
                         false)
                       SizedBox(
-                          height: 100,
+                          height: 50,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             shrinkWrap: true,
                             itemCount: allSpellsSelected
-                                    .where((element) => element.level == 1)
-                                    .toList()
-                                    .length -
-                                1,
+                                .where((element) => element.level == 1)
+                                .toList()
+                                .length,
                             itemBuilder: (context, index) {
                               return OutlinedButton(
                                 style: OutlinedButton.styleFrom(
@@ -3812,18 +3902,263 @@ class MainCreateCharacter extends State<CreateACharacter>
                               );
                             },
                           )),
+                    if (allSpellsSelected
+                            .where((element) => element.level == 2)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      const Text("Level 2 Spells:"),
+                    if (allSpellsSelected
+                            .where((element) => element.level == 2)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      SizedBox(
+                          height: 50,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: allSpellsSelected
+                                .where((element) => element.level == 2)
+                                .toList()
+                                .length,
+                            itemBuilder: (context, index) {
+                              return OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                    backgroundColor: Colors.white),
+                                onPressed: () {},
+                                child: Text(allSpellsSelected
+                                    .where((element) => element.level == 2)
+                                    .toList()[index]
+                                    .name),
+                              );
+                            },
+                          )),
+                    if (allSpellsSelected
+                            .where((element) => element.level == 3)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      const Text("Level 3 Spells:"),
+                    if (allSpellsSelected
+                            .where((element) => element.level == 3)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      SizedBox(
+                          height: 50,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: allSpellsSelected
+                                .where((element) => element.level == 3)
+                                .toList()
+                                .length,
+                            itemBuilder: (context, index) {
+                              return OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                    backgroundColor: Colors.white),
+                                onPressed: () {},
+                                child: Text(allSpellsSelected
+                                    .where((element) => element.level == 3)
+                                    .toList()[index]
+                                    .name),
+                              );
+                            },
+                          )),
+                    if (allSpellsSelected
+                            .where((element) => element.level == 4)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      const Text("Level 4 Spells:"),
+                    if (allSpellsSelected
+                            .where((element) => element.level == 4)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      SizedBox(
+                          height: 50,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: allSpellsSelected
+                                .where((element) => element.level == 4)
+                                .toList()
+                                .length,
+                            itemBuilder: (context, index) {
+                              return OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                    backgroundColor: Colors.white),
+                                onPressed: () {},
+                                child: Text(allSpellsSelected
+                                    .where((element) => element.level == 4)
+                                    .toList()[index]
+                                    .name),
+                              );
+                            },
+                          )),
+                    if (allSpellsSelected
+                            .where((element) => element.level == 5)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      const Text("Level 5 Spells:"),
+                    if (allSpellsSelected
+                            .where((element) => element.level == 5)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      SizedBox(
+                          height: 50,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: allSpellsSelected
+                                .where((element) => element.level == 5)
+                                .toList()
+                                .length,
+                            itemBuilder: (context, index) {
+                              return OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                    backgroundColor: Colors.white),
+                                onPressed: () {},
+                                child: Text(allSpellsSelected
+                                    .where((element) => element.level == 5)
+                                    .toList()[index]
+                                    .name),
+                              );
+                            },
+                          )),
+                    if (allSpellsSelected
+                            .where((element) => element.level == 6)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      const Text("Level 6 Spells:"),
+                    if (allSpellsSelected
+                            .where((element) => element.level == 6)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      SizedBox(
+                          height: 50,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: allSpellsSelected
+                                .where((element) => element.level == 6)
+                                .toList()
+                                .length,
+                            itemBuilder: (context, index) {
+                              return OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                    backgroundColor: Colors.white),
+                                onPressed: () {},
+                                child: Text(allSpellsSelected
+                                    .where((element) => element.level == 6)
+                                    .toList()[index]
+                                    .name),
+                              );
+                            },
+                          )),
+                    if (allSpellsSelected
+                            .where((element) => element.level == 7)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      const Text("Level 7 Spells:"),
+                    if (allSpellsSelected
+                            .where((element) => element.level == 7)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      SizedBox(
+                          height: 50,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: allSpellsSelected
+                                .where((element) => element.level == 7)
+                                .toList()
+                                .length,
+                            itemBuilder: (context, index) {
+                              return OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                    backgroundColor: Colors.white),
+                                onPressed: () {},
+                                child: Text(allSpellsSelected
+                                    .where((element) => element.level == 7)
+                                    .toList()[index]
+                                    .name),
+                              );
+                            },
+                          )),
+                    if (allSpellsSelected
+                            .where((element) => element.level == 8)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      const Text("Level 8 Spells:"),
+                    if (allSpellsSelected
+                            .where((element) => element.level == 8)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      SizedBox(
+                          height: 50,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: allSpellsSelected
+                                .where((element) => element.level == 8)
+                                .toList()
+                                .length,
+                            itemBuilder: (context, index) {
+                              return OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                    backgroundColor: Colors.white),
+                                onPressed: () {},
+                                child: Text(allSpellsSelected
+                                    .where((element) => element.level == 8)
+                                    .toList()[index]
+                                    .name),
+                              );
+                            },
+                          )),
+                    if (allSpellsSelected
+                            .where((element) => element.level == 9)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      const Text("Level 9 Spells:"),
+                    if (allSpellsSelected
+                            .where((element) => element.level == 9)
+                            .toList()
+                            .isEmpty ==
+                        false)
+                      SizedBox(
+                          height: 50,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: allSpellsSelected
+                                .where((element) => element.level == 9)
+                                .toList()
+                                .length,
+                            itemBuilder: (context, index) {
+                              return OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                    backgroundColor: Colors.white),
+                                onPressed: () {},
+                                child: Text(allSpellsSelected
+                                    .where((element) => element.level == 9)
+                                    .toList()[index]
+                                    .name),
+                              );
+                            },
+                          )),
                   ])),
-                  /*Expanded(
-                    child: SingleChildScrollView(
-                        child: Column(
-                      children: CLASSLIST
-                          .where(
-                              (s) => levelsPerClass[CLASSLIST.indexOf(s)] != 0)
-                          .map((s) => SpellSelections(allSpellsSelected,
-                              classSelected: s))
-                          .toList(),
-                    )),
-                  ),*/
                   Expanded(
                     child: SingleChildScrollView(
                         child: Column(
@@ -3838,7 +4173,7 @@ class MainCreateCharacter extends State<CreateACharacter>
             ),
           ),
           //Equipment
-          const Icon(Icons.directions_bike),
+          Text("$allSpellsSelected\n $allSpellsSelectedAsListsOfThings"),
           /*Column(children: [
             DropdownButton<String>(
               onChanged: (String? value) {
@@ -3912,7 +4247,7 @@ class MainCreateCharacter extends State<CreateACharacter>
             )
           ]),
           */ //Boons and magic items
-          const Icon(Icons.directions_bike),
+
           //Backstory
           SingleChildScrollView(
               scrollDirection: Axis.vertical,
@@ -4214,10 +4549,29 @@ class MainCreateCharacter extends State<CreateACharacter>
                       }),
                 ),
               ])),
+          //Boons and magic items
+          const Icon(Icons.directions_bike),
           //Finishing up
           const Icon(Icons.directions_car),
         ]),
       ),
     );
+  }
+
+  int levelZeroGetSpellsKnown(int index) {
+    if (CLASSLIST[index].spellsKnownFormula == null) {
+      return CLASSLIST[index].spellsKnownPerLevel![levelsPerClass[index]];
+    }
+    //decode as zero
+    return 3;
+  }
+
+  int getSpellsKnown(int index, List<dynamic> thisStuff) {
+    if (CLASSLIST[index].spellsKnownFormula == null) {
+      return (CLASSLIST[index].spellsKnownPerLevel![levelsPerClass[index]] -
+          thisStuff[1].length) as int;
+    }
+    //decode as level + 1 and then take away [1].length
+    return 3;
   }
 }

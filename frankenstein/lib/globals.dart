@@ -18,6 +18,32 @@ class Proficiency {
   });
 }
 
+class Feat {
+  final String name;
+  final List<List<String>> abilites;
+  final String sourceBook;
+  final int numberOfTimesTakeable;
+  final String description;
+
+  factory Feat.fromJson(Map<String, dynamic> data) {
+    return Feat(
+        name: data['Name'],
+        sourceBook: data['SourceBook'].cast<List<String>>(),
+        abilites: data['Abilities'],
+        description: data['Description'],
+        numberOfTimesTakeable: data['NumberOfTimesTakeable']
+        //sourceBook: sourceBook,
+        );
+  }
+  Feat({
+    required this.name,
+    required this.sourceBook,
+    required this.abilites,
+    required this.description,
+    required this.numberOfTimesTakeable,
+  });
+}
+
 ///file loaded as a string 'jsonString'
 String jsonString = File("assets/SRD.json").readAsStringSync();
 //String data =  rootBundle.loadString('assets/$path.json')
@@ -421,3 +447,5 @@ List<Background> BACKGROUNDLIST = [
 List<Class> CLASSLIST = [for (var x in jsonmap["Classes"]) Class.fromJson(x)];
 // ignore: non_constant_identifier_names
 List<Spell> SPELLLIST = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
+// ignore: non_constant_identifier_names
+List<Feat> FEATLIST = [for (var x in jsonmap["Feat"]) Feat.fromJson(x)];
