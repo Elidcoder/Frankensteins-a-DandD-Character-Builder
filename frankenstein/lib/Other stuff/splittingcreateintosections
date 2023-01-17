@@ -23,10 +23,11 @@ ability scores should be main/cross axis aligned
 many issues with the race page and lacks of features
 custom background
 mystery lists need to be swapped for functional code that isn't hogging memory
-requirements nedd to be added
+requirements nedd to be added - takeable function
 Feats:
 ASI list (if even) total numb and feats have maximum numb
+make sure that ASI max works
 Subclasses:
 store a future area
 Spells bloc stuff - https://stackoverflow.com/questions/51798498/flutter-setstate-to-another-class/51798698#51798698
-also please actually decode at some point
+also please actually decode at some point and also for all skill increases
