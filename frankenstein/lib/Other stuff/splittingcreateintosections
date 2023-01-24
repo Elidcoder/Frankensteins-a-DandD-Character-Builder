@@ -27,6 +27,7 @@ requirements nedd to be added - takeable function
 Feats:
 ASI list (if even) total numb and feats have maximum numb
 make sure that ASI max works
+make sure choices within feats work, and sort by options selected
 Subclasses:
 store a future area
 Spells bloc stuff - https://stackoverflow.com/questions/51798498/flutter-setstate-to-another-class/51798698#51798698

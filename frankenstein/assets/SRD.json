@@ -241,7 +241,7 @@
                                 ["Bonus","Other creatures don't gain advantage on attack rolls against you as a result of being hidden from you."]
                                 
                         ],
-                        "Sourcebook":"Player's Handbook",
+                        "SourceBook":"Player's Handbook",
                         "Description":"Always on the lookout for danger, you gain the following benefits:",
                         "NumberOfTimesTakeable": 1
                 }
