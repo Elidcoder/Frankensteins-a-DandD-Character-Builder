@@ -14,6 +14,11 @@ isAllowedContend returns allowed content
 
 
 small:
+magic items and notes to classes
+ensure that classes actually use a list of equipment
+class starting wealth
+property search with weapons
+clean up display for equipment and other things as well as add a sorting feature to the equipments
 Pass in variables to recursive building without the ? stuff
 textboxes go blue when info entered
 update spell and parents and stuff
@@ -28,6 +33,7 @@ Feats:
 ASI list (if even) total numb and feats have maximum numb
 make sure that ASI max works
 make sure choices within feats work, and sort by options selected
+parse the asis
 Subclasses:
 store a future area
 Spells bloc stuff - https://stackoverflow.com/questions/51798498/flutter-setstate-to-another-class/51798698#51798698

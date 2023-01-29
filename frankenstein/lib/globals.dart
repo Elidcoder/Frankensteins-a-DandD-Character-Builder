@@ -20,16 +20,17 @@ class Proficiency {
 
 class Item {
   String name;
-  int cost;
+  //[10,"gold"]
+  List<dynamic> cost;
   double weight;
-  bool stackable;
+  int stackableNumber;
   String? description;
 
   Item(
       {required this.name,
       required this.cost,
       required this.weight,
-      required this.stackable,
+      required this.stackableNumber,
       this.description});
 
   factory Item.fromJson(Map<String, dynamic> data) {
@@ -37,7 +38,7 @@ class Item {
         name: data["Name"],
         cost: data["Cost"],
         weight: data["Weight"],
-        stackable: data["Stackable"] ?? false,
+        stackableNumber: data["StackableNumber"] ?? 1,
         description: data["Description"]);
   }
 }
@@ -50,14 +51,18 @@ class Armour extends Item {
 
   Armour(
       {required String name,
-      required int cost,
+      required List<dynamic> cost,
       required double weight,
-      required bool stackable,
+      required int stackableNumber,
       required this.armourFormula,
       required this.imposeStealthDisadvantage,
       required this.strengthRequirement,
       required this.armourType})
-      : super(name: name, cost: cost, stackable: stackable, weight: weight);
+      : super(
+            name: name,
+            cost: cost,
+            stackableNumber: stackableNumber,
+            weight: weight);
 
   factory Armour.fromJson(Map<String, dynamic> data) {
     return Armour(
@@ -66,7 +71,7 @@ class Armour extends Item {
         weight: data["Weight"],
         strengthRequirement: data["StrengthRequirement"] ?? false,
         imposeStealthDisadvantage: data["ImposeStealthDisadvantage"] ?? false,
-        stackable: data["Stackable"] ?? false,
+        stackableNumber: data["StackableNumber"] ?? 1,
         armourFormula: data["ArmourFormula"],
         armourType: data["armourType"]);
   }
@@ -78,21 +83,25 @@ class Weapon extends Item {
   List<String> properties;
   Weapon(
       {required String name,
-      required int cost,
-      required bool stackable,
+      required List<dynamic> cost,
+      required int stackableNumber,
       required double weight,
       required this.damageDiceAndType,
       required this.properties})
-      : super(name: name, cost: cost, stackable: stackable, weight: weight);
+      : super(
+            name: name,
+            cost: cost,
+            stackableNumber: stackableNumber,
+            weight: weight);
 
   factory Weapon.fromJson(Map<String, dynamic> data) {
     return Weapon(
         name: data["Name"],
         cost: data["Cost"],
         weight: data["Weight"],
-        stackable: data["Stackable"] ?? false,
-        damageDiceAndType: data["DamageDiceAndType"],
-        properties: data["Properties"]);
+        stackableNumber: data["StackableNumber"] ?? 1,
+        damageDiceAndType: data["DamageDiceAndType"].cast<List<String>>(),
+        properties: data["Properties"].cast<String>());
   }
 }
 
@@ -529,13 +538,17 @@ List<Spell> SPELLLIST = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
 List<Feat> FEATLIST = [for (var x in jsonmap["Feats"]) Feat.fromJson(x)];
 
 dynamic mapEquipment(x) {
-  if (x["EquipmentType"] == "Armour") {
+  if (x["EquipmentType"].contains("Magic")) {
+    ///run through magic subtypes
+  } else if (x["EquipmentType"].contains("Armour")) {
     return Armour.fromJson(x);
-  } else if (x["EquipmentType"] == "Weapon") {
+  } else if (x["EquipmentType"].contains("Weapon")) {
     return Weapon.fromJson(x);
   }
   return Item.fromJson(x);
 }
 
 // ignore: non_constant_identifier_names
-List<dynamic> ITEMLIST = [for (var x in jsonmap["Equipment"]) mapEquipment(x)];
+List<dynamic> ITEMLIST = [
+  for (var x in jsonmap["Equipment"] ?? []) mapEquipment(x)
+];

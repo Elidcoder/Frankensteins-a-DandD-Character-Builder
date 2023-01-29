@@ -920,7 +920,7 @@ class MainCreateCharacter extends State<CreateACharacter>
     "Copper Pieces": 0,
     "Silver Pieces": 0,
     "Electrum Pieces": 0,
-    "Gold Pieces": 0,
+    "Gold Pieces": 100,
     "Platinum Pieces": 0
   };
   // ignore: non_constant_identifier_names
@@ -1014,6 +1014,14 @@ class MainCreateCharacter extends State<CreateACharacter>
   //Spell variables
   List<Spell> allSpellsSelected = [];
   List<List<dynamic>> allSpellsSelectedAsListsOfThings = [];
+  //Equipment variables
+  List<String> armourList = [];
+  List<String> weaponList = [];
+  List<String> itemList = [];
+  String? coinTypeSelected;
+  //{thing:numb,...}
+  Map<String, int> stackablesSelected = {};
+  List<dynamic> unstackablesSelected = [];
   //BackgroundVariables
   String characterAge = "";
   String characterHeight = "";
@@ -1480,7 +1488,7 @@ class MainCreateCharacter extends State<CreateACharacter>
           SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(
-                //crossAxisAlignment: CrossAxisAlignment.start,
+                //mainAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 60),
                   Row(
@@ -4301,28 +4309,31 @@ class MainCreateCharacter extends State<CreateACharacter>
                               ))),
                       Expanded(
                           child: SizedBox(
-                              height: 300,
+                              height: 435,
                               child: Column(
                                 children: [
                                   const Text("Feats"),
                                   if (featsSelected.isNotEmpty)
-                                    const Text("Selected Feats:"),
-                                  SizedBox(
-                                      height: 50,
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        shrinkWrap: true,
-                                        itemCount: featsSelected.length,
-                                        itemBuilder: (context, index) {
-                                          return OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                                backgroundColor: Colors.white),
-                                            onPressed: () {},
-                                            child: Text(
-                                                featsSelected[index][0].name),
-                                          );
-                                        },
-                                      )),
+                                    Text(
+                                        "${featsSelected.length} Feats selected:"),
+                                  if (featsSelected.isNotEmpty)
+                                    SizedBox(
+                                        height: 50,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          shrinkWrap: true,
+                                          itemCount: featsSelected.length,
+                                          itemBuilder: (context, index) {
+                                            return OutlinedButton(
+                                              style: OutlinedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Colors.white),
+                                              onPressed: () {},
+                                              child: Text(
+                                                  featsSelected[index][0].name),
+                                            );
+                                          },
+                                        )),
                                   const Text("Select Feats:"),
                                   Row(children: [
                                     OutlinedButton(
@@ -4794,464 +4805,512 @@ class MainCreateCharacter extends State<CreateACharacter>
               child: Row(
                 children: [
                   Expanded(
+                      flex: 2,
+                      child: SizedBox(
+                          height: 435,
+                          child: Column(children: [
+                            const Text("Purchase Equipment"),
+                            Text(
+                                "You have ${currencyStored["Platinum Pieces"]} platinum, ${currencyStored["Gold Pieces"]} gold, ${currencyStored["Electrum Pieces"]} electrum, ${currencyStored["Silver Pieces"]} silver and ${currencyStored["Copper Pieces"]} copper pieces to spend with"),
+                            Row(children: [
+                              //armour
+                              OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                    backgroundColor: (armourList.length == 4)
+                                        ? Colors.blue
+                                        : Colors.grey),
+                                onPressed: () {
+                                  setState(() {
+                                    if (armourList.length == 4) {
+                                      armourList.clear();
+                                    } else {
+                                      armourList = [
+                                        "Heavy",
+                                        "Light",
+                                        "Medium",
+                                        "Shield"
+                                      ];
+                                    }
+                                  });
+                                },
+                                child: SizedBox(
+                                    width: 305,
+                                    height: 57,
+                                    child: Column(
+                                      children: [
+                                        const Text("Armour",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 22)),
+                                        Row(
+                                          children: [
+                                            OutlinedButton(
+                                              style: OutlinedButton.styleFrom(
+                                                  backgroundColor: (armourList
+                                                          .contains("Light"))
+                                                      ? Colors.blue
+                                                      : Colors.grey),
+                                              onPressed: () {
+                                                setState(() {
+                                                  if (armourList
+                                                      .contains("Light")) {
+                                                    armourList.remove("Light");
+                                                  } else {
+                                                    armourList.add("Light");
+                                                  }
+                                                });
+                                              },
+                                              child: const Text("Light",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 15)),
+                                            ),
+                                            OutlinedButton(
+                                                style: OutlinedButton.styleFrom(
+                                                    backgroundColor: (armourList
+                                                            .contains("Medium"))
+                                                        ? Colors.blue
+                                                        : Colors.grey),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (armourList
+                                                        .contains("Medium")) {
+                                                      armourList
+                                                          .remove("Medium");
+                                                    } else {
+                                                      armourList.add("Medium");
+                                                    }
+                                                  });
+                                                },
+                                                child: const Text("Medium",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 15))),
+                                            OutlinedButton(
+                                              style: OutlinedButton.styleFrom(
+                                                  backgroundColor: (armourList
+                                                          .contains("Heavy"))
+                                                      ? Colors.blue
+                                                      : Colors.grey),
+                                              onPressed: () {
+                                                setState(() {
+                                                  if (armourList
+                                                      .contains("Heavy")) {
+                                                    armourList.remove("Heavy");
+                                                  } else {
+                                                    armourList.add("Heavy");
+                                                  }
+                                                });
+                                              },
+                                              child: const Text("Heavy",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 15)),
+                                            ),
+                                            OutlinedButton(
+                                                style: OutlinedButton.styleFrom(
+                                                    backgroundColor: (armourList
+                                                            .contains("Shield"))
+                                                        ? Colors.blue
+                                                        : Colors.grey),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (armourList
+                                                        .contains("Shield")) {
+                                                      armourList
+                                                          .remove("Shield");
+                                                    } else {
+                                                      armourList.add("Shield");
+                                                    }
+                                                  });
+                                                },
+                                                child: const Text("Shield",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 15)))
+                                          ],
+                                        )
+                                      ],
+                                    )),
+                              ),
+                              //weapons
+                              OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                    backgroundColor: (weaponList.length == 2)
+                                        ? Colors.blue
+                                        : Colors.grey),
+                                onPressed: () {
+                                  setState(() {
+                                    if (weaponList.length == 2) {
+                                      weaponList.clear();
+                                    } else {
+                                      weaponList = ["Ranged", "Melee"];
+                                    }
+                                  });
+                                },
+                                child: SizedBox(
+                                    width: 158,
+                                    height: 57,
+                                    child: Column(
+                                      children: [
+                                        const Text("Weapon",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 22)),
+                                        Row(
+                                          children: [
+                                            OutlinedButton(
+                                              style: OutlinedButton.styleFrom(
+                                                  backgroundColor: (weaponList
+                                                          .contains("Ranged"))
+                                                      ? Colors.blue
+                                                      : Colors.grey),
+                                              onPressed: () {
+                                                setState(() {
+                                                  if (weaponList
+                                                      .contains("Ranged")) {
+                                                    weaponList.remove("Ranged");
+                                                  } else {
+                                                    weaponList.add("Ranged");
+                                                  }
+                                                });
+                                              },
+                                              child: const Text("Ranged",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 15)),
+                                            ),
+                                            OutlinedButton(
+                                                style: OutlinedButton.styleFrom(
+                                                    backgroundColor: (weaponList
+                                                            .contains("Melee"))
+                                                        ? Colors.blue
+                                                        : Colors.grey),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (weaponList
+                                                        .contains("Melee")) {
+                                                      weaponList
+                                                          .remove("Melee");
+                                                    } else {
+                                                      weaponList.add("Melee");
+                                                    }
+                                                  });
+                                                },
+                                                child: const Text("Melee",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 15))),
+                                          ],
+                                        )
+                                      ],
+                                    )),
+                              ),
+                              //Items
+                              OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                    backgroundColor: (itemList.length == 2)
+                                        ? Colors.blue
+                                        : Colors.grey),
+                                onPressed: () {
+                                  setState(() {
+                                    if (itemList.length == 2) {
+                                      itemList.clear();
+                                    } else {
+                                      itemList = ["Stackable", "Unstackable"];
+                                    }
+                                  });
+                                },
+                                child: SizedBox(
+                                    width: 212,
+                                    height: 57,
+                                    child: Column(
+                                      children: [
+                                        const Text("Items",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 22)),
+                                        Row(
+                                          children: [
+                                            OutlinedButton(
+                                              style: OutlinedButton.styleFrom(
+                                                  backgroundColor:
+                                                      (itemList.contains(
+                                                              "Stackable"))
+                                                          ? Colors.blue
+                                                          : Colors.grey),
+                                              onPressed: () {
+                                                setState(() {
+                                                  if (itemList
+                                                      .contains("Stackable")) {
+                                                    itemList
+                                                        .remove("Stackable");
+                                                  } else {
+                                                    itemList.add("Stackable");
+                                                  }
+                                                });
+                                              },
+                                              child: const Text("Stackable",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 15)),
+                                            ),
+                                            OutlinedButton(
+                                                style: OutlinedButton.styleFrom(
+                                                    backgroundColor:
+                                                        (itemList.contains(
+                                                                "Unstackable"))
+                                                            ? Colors.blue
+                                                            : Colors.grey),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (itemList.contains(
+                                                        "Unstackable")) {
+                                                      itemList.remove(
+                                                          "Unstackable");
+                                                    } else {
+                                                      itemList
+                                                          .add("Unstackable");
+                                                    }
+                                                  });
+                                                },
+                                                child: const Text("Unstackable",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 15))),
+                                          ],
+                                        )
+                                      ],
+                                    )),
+                              ),
+                            ]),
+                            Row(
+                              children: [
+                                //costs
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                      color: Colors.grey,
+                                      width: 2,
+                                    ),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10)),
+                                  ),
+                                  child: SizedBox(
+                                      width: 402,
+                                      height: 57,
+                                      child: Column(
+                                        children: [
+                                          const Text("Cost range:",
+                                              style: TextStyle(
+                                                  color: Colors.blue,
+                                                  fontSize: 22)),
+                                          //box<X<box2
+                                          Row(
+                                            children: [
+                                              OutlinedButton(
+                                                style: OutlinedButton.styleFrom(
+                                                    backgroundColor:
+                                                        (coinTypeSelected ==
+                                                                "Platinum")
+                                                            ? Colors.blue
+                                                            : Colors.grey),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (coinTypeSelected ==
+                                                        "Platinum") {
+                                                      coinTypeSelected = null;
+                                                    } else {
+                                                      coinTypeSelected =
+                                                          "Platinum";
+                                                    }
+                                                  });
+                                                },
+                                                child: const Text("Platinum",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 15)),
+                                              ),
+                                              OutlinedButton(
+                                                style: OutlinedButton.styleFrom(
+                                                    backgroundColor:
+                                                        (coinTypeSelected ==
+                                                                "Gold")
+                                                            ? Colors.blue
+                                                            : Colors.grey),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (coinTypeSelected ==
+                                                        "Gold") {
+                                                      coinTypeSelected = null;
+                                                    } else {
+                                                      coinTypeSelected = "Gold";
+                                                    }
+                                                  });
+                                                },
+                                                child: const Text("Gold",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 15)),
+                                              ),
+                                              OutlinedButton(
+                                                style: OutlinedButton.styleFrom(
+                                                    backgroundColor:
+                                                        (coinTypeSelected ==
+                                                                "Electrum")
+                                                            ? Colors.blue
+                                                            : Colors.grey),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (coinTypeSelected ==
+                                                        "Electrum") {
+                                                      coinTypeSelected = null;
+                                                    } else {
+                                                      coinTypeSelected =
+                                                          "Electrum";
+                                                    }
+                                                  });
+                                                },
+                                                child: const Text("Electrum",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 15)),
+                                              ),
+                                              OutlinedButton(
+                                                style: OutlinedButton.styleFrom(
+                                                    backgroundColor:
+                                                        (coinTypeSelected ==
+                                                                "Silver")
+                                                            ? Colors.blue
+                                                            : Colors.grey),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (coinTypeSelected ==
+                                                        "Silver") {
+                                                      coinTypeSelected = null;
+                                                    } else {
+                                                      coinTypeSelected =
+                                                          "Silver";
+                                                    }
+                                                  });
+                                                },
+                                                child: const Text("Silver",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 15)),
+                                              ),
+                                              OutlinedButton(
+                                                style: OutlinedButton.styleFrom(
+                                                    backgroundColor:
+                                                        (coinTypeSelected ==
+                                                                "Copper")
+                                                            ? Colors.blue
+                                                            : Colors.grey),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (coinTypeSelected ==
+                                                        "Copper") {
+                                                      coinTypeSelected = null;
+                                                    } else {
+                                                      coinTypeSelected =
+                                                          "Copper";
+                                                    }
+                                                  });
+                                                },
+                                                child: const Text("Copper",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 15)),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      )),
+                                ),
+                              ],
+                            ),
+                            Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  border: Border.all(
+                                    color:
+                                        const Color.fromARGB(255, 7, 26, 239),
+                                    width: 2,
+                                  ),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                ),
+                                height: 200,
+                                width: 600,
+                                child: SingleChildScrollView(
+                                    scrollDirection: Axis.vertical,
+                                    child: Wrap(
+                                      spacing: 8.0,
+                                      runSpacing: 8.0,
+                                      alignment: WrapAlignment.center,
+                                      children: List.generate(ITEMLIST.length,
+                                          (index) {
+                                        return OutlinedButton(
+                                          style: OutlinedButton.styleFrom(
+                                              backgroundColor: Colors.white),
+                                          onPressed: () {
+                                            setState(() {
+                                              if (ITEMLIST[index].cost[0] <=
+                                                  currencyStored[
+                                                      "${ITEMLIST[index].cost[1]} Pieces"]) {
+                                                currencyStored[
+                                                        "${ITEMLIST[index].cost[1]} Pieces"] =
+                                                    currencyStored[
+                                                            "${ITEMLIST[index].cost[1]} Pieces"]! -
+                                                        (ITEMLIST[index].cost[0]
+                                                            as int);
+                                                if (ITEMLIST[index]
+                                                        .stackableNumber >
+                                                    1) {
+                                                  if (stackablesSelected
+                                                      .containsKey(
+                                                          ITEMLIST[index]
+                                                              .name)) {
+                                                    stackablesSelected[
+                                                            ITEMLIST[index]
+                                                                .name] =
+                                                        stackablesSelected[
+                                                                ITEMLIST[index]
+                                                                    .name]! +
+                                                            (ITEMLIST[index]
+                                                                    .stackableNumber
+                                                                as int);
+                                                    //add it in
+                                                  } else {
+                                                    stackablesSelected[
+                                                            ITEMLIST[index]
+                                                                .name] =
+                                                        ITEMLIST[index]
+                                                            .stackableNumber;
+                                                  }
+                                                } else {
+                                                  unstackablesSelected
+                                                      .add(ITEMLIST[index]);
+                                                }
+                                              }
+                                            });
+
+                                            //subtract cost
+                                          },
+                                          child: Text(ITEMLIST[index].name),
+                                        );
+                                      }),
+                                    )))
+                          ]))),
+                  Expanded(
                       child: SizedBox(
                           height: 435,
                           child: Column(
                             children: [
-                              const Text("ASI's"),
-                              if (ASIRemaining)
-                                const Text("You have an unspent ASI"),
-                              SizedBox(
-                                  child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 132,
-                                    width: 160,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      border: Border.all(
-                                        color: const Color.fromARGB(
-                                            255, 7, 26, 239),
-                                        width: 2,
-                                      ),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(5)),
-                                    ),
-                                    child: Column(children: [
-                                      const Text(
-                                        textAlign: TextAlign.center,
-                                        "Strength",
-                                        style: TextStyle(
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.w800,
-                                            color: Colors.white),
-                                      ),
-                                      Text(
-                                        textAlign: TextAlign.center,
-                                        "+${ASIBonuses[0]}",
-                                        style: const TextStyle(
-                                            fontSize: 45,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.white),
-                                      ),
-                                      OutlinedButton(
-                                          style: OutlinedButton.styleFrom(
-                                            backgroundColor: (!ASIRemaining &&
-                                                        numberOfRemainingFeatOrASIs ==
-                                                            0 ||
-                                                    !(strength.value +
-                                                            ASIBonuses[0] <
-                                                        20))
-                                                ? Colors.grey
-                                                : const Color.fromARGB(
-                                                    150, 61, 33, 243),
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(4))),
-                                            side: const BorderSide(
-                                                width: 3,
-                                                color: Color.fromARGB(
-                                                    255, 10, 126, 54)),
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              if (strength.value +
-                                                      ASIBonuses[0] <
-                                                  20) {
-                                                if (ASIRemaining) {
-                                                  ASIRemaining = false;
-                                                  ASIBonuses[0]++;
-                                                } else if (numberOfRemainingFeatOrASIs >
-                                                    0) {
-                                                  numberOfRemainingFeatOrASIs--;
-                                                  ASIRemaining = true;
-                                                  ASIBonuses[0]++;
-                                                }
-                                              }
-                                            });
-                                          },
-                                          child: const Icon(Icons.add,
-                                              color: Colors.white, size: 32)),
-                                    ]),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Container(
-                                    height: 132,
-                                    width: 160,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      border: Border.all(
-                                        color: const Color.fromARGB(
-                                            255, 7, 26, 239),
-                                        width: 2,
-                                      ),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(5)),
-                                    ),
-                                    child: Column(children: [
-                                      const Text(
-                                        textAlign: TextAlign.center,
-                                        "Intelligence",
-                                        style: TextStyle(
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.w800,
-                                            color: Colors.white),
-                                      ),
-                                      Text(
-                                        textAlign: TextAlign.center,
-                                        "+${ASIBonuses[3]}",
-                                        style: const TextStyle(
-                                            fontSize: 45,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.white),
-                                      ),
-                                      OutlinedButton(
-                                          style: OutlinedButton.styleFrom(
-                                            backgroundColor: (!ASIRemaining &&
-                                                        numberOfRemainingFeatOrASIs ==
-                                                            0 ||
-                                                    !(intelligence.value +
-                                                            ASIBonuses[3] <
-                                                        20))
-                                                ? Colors.grey
-                                                : const Color.fromARGB(
-                                                    150, 61, 33, 243),
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(4))),
-                                            side: const BorderSide(
-                                                width: 3,
-                                                color: Color.fromARGB(
-                                                    255, 10, 126, 54)),
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              if (intelligence.value +
-                                                      ASIBonuses[3] <
-                                                  20) {
-                                                if (ASIRemaining) {
-                                                  ASIRemaining = false;
-                                                  ASIBonuses[3]++;
-                                                } else if (numberOfRemainingFeatOrASIs >
-                                                    0) {
-                                                  numberOfRemainingFeatOrASIs--;
-                                                  ASIRemaining = true;
-                                                  ASIBonuses[3]++;
-                                                }
-                                              }
-                                            });
-                                          },
-                                          child: const Icon(Icons.add,
-                                              color: Colors.white, size: 32)),
-                                    ]),
-                                  )
-                                ],
-                              )),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                  child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 132,
-                                    width: 160,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      border: Border.all(
-                                        color: const Color.fromARGB(
-                                            255, 7, 26, 239),
-                                        width: 2,
-                                      ),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(5)),
-                                    ),
-                                    child: Column(children: [
-                                      const Text(
-                                        textAlign: TextAlign.center,
-                                        "Dexterity",
-                                        style: TextStyle(
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.w800,
-                                            color: Colors.white),
-                                      ),
-                                      Text(
-                                        textAlign: TextAlign.center,
-                                        "+${ASIBonuses[1]}",
-                                        style: const TextStyle(
-                                            fontSize: 45,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.white),
-                                      ),
-                                      OutlinedButton(
-                                          style: OutlinedButton.styleFrom(
-                                            backgroundColor: ((!ASIRemaining &&
-                                                        numberOfRemainingFeatOrASIs ==
-                                                            0) ||
-                                                    !(dexterity.value +
-                                                            ASIBonuses[1] <
-                                                        20))
-                                                ? Colors.grey
-                                                : const Color.fromARGB(
-                                                    150, 61, 33, 243),
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(4))),
-                                            side: const BorderSide(
-                                                width: 3,
-                                                color: Color.fromARGB(
-                                                    255, 10, 126, 54)),
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              if (dexterity.value +
-                                                      ASIBonuses[1] <
-                                                  20) {
-                                                if (ASIRemaining) {
-                                                  ASIRemaining = false;
-                                                  ASIBonuses[1]++;
-                                                } else if (numberOfRemainingFeatOrASIs >
-                                                    0) {
-                                                  numberOfRemainingFeatOrASIs--;
-                                                  ASIRemaining = true;
-                                                  ASIBonuses[1]++;
-                                                }
-                                              }
-                                            });
-                                          },
-                                          child: const Icon(Icons.add,
-                                              color: Colors.white, size: 32)),
-                                    ]),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Container(
-                                    height: 132,
-                                    width: 160,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      border: Border.all(
-                                        color: const Color.fromARGB(
-                                            255, 7, 26, 239),
-                                        width: 2,
-                                      ),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(5)),
-                                    ),
-                                    child: Column(children: [
-                                      const Text(
-                                        textAlign: TextAlign.center,
-                                        "Wisdom",
-                                        style: TextStyle(
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.w800,
-                                            color: Colors.white),
-                                      ),
-                                      Text(
-                                        textAlign: TextAlign.center,
-                                        "+${ASIBonuses[4]}",
-                                        style: const TextStyle(
-                                            fontSize: 45,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.white),
-                                      ),
-                                      OutlinedButton(
-                                          style: OutlinedButton.styleFrom(
-                                            backgroundColor: (!ASIRemaining &&
-                                                        numberOfRemainingFeatOrASIs ==
-                                                            0 ||
-                                                    !(wisdom.value +
-                                                            ASIBonuses[4] <
-                                                        20))
-                                                ? Colors.grey
-                                                : const Color.fromARGB(
-                                                    150, 61, 33, 243),
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(4))),
-                                            side: const BorderSide(
-                                                width: 3,
-                                                color: Color.fromARGB(
-                                                    255, 10, 126, 54)),
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              if (wisdom.value + ASIBonuses[4] <
-                                                  20) {
-                                                if (ASIRemaining) {
-                                                  ASIRemaining = false;
-                                                  ASIBonuses[4]++;
-                                                } else if (numberOfRemainingFeatOrASIs >
-                                                    0) {
-                                                  numberOfRemainingFeatOrASIs--;
-                                                  ASIRemaining = true;
-                                                  ASIBonuses[4]++;
-                                                }
-                                              }
-                                            });
-                                          },
-                                          child: const Icon(Icons.add,
-                                              color: Colors.white, size: 32)),
-                                    ]),
-                                  )
-                                ],
-                              )),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                  child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 132,
-                                    width: 160,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      border: Border.all(
-                                        color: const Color.fromARGB(
-                                            255, 7, 26, 239),
-                                        width: 2,
-                                      ),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(5)),
-                                    ),
-                                    child: Column(children: [
-                                      const Text(
-                                        textAlign: TextAlign.center,
-                                        "Constitution",
-                                        style: TextStyle(
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.w800,
-                                            color: Colors.white),
-                                      ),
-                                      Text(
-                                        textAlign: TextAlign.center,
-                                        "+${ASIBonuses[2]}",
-                                        style: const TextStyle(
-                                            fontSize: 45,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.white),
-                                      ),
-                                      OutlinedButton(
-                                          style: OutlinedButton.styleFrom(
-                                            backgroundColor: (!ASIRemaining &&
-                                                        numberOfRemainingFeatOrASIs ==
-                                                            0 ||
-                                                    !(constitution.value +
-                                                            ASIBonuses[2] <
-                                                        20))
-                                                ? Colors.grey
-                                                : const Color.fromARGB(
-                                                    150, 61, 33, 243),
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(4))),
-                                            side: const BorderSide(
-                                                width: 3,
-                                                color: Color.fromARGB(
-                                                    255, 10, 126, 54)),
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              if (constitution.value +
-                                                      ASIBonuses[2] <
-                                                  20) {
-                                                if (ASIRemaining) {
-                                                  ASIRemaining = false;
-                                                  ASIBonuses[2]++;
-                                                } else if (numberOfRemainingFeatOrASIs >
-                                                    0) {
-                                                  numberOfRemainingFeatOrASIs--;
-                                                  ASIRemaining = true;
-                                                  ASIBonuses[2]++;
-                                                }
-                                              }
-                                            });
-                                          },
-                                          child: const Icon(Icons.add,
-                                              color: Colors.white, size: 32)),
-                                    ]),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Container(
-                                    height: 132,
-                                    width: 160,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      border: Border.all(
-                                        color: const Color.fromARGB(
-                                            255, 7, 26, 239),
-                                        width: 2,
-                                      ),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(5)),
-                                    ),
-                                    child: Column(children: [
-                                      const Text(
-                                        textAlign: TextAlign.center,
-                                        "Charisma",
-                                        style: TextStyle(
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.w800,
-                                            color: Colors.white),
-                                      ),
-                                      Text(
-                                        textAlign: TextAlign.center,
-                                        "+${ASIBonuses[5]}",
-                                        style: const TextStyle(
-                                            fontSize: 45,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.white),
-                                      ),
-                                      OutlinedButton(
-                                          style: OutlinedButton.styleFrom(
-                                            backgroundColor: (!ASIRemaining &&
-                                                        numberOfRemainingFeatOrASIs ==
-                                                            0 ||
-                                                    !(charisma.value +
-                                                            ASIBonuses[5] <
-                                                        20))
-                                                ? Colors.grey
-                                                : const Color.fromARGB(
-                                                    150, 61, 33, 243),
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(4))),
-                                            side: const BorderSide(
-                                                width: 3,
-                                                color: Color.fromARGB(
-                                                    255, 10, 126, 54)),
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              if (charisma.value +
-                                                      ASIBonuses[5] <
-                                                  20) {
-                                                if (ASIRemaining) {
-                                                  ASIRemaining = false;
-                                                  ASIBonuses[5]++;
-                                                } else if (numberOfRemainingFeatOrASIs >
-                                                    0) {
-                                                  numberOfRemainingFeatOrASIs--;
-                                                  ASIRemaining = true;
-                                                  ASIBonuses[5]++;
-                                                }
-                                              }
-                                            });
-                                          },
-                                          child: const Icon(Icons.add,
-                                              color: Colors.white, size: 32)),
-                                    ]),
-                                  )
-                                ],
-                              )),
-                            ],
-                          ))),
-                  Expanded(
-                      child: SizedBox(
-                          height: 300,
-                          child: Column(
-                            children: [
-                              const Text("Feats"),
-                              if (featsSelected.isNotEmpty)
+                              const Text(
+                                  "Pick your equipment from options gained:"),
+                              /*if (featsSelected.isNotEmpty)
                                 const Text("Selected Feats:"),
                               SizedBox(
                                   height: 50,
@@ -5362,83 +5421,12 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   },
                                 ),
                               ),
+                            */
                             ],
                           ))),
                 ],
               )),
-          /*Column(children: [
-            DropdownButton<String>(
-              onChanged: (String? value) {
-                // This is called when the user selects an item.
-                setState(() {
-                  spellExample = listgetter(value!);
-                });
-              },
-              value: spellExample.name,
-              icon: const Icon(Icons.arrow_downward),
-              items: list.map<DropdownMenuItem<String>>((Spell value) {
-                return DropdownMenuItem<String>(
-                  value: value.name,
-                  child: Text(value.name),
-                );
-              }).toList(),
-              elevation: 2,
-              style: const TextStyle(
-                  color: Colors.blue, fontWeight: FontWeight.w700),
-              underline: Container(
-                height: 1,
-                color: Colors.deepPurpleAccent,
-              ),
-            ),
-            DropdownButton<String>(
-              value: characterLevel,
-              icon: const Icon(Icons.arrow_drop_down,
-                  color: Color.fromARGB(255, 7, 26, 239)),
-              elevation: 16,
-              style: const TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 20),
-              underline: Container(
-                height: 2,
-                color: const Color.fromARGB(255, 7, 26, 239),
-              ),
-              onChanged: (String? value) {
-                // This is called when the user selects an item.
-                setState(() {
-                  characterLevel = value!;
-                });
-              },
-              items: [
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "7",
-                "8",
-                "9",
-                "10",
-                "11",
-                "12",
-                "13",
-                "14",
-                "15",
-                "16",
-                "17",
-                "18",
-                "19",
-                "20"
-              ].map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Center(child: Text(value)),
-                );
-              }).toList(),
-            )
-          ]),
-          */ //Boons and magic items
+          //Boons and magic items
 
           //Backstory
           SingleChildScrollView(
