@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:frankenstein/characterCreationGlobals.dart';
+//import 'package:frankenstein/character_creation_globals.dart';
 import "package:frankenstein/globals.dart";
 import "dart:collection";
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
+import 'package:frankenstein/PDFdocs/character_class.dart';
+import 'package:frankenstein/PDFdocs/pdf_final_display.dart';
 
 int abilityScoreCost(int x) {
   if (x > 12) {
@@ -35,7 +37,6 @@ Widget? leveGainParser(
     Class SELECTEDCLASS,
     List<String> FEATURESANDTRAITS) {
   //Levelup(class?)
-  debugPrint("${x[0]}");
   if (x[0] == "Level") {
     // ("Level", "numb")
     return Text(
@@ -971,6 +972,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   List<Widget> mystery2slist = [];
 
   //Class variables initialised
+  Class? classSelectedAtLevel1;
   List<Widget> widgetsInPlay = []; //added to each time a class is selected
   List<int> levelsPerClass = List.filled(CLASSLIST.length, 0);
   Map<String, List<dynamic>> selections = {};
@@ -1019,6 +1021,9 @@ class MainCreateCharacter extends State<CreateACharacter>
   List<String> weaponList = [];
   List<String> itemList = [];
   String? coinTypeSelected;
+  List<String> equipmentChosenInOptions = [];
+  Map<int, dynamic> equipmentSelected = {};
+  List<dynamic> equipmentSelectedExperiment = [];
   //{thing:numb,...}
   Map<String, int> stackablesSelected = {};
   List<dynamic> unstackablesSelected = [];
@@ -1029,7 +1034,8 @@ class MainCreateCharacter extends State<CreateACharacter>
   String characterEyes = "";
   String characterSkin = "";
   String characterHair = "";
-
+  //finishing up variables
+  Character character = Character(name: "TestCharacter");
   @override
   Widget build(
     BuildContext context,
@@ -2187,6 +2193,19 @@ class MainCreateCharacter extends State<CreateACharacter>
                                           levelsPerClass.reduce(
                                               (value, element) =>
                                                   value + element)) {
+                                        if (levelsPerClass.reduce(
+                                                (value, element) =>
+                                                    value + element) ==
+                                            0) {
+                                          //gain saving throw proficiencies
+                                          equipmentSelectedExperiment.addAll(
+                                              CLASSLIST[index]
+                                                  .equipmentOptions);
+                                          classSelectedAtLevel1 =
+                                              CLASSLIST[index];
+
+                                          //run first level functions := proficiencies, equipment health bonus
+                                        }
                                         if ((CLASSLIST[index]
                                                 .gainAtEachLevel[
                                                     levelsPerClass[index]]
@@ -2240,57 +2259,63 @@ class MainCreateCharacter extends State<CreateACharacter>
                                           }
                                         }
                                         //check if it's a spellcaster
-                                        if (levelsPerClass[index] == 0) {
-                                          allSpellsSelectedAsListsOfThings.add([
-                                            CLASSLIST[index].name,
-                                            [],
-                                            levelZeroGetSpellsKnown(index),
-                                            CLASSLIST[index]
-                                                    .spellsKnownFormula ??
-                                                CLASSLIST[index]
-                                                    .spellsKnownPerLevel
-                                          ]);
-                                        } else {
-                                          var a = classSubclassMapper[
-                                              CLASSLIST[index].name];
-                                          for (var x = 0;
-                                              x <
-                                                  allSpellsSelectedAsListsOfThings
-                                                      .length;
-                                              x++) {
-                                            if (allSpellsSelectedAsListsOfThings[
-                                                    x][0] ==
-                                                CLASSLIST[index].name) {
-                                              allSpellsSelectedAsListsOfThings[
-                                                      x][2] =
-                                                  getSpellsKnown(
-                                                      index,
-                                                      allSpellsSelectedAsListsOfThings[
-                                                          x]);
-                                            } else if (a != null) {
+                                        if (CLASSLIST[index].classType !=
+                                            "Martial") {
+                                          if (levelsPerClass[index] == 0) {
+                                            allSpellsSelectedAsListsOfThings
+                                                .add([
+                                              CLASSLIST[index].name,
+                                              [],
+                                              levelZeroGetSpellsKnown(index),
+                                              CLASSLIST[index]
+                                                      .spellsKnownFormula ??
+                                                  CLASSLIST[index]
+                                                      .spellsKnownPerLevel
+                                            ]);
+                                          } else {
+                                            var a = classSubclassMapper[
+                                                CLASSLIST[index].name];
+                                            for (var x = 0;
+                                                x <
+                                                    allSpellsSelectedAsListsOfThings
+                                                        .length;
+                                                x++) {
                                               if (allSpellsSelectedAsListsOfThings[
                                                       x][0] ==
-                                                  a) {
+                                                  CLASSLIST[index].name) {
                                                 allSpellsSelectedAsListsOfThings[
                                                         x][2] =
                                                     getSpellsKnown(
                                                         index,
                                                         allSpellsSelectedAsListsOfThings[
                                                             x]);
+                                              } else if (a != null) {
+                                                if (allSpellsSelectedAsListsOfThings[
+                                                        x][0] ==
+                                                    a) {
+                                                  allSpellsSelectedAsListsOfThings[
+                                                          x][2] =
+                                                      getSpellsKnown(
+                                                          index,
+                                                          allSpellsSelectedAsListsOfThings[
+                                                              x]);
+                                                }
                                               }
                                             }
-                                          }
 
-                                          allSpellsSelectedAsListsOfThings.add([
-                                            CLASSLIST[index].name,
-                                            [],
-                                            levelZeroGetSpellsKnown(index),
-                                            CLASSLIST[index]
-                                                    .spellsKnownFormula ??
-                                                CLASSLIST[index]
-                                                    .spellsKnownPerLevel
-                                          ]);
+                                            allSpellsSelectedAsListsOfThings
+                                                .add([
+                                              CLASSLIST[index].name,
+                                              [],
+                                              levelZeroGetSpellsKnown(index),
+                                              CLASSLIST[index]
+                                                      .spellsKnownFormula ??
+                                                  CLASSLIST[index]
+                                                      .spellsKnownPerLevel
+                                            ]);
+                                          }
                                         }
+
                                         levelsPerClass[index]++;
                                       }
                                     });
@@ -2300,98 +2325,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                             ],
                           ));
                     }),
-                    /*Expanded(
-                      child: ListView.builder(
-                        itemCount: CLASSLIST.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                              width: 210,
-                              height: 168,
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                border: Border.all(
-                                  color: const Color.fromARGB(255, 7, 26, 239),
-                                  width: 2,
-                                ),
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(5)),
-                              ),
-                              child: Column(
-                                children: [
-                                  Text(CLASSLIST[index].name,
-                                      style: const TextStyle(
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white)),
-                                  Text(
-                                      "Class type: ${CLASSLIST[index].classType}",
-                                      style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white)),
-                                  (["Martial", "Third Caster"]
-                                          .contains(CLASSLIST[index].classType))
-                                      ? Text(
-                                          "Main ability: ${CLASSLIST[index].mainOrSpellcastingAbility}",
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.white))
-                                      : Text(
-                                          "Spellcasting ability: ${CLASSLIST[index].mainOrSpellcastingAbility}",
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.white)),
-                                  Text(
-                                      "Hit die: D${CLASSLIST[index].maxHitDiceRoll}",
-                                      style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white)),
-                                  Text(
-                                      "Saves: ${CLASSLIST[index].savingThrowProficiencies.join(",")}",
-                                      style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white)),
-                                  const SizedBox(height: 7),
-                                  OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        backgroundColor:
-                                            (int.parse(characterLevel ?? "1") ==
-                                                    levelsPerClass.reduce(
-                                                        (value, element) =>
-                                                            value + element))
-                                                ? const Color.fromARGB(
-                                                    247, 56, 53, 52)
-                                                : const Color.fromARGB(
-                                                    150, 61, 33, 243),
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(4))),
-                                        side: const BorderSide(
-                                            width: 3,
-                                            color: Color.fromARGB(
-                                                255, 10, 126, 54)),
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          if (int.parse(characterLevel ?? "1") >
-                                              levelsPerClass.reduce(
-                                                  (value, element) =>
-                                                      value + element)) {
-                                            levelsPerClass[index]++;
-                                          }
-                                        });
-                                      },
-                                      child: const Icon(Icons.add,
-                                          color: Colors.white, size: 35))
-                                ],
-                              ));
-                        },
-                      ),
-                    )*/
                   ),
                 ),
                 Column(children: widgetsInPlay)
@@ -2588,39 +2521,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                   const SizedBox(
                     height: 7,
                   ),
-                  /*if (currentBackground.numberOfSkillChoices != null)
-                ToggleButtons(
-                    selectedColor: const Color.fromARGB(255, 0, 79, 206),
-                    color: Colors.blue,
-                    fillColor: const Color.fromARGB(162, 0, 255, 8),
-                    textStyle: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                    ),
-                    borderColor: const Color.fromARGB(255, 7, 26, 239),
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
-                    borderWidth: 1.5,
-                    onPressed: (int index) {
-                      setState(() {
-                        //bsckgroundskillchoices
-                        if (selectedSkillsQ!.contains(index)) {
-                          selectedSkillsQ!.remove(index);
-                          backgroundSkillChoices[index] = false;
-                        } else {
-                          if (selectedSkillsQ!.length ==
-                              currentBackground.numberOfSkillChoices) {
-                            int removed = selectedSkillsQ!.removeFirst();
-                            backgroundSkillChoices[removed] = false;
-                          }
-                          selectedSkillsQ!.add(index);
-                          backgroundSkillChoices[index] = true;
-                        }
-                      });
-                    },
-                    isSelected: backgroundSkillChoices,
-                    children: currentBackground.optionalSkillProficiencies!
-                        .map((x) => Text(" $x "))
-                        .toList()),*/
                   if (currentBackground.numberOfSkillChoices != null)
                     ToggleButtons(
                         selectedColor: const Color.fromARGB(255, 0, 79, 206),
@@ -5310,118 +5210,242 @@ class MainCreateCharacter extends State<CreateACharacter>
                             children: [
                               const Text(
                                   "Pick your equipment from options gained:"),
-                              /*if (featsSelected.isNotEmpty)
-                                const Text("Selected Feats:"),
-                              SizedBox(
-                                  height: 50,
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    shrinkWrap: true,
-                                    itemCount: featsSelected.length,
-                                    itemBuilder: (context, index) {
-                                      return OutlinedButton(
-                                        style: OutlinedButton.styleFrom(
-                                            backgroundColor: Colors.white),
-                                        onPressed: () {},
-                                        child:
-                                            Text(featsSelected[index][0].name),
-                                      );
-                                    },
-                                  )),
-                              const Text("Select Feats:"),
-                              Row(children: [
-                                OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                      backgroundColor: (fullFeats)
-                                          ? Colors.blue
-                                          : Colors.grey),
-                                  onPressed: () {
-                                    setState(() {
-                                      fullFeats = !fullFeats;
-                                    });
-                                  },
-                                  child: const Text("Full Feats",
-                                      style: TextStyle(color: Colors.white)),
-                                ),
-                                //text for search
-                                OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                      backgroundColor: (halfFeats)
-                                          ? Colors.blue
-                                          : Colors.grey),
-                                  onPressed: () {
-                                    setState(() {
-                                      halfFeats = !halfFeats;
-                                    });
-                                  },
-                                  child: const Text("Half Feats",
-                                      style: TextStyle(color: Colors.white)),
-                                ),
-                              ]),
-                              Container(
-                                height: 140,
-                                width: 300,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 3,
+                              if (classSelectedAtLevel1 != null)
+                                SizedBox(
+                                  height: 300,
+                                  width: 200,
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: /*[const Text(
+                                                          "Please choose between the following options:"),...*/
+                                          [
+                                        for (var i = 0;
+                                            i <
+                                                equipmentSelectedExperiment
+                                                    .length;
+                                            i++)
+                                          (equipmentSelectedExperiment[i]
+                                                      .length ==
+                                                  2)
+                                              ? Container(
+                                                  margin: const EdgeInsets.all(
+                                                      10.0),
+                                                  child: Row(
+                                                    children: [
+                                                      OutlinedButton(
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            /*if (!equipmentSelected
+                                                          .containsKey(i)) {
+                                                        equipmentSelected[i] ==
+                                                            classSelectedAtLevel1!
+                                                                    .equipmentOptions[
+                                                                i][0][0];
+                                                                
+                                                      }*/
+                                                            equipmentSelectedExperiment[
+                                                                i] = [
+                                                              equipmentSelectedExperiment[
+                                                                  i][0]
+                                                            ];
+                                                          });
+                                                        },
+                                                        child: Text(
+                                                          produceEquipmentOptionDescription(
+                                                              equipmentSelectedExperiment[
+                                                                  i][0]),
+                                                          style:
+                                                              const TextStyle(
+                                                            /*
+                                                            fontWeight: (equipmentSelected
+                                                                        .containsKey(
+                                                                            i) &&
+                                                                    equipmentSelected[
+                                                                            i] ==
+                                                                        classSelectedAtLevel1!.equipmentOptions[i][0]
+                                                                            [0])
+                                                                ? FontWeight
+                                                                    .bold
+                                                                : FontWeight
+                                                                    .normal,*/
+                                                            color: /*(equipmentSelected
+                                                                        .containsKey(
+                                                                            i) &&
+                                                                    equipmentSelected[
+                                                                            i] ==
+                                                                        classSelectedAtLevel1!.equipmentOptions[i]
+                                                                            [
+                                                                            0][0])
+                                                                ? Colors.red
+                                                                : Colors.black*/
+                                                                Colors.blue,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      OutlinedButton(
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            /*if (!equipmentSelected
+                                                                .containsKey(
+                                                                    i)) {
+                                                              equipmentSelected[
+                                                                      i] ==
+                                                                  classSelectedAtLevel1!
+                                                                          .equipmentOptions[
+                                                                      i][1][0];
+                                                            }*/
+                                                            equipmentSelectedExperiment[
+                                                                i] = [
+                                                              equipmentSelectedExperiment[
+                                                                  i][1]
+                                                            ];
+                                                          });
+                                                        },
+                                                        //String produceEquipmentOptionDescription(List<dynamic> optionDescription)
+                                                        child: Text(
+                                                          produceEquipmentOptionDescription(
+                                                              equipmentSelectedExperiment[
+                                                                  i][1]),
+                                                          style:
+                                                              const TextStyle(
+                                                            /*
+                                                            fontWeight: (equipmentSelected
+                                                                        .containsKey(
+                                                                            i) &&
+                                                                    equipmentSelected[
+                                                                            i] ==
+                                                                        classSelectedAtLevel1!.equipmentOptions[i][1]
+                                                                            [0])
+                                                                ? FontWeight
+                                                                    .bold
+                                                                : FontWeight
+                                                                    .normal,*/
+                                                            color: /*(equipmentSelected
+                                                                        .containsKey(
+                                                                            i) &&
+                                                                    equipmentSelected[
+                                                                            i] ==
+                                                                        classSelectedAtLevel1!.equipmentOptions[i]
+                                                                            [
+                                                                            1][0])
+                                                                ? Colors.red
+                                                                : Colors.black*/
+                                                                Colors.blue,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                )
+                                              : Text(
+                                                  produceEquipmentOptionDescription(
+                                                      equipmentSelectedExperiment[
+                                                          i][0]))
+
+                                        /*Container(
+                                                  margin: const EdgeInsets.all(
+                                                      10.0),
+                                                  child: Column(
+                                                    children: [
+                                                      const Text(
+                                                          "Please choose between the following options:"),
+                                                      Container(
+                                                        width: 100, height: 50,
+                                                        child: Text(
+                                                          produceEquipmentOptionDescription(
+                                                              classSelectedAtLevel1!
+                                                                      .equipmentOptions[
+                                                                  i][0]),
+                                                          style: TextStyle(
+                                                            fontWeight: (equipmentSelected
+                                                                        .containsKey(
+                                                                            i) &&
+                                                                    equipmentSelected[
+                                                                            i] ==
+                                                                        classSelectedAtLevel1!.equipmentOptions[i][0]
+                                                                            [0])
+                                                                ? FontWeight
+                                                                    .bold
+                                                                : FontWeight
+                                                                    .normal,
+                                                            color: (equipmentSelected
+                                                                        .containsKey(
+                                                                            i) &&
+                                                                    equipmentSelected[
+                                                                            i] ==
+                                                                        classSelectedAtLevel1!.equipmentOptions[i]
+                                                                            [
+                                                                            0][0])
+                                                                ? Colors.red
+                                                                : Colors.black,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      OutlinedButton(
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            if (!equipmentSelected
+                                                                .containsKey(
+                                                                    i)) {
+                                                              equipmentSelected[
+                                                                      i] ==
+                                                                  classSelectedAtLevel1!
+                                                                          .equipmentOptions[
+                                                                      i][1][0];
+                                                            }
+                                                          });
+                                                        },
+                                                        //String produceEquipmentOptionDescription(List<dynamic> optionDescription)
+                                                        child: Text(
+                                                          produceEquipmentOptionDescription(
+                                                              classSelectedAtLevel1!
+                                                                      .equipmentOptions[
+                                                                  i][1]),
+                                                          style: TextStyle(
+                                                            fontWeight: (equipmentSelected
+                                                                        .containsKey(
+                                                                            i) &&
+                                                                    equipmentSelected[
+                                                                            i] ==
+                                                                        classSelectedAtLevel1!.equipmentOptions[i][1]
+                                                                            [0])
+                                                                ? FontWeight
+                                                                    .bold
+                                                                : FontWeight
+                                                                    .normal,
+                                                            color: (equipmentSelected
+                                                                        .containsKey(
+                                                                            i) &&
+                                                                    equipmentSelected[
+                                                                            i] ==
+                                                                        classSelectedAtLevel1!.equipmentOptions[i]
+                                                                            [
+                                                                            1][0])
+                                                                ? Colors.red
+                                                                : Colors.black,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),*/
+                                        ,
+                                        /*for (var choice
+                                            in equipmentSelectedExperiment
+                                                .where((element) =>
+                                                    element.length == 1)
+                                                .toList())
+                                          ListTile(
+                                            title: Text(
+                                                produceEquipmentOptionDescription(
+                                                    choice[0])),
+                                          ),*/
+                                        //equipmentSelected
+                                        //]
+                                      ],
+                                    ),
                                   ),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10)),
-                                ),
-                                child: ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  itemCount: FEATLIST.length,
-                                  itemBuilder: (context, index) {
-                                    return OutlinedButton(
-                                        style: OutlinedButton.styleFrom(
-                                            backgroundColor: (featsSelected
-                                                        .where((element) =>
-                                                            element[0].name ==
-                                                            FEATLIST[index]
-                                                                .name)
-                                                        .length ==
-                                                    FEATLIST[index]
-                                                        .numberOfTimesTakeable)
-                                                ? Colors.green
-                                                : (featsSelected
-                                                        .where((element) =>
-                                                            element[0].name ==
-                                                            FEATLIST[index]
-                                                                .name)
-                                                        .isEmpty)
-                                                    ? Colors.white
-                                                    : Colors.lightGreen),
-                                        onPressed: () {
-                                          setState(
-                                            () {
-                                              if (numberOfRemainingFeatOrASIs >
-                                                  0) {
-                                                if (featsSelected
-                                                        .where((element) =>
-                                                            element[0].name ==
-                                                            FEATLIST[index]
-                                                                .name)
-                                                        .length <
-                                                    FEATLIST[index]
-                                                        .numberOfTimesTakeable) {
-                                                  numberOfRemainingFeatOrASIs--;
-                                                  //call up the selection page
-                                                  featsSelected
-                                                      .add([FEATLIST[index]]);
-                                                }
-                                              }
-                                            },
-                                          );
-                                          // Code to handle button press
-                                        },
-                                        child: Text(FEATLIST[index].name));
-                                  },
-                                ),
-                              ),
-                            */
+                                )
                             ],
                           ))),
                 ],
@@ -5732,7 +5756,42 @@ class MainCreateCharacter extends State<CreateACharacter>
           //Boons and magic items
           const Icon(Icons.directions_bike),
           //Finishing up
-          const Icon(Icons.directions_car),
+          Scaffold(
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => PdfPreviewPage(invoice: character),
+                  ),
+                );
+                // rootBundle.
+              },
+              child: const Icon(Icons.picture_as_pdf),
+            ),
+            appBar: AppBar(
+              title: Text(character.name),
+            ),
+            body: ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Card(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "TestCharacter",
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ]),
       ),
     );
@@ -5753,5 +5812,9 @@ class MainCreateCharacter extends State<CreateACharacter>
     }
     //decode as level + 1 and then take away [1].length
     return 3;
+  }
+
+  String produceEquipmentOptionDescription(List<dynamic> optionDescription) {
+    return optionDescription[0] as String;
   }
 }

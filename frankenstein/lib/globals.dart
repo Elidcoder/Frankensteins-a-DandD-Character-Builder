@@ -1,6 +1,24 @@
 import 'dart:convert';
 import 'dart:io';
 
+List<List<List<dynamic>>> parseJsonToMultiList(List jsonData) {
+  List<List<List<dynamic>>> multiList = [];
+
+  for (var outerList in jsonData) {
+    if (outerList is List) {
+      List<List<dynamic>> castedOuterList = [];
+      for (var innerList in outerList) {
+        if (innerList is List) {
+          castedOuterList.add(innerList.cast<dynamic>());
+        }
+      }
+      multiList.add(castedOuterList);
+    }
+  }
+
+  return multiList;
+}
+
 class Proficiency {
   final List<String> proficiencyTree;
   //final String sourceBook;
@@ -273,13 +291,14 @@ class Class {
   final int maxHitDiceRoll;
   final bool? roundDown;
   final String mainOrSpellcastingAbility;
+  //starting gold
 
   final int numberOfSkillChoices;
   final List<String> optionsForSkillProficiencies;
   final List<String>? spellsAndSpellSlots; //replace with list both or 2 lists
 
   final List<String> savingThrowProficiencies;
-  final List<List<String>>
+  final List<List<List<dynamic>>>
       equipmentOptions; //replace string => equipment//2 options for every one
   //Wrong change later
   final List<String>?
@@ -305,8 +324,15 @@ class Class {
     final savingThrowProficiencies =
         data["SavingThrowProficiencies"].cast<String>() as List<String>;
 
-    final equipmentOptions =
-        data['EquipmentOptions'].cast<List<String>>() as List<List<String>>;
+    final equipmentOptions = parseJsonToMultiList(data[
+            'EquipmentOptions']) /*
+        .where((outerList) => outerList is List)
+        .map((outerList) => outerList
+            .where((innerList) => innerList is List)
+            .map((innerList) => innerList.cast<dynamic>())
+            .toList())
+        .toList()*/
+        ;
     final proficienciesGained =
         data["GainedProficiencies"]?.cast<String>() as List<String>?;
     return Class(
@@ -326,6 +352,7 @@ class Class {
         spellsKnownFormula: data["SpellKnownFormula"],
         spellsKnownPerLevel: data["SpellsKnownPerLevel"]?.cast<int>());
   }
+
   Class(
       {required this.name,
       required this.mainOrSpellcastingAbility,

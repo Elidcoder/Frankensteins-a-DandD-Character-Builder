@@ -183,7 +183,7 @@
                         "SavingThrowProficiencies":["Strength","Constitution"],
                         "GainedProficiencies": ["Simple Weapons", "Martial Weapons", "Shields","Armour"],
                         "NumberOfSkillChoices":2,
-                        "EquipmentOptions":[],
+                        "EquipmentOptions":[[["Dagger"],["Arrow"]]],
                         "OptionsForSkillProficiencies":["Acrobatics", "Animal Handling", "Athletics", "History", "Insight", "Intimidation", "Perception", "Survival"],
                         "GainAtEachLevel":[
                                 [
