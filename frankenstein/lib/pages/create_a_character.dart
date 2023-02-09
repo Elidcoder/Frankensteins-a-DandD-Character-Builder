@@ -13,13 +13,6 @@ int abilityScoreCost(int x) {
   return 1;
 }
 
-class AbilityScore {
-  int value;
-  String name;
-
-  AbilityScore({required this.name, required this.value});
-}
-
 //would love to pass in a character class here
 //Many parts remain unfinished but should be completed as their relevent tabs are
 //value, ACLIST, SPEEDMAP, INT, WIS, STR, DEX,CAR,CON,CURRENCY
@@ -205,7 +198,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                 body: Column(children: [
           //REPLACE
           Text("${thisDescription[0]} spell choices",
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.blue,
                   fontSize: 22,
                   fontWeight: FontWeight.w700)),
@@ -1035,7 +1028,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   String characterSkin = "";
   String characterHair = "";
   //finishing up variables
-  Character character = Character(name: "TestCharacter");
+
   @override
   Widget build(
     BuildContext context,
@@ -3732,7 +3725,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                     children: [
                       Expanded(
                           child: SizedBox(
-                              height: 435,
+                              height: 454,
                               child: Column(
                                 children: [
                                   const Text("ASI's"),
@@ -5761,7 +5754,17 @@ class MainCreateCharacter extends State<CreateACharacter>
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => PdfPreviewPage(invoice: character),
+                    builder: (context) => PdfPreviewPage(
+                        invoice: Character(
+                            name: "TestCharacter",
+                            raceAbilityScoreIncreases: abilityScoreIncreases,
+                            featsASIScoreIncreases:ASIBonuses,
+                            strength: strength,
+                            dexterity: dexterity,
+                            constitution: constitution,
+                            intelligence: intelligence,
+                            wisdom: wisdom,
+                            charisma: charisma)),
                   ),
                 );
                 // rootBundle.
@@ -5769,7 +5772,7 @@ class MainCreateCharacter extends State<CreateACharacter>
               child: const Icon(Icons.picture_as_pdf),
             ),
             appBar: AppBar(
-              title: Text(character.name),
+              title: const Text("TestCharacter"),
             ),
             body: ListView(
               children: [
