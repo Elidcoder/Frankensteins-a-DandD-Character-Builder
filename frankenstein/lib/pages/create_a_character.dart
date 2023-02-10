@@ -5756,9 +5756,15 @@ class MainCreateCharacter extends State<CreateACharacter>
                   MaterialPageRoute(
                     builder: (context) => PdfPreviewPage(
                         invoice: Character(
+                            currency: currencyStored,
+                            backgroundPersonalityTrait:
+                                backgroundPersonalityTrait,
+                            backgroundIdeal: backgroundIdeal,
+                            backgroundBond: backgroundBond,
+                            backgroundFlaw: backgroundFlaw,
                             name: "TestCharacter",
                             raceAbilityScoreIncreases: abilityScoreIncreases,
-                            featsASIScoreIncreases:ASIBonuses,
+                            featsASIScoreIncreases: ASIBonuses,
                             strength: strength,
                             dexterity: dexterity,
                             constitution: constitution,
