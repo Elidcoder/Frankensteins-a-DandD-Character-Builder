@@ -5,6 +5,7 @@ import "dart:collection";
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:frankenstein/PDFdocs/character_class.dart';
 import 'package:frankenstein/PDFdocs/pdf_final_display.dart';
+import 'dart:math';
 
 int abilityScoreCost(int x) {
   if (x > 12) {
@@ -965,7 +966,12 @@ class MainCreateCharacter extends State<CreateACharacter>
   List<Widget> mystery2slist = [];
 
   //Class variables initialised
-  Class? classSelectedAtLevel1;
+  //Class? classSelectedAtLevel1;
+
+  List<String>? savingThrowProficiencies;
+  List<String> skillProficiencies = [];
+  int maxHealth = 0;
+
   List<Widget> widgetsInPlay = []; //added to each time a class is selected
   List<int> levelsPerClass = List.filled(CLASSLIST.length, 0);
   Map<String, List<dynamic>> selections = {};
@@ -1016,7 +1022,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   String? coinTypeSelected;
   List<String> equipmentChosenInOptions = [];
   Map<int, dynamic> equipmentSelected = {};
-  List<dynamic> equipmentSelectedExperiment = [];
+  List<dynamic>? equipmentSelectedExperiment;
   //{thing:numb,...}
   Map<String, int> stackablesSelected = {};
   List<dynamic> unstackablesSelected = [];
@@ -2194,13 +2200,28 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     value + element) ==
                                             0) {
                                           //gain saving throw proficiencies
-                                          equipmentSelectedExperiment.addAll(
+                                          savingThrowProficiencies =
                                               CLASSLIST[index]
-                                                  .equipmentOptions);
-                                          classSelectedAtLevel1 =
-                                              CLASSLIST[index];
+                                                  .savingThrowProficiencies;
+                                          maxHealth +=
+                                              CLASSLIST[index].maxHitDiceRoll;
+                                          equipmentSelectedExperiment =
+                                              CLASSLIST[index].equipmentOptions;
 
                                           //run first level functions := proficiencies, equipment health bonus
+                                        } else {
+                                          if (averageHitPoints ?? false) {
+                                            maxHealth += ((CLASSLIST[index]
+                                                        .maxHitDiceRoll) /
+                                                    2)
+                                                .ceil();
+                                          } else {
+                                            maxHealth += 1 +
+                                                (Random().nextDouble() *
+                                                        CLASSLIST[index]
+                                                            .maxHitDiceRoll)
+                                                    .floor();
+                                          }
                                         }
                                         if ((CLASSLIST[index]
                                                 .gainAtEachLevel[
@@ -5206,7 +5227,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                             children: [
                               const Text(
                                   "Pick your equipment from options gained:"),
-                              if (classSelectedAtLevel1 != null)
+                              if (equipmentSelectedExperiment != null)
                                 SizedBox(
                                   height: 300,
                                   width: 200,
@@ -5217,10 +5238,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                           [
                                         for (var i = 0;
                                             i <
-                                                equipmentSelectedExperiment
+                                                equipmentSelectedExperiment!
                                                     .length;
                                             i++)
-                                          (equipmentSelectedExperiment[i]
+                                          (equipmentSelectedExperiment![i]
                                                       .length ==
                                                   2)
                                               ? Container(
@@ -5239,16 +5260,16 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                                 i][0][0];
                                                                 
                                                       }*/
-                                                            equipmentSelectedExperiment[
+                                                            equipmentSelectedExperiment![
                                                                 i] = [
-                                                              equipmentSelectedExperiment[
+                                                              equipmentSelectedExperiment![
                                                                   i][0]
                                                             ];
                                                           });
                                                         },
                                                         child: Text(
                                                           produceEquipmentOptionDescription(
-                                                              equipmentSelectedExperiment[
+                                                              equipmentSelectedExperiment![
                                                                   i][0]),
                                                           style:
                                                               const TextStyle(
@@ -5290,9 +5311,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                                           .equipmentOptions[
                                                                       i][1][0];
                                                             }*/
-                                                            equipmentSelectedExperiment[
+                                                            equipmentSelectedExperiment![
                                                                 i] = [
-                                                              equipmentSelectedExperiment[
+                                                              equipmentSelectedExperiment![
                                                                   i][1]
                                                             ];
                                                           });
@@ -5300,7 +5321,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                         //String produceEquipmentOptionDescription(List<dynamic> optionDescription)
                                                         child: Text(
                                                           produceEquipmentOptionDescription(
-                                                              equipmentSelectedExperiment[
+                                                              equipmentSelectedExperiment![
                                                                   i][1]),
                                                           style:
                                                               const TextStyle(
@@ -5333,10 +5354,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     ],
                                                   ),
                                                 )
-                                              : Text(
-                                                  produceEquipmentOptionDescription(
-                                                      equipmentSelectedExperiment[
-                                                          i][0]))
+                                              : Text(produceEquipmentOptionDescription(
+                                                  equipmentSelectedExperiment![
+                                                      i][0]))
 
                                         /*Container(
                                                   margin: const EdgeInsets.all(
@@ -5760,6 +5780,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                     builder: (context) => PdfPreviewPage(
                         invoice: Character(
                             playerName: playerName,
+                            savingThrowProficiencies:
+                                savingThrowProficiencies ?? [],
+                            skillProficiencies: skillProficiencies,
+                            maxHealth: maxHealth,
                             background: currentBackground,
                             classLevels: levelsPerClass,
                             race: initialRace,

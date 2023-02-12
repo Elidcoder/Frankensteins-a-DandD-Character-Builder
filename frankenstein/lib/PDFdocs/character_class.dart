@@ -14,6 +14,10 @@ class Character {
   final String playerName;
   final List<int> classLevels;
 
+  final List<String>? savingThrowProficiencies;
+  final List<String> skillProficiencies;
+  final int maxHealth;
+
   final int characterExperience;
 
   final Race race;
@@ -39,6 +43,13 @@ class Character {
 
   factory Character.fromJson(Map<String, dynamic> data) {
     final name = data["Name"] as String;
+
+    final savingThrowProficiencies =
+        data["SavingThrowProficiencies"].cast<String>() as List<String>;
+    final skillProficiencies =
+        data["SkillProficiencies"].cast<String>() as List<String>;
+    final maxHealth = data["MaxHealth"] as int;
+
     final playerName = data["PlayerName"] as String;
     final currency = data["Currency"] as Map<String, int>;
     final classLevels = data["ClassLevels"].cast<int>() as List<int>;
@@ -63,6 +74,9 @@ class Character {
         data["FeatsASIScoreIncreases"].cast<int>() as List<int>;
 
     return Character(
+      savingThrowProficiencies: savingThrowProficiencies,
+      skillProficiencies: skillProficiencies,
+      maxHealth: maxHealth,
       name: name,
       playerName: playerName,
       background: background,
@@ -86,6 +100,9 @@ class Character {
   }
   Character(
       {required this.name,
+      required this.savingThrowProficiencies,
+      required this.skillProficiencies,
+      required this.maxHealth,
       required this.characterExperience,
       required this.playerName,
       required this.background,

@@ -5,12 +5,40 @@ import 'package:pdf/widgets.dart';
 import 'package:pdf/pdf.dart';
 import 'package:frankenstein/PDFdocs/character_class.dart';
 import "package:frankenstein/globals.dart";
+
 //1038xidk
 //ARGB => 0x(AA)(RR)(GG)(BB)
+String formatNumber(int number) {
+  return number >= 0 ? "+$number" : "$number";
+}
 
 Future<Uint8List> makePdf(Character userCharacter) async {
   final pdf = Document();
   //var a = CLASSLIST[0];
+  Map<int, int> proficiencyBonus = {
+    0: 0,
+    1: 2,
+    2: 2,
+    3: 2,
+    4: 2,
+    5: 3,
+    6: 3,
+    7: 3,
+    8: 3,
+    9: 4,
+    10: 4,
+    11: 4,
+    12: 4,
+    13: 5,
+    14: 5,
+    15: 5,
+    16: 5,
+    17: 6,
+    18: 6,
+    19: 6,
+    20: 6,
+  };
+
   final Map<int, String> modifierFromAbilityScore = {
     0: "-5",
     1: "-5",
@@ -655,7 +683,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                             width: 0.8)),
                                                     child: Column(children: [
                                                       Container(
-                                                          height: 26,
+                                                          height: 20,
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
@@ -667,234 +695,541 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
-                                                          child:
-                                                              Column(children: [
-                                                            Text("O"),
-                                                            Text("some value"),
-                                                            Text("prof name"),
+                                                          child: Row(children: [
+                                                            Text(" O ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
                                                             Text(
-                                                                "ability score")
+                                                                "${modifierFromAbilityScore[userCharacter.dexterity.value]! + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int)} ",
+                                                                style: const TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    fontSize:
+                                                                        5)),
+                                                            Text(" Acrobatics",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
+                                                            Text(" (Dex)",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5))
                                                           ])),
                                                       Container(
                                                           height: 13,
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
-                                                          child:
-                                                              Column(children: [
-                                                            Text("O"),
-                                                            Text("some value"),
-                                                            Text("prof name"),
+                                                          child: Row(children: [
+                                                            Text(" O ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
+                                                            Text("some value",
+                                                                style: const TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    fontSize:
+                                                                        5)),
+                                                            Text(" prof name",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
                                                             Text(
-                                                                "ability score")
+                                                                " ability score",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5))
                                                           ])),
                                                       Container(
                                                           height: 13,
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
-                                                          child:
-                                                              Column(children: [
-                                                            Text("O"),
-                                                            Text("some value"),
-                                                            Text("prof name"),
+                                                          child: Row(children: [
+                                                            Text(" O ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
+                                                            Text("some value",
+                                                                style: const TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    fontSize:
+                                                                        5)),
+                                                            Text(" prof name",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
                                                             Text(
-                                                                "ability score")
+                                                                " ability score",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5))
                                                           ])),
                                                       Container(
                                                           height: 13,
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
-                                                          child:
-                                                              Column(children: [
-                                                            Text("O"),
-                                                            Text("some value"),
-                                                            Text("prof name"),
+                                                          child: Row(children: [
+                                                            Text(" O ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
+                                                            Text("some value",
+                                                                style: const TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    fontSize:
+                                                                        5)),
+                                                            Text(" prof name",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
                                                             Text(
-                                                                "ability score")
+                                                                " ability score",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5))
                                                           ])),
                                                       Container(
                                                           height: 13,
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
-                                                          child:
-                                                              Column(children: [
-                                                            Text("O"),
-                                                            Text("some value"),
-                                                            Text("prof name"),
+                                                          child: Row(children: [
+                                                            Text(" O ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
+                                                            Text("some value",
+                                                                style: const TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    fontSize:
+                                                                        5)),
+                                                            Text(" prof name",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
                                                             Text(
-                                                                "ability score")
+                                                                " ability score",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5))
                                                           ])),
                                                       Container(
                                                           height: 13,
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
-                                                          child:
-                                                              Column(children: [
-                                                            Text("O"),
-                                                            Text("some value"),
-                                                            Text("prof name"),
+                                                          child: Row(children: [
+                                                            Text(" O ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
+                                                            Text("some value",
+                                                                style: const TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    fontSize:
+                                                                        5)),
+                                                            Text(" prof name",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
                                                             Text(
-                                                                "ability score")
+                                                                " ability score",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5))
                                                           ])),
                                                       Container(
                                                           height: 13,
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
-                                                          child:
-                                                              Column(children: [
-                                                            Text("O"),
-                                                            Text("some value"),
-                                                            Text("prof name"),
+                                                          child: Row(children: [
+                                                            Text(" O ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
+                                                            Text("some value",
+                                                                style: const TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    fontSize:
+                                                                        5)),
+                                                            Text(" prof name",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
                                                             Text(
-                                                                "ability score")
+                                                                " ability score",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5))
                                                           ])),
                                                       Container(
                                                           height: 13,
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
-                                                          child:
-                                                              Column(children: [
-                                                            Text("O"),
-                                                            Text("some value"),
-                                                            Text("prof name"),
+                                                          child: Row(children: [
+                                                            Text(" O ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
+                                                            Text("some value",
+                                                                style: const TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    fontSize:
+                                                                        5)),
+                                                            Text(" prof name",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
                                                             Text(
-                                                                "ability score")
+                                                                " ability score",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5))
                                                           ])),
                                                       Container(
                                                           height: 13,
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
-                                                          child:
-                                                              Column(children: [
-                                                            Text("O"),
-                                                            Text("some value"),
-                                                            Text("prof name"),
+                                                          child: Row(children: [
+                                                            Text(" O ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
+                                                            Text("some value",
+                                                                style: const TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    fontSize:
+                                                                        5)),
+                                                            Text(" prof name",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
                                                             Text(
-                                                                "ability score")
+                                                                " ability score",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5))
                                                           ])),
                                                       Container(
                                                           height: 13,
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
-                                                          child:
-                                                              Column(children: [
-                                                            Text("O"),
-                                                            Text("some value"),
-                                                            Text("prof name"),
+                                                          child: Row(children: [
+                                                            Text(" O ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
+                                                            Text("some value",
+                                                                style: const TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    fontSize:
+                                                                        5)),
+                                                            Text(" prof name",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
                                                             Text(
-                                                                "ability score")
+                                                                " ability score",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5))
                                                           ])),
                                                       Container(
                                                           height: 13,
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
-                                                          child:
-                                                              Column(children: [
-                                                            Text("O"),
-                                                            Text("some value"),
-                                                            Text("prof name"),
+                                                          child: Row(children: [
+                                                            Text(" O ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
+                                                            Text("some value",
+                                                                style: const TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    fontSize:
+                                                                        5)),
+                                                            Text(" prof name",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
                                                             Text(
-                                                                "ability score")
+                                                                " ability score",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5))
                                                           ])),
                                                       Container(
                                                           height: 13,
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
-                                                          child:
-                                                              Column(children: [
-                                                            Text("O"),
-                                                            Text("some value"),
-                                                            Text("prof name"),
+                                                          child: Row(children: [
+                                                            Text(" O ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
+                                                            Text("some value",
+                                                                style: const TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    fontSize:
+                                                                        5)),
+                                                            Text(" prof name",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
                                                             Text(
-                                                                "ability score")
+                                                                " ability score",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5))
                                                           ])),
                                                       Container(
                                                           height: 13,
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
-                                                          child:
-                                                              Column(children: [
-                                                            Text("O"),
-                                                            Text("some value"),
-                                                            Text("prof name"),
+                                                          child: Row(children: [
+                                                            Text(" O ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
+                                                            Text("some value",
+                                                                style: const TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    fontSize:
+                                                                        5)),
+                                                            Text(" prof name",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
                                                             Text(
-                                                                "ability score")
+                                                                " ability score",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5))
                                                           ])),
                                                       Container(
                                                           height: 13,
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
-                                                          child:
-                                                              Column(children: [
-                                                            Text("O"),
-                                                            Text("some value"),
-                                                            Text("prof name"),
+                                                          child: Row(children: [
+                                                            Text(" O ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
+                                                            Text("some value",
+                                                                style: const TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    fontSize:
+                                                                        5)),
+                                                            Text(" prof name",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
                                                             Text(
-                                                                "ability score")
+                                                                " ability score",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5))
                                                           ])),
                                                       Container(
                                                           height: 13,
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
-                                                          child:
-                                                              Column(children: [
-                                                            Text("O"),
-                                                            Text("some value"),
-                                                            Text("prof name"),
+                                                          child: Row(children: [
+                                                            Text(" O ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
+                                                            Text("some value",
+                                                                style: const TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    fontSize:
+                                                                        5)),
+                                                            Text(" prof name",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
                                                             Text(
-                                                                "ability score")
+                                                                " ability score",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5))
                                                           ])),
                                                       Container(
                                                           height: 13,
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
-                                                          child:
-                                                              Column(children: [
-                                                            Text("O"),
-                                                            Text("some value"),
-                                                            Text("prof name"),
+                                                          child: Row(children: [
+                                                            Text(" O ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
+                                                            Text("some value",
+                                                                style: const TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    fontSize:
+                                                                        5)),
+                                                            Text(" prof name",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
                                                             Text(
-                                                                "ability score")
+                                                                " ability score",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5))
                                                           ])),
                                                       Container(
                                                           height: 13,
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
-                                                          child:
-                                                              Column(children: [
-                                                            Text("O"),
-                                                            Text("some value"),
-                                                            Text("prof name"),
+                                                          child: Row(children: [
+                                                            Text(" O ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
+                                                            Text("some value",
+                                                                style: const TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    fontSize:
+                                                                        5)),
+                                                            Text(" prof name",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
                                                             Text(
-                                                                "ability score")
+                                                                " ability score",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5))
                                                           ])),
                                                       Container(
                                                           height: 13,
                                                           color: const PdfColor
                                                                   .fromInt(
                                                               0xffEBA834),
-                                                          child:
-                                                              Column(children: [
-                                                            Text("O"),
-                                                            Text("some value"),
-                                                            Text("prof name"),
+                                                          child: Row(children: [
+                                                            Text(" O ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
+                                                            Text("some value",
+                                                                style:
+                                                                    const TextStyle(
+                                                                  fontSize: 4,
+                                                                  decoration:
+                                                                      TextDecoration
+                                                                          .underline,
+                                                                )),
+                                                            Text(" prof name",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5)),
                                                             Text(
-                                                                "ability score")
+                                                                " ability score",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            5))
                                                           ])),
                                                     ])),
                                               ]))
