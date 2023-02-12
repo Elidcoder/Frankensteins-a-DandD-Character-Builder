@@ -928,7 +928,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   String characterName = "";
   String playerName = "";
   String characterGender = "";
-  int characterExperiance = 0;
+  int characterExperience = 0;
   //bools representing the states of the checkboxes (basics)
   bool? featsAllowed = true;
   bool? averageHitPoints = false;
@@ -1547,13 +1547,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                             //ask level or exp
                             //add switch + list tittle stuff for lvl/exp
                             const SizedBox(height: 15),
-                            const SizedBox(
+                            SizedBox(
                                 width: 250,
                                 height: 50,
                                 child: TextField(
                                     cursorColor: Colors.blue,
-                                    style: TextStyle(color: Colors.white),
-                                    decoration: InputDecoration(
+                                    style: const TextStyle(color: Colors.white),
+                                    decoration: const InputDecoration(
                                         hintText: "Enter the player's name",
                                         hintStyle: TextStyle(
                                             color: Color.fromARGB(
@@ -1564,7 +1564,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         border: OutlineInputBorder(
                                             borderSide: BorderSide.none,
                                             borderRadius: BorderRadius.all(
-                                                Radius.circular(12)))))),
+                                                Radius.circular(12)))),
+                                    onChanged: (playerNameEnteredValue) {
+                                      playerName = playerNameEnteredValue;
+                                    })),
                             const SizedBox(height: 15),
                             const SizedBox(
                                 width: 250,
@@ -5756,13 +5759,18 @@ class MainCreateCharacter extends State<CreateACharacter>
                   MaterialPageRoute(
                     builder: (context) => PdfPreviewPage(
                         invoice: Character(
+                            playerName: playerName,
+                            background: currentBackground,
+                            classLevels: levelsPerClass,
+                            race: initialRace,
+                            characterExperience: characterExperience,
                             currency: currencyStored,
                             backgroundPersonalityTrait:
                                 backgroundPersonalityTrait,
                             backgroundIdeal: backgroundIdeal,
                             backgroundBond: backgroundBond,
                             backgroundFlaw: backgroundFlaw,
-                            name: "TestCharacter",
+                            name: characterName,
                             raceAbilityScoreIncreases: abilityScoreIncreases,
                             featsASIScoreIncreases: ASIBonuses,
                             strength: strength,

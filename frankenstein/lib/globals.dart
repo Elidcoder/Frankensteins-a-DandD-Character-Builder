@@ -349,7 +349,7 @@ class Class {
         equipmentOptions: equipmentOptions,
         gainAtEachLevel: (data['GainAtEachLevel'].cast<List<dynamic>>()),
         proficienciesGained: proficienciesGained,
-        spellsKnownFormula: data["SpellKnownFormula"],
+        spellsKnownFormula: data["SpellsKnownFormula"],
         spellsKnownPerLevel: data["SpellsKnownPerLevel"]?.cast<int>());
   }
 

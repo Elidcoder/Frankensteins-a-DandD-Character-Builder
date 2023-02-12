@@ -10,7 +10,7 @@ import "package:frankenstein/globals.dart";
 
 Future<Uint8List> makePdf(Character userCharacter) async {
   final pdf = Document();
-  var a = CLASSLIST[0];
+  //var a = CLASSLIST[0];
   final Map<int, String> modifierFromAbilityScore = {
     0: "-5",
     1: "-5",
@@ -77,33 +77,20 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                     height: 80.0,
                     width: 500.0,
                     decoration: BoxDecoration(
-                      color: const PdfColor.fromInt(0xff2196FD),
-                      border: Border.all(
-                          color: const PdfColor.fromInt(0xff214AFD),
-                          width: 0.8),
+                      borderRadius: BorderRadius.circular(8.0),
+                      border: Border.all(width: 0.8),
                     ),
                     child: Row(children: [
+                      SizedBox(width: 20),
                       Container(
                           alignment: Alignment.center,
-                          height: 80.0,
-                          width: 185.0,
-                          decoration: BoxDecoration(
-                            color: const PdfColor.fromInt(0xff7602A1),
-                            border: Border.all(
-                                color: const PdfColor.fromInt(0xff214AFD),
-                                width: 0.8),
-                          ),
+                          height: 60.0,
+                          width: 145.0,
                           child: Column(children: [
                             Container(
                                 alignment: Alignment.center,
                                 height: 14.0,
                                 width: 140.0,
-                                decoration: BoxDecoration(
-                                  color: const PdfColor.fromInt(0xffd902b9),
-                                  border: Border.all(
-                                      color: const PdfColor.fromInt(0xff214AFD),
-                                      width: 0.8),
-                                ),
                                 child: Text(
                                   "DUNGEONS & DRAGONS",
                                   style: TextStyle(
@@ -112,40 +99,33 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                 )),
                             Container(
                                 alignment: Alignment.center,
-                                height: 11.0,
+                                height: 14.0,
                                 width: 90.0,
-                                decoration: BoxDecoration(
-                                  color: const PdfColor.fromInt(0xffd902b9),
-                                  border: Border.all(
-                                      color: const PdfColor.fromInt(0xff214AFD),
-                                      width: 0.8),
-                                ),
                                 child: Text(
                                   "Character name:",
                                   style: const TextStyle(fontSize: 8.0),
                                 )),
                             Container(
                               alignment: Alignment.center,
-                              height: 30.0,
+                              height: 15.0,
                               width: 140.0,
-                              decoration: BoxDecoration(
-                                color: const PdfColor.fromInt(0xffd902b9),
-                                border: Border.all(
-                                    color: const PdfColor.fromInt(0xff214AFD),
-                                    width: 0.8),
-                              ),
+
+                              //child: Text(" ${userCharacter.name}")
+                              child: (["", " "].contains(userCharacter.name))
+                                  ? Text(
+                                      "No data to display",
+                                    )
+                                  : Text(
+                                      userCharacter.name,
+                                      style: const TextStyle(
+                                          decoration: TextDecoration.underline),
+                                    ),
                             ),
                           ])),
                       Container(
                           alignment: Alignment.center,
                           height: 80.0,
                           width: 105.0,
-                          decoration: BoxDecoration(
-                            color: const PdfColor.fromInt(0xff7602A1),
-                            border: Border.all(
-                                color: const PdfColor.fromInt(0xff214AFD),
-                                width: 0.8),
-                          ),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -154,67 +134,62 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                     alignment: Alignment.center,
                                     height: 11.0,
                                     width: 80.0,
-                                    decoration: BoxDecoration(
-                                      color: const PdfColor.fromInt(0xffd902b9),
-                                      border: Border.all(
-                                          color: const PdfColor.fromInt(
-                                              0xff214AFD),
-                                          width: 0.8),
-                                    ),
                                     child: Text(
                                       "Class and Level:",
                                       style: const TextStyle(fontSize: 8.0),
                                     )),
                                 Container(
-                                  alignment: Alignment.center,
-                                  height: 20.0,
-                                  width: 90.0,
-                                  decoration: BoxDecoration(
-                                    color: const PdfColor.fromInt(0xffd902b9),
-                                    border: Border.all(
-                                        color:
-                                            const PdfColor.fromInt(0xff214AFD),
-                                        width: 0.8),
-                                  ),
-                                ),
+                                    alignment: Alignment.center,
+                                    height: 17.0,
+                                    width: 90.0,
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: (userCharacter.classLevels
+                                              .any((x) => x != 0))
+                                          ? Text(
+                                              CLASSLIST
+                                                  .asMap()
+                                                  .entries
+                                                  .where((entry) =>
+                                                      userCharacter.classLevels[
+                                                          entry.key] !=
+                                                      0)
+                                                  .map((entry) =>
+                                                      "${entry.value.name}: ${userCharacter.classLevels[entry.key]}")
+                                                  .join(", "),
+                                              style: const TextStyle(
+                                                decoration:
+                                                    TextDecoration.underline,
+                                              ),
+                                            )
+                                          : Text(
+                                              "No data to display",
+                                            ),
+                                    )),
                                 Container(
                                     alignment: Alignment.center,
                                     height: 11.0,
                                     width: 80.0,
-                                    decoration: BoxDecoration(
-                                      color: const PdfColor.fromInt(0xffd902b9),
-                                      border: Border.all(
-                                          color: const PdfColor.fromInt(
-                                              0xff214AFD),
-                                          width: 0.8),
-                                    ),
                                     child: Text(
                                       "Race:",
                                       style: const TextStyle(fontSize: 8.0),
                                     )),
                                 Container(
-                                  alignment: Alignment.center,
-                                  height: 20.0,
-                                  width: 90.0,
-                                  decoration: BoxDecoration(
-                                    color: const PdfColor.fromInt(0xffd902b9),
-                                    border: Border.all(
-                                        color:
-                                            const PdfColor.fromInt(0xff214AFD),
-                                        width: 0.8),
-                                  ),
-                                ),
+                                    alignment: Alignment.center,
+                                    height: 17.0,
+                                    width: 90.0,
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(userCharacter.race.name,
+                                          style: const TextStyle(
+                                              decoration:
+                                                  TextDecoration.underline)),
+                                    )),
                               ])),
                       Container(
                           alignment: Alignment.center,
                           height: 80.0,
                           width: 105.0,
-                          decoration: BoxDecoration(
-                            color: const PdfColor.fromInt(0xff7602A1),
-                            border: Border.all(
-                                color: const PdfColor.fromInt(0xff214AFD),
-                                width: 0.8),
-                          ),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -223,13 +198,6 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                     alignment: Alignment.center,
                                     height: 11.0,
                                     width: 80.0,
-                                    decoration: BoxDecoration(
-                                      color: const PdfColor.fromInt(0xffd902b9),
-                                      border: Border.all(
-                                          color: const PdfColor.fromInt(
-                                              0xff214AFD),
-                                          width: 0.8),
-                                    ),
                                     child: Text(
                                       "Background:",
                                       style: const TextStyle(fontSize: 8.0),
@@ -238,52 +206,35 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                   alignment: Alignment.center,
                                   height: 20.0,
                                   width: 90.0,
-                                  decoration: BoxDecoration(
-                                    color: const PdfColor.fromInt(0xffd902b9),
-                                    border: Border.all(
-                                        color:
-                                            const PdfColor.fromInt(0xff214AFD),
-                                        width: 0.8),
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(userCharacter.background.name,
+                                        style: const TextStyle(
+                                            decoration:
+                                                TextDecoration.underline)),
                                   ),
                                 ),
                                 Container(
                                     alignment: Alignment.center,
                                     height: 11.0,
                                     width: 80.0,
-                                    decoration: BoxDecoration(
-                                      color: const PdfColor.fromInt(0xffd902b9),
-                                      border: Border.all(
-                                          color: const PdfColor.fromInt(
-                                              0xff214AFD),
-                                          width: 0.8),
-                                    ),
                                     child: Text(
                                       "Alignment:",
                                       style: const TextStyle(fontSize: 8.0),
                                     )),
                                 Container(
-                                  alignment: Alignment.center,
-                                  height: 20.0,
-                                  width: 90.0,
-                                  decoration: BoxDecoration(
-                                    color: const PdfColor.fromInt(0xffd902b9),
-                                    border: Border.all(
-                                        color:
-                                            const PdfColor.fromInt(0xff214AFD),
-                                        width: 0.8),
-                                  ),
-                                ),
+                                    alignment: Alignment.center,
+                                    height: 20.0,
+                                    width: 90.0,
+                                    child: Text("N/A",
+                                        style: const TextStyle(
+                                            decoration:
+                                                TextDecoration.underline))),
                               ])),
                       Container(
                           alignment: Alignment.center,
                           height: 80.0,
                           width: 105.0,
-                          decoration: BoxDecoration(
-                            color: const PdfColor.fromInt(0xff7602A1),
-                            border: Border.all(
-                                color: const PdfColor.fromInt(0xff214AFD),
-                                width: 0.8),
-                          ),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -292,13 +243,6 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                     alignment: Alignment.center,
                                     height: 11.0,
                                     width: 80.0,
-                                    decoration: BoxDecoration(
-                                      color: const PdfColor.fromInt(0xffd902b9),
-                                      border: Border.all(
-                                          color: const PdfColor.fromInt(
-                                              0xff214AFD),
-                                          width: 0.8),
-                                    ),
                                     child: Text(
                                       "Player name:",
                                       style: const TextStyle(fontSize: 8.0),
@@ -307,25 +251,26 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                   alignment: Alignment.center,
                                   height: 20.0,
                                   width: 90.0,
-                                  decoration: BoxDecoration(
-                                    color: const PdfColor.fromInt(0xffd902b9),
-                                    border: Border.all(
-                                        color:
-                                            const PdfColor.fromInt(0xff214AFD),
-                                        width: 0.8),
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: (["", " "]
+                                            .contains(userCharacter.playerName))
+                                        ? Text(
+                                            "No data to display",
+                                          )
+                                        : Text(
+                                            userCharacter.playerName,
+                                            style: const TextStyle(
+                                              decoration:
+                                                  TextDecoration.underline,
+                                            ),
+                                          ),
                                   ),
                                 ),
                                 Container(
                                     alignment: Alignment.center,
                                     height: 11.0,
                                     width: 80.0,
-                                    decoration: BoxDecoration(
-                                      color: const PdfColor.fromInt(0xffd902b9),
-                                      border: Border.all(
-                                          color: const PdfColor.fromInt(
-                                              0xff214AFD),
-                                          width: 0.8),
-                                    ),
                                     child: Text(
                                       "Experience points:",
                                       style: const TextStyle(fontSize: 8.0),
@@ -334,12 +279,13 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                   alignment: Alignment.center,
                                   height: 20.0,
                                   width: 90.0,
-                                  decoration: BoxDecoration(
-                                    color: const PdfColor.fromInt(0xffd902b9),
-                                    border: Border.all(
-                                        color:
-                                            const PdfColor.fromInt(0xff214AFD),
-                                        width: 0.8),
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                        "${userCharacter.characterExperience}",
+                                        style: const TextStyle(
+                                            decoration:
+                                                TextDecoration.underline)),
                                   ),
                                 ),
                               ])),
@@ -703,11 +649,254 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                           width: 0.8)),
                                                 ),
                                                 Container(
-                                                  height: 260,
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          width: 0.8)),
-                                                ),
+                                                    height: 260,
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            width: 0.8)),
+                                                    child: Column(children: [
+                                                      Container(
+                                                          height: 26,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child: Center(
+                                                              child: Text(
+                                                                  "Skills"))),
+                                                      Container(
+                                                          height: 13,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child:
+                                                              Column(children: [
+                                                            Text("O"),
+                                                            Text("some value"),
+                                                            Text("prof name"),
+                                                            Text(
+                                                                "ability score")
+                                                          ])),
+                                                      Container(
+                                                          height: 13,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child:
+                                                              Column(children: [
+                                                            Text("O"),
+                                                            Text("some value"),
+                                                            Text("prof name"),
+                                                            Text(
+                                                                "ability score")
+                                                          ])),
+                                                      Container(
+                                                          height: 13,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child:
+                                                              Column(children: [
+                                                            Text("O"),
+                                                            Text("some value"),
+                                                            Text("prof name"),
+                                                            Text(
+                                                                "ability score")
+                                                          ])),
+                                                      Container(
+                                                          height: 13,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child:
+                                                              Column(children: [
+                                                            Text("O"),
+                                                            Text("some value"),
+                                                            Text("prof name"),
+                                                            Text(
+                                                                "ability score")
+                                                          ])),
+                                                      Container(
+                                                          height: 13,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child:
+                                                              Column(children: [
+                                                            Text("O"),
+                                                            Text("some value"),
+                                                            Text("prof name"),
+                                                            Text(
+                                                                "ability score")
+                                                          ])),
+                                                      Container(
+                                                          height: 13,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child:
+                                                              Column(children: [
+                                                            Text("O"),
+                                                            Text("some value"),
+                                                            Text("prof name"),
+                                                            Text(
+                                                                "ability score")
+                                                          ])),
+                                                      Container(
+                                                          height: 13,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child:
+                                                              Column(children: [
+                                                            Text("O"),
+                                                            Text("some value"),
+                                                            Text("prof name"),
+                                                            Text(
+                                                                "ability score")
+                                                          ])),
+                                                      Container(
+                                                          height: 13,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child:
+                                                              Column(children: [
+                                                            Text("O"),
+                                                            Text("some value"),
+                                                            Text("prof name"),
+                                                            Text(
+                                                                "ability score")
+                                                          ])),
+                                                      Container(
+                                                          height: 13,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child:
+                                                              Column(children: [
+                                                            Text("O"),
+                                                            Text("some value"),
+                                                            Text("prof name"),
+                                                            Text(
+                                                                "ability score")
+                                                          ])),
+                                                      Container(
+                                                          height: 13,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child:
+                                                              Column(children: [
+                                                            Text("O"),
+                                                            Text("some value"),
+                                                            Text("prof name"),
+                                                            Text(
+                                                                "ability score")
+                                                          ])),
+                                                      Container(
+                                                          height: 13,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child:
+                                                              Column(children: [
+                                                            Text("O"),
+                                                            Text("some value"),
+                                                            Text("prof name"),
+                                                            Text(
+                                                                "ability score")
+                                                          ])),
+                                                      Container(
+                                                          height: 13,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child:
+                                                              Column(children: [
+                                                            Text("O"),
+                                                            Text("some value"),
+                                                            Text("prof name"),
+                                                            Text(
+                                                                "ability score")
+                                                          ])),
+                                                      Container(
+                                                          height: 13,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child:
+                                                              Column(children: [
+                                                            Text("O"),
+                                                            Text("some value"),
+                                                            Text("prof name"),
+                                                            Text(
+                                                                "ability score")
+                                                          ])),
+                                                      Container(
+                                                          height: 13,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child:
+                                                              Column(children: [
+                                                            Text("O"),
+                                                            Text("some value"),
+                                                            Text("prof name"),
+                                                            Text(
+                                                                "ability score")
+                                                          ])),
+                                                      Container(
+                                                          height: 13,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child:
+                                                              Column(children: [
+                                                            Text("O"),
+                                                            Text("some value"),
+                                                            Text("prof name"),
+                                                            Text(
+                                                                "ability score")
+                                                          ])),
+                                                      Container(
+                                                          height: 13,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child:
+                                                              Column(children: [
+                                                            Text("O"),
+                                                            Text("some value"),
+                                                            Text("prof name"),
+                                                            Text(
+                                                                "ability score")
+                                                          ])),
+                                                      Container(
+                                                          height: 13,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child:
+                                                              Column(children: [
+                                                            Text("O"),
+                                                            Text("some value"),
+                                                            Text("prof name"),
+                                                            Text(
+                                                                "ability score")
+                                                          ])),
+                                                      Container(
+                                                          height: 13,
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xffEBA834),
+                                                          child:
+                                                              Column(children: [
+                                                            Text("O"),
+                                                            Text("some value"),
+                                                            Text("prof name"),
+                                                            Text(
+                                                                "ability score")
+                                                          ])),
+                                                    ])),
                                               ]))
                                     ])),
                                 //Middle small box

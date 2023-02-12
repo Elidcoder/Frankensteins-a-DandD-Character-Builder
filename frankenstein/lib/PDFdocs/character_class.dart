@@ -11,18 +11,16 @@ class Character {
   //general
   final Map<String, int> currency;
   final String name;
-
-  final String characterName;
   final String playerName;
-  final List<int> levelsPerClass;
+  final List<int> classLevels;
 
-  final int characterExperiance;
+  final int characterExperience;
 
-  final Race initialRace = RACELIST.first;
+  final Race race;
   //Races
   final List<int> raceAbilityScoreIncreases;
   //Background
-  final Background currentBackground;
+  final Background background;
   final String backgroundPersonalityTrait;
   final String backgroundIdeal;
   final String backgroundBond;
@@ -41,14 +39,17 @@ class Character {
 
   factory Character.fromJson(Map<String, dynamic> data) {
     final name = data["Name"] as String;
+    final playerName = data["PlayerName"] as String;
     final currency = data["Currency"] as Map<String, int>;
-
+    final classLevels = data["ClassLevels"].cast<int>() as List<int>;
+    final race = data["Race"] as Race;
+    final background = data["Background"] as Background;
     final backgroundFlaw = data["BackgroundFlaw"] as String;
     final backgroundPersonalityTrait =
         data["BackgroundPersonalityTrait"] as String;
     final backgroundBond = data["BackgroundBond"] as String;
     final backgroundIdeal = data["BackgroundIdeal"] as String;
-
+    final characterExperience = data["CharacterExperience"] as int;
     final raceAbilityScoreIncreases =
         data["RaceAbilityScoreIncreases"].cast<int>() as List<int>;
 
@@ -63,6 +64,11 @@ class Character {
 
     return Character(
       name: name,
+      playerName: playerName,
+      background: background,
+      classLevels: classLevels,
+      race: race,
+      characterExperience: characterExperience,
       currency: currency,
       backgroundPersonalityTrait: backgroundPersonalityTrait,
       backgroundIdeal: backgroundIdeal,
@@ -80,6 +86,11 @@ class Character {
   }
   Character(
       {required this.name,
+      required this.characterExperience,
+      required this.playerName,
+      required this.background,
+      required this.classLevels,
+      required this.race,
       required this.backgroundIdeal,
       required this.backgroundPersonalityTrait,
       required this.backgroundBond,
