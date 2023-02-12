@@ -702,7 +702,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                         fontSize:
                                                                             5)),
                                                             Text(
-                                                                "${modifierFromAbilityScore[userCharacter.dexterity.value]! + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int)} ",
+                                                                "${userCharacter.dexterity.value + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int)} ",
                                                                 style: const TextStyle(
                                                                     decoration:
                                                                         TextDecoration
