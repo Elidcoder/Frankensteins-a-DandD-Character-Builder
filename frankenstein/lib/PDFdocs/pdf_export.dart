@@ -12,6 +12,7 @@ String formatNumber(int number) {
   return number >= 0 ? "+$number" : "$number";
 }
 
+//color: const PdfColor.fromInt(0xffEBA834),
 Future<Uint8List> makePdf(Character userCharacter) async {
   final pdf = Document();
   //var a = CLASSLIST[0];
@@ -39,58 +40,58 @@ Future<Uint8List> makePdf(Character userCharacter) async {
     20: 6,
   };
 
-  final Map<int, String> modifierFromAbilityScore = {
-    0: "-5",
-    1: "-5",
-    2: "-4",
-    3: "-4",
-    4: "-3",
-    5: "-3",
-    6: "-2",
-    7: "-2",
-    8: "-1",
-    9: "-1",
-    10: "0",
-    11: "0",
-    12: "+1",
-    13: "+1",
-    14: "+2",
-    15: "+2",
-    16: "+3",
-    17: "+3",
-    18: "+4",
-    19: "+4",
-    20: "+5",
-    21: "+5",
-    22: "+6",
-    23: "+6",
-    24: "+7",
-    25: "+7",
-    26: "+8",
-    27: "+8",
-    28: "+9",
-    29: "+9",
-    30: "+10",
-    31: "+10",
-    32: "+11",
-    33: "+11",
-    34: "+12",
-    35: "+12",
-    36: "+13",
-    37: "+13",
-    38: "+14",
-    39: "+14",
-    40: "+15",
-    41: "+15",
-    42: "+16",
-    43: "+16",
-    44: "+17",
-    45: "+17",
-    46: "+18",
-    47: "+18",
-    48: "+19",
-    49: "+19",
-    50: "+20"
+  final Map<int, int> modifierFromAbilityScore = {
+    0: -5,
+    1: -5,
+    2: -4,
+    3: -4,
+    4: -3,
+    5: -3,
+    6: -2,
+    7: -2,
+    8: -1,
+    9: -1,
+    10: 0,
+    11: 0,
+    12: 1,
+    13: 1,
+    14: 2,
+    15: 2,
+    16: 3,
+    17: 3,
+    18: 4,
+    19: 4,
+    20: 5,
+    21: 5,
+    22: 6,
+    23: 6,
+    24: 7,
+    25: 7,
+    26: 8,
+    27: 8,
+    28: 9,
+    29: 9,
+    30: 10,
+    31: 10,
+    32: 11,
+    33: 11,
+    34: 12,
+    35: 12,
+    36: 13,
+    37: 13,
+    38: 14,
+    39: 14,
+    40: 15,
+    41: 15,
+    42: 16,
+    43: 16,
+    44: 17,
+    45: 17,
+    46: 18,
+    47: 18,
+    48: 19,
+    49: 19,
+    50: 20
   };
   pdf.addPage(
     Page(
@@ -392,14 +393,13 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                   border: Border.all(
                                                                       width:
                                                                           0.8)),
-                                                              child: Text(modifierFromAbilityScore[userCharacter
+                                                              child: Text(formatNumber(modifierFromAbilityScore[userCharacter
                                                                           .strength
                                                                           .value +
-                                                                      userCharacter.raceAbilityScoreIncreases[
-                                                                          0] +
                                                                       userCharacter
-                                                                          .featsASIScoreIncreases[0]] ??
-                                                                  "0"))
+                                                                          .raceAbilityScoreIncreases[0] +
+                                                                      userCharacter.featsASIScoreIncreases[0]] ??
+                                                                  0)))
                                                         ])),
                                                 Container(
                                                     height: 63,
@@ -441,14 +441,13 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                   border: Border.all(
                                                                       width:
                                                                           0.8)),
-                                                              child: Text(modifierFromAbilityScore[userCharacter
+                                                              child: Text(formatNumber(modifierFromAbilityScore[userCharacter
                                                                           .dexterity
                                                                           .value +
-                                                                      userCharacter.raceAbilityScoreIncreases[
-                                                                          1] +
                                                                       userCharacter
-                                                                          .featsASIScoreIncreases[1]] ??
-                                                                  "0"))
+                                                                          .raceAbilityScoreIncreases[1] +
+                                                                      userCharacter.featsASIScoreIncreases[1]] ??
+                                                                  0)))
                                                         ])),
                                                 Container(
                                                     height: 63,
@@ -490,14 +489,13 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                   border: Border.all(
                                                                       width:
                                                                           0.8)),
-                                                              child: Text(modifierFromAbilityScore[userCharacter
+                                                              child: Text(formatNumber(modifierFromAbilityScore[userCharacter
                                                                           .constitution
                                                                           .value +
-                                                                      userCharacter.raceAbilityScoreIncreases[
-                                                                          2] +
                                                                       userCharacter
-                                                                          .featsASIScoreIncreases[2]] ??
-                                                                  "0"))
+                                                                          .raceAbilityScoreIncreases[2] +
+                                                                      userCharacter.featsASIScoreIncreases[2]] ??
+                                                                  0)))
                                                         ])),
                                                 Container(
                                                     height: 63,
@@ -539,14 +537,13 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                   border: Border.all(
                                                                       width:
                                                                           0.8)),
-                                                              child: Text(modifierFromAbilityScore[userCharacter
+                                                              child: Text(formatNumber(modifierFromAbilityScore[userCharacter
                                                                           .intelligence
                                                                           .value +
-                                                                      userCharacter.raceAbilityScoreIncreases[
-                                                                          3] +
                                                                       userCharacter
-                                                                          .featsASIScoreIncreases[3]] ??
-                                                                  "0"))
+                                                                          .raceAbilityScoreIncreases[3] +
+                                                                      userCharacter.featsASIScoreIncreases[3]] ??
+                                                                  0)))
                                                         ])),
                                                 Container(
                                                     height: 63,
@@ -588,14 +585,13 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                   border: Border.all(
                                                                       width:
                                                                           0.8)),
-                                                              child: Text(modifierFromAbilityScore[userCharacter
+                                                              child: Text(formatNumber(modifierFromAbilityScore[userCharacter
                                                                           .wisdom
                                                                           .value +
-                                                                      userCharacter.raceAbilityScoreIncreases[
-                                                                          4] +
                                                                       userCharacter
-                                                                          .featsASIScoreIncreases[4]] ??
-                                                                  "0"))
+                                                                          .raceAbilityScoreIncreases[4] +
+                                                                      userCharacter.featsASIScoreIncreases[4]] ??
+                                                                  0)))
                                                         ])),
                                                 Container(
                                                     height: 63,
@@ -637,20 +633,19 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                   border: Border.all(
                                                                       width:
                                                                           0.8)),
-                                                              child: Text(modifierFromAbilityScore[userCharacter
+                                                              child: Text(formatNumber(modifierFromAbilityScore[userCharacter
                                                                           .charisma
                                                                           .value +
-                                                                      userCharacter.raceAbilityScoreIncreases[
-                                                                          5] +
                                                                       userCharacter
-                                                                          .featsASIScoreIncreases[5]] ??
-                                                                  "0"))
+                                                                          .raceAbilityScoreIncreases[5] +
+                                                                      userCharacter.featsASIScoreIncreases[5]] ??
+                                                                  0)))
                                                         ])),
                                               ])),
                                       //Other stuff
                                       Container(
                                           padding: const EdgeInsets.fromLTRB(
-                                              3, 0, 3, 0),
+                                              3, 3, 3, 0),
                                           alignment: Alignment.center,
                                           width: 95.0,
                                           child: Column(
@@ -659,23 +654,371 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       .spaceBetween,
                                               children: [
                                                 Container(
-                                                  height: 22,
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          width: 0.8)),
-                                                ),
+                                                    height: 22,
+                                                    child: Row(children: [
+                                                      Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          width: 22,
+                                                          height: 22,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          2.0),
+                                                              border:
+                                                                  Border.all(
+                                                                      width:
+                                                                          0.8)),
+                                                          child: Text(
+                                                              (userCharacter
+                                                                      .inspired)
+                                                                  ? ""
+                                                                  : "X",
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          13))),
+                                                      Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          width: 68,
+                                                          height: 16,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  borderRadius:
+                                                                      const BorderRadius
+                                                                          .only(
+                                                                    topRight: Radius
+                                                                        .circular(
+                                                                            2.0),
+                                                                    bottomRight:
+                                                                        Radius.circular(
+                                                                            2.0),
+                                                                  ),
+                                                                  border: Border
+                                                                      .all(
+                                                                          width:
+                                                                              0.8)),
+                                                          child: Text(
+                                                              " Inspiration",
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          9.4))),
+                                                    ])),
                                                 Container(
-                                                  height: 26,
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          width: 0.8)),
-                                                ),
+                                                    height: 26,
+                                                    child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Container(
+                                                              alignment: Alignment
+                                                                  .center,
+                                                              width: 22,
+                                                              height: 22,
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(
+                                                                          2.0),
+                                                                  border: Border.all(
+                                                                      width:
+                                                                          0.8)),
+                                                              child: Text(
+                                                                  formatNumber(proficiencyBonus[userCharacter
+                                                                          .classLevels
+                                                                          .reduce(
+                                                                              (value, element) => value + element)]
+                                                                      as int),
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          13))),
+                                                          Container(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              width: 68,
+                                                              height: 16,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                      borderRadius:
+                                                                          const BorderRadius
+                                                                              .only(
+                                                                        topRight:
+                                                                            Radius.circular(2.0),
+                                                                        bottomRight:
+                                                                            Radius.circular(2.0),
+                                                                      ),
+                                                                      border: Border.all(
+                                                                          width:
+                                                                              0.8)),
+                                                              child: Text(
+                                                                  " Proficiency Bonus",
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          7.6))),
+                                                        ])),
                                                 Container(
-                                                  height: 100,
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          width: 0.8)),
-                                                ),
+                                                    height: 100,
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            width: 0.8)),
+                                                    child: Column(children: [
+                                                      Container(
+                                                          height: 16,
+                                                          child: Center(
+                                                              child: Text(
+                                                                  "Saving throws",
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          12)))),
+                                                      Container(
+                                                          height: 14,
+                                                          child: Row(children: [
+                                                            (userCharacter
+                                                                    .savingThrowProficiencies
+                                                                    .contains(
+                                                                        "Strength"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .savingThrowProficiencies
+                                                                    .contains(
+                                                                        "Strength"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.strength.value + userCharacter.raceAbilityScoreIncreases[0] + userCharacter.featsASIScoreIncreases[0]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.strength.value + userCharacter.raceAbilityScoreIncreases[0] + userCharacter.featsASIScoreIncreases[0]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(" Strength ",
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        6.4)),
+                                                          ])),
+                                                      Container(
+                                                          height: 14,
+                                                          child: Row(children: [
+                                                            (userCharacter
+                                                                    .savingThrowProficiencies
+                                                                    .contains(
+                                                                        "Dexterity"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .savingThrowProficiencies
+                                                                    .contains(
+                                                                        "Dexterity"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(" Dexterity ",
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        6.4)),
+                                                          ])),
+                                                      Container(
+                                                          height: 14,
+                                                          child: Row(children: [
+                                                            (userCharacter
+                                                                    .savingThrowProficiencies
+                                                                    .contains(
+                                                                        "Constitution"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .savingThrowProficiencies
+                                                                    .contains(
+                                                                        "Constitution"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.constitution.value + userCharacter.raceAbilityScoreIncreases[2] + userCharacter.featsASIScoreIncreases[2]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.constitution.value + userCharacter.raceAbilityScoreIncreases[2] + userCharacter.featsASIScoreIncreases[2]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(
+                                                                " Constitution ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            6.4))
+                                                          ])),
+                                                      Container(
+                                                          height: 14,
+                                                          child: Row(children: [
+                                                            (userCharacter
+                                                                    .savingThrowProficiencies
+                                                                    .contains(
+                                                                        "Intelligence"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .savingThrowProficiencies
+                                                                    .contains(
+                                                                        "Intelligence"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.intelligence.value + userCharacter.raceAbilityScoreIncreases[3] + userCharacter.featsASIScoreIncreases[3]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.intelligence.value + userCharacter.raceAbilityScoreIncreases[3] + userCharacter.featsASIScoreIncreases[3]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(
+                                                                " Intelligence ",
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        6.4)),
+                                                          ])),
+                                                      Container(
+                                                          height: 14,
+                                                          child: Row(children: [
+                                                            (userCharacter
+                                                                    .savingThrowProficiencies
+                                                                    .contains(
+                                                                        "Wisdom"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .savingThrowProficiencies
+                                                                    .contains(
+                                                                        "Wisdom"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(" Wisdom ",
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        6.4)),
+                                                          ])),
+                                                      Container(
+                                                          height: 14,
+                                                          child: Row(children: [
+                                                            (userCharacter
+                                                                    .savingThrowProficiencies
+                                                                    .contains(
+                                                                        "Charisma"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .savingThrowProficiencies
+                                                                    .contains(
+                                                                        "Charisma"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.charisma.value + userCharacter.raceAbilityScoreIncreases[5] + userCharacter.featsASIScoreIncreases[5]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.charisma.value + userCharacter.raceAbilityScoreIncreases[5] + userCharacter.featsASIScoreIncreases[5]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(" Charisma ",
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            6.4))
+                                                          ])),
+                                                    ])),
                                                 Container(
                                                     height: 260,
                                                     decoration: BoxDecoration(
@@ -683,553 +1026,827 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                             width: 0.8)),
                                                     child: Column(children: [
                                                       Container(
-                                                          height: 20,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
+                                                          height: 23,
                                                           child: Center(
                                                               child: Text(
-                                                                  "Skills"))),
+                                                                  "Skills",
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          14)))),
                                                       Container(
                                                           height: 13,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
                                                           child: Row(children: [
-                                                            Text(" O ",
-                                                                style:
-                                                                    const TextStyle(
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Acrobatics"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text(
-                                                                "${userCharacter.dexterity.value + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int)} ",
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Acrobatics"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(" Acrobatics ",
                                                                 style: const TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
                                                                     fontSize:
-                                                                        5)),
-                                                            Text(" Acrobatics",
+                                                                        6.4)),
+                                                            Text("(Dex)",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text(" (Dex)",
-                                                                style:
-                                                                    const TextStyle(
-                                                                        fontSize:
-                                                                            5))
+                                                                            6.4))
                                                           ])),
                                                       Container(
                                                           height: 13,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
                                                           child: Row(children: [
-                                                            Text(" O ",
-                                                                style:
-                                                                    const TextStyle(
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Animal Handling"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text("some value",
-                                                                style: const TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
-                                                                    fontSize:
-                                                                        5)),
-                                                            Text(" prof name",
-                                                                style:
-                                                                    const TextStyle(
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Animal Handling"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
                                                             Text(
-                                                                " ability score",
+                                                                " Animal Handling ",
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        6.4)),
+                                                            Text("(Wis)",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            5))
+                                                                            6.4))
                                                           ])),
                                                       Container(
                                                           height: 13,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
                                                           child: Row(children: [
-                                                            Text(" O ",
-                                                                style:
-                                                                    const TextStyle(
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Arcana"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text("some value",
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Arcana"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.intelligence.value + userCharacter.raceAbilityScoreIncreases[3] + userCharacter.featsASIScoreIncreases[3]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.intelligence.value + userCharacter.raceAbilityScoreIncreases[3] + userCharacter.featsASIScoreIncreases[3]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(" Arcana ",
                                                                 style: const TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
                                                                     fontSize:
-                                                                        5)),
-                                                            Text(" prof name",
+                                                                        6.4)),
+                                                            Text("(Int)",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text(
-                                                                " ability score",
-                                                                style:
-                                                                    const TextStyle(
-                                                                        fontSize:
-                                                                            5))
+                                                                            6.4))
                                                           ])),
                                                       Container(
                                                           height: 13,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
                                                           child: Row(children: [
-                                                            Text(" O ",
-                                                                style:
-                                                                    const TextStyle(
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Athletics"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text("some value",
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Athletics"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.strength.value + userCharacter.raceAbilityScoreIncreases[0] + userCharacter.featsASIScoreIncreases[0]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.strength.value + userCharacter.raceAbilityScoreIncreases[0] + userCharacter.featsASIScoreIncreases[0]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(" Athletics ",
                                                                 style: const TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
                                                                     fontSize:
-                                                                        5)),
-                                                            Text(" prof name",
+                                                                        6.4)),
+                                                            Text("(Str)",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text(
-                                                                " ability score",
-                                                                style:
-                                                                    const TextStyle(
-                                                                        fontSize:
-                                                                            5))
+                                                                            6.4))
                                                           ])),
                                                       Container(
                                                           height: 13,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
                                                           child: Row(children: [
-                                                            Text(" O ",
-                                                                style:
-                                                                    const TextStyle(
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Deception"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text("some value",
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Deception"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.charisma.value + userCharacter.raceAbilityScoreIncreases[5] + userCharacter.featsASIScoreIncreases[5]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.charisma.value + userCharacter.raceAbilityScoreIncreases[5] + userCharacter.featsASIScoreIncreases[5]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(" Deception ",
                                                                 style: const TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
                                                                     fontSize:
-                                                                        5)),
-                                                            Text(" prof name",
+                                                                        6.4)),
+                                                            Text("(Cha)",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text(
-                                                                " ability score",
-                                                                style:
-                                                                    const TextStyle(
-                                                                        fontSize:
-                                                                            5))
+                                                                            6.4))
                                                           ])),
                                                       Container(
                                                           height: 13,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
                                                           child: Row(children: [
-                                                            Text(" O ",
-                                                                style:
-                                                                    const TextStyle(
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "History"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text("some value",
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "History"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.intelligence.value + userCharacter.raceAbilityScoreIncreases[3] + userCharacter.featsASIScoreIncreases[3]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.intelligence.value + userCharacter.raceAbilityScoreIncreases[3] + userCharacter.featsASIScoreIncreases[3]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(" History ",
                                                                 style: const TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
                                                                     fontSize:
-                                                                        5)),
-                                                            Text(" prof name",
+                                                                        6.4)),
+                                                            Text("(Int)",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text(
-                                                                " ability score",
-                                                                style:
-                                                                    const TextStyle(
-                                                                        fontSize:
-                                                                            5))
+                                                                            6.4))
                                                           ])),
                                                       Container(
                                                           height: 13,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
                                                           child: Row(children: [
-                                                            Text(" O ",
-                                                                style:
-                                                                    const TextStyle(
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Insight"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text("some value",
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Insight"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(" Insight ",
                                                                 style: const TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
                                                                     fontSize:
-                                                                        5)),
-                                                            Text(" prof name",
+                                                                        6.4)),
+                                                            Text("(Wis)",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text(
-                                                                " ability score",
-                                                                style:
-                                                                    const TextStyle(
-                                                                        fontSize:
-                                                                            5))
+                                                                            6.4))
                                                           ])),
                                                       Container(
                                                           height: 13,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
                                                           child: Row(children: [
-                                                            Text(" O ",
-                                                                style:
-                                                                    const TextStyle(
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Intimidation"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text("some value",
-                                                                style: const TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
-                                                                    fontSize:
-                                                                        5)),
-                                                            Text(" prof name",
-                                                                style:
-                                                                    const TextStyle(
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Intimidation"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.charisma.value + userCharacter.raceAbilityScoreIncreases[5] + userCharacter.featsASIScoreIncreases[5]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.charisma.value + userCharacter.raceAbilityScoreIncreases[5] + userCharacter.featsASIScoreIncreases[5]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
                                                             Text(
-                                                                " ability score",
+                                                                " Intimidation ",
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        6.4)),
+                                                            Text("(Cha)",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            5))
+                                                                            6.4))
                                                           ])),
                                                       Container(
                                                           height: 13,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
                                                           child: Row(children: [
-                                                            Text(" O ",
-                                                                style:
-                                                                    const TextStyle(
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Investigation"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text("some value",
-                                                                style: const TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
-                                                                    fontSize:
-                                                                        5)),
-                                                            Text(" prof name",
-                                                                style:
-                                                                    const TextStyle(
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Investigation"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.intelligence.value + userCharacter.raceAbilityScoreIncreases[3] + userCharacter.featsASIScoreIncreases[3]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.intelligence.value + userCharacter.raceAbilityScoreIncreases[3] + userCharacter.featsASIScoreIncreases[3]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
                                                             Text(
-                                                                " ability score",
+                                                                " Investigation ",
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        6.4)),
+                                                            Text("(Int)",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            5))
+                                                                            6.4))
                                                           ])),
                                                       Container(
                                                           height: 13,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
                                                           child: Row(children: [
-                                                            Text(" O ",
-                                                                style:
-                                                                    const TextStyle(
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Medicine"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text("some value",
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Medicine"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(" Medicine ",
                                                                 style: const TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
                                                                     fontSize:
-                                                                        5)),
-                                                            Text(" prof name",
+                                                                        6.4)),
+                                                            Text("(Wis)",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text(
-                                                                " ability score",
-                                                                style:
-                                                                    const TextStyle(
-                                                                        fontSize:
-                                                                            5))
+                                                                            6.4))
                                                           ])),
                                                       Container(
                                                           height: 13,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
                                                           child: Row(children: [
-                                                            Text(" O ",
-                                                                style:
-                                                                    const TextStyle(
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Nature"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text("some value",
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Nature"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.intelligence.value + userCharacter.raceAbilityScoreIncreases[3] + userCharacter.featsASIScoreIncreases[3]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.intelligence.value + userCharacter.raceAbilityScoreIncreases[3] + userCharacter.featsASIScoreIncreases[3]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(" Nature ",
                                                                 style: const TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
                                                                     fontSize:
-                                                                        5)),
-                                                            Text(" prof name",
+                                                                        6.4)),
+                                                            Text("(Int)",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text(
-                                                                " ability score",
-                                                                style:
-                                                                    const TextStyle(
-                                                                        fontSize:
-                                                                            5))
+                                                                            6.4))
                                                           ])),
                                                       Container(
                                                           height: 13,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
                                                           child: Row(children: [
-                                                            Text(" O ",
-                                                                style:
-                                                                    const TextStyle(
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Perception"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text("some value",
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Perception"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(" Perception ",
                                                                 style: const TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
                                                                     fontSize:
-                                                                        5)),
-                                                            Text(" prof name",
+                                                                        6.4)),
+                                                            Text("(Wis)",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text(
-                                                                " ability score",
-                                                                style:
-                                                                    const TextStyle(
-                                                                        fontSize:
-                                                                            5))
+                                                                            6.4))
                                                           ])),
                                                       Container(
                                                           height: 13,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
                                                           child: Row(children: [
-                                                            Text(" O ",
-                                                                style:
-                                                                    const TextStyle(
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Performance"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text("some value",
-                                                                style: const TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
-                                                                    fontSize:
-                                                                        5)),
-                                                            Text(" prof name",
-                                                                style:
-                                                                    const TextStyle(
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Performance"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.charisma.value + userCharacter.raceAbilityScoreIncreases[5] + userCharacter.featsASIScoreIncreases[5]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.charisma.value + userCharacter.raceAbilityScoreIncreases[5] + userCharacter.featsASIScoreIncreases[5]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
                                                             Text(
-                                                                " ability score",
+                                                                " Performance ",
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        6.4)),
+                                                            Text("(Cha)",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            5))
+                                                                            6.4))
                                                           ])),
                                                       Container(
                                                           height: 13,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
                                                           child: Row(children: [
-                                                            Text(" O ",
-                                                                style:
-                                                                    const TextStyle(
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Persuasion"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text("some value",
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Persuasion"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.charisma.value + userCharacter.raceAbilityScoreIncreases[5] + userCharacter.featsASIScoreIncreases[5]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.charisma.value + userCharacter.raceAbilityScoreIncreases[5] + userCharacter.featsASIScoreIncreases[5]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(" Persuasion ",
                                                                 style: const TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
                                                                     fontSize:
-                                                                        5)),
-                                                            Text(" prof name",
+                                                                        6.4)),
+                                                            Text("(Cha)",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text(
-                                                                " ability score",
-                                                                style:
-                                                                    const TextStyle(
-                                                                        fontSize:
-                                                                            5))
+                                                                            6.4))
                                                           ])),
                                                       Container(
                                                           height: 13,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
                                                           child: Row(children: [
-                                                            Text(" O ",
-                                                                style:
-                                                                    const TextStyle(
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Religion"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text("some value",
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Religion"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.intelligence.value + userCharacter.raceAbilityScoreIncreases[3] + userCharacter.featsASIScoreIncreases[3]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.intelligence.value + userCharacter.raceAbilityScoreIncreases[3] + userCharacter.featsASIScoreIncreases[3]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(" Religion ",
                                                                 style: const TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
                                                                     fontSize:
-                                                                        5)),
-                                                            Text(" prof name",
+                                                                        6.4)),
+                                                            Text("(Int)",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text(
-                                                                " ability score",
-                                                                style:
-                                                                    const TextStyle(
-                                                                        fontSize:
-                                                                            5))
+                                                                            6.4))
                                                           ])),
                                                       Container(
                                                           height: 13,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
                                                           child: Row(children: [
-                                                            Text(" O ",
-                                                                style:
-                                                                    const TextStyle(
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Sleight of Hand"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text("some value",
-                                                                style: const TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
-                                                                    fontSize:
-                                                                        5)),
-                                                            Text(" prof name",
-                                                                style:
-                                                                    const TextStyle(
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Sleight of Hand"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
                                                             Text(
-                                                                " ability score",
+                                                                " Sleight of Hand ",
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        6.4)),
+                                                            Text("(Dex)",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            5))
+                                                                            6.4))
                                                           ])),
                                                       Container(
                                                           height: 13,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
                                                           child: Row(children: [
-                                                            Text(" O ",
-                                                                style:
-                                                                    const TextStyle(
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Stealth"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text("some value",
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Stealth"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(" Stealth ",
                                                                 style: const TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
                                                                     fontSize:
-                                                                        5)),
-                                                            Text(" prof name",
+                                                                        6.4)),
+                                                            Text("(Dex)",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text(
-                                                                " ability score",
-                                                                style:
-                                                                    const TextStyle(
-                                                                        fontSize:
-                                                                            5))
+                                                                            6.4))
                                                           ])),
                                                       Container(
                                                           height: 13,
-                                                          color: const PdfColor
-                                                                  .fromInt(
-                                                              0xffEBA834),
                                                           child: Row(children: [
-                                                            Text(" O ",
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Survival"))
+                                                                ? Text("  X ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text("  O ",
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            (userCharacter
+                                                                    .skillProficiencies
+                                                                    .contains(
+                                                                        "Survival"))
+                                                                ? Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4))
+                                                                : Text(
+                                                                    "${formatNumber(modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0)} ",
+                                                                    style: const TextStyle(
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        fontSize:
+                                                                            6.4)),
+                                                            Text(" Survival ",
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        6.4)),
+                                                            Text(" (Wis)",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
-                                                                            5)),
-                                                            Text("some value",
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 4,
-                                                                  decoration:
-                                                                      TextDecoration
-                                                                          .underline,
-                                                                )),
-                                                            Text(" prof name",
-                                                                style:
-                                                                    const TextStyle(
-                                                                        fontSize:
-                                                                            5)),
-                                                            Text(
-                                                                " ability score",
-                                                                style:
-                                                                    const TextStyle(
-                                                                        fontSize:
-                                                                            5))
+                                                                            6.4))
                                                           ])),
                                                     ])),
                                               ]))
@@ -1239,10 +1856,50 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                     alignment: Alignment.center,
                                     height: 48.0,
                                     child: Container(
-                                      height: 26.0,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(width: 0.8)),
-                                    )),
+                                        height: 26.0,
+                                        child: Row(children: [
+                                          Container(
+                                              alignment: Alignment.center,
+                                              width: 26,
+                                              height: 26,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          2.0),
+                                                  border:
+                                                      Border.all(width: 0.8)),
+                                              child: (userCharacter
+                                                      .skillProficiencies
+                                                      .contains("Perception"))
+                                                  ? Text(
+                                                      "${10 + (modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))}",
+                                                      style: const TextStyle(
+                                                          fontSize: 13),
+                                                    )
+                                                  : Text(
+                                                      "${10 + (modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0)}",
+                                                      style: const TextStyle(
+                                                          fontSize: 13),
+                                                    )),
+                                          Container(
+                                              alignment: Alignment.center,
+                                              width: 129,
+                                              height: 20,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                    topRight:
+                                                        Radius.circular(2.0),
+                                                    bottomRight:
+                                                        Radius.circular(2.0),
+                                                  ),
+                                                  border:
+                                                      Border.all(width: 0.8)),
+                                              child: Text(
+                                                  " Passive Perception (Wisdom) ",
+                                                  style: const TextStyle(
+                                                      fontSize: 8.8))),
+                                        ]))),
                                 //Bottom box
                                 Container(
                                   alignment: Alignment.center,

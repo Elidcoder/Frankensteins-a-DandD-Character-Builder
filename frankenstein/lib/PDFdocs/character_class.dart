@@ -13,8 +13,9 @@ class Character {
   final String name;
   final String playerName;
   final List<int> classLevels;
+  final bool inspired;
 
-  final List<String>? savingThrowProficiencies;
+  final List<String> savingThrowProficiencies;
   final List<String> skillProficiencies;
   final int maxHealth;
 
@@ -72,9 +73,11 @@ class Character {
     final charisma = data["Charisma"] as AbilityScore;
     final featsASIScoreIncreases =
         data["FeatsASIScoreIncreases"].cast<int>() as List<int>;
+    final inspired = data["Inspired"] as bool;
 
     return Character(
       savingThrowProficiencies: savingThrowProficiencies,
+      inspired: inspired,
       skillProficiencies: skillProficiencies,
       maxHealth: maxHealth,
       name: name,
@@ -102,6 +105,7 @@ class Character {
       {required this.name,
       required this.savingThrowProficiencies,
       required this.skillProficiencies,
+      required this.inspired,
       required this.maxHealth,
       required this.characterExperience,
       required this.playerName,

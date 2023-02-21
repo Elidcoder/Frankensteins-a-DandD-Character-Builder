@@ -904,6 +904,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   @override
   bool get wantKeepAlive => true;
   List<String> featuresAndTraits = [];
+  bool inspired = false;
   Map<String, List<String>> speedBonusMap = {
     "Hover": [],
     "Flying": [],
@@ -5782,6 +5783,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                             playerName: playerName,
                             savingThrowProficiencies:
                                 savingThrowProficiencies ?? [],
+                            inspired: inspired,
                             skillProficiencies: skillProficiencies,
                             maxHealth: maxHealth,
                             background: currentBackground,
