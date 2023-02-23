@@ -15,6 +15,11 @@ String formatNumber(int number) {
 //color: const PdfColor.fromInt(0xffEBA834),
 Future<Uint8List> makePdf(Character userCharacter) async {
   final pdf = Document();
+  final List<String> skillsSelected = [
+    for (var x in userCharacter.skillsSelected?.toList() ?? [])
+      userCharacter.background.optionalSkillProficiencies?[x] ??
+          "ERROR LINE 18 pdf_export.dart"
+  ];
   //var a = CLASSLIST[0];
   Map<int, int> proficiencyBonus = {
     0: 0,
@@ -1036,10 +1041,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Container(
                                                           height: 13,
                                                           child: Row(children: [
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Acrobatics"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Acrobatics"))
                                                                 ? Text("  X ",
                                                                     style: const TextStyle(
                                                                         fontSize:
@@ -1048,10 +1059,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             6.4)),
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Acrobatics"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Acrobatics"))
                                                                 ? Text(
                                                                     "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                                     style: const TextStyle(
@@ -1081,10 +1098,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Container(
                                                           height: 13,
                                                           child: Row(children: [
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Animal Handling"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Animal Handling"))
                                                                 ? Text("  X ",
                                                                     style: const TextStyle(
                                                                         fontSize:
@@ -1093,10 +1116,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             6.4)),
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Animal Handling"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Animal Handling"))
                                                                 ? Text(
                                                                     "${formatNumber(modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                                     style: const TextStyle(
@@ -1127,10 +1156,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Container(
                                                           height: 13,
                                                           child: Row(children: [
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Arcana"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Arcana"))
                                                                 ? Text("  X ",
                                                                     style: const TextStyle(
                                                                         fontSize:
@@ -1139,10 +1174,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             6.4)),
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Arcana"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Arcana"))
                                                                 ? Text(
                                                                     "${formatNumber(modifierFromAbilityScore[userCharacter.intelligence.value + userCharacter.raceAbilityScoreIncreases[3] + userCharacter.featsASIScoreIncreases[3]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                                     style: const TextStyle(
@@ -1172,10 +1213,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Container(
                                                           height: 13,
                                                           child: Row(children: [
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Athletics"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Athletics"))
                                                                 ? Text("  X ",
                                                                     style: const TextStyle(
                                                                         fontSize:
@@ -1184,10 +1231,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             6.4)),
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Athletics"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Athletics"))
                                                                 ? Text(
                                                                     "${formatNumber(modifierFromAbilityScore[userCharacter.strength.value + userCharacter.raceAbilityScoreIncreases[0] + userCharacter.featsASIScoreIncreases[0]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                                     style: const TextStyle(
@@ -1217,10 +1270,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Container(
                                                           height: 13,
                                                           child: Row(children: [
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Deception"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Deception"))
                                                                 ? Text("  X ",
                                                                     style: const TextStyle(
                                                                         fontSize:
@@ -1229,10 +1288,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             6.4)),
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Deception"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Deception"))
                                                                 ? Text(
                                                                     "${formatNumber(modifierFromAbilityScore[userCharacter.charisma.value + userCharacter.raceAbilityScoreIncreases[5] + userCharacter.featsASIScoreIncreases[5]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                                     style: const TextStyle(
@@ -1262,10 +1327,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Container(
                                                           height: 13,
                                                           child: Row(children: [
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "History"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "History"))
                                                                 ? Text("  X ",
                                                                     style: const TextStyle(
                                                                         fontSize:
@@ -1274,10 +1345,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             6.4)),
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "History"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "History"))
                                                                 ? Text(
                                                                     "${formatNumber(modifierFromAbilityScore[userCharacter.intelligence.value + userCharacter.raceAbilityScoreIncreases[3] + userCharacter.featsASIScoreIncreases[3]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                                     style: const TextStyle(
@@ -1307,10 +1384,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Container(
                                                           height: 13,
                                                           child: Row(children: [
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Insight"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Insight"))
                                                                 ? Text("  X ",
                                                                     style: const TextStyle(
                                                                         fontSize:
@@ -1319,10 +1402,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             6.4)),
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Insight"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Insight"))
                                                                 ? Text(
                                                                     "${formatNumber(modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                                     style: const TextStyle(
@@ -1352,10 +1441,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Container(
                                                           height: 13,
                                                           child: Row(children: [
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Intimidation"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Intimidation"))
                                                                 ? Text("  X ",
                                                                     style: const TextStyle(
                                                                         fontSize:
@@ -1364,10 +1459,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             6.4)),
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Intimidation"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Intimidation"))
                                                                 ? Text(
                                                                     "${formatNumber(modifierFromAbilityScore[userCharacter.charisma.value + userCharacter.raceAbilityScoreIncreases[5] + userCharacter.featsASIScoreIncreases[5]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                                     style: const TextStyle(
@@ -1398,10 +1499,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Container(
                                                           height: 13,
                                                           child: Row(children: [
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Investigation"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Investigation"))
                                                                 ? Text("  X ",
                                                                     style: const TextStyle(
                                                                         fontSize:
@@ -1410,10 +1517,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             6.4)),
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Investigation"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Investigation"))
                                                                 ? Text(
                                                                     "${formatNumber(modifierFromAbilityScore[userCharacter.intelligence.value + userCharacter.raceAbilityScoreIncreases[3] + userCharacter.featsASIScoreIncreases[3]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                                     style: const TextStyle(
@@ -1444,10 +1557,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Container(
                                                           height: 13,
                                                           child: Row(children: [
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Medicine"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Medicine"))
                                                                 ? Text("  X ",
                                                                     style: const TextStyle(
                                                                         fontSize:
@@ -1456,10 +1575,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             6.4)),
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Medicine"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Medicine"))
                                                                 ? Text(
                                                                     "${formatNumber(modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                                     style: const TextStyle(
@@ -1489,10 +1614,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Container(
                                                           height: 13,
                                                           child: Row(children: [
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Nature"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Nature"))
                                                                 ? Text("  X ",
                                                                     style: const TextStyle(
                                                                         fontSize:
@@ -1501,10 +1632,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             6.4)),
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Nature"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Nature"))
                                                                 ? Text(
                                                                     "${formatNumber(modifierFromAbilityScore[userCharacter.intelligence.value + userCharacter.raceAbilityScoreIncreases[3] + userCharacter.featsASIScoreIncreases[3]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                                     style: const TextStyle(
@@ -1534,10 +1671,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Container(
                                                           height: 13,
                                                           child: Row(children: [
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Perception"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Perception"))
                                                                 ? Text("  X ",
                                                                     style: const TextStyle(
                                                                         fontSize:
@@ -1546,10 +1689,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             6.4)),
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Perception"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Perception"))
                                                                 ? Text(
                                                                     "${formatNumber(modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                                     style: const TextStyle(
@@ -1579,10 +1728,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Container(
                                                           height: 13,
                                                           child: Row(children: [
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Performance"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Performance"))
                                                                 ? Text("  X ",
                                                                     style: const TextStyle(
                                                                         fontSize:
@@ -1591,10 +1746,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             6.4)),
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Performance"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Performance"))
                                                                 ? Text(
                                                                     "${formatNumber(modifierFromAbilityScore[userCharacter.charisma.value + userCharacter.raceAbilityScoreIncreases[5] + userCharacter.featsASIScoreIncreases[5]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                                     style: const TextStyle(
@@ -1625,10 +1786,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Container(
                                                           height: 13,
                                                           child: Row(children: [
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Persuasion"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Persuasion"))
                                                                 ? Text("  X ",
                                                                     style: const TextStyle(
                                                                         fontSize:
@@ -1637,10 +1804,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             6.4)),
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Persuasion"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Persuasion"))
                                                                 ? Text(
                                                                     "${formatNumber(modifierFromAbilityScore[userCharacter.charisma.value + userCharacter.raceAbilityScoreIncreases[5] + userCharacter.featsASIScoreIncreases[5]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                                     style: const TextStyle(
@@ -1670,10 +1843,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Container(
                                                           height: 13,
                                                           child: Row(children: [
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Religion"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Religion"))
                                                                 ? Text("  X ",
                                                                     style: const TextStyle(
                                                                         fontSize:
@@ -1682,10 +1861,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             6.4)),
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Religion"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Religion"))
                                                                 ? Text(
                                                                     "${formatNumber(modifierFromAbilityScore[userCharacter.intelligence.value + userCharacter.raceAbilityScoreIncreases[3] + userCharacter.featsASIScoreIncreases[3]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                                     style: const TextStyle(
@@ -1715,10 +1900,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Container(
                                                           height: 13,
                                                           child: Row(children: [
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Sleight of Hand"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Sleight of Hand"))
                                                                 ? Text("  X ",
                                                                     style: const TextStyle(
                                                                         fontSize:
@@ -1727,10 +1918,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             6.4)),
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Sleight of Hand"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Sleight of Hand"))
                                                                 ? Text(
                                                                     "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                                     style: const TextStyle(
@@ -1761,10 +1958,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Container(
                                                           height: 13,
                                                           child: Row(children: [
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Stealth"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Stealth"))
                                                                 ? Text("  X ",
                                                                     style: const TextStyle(
                                                                         fontSize:
@@ -1773,10 +1976,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             6.4)),
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Stealth"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Stealth"))
                                                                 ? Text(
                                                                     "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                                     style: const TextStyle(
@@ -1806,10 +2015,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Container(
                                                           height: 13,
                                                           child: Row(children: [
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Survival"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Survival"))
                                                                 ? Text("  X ",
                                                                     style: const TextStyle(
                                                                         fontSize:
@@ -1818,10 +2033,16 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             6.4)),
-                                                            (userCharacter
-                                                                    .skillProficiencies
-                                                                    .contains(
-                                                                        "Survival"))
+                                                            ([
+                                                              ...userCharacter
+                                                                  .skillProficiencies,
+                                                              ...userCharacter
+                                                                      .background
+                                                                      .initialProficiencies ??
+                                                                  [],
+                                                              ...skillsSelected
+                                                            ].contains(
+                                                                    "Survival"))
                                                                 ? Text(
                                                                     "${formatNumber(modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                                     style: const TextStyle(
@@ -1902,11 +2123,26 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                         ]))),
                                 //Bottom box
                                 Container(
-                                  alignment: Alignment.center,
-                                  height: 132.0,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(width: 0.8)),
-                                )
+                                    alignment: Alignment.center,
+                                    height: 132.0,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(width: 0.8)),
+                                    child: Column(children: [
+                                      Text(
+                                          "Other proficiencies and languages:"),
+                                      Text([
+                                        ...userCharacter
+                                                .background.toolProficiencies ??
+                                            [],
+                                        ...userCharacter
+                                                .race.toolProficiencies ??
+                                            [],
+                                        ...userCharacter
+                                                .subrace?.toolProficiencies ??
+                                            [],
+                                        ...userCharacter.mainToolProficiencies
+                                      ].join(","))
+                                    ]))
                               ])),
                           //Column two
                           Container(

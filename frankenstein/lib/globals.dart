@@ -172,6 +172,7 @@ class Subrace {
   final int walkingSpeed;
   final int mystery1S;
   final int mystery2S;
+  final List<String>? toolProficiencies;
   factory Subrace.fromJson(Map<String, dynamic> data) {
     final name = data['Name'] as String;
     final subRaceScoreIncrease =
@@ -187,21 +188,25 @@ class Subrace {
             (PROFICIENCYLIST.singleWhere(
                 (listprof) => listprof.proficiencyTree.last == thisprof))))
         ?.toList();
+    final toolProficiencies =
+        data['ToolProficiencies']?.cast<String>() as List<String>?;
     final walkingSpeed = data["WalkingSpeed"];
     final mystery1S = data["Mystery1S"] as int;
     final mystery2S = data["Mystery2S"] as int;
     return Subrace(
-        mystery2S: mystery2S,
-        mystery1S: mystery1S,
-        name: name,
-        subRaceScoreIncrease: subRaceScoreIncrease,
-        languages: languages,
-        darkVision: darkVision ?? 0,
-        walkingSpeed: walkingSpeed ?? 30,
-        sourceBook: sourceBook,
-        resistances: resistances,
-        abilities: abilities,
-        proficienciesGained: proficienciesGained);
+      mystery2S: mystery2S,
+      mystery1S: mystery1S,
+      name: name,
+      subRaceScoreIncrease: subRaceScoreIncrease,
+      languages: languages,
+      darkVision: darkVision ?? 0,
+      walkingSpeed: walkingSpeed ?? 30,
+      sourceBook: sourceBook,
+      resistances: resistances,
+      abilities: abilities,
+      proficienciesGained: proficienciesGained,
+      toolProficiencies: toolProficiencies,
+    );
   }
   Subrace(
       {required this.name,
@@ -211,6 +216,7 @@ class Subrace {
       required this.mystery1S,
       required this.mystery2S,
       required this.sourceBook,
+      this.toolProficiencies,
       this.languages,
       this.resistances,
       this.abilities,
@@ -222,6 +228,7 @@ class Race {
   final List<int> raceScoreIncrease;
   final String sourceBook;
   final List<String> languages;
+  final List<String>? toolProficiencies;
   final List<Subrace>? subRaces;
   final List<String>? resistances;
   final List<String>? abilities;
@@ -248,6 +255,8 @@ class Race {
             (PROFICIENCYLIST.singleWhere(
                 (listprof) => listprof.proficiencyTree.last == thisprof))))
         ?.toList();
+    final toolProficiencies =
+        data['ToolProficiencies']?.cast<String>() as List<String>?;
     final walkingSpeed = data["WalkingSpeed"];
     final mystery1S = data["Mystery1S"] as int;
     final mystery2S = data["Mystery2S"] as int;
@@ -265,6 +274,7 @@ class Race {
       proficienciesGained: proficienciesGained,
       mystery2S: mystery2S,
       mystery1S: mystery1S,
+      toolProficiencies: toolProficiencies,
     );
   }
   Race(
@@ -279,7 +289,8 @@ class Race {
       this.subRaces,
       this.resistances,
       this.abilities,
-      this.proficienciesGained});
+      this.proficienciesGained,
+      this.toolProficiencies});
 }
 
 //classes - PROFICIENCY LIST NEEDS FIXING
@@ -456,7 +467,7 @@ class Background {
 
   final int? numberOfLanguageChoices;
   final List<String>? features;
-  final List<Proficiency>? initialProficiencies;
+  final List<String>? initialProficiencies;
   final List<String>? optionalSkillProficiencies;
   final List<String>? toolProficiencies;
   final List<String> personalityTrait;
@@ -483,12 +494,15 @@ class Background {
 
     final toolProficiencies =
         data['ToolProficiencies']?.cast<String>() as List<String>?;
-    final proficienciesGainedNames =
+    final intialProficiencies =
         data["InitialProficiencies"]?.cast<String>() as List<String>?;
+    /*final proficienciesGainedNames =
+        data["InitialProficiencies"]?.cast<String>() as List<String>?;
+        
     final initialProficiencies = (proficienciesGainedNames?.map((thisprof) =>
             (PROFICIENCYLIST.singleWhere(
                 (listprof) => listprof.proficiencyTree.last == thisprof))))
-        ?.toList();
+        ?.toList();*/
     final optionalSkillProficiencies =
         data['OptionalSkillProficiencies']?.cast<String>() as List<String>?;
     return Background(
@@ -502,7 +516,7 @@ class Background {
       numberOfLanguageChoices: numberOfLanguageChoices,
       numberOfSkillChoices: numberOfSkillChoices,
       toolProficiencies: toolProficiencies,
-      initialProficiencies: initialProficiencies,
+      initialProficiencies: intialProficiencies,
       sourceBook: sourceBook,
       features: features,
     );

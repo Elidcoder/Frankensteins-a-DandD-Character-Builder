@@ -904,6 +904,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   @override
   bool get wantKeepAlive => true;
   List<String> featuresAndTraits = [];
+  List<String> toolProficiencies = [];
   bool inspired = false;
   Map<String, List<String>> speedBonusMap = {
     "Hover": [],
@@ -968,7 +969,7 @@ class MainCreateCharacter extends State<CreateACharacter>
 
   //Class variables initialised
   //Class? classSelectedAtLevel1;
-
+  List<bool> classSkillChoices = [];
   List<String>? savingThrowProficiencies;
   List<String> skillProficiencies = [];
   int maxHealth = 0;
@@ -2196,34 +2197,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                                           levelsPerClass.reduce(
                                               (value, element) =>
                                                   value + element)) {
-                                        if (levelsPerClass.reduce(
-                                                (value, element) =>
-                                                    value + element) ==
-                                            0) {
-                                          //gain saving throw proficiencies
-                                          savingThrowProficiencies =
-                                              CLASSLIST[index]
-                                                  .savingThrowProficiencies;
-                                          maxHealth +=
-                                              CLASSLIST[index].maxHitDiceRoll;
-                                          equipmentSelectedExperiment =
-                                              CLASSLIST[index].equipmentOptions;
-
-                                          //run first level functions := proficiencies, equipment health bonus
-                                        } else {
-                                          if (averageHitPoints ?? false) {
-                                            maxHealth += ((CLASSLIST[index]
-                                                        .maxHitDiceRoll) /
-                                                    2)
-                                                .ceil();
-                                          } else {
-                                            maxHealth += 1 +
-                                                (Random().nextDouble() *
-                                                        CLASSLIST[index]
-                                                            .maxHitDiceRoll)
-                                                    .floor();
-                                          }
-                                        }
                                         if ((CLASSLIST[index]
                                                 .gainAtEachLevel[
                                                     levelsPerClass[index]]
@@ -2276,6 +2249,98 @@ class MainCreateCharacter extends State<CreateACharacter>
                                             }
                                           }
                                         }
+                                        //level 1 bonuses
+                                        if (levelsPerClass.reduce(
+                                                (value, element) =>
+                                                    value + element) ==
+                                            0) {
+                                          //gain saving throw proficiencies
+                                          savingThrowProficiencies =
+                                              CLASSLIST[index]
+                                                  .savingThrowProficiencies;
+                                          maxHealth +=
+                                              CLASSLIST[index].maxHitDiceRoll;
+                                          equipmentSelectedExperiment =
+                                              CLASSLIST[index].equipmentOptions;
+                                          classSkillChoices = List.filled(
+                                              CLASSLIST[index]
+                                                  .optionsForSkillProficiencies
+                                                  .length,
+                                              false);
+                                          widgetsInPlay.addAll([
+                                            Text(
+                                                "Pick ${(CLASSLIST[index].numberOfSkillChoices)} skill(s) to gain proficiency in",
+                                                style: const TextStyle(
+                                                    color: Colors.blue,
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.w700)),
+                                            const SizedBox(
+                                              height: 7,
+                                            ),
+                                            ToggleButtons(
+                                                selectedColor:
+                                                    const Color.fromARGB(
+                                                        255, 0, 79, 206),
+                                                color: Colors.blue,
+                                                textStyle: const TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 18,
+                                                    color: Colors.white),
+                                                //color: Color.fromARGB(255, 15, 124, 174)
+                                                fillColor: const Color.fromARGB(
+                                                    162, 0, 255, 8),
+                                                borderColor:
+                                                    const Color.fromARGB(
+                                                        255, 7, 26, 239),
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(20)),
+                                                borderWidth: 1.5,
+                                                onPressed: (int subIndex) {
+                                                  setState(() {
+                                                    //bsckgroundskillchoices
+                                                    if (classSkillChoices
+                                                            .where((b) => b)
+                                                            .length <
+                                                        CLASSLIST[index]
+                                                            .numberOfSkillChoices) {
+                                                      classSkillChoices[
+                                                              subIndex] =
+                                                          !classSkillChoices[
+                                                              subIndex];
+                                                    } else {
+                                                      if (classSkillChoices[
+                                                          subIndex]) {
+                                                        classSkillChoices[
+                                                            subIndex] = false;
+                                                      }
+                                                    }
+                                                  });
+                                                },
+                                                isSelected: classSkillChoices,
+                                                children: CLASSLIST[index]
+                                                    .optionsForSkillProficiencies
+                                                    .map((x) => Text(" $x "))
+                                                    .toList()),
+                                          ]);
+
+                                          //run first level functions := proficiencies, equipment health bonus
+                                        } else {
+                                          if (averageHitPoints ?? false) {
+                                            maxHealth += ((CLASSLIST[index]
+                                                        .maxHitDiceRoll) /
+                                                    2)
+                                                .ceil();
+                                          } else {
+                                            maxHealth += 1 +
+                                                (Random().nextDouble() *
+                                                        CLASSLIST[index]
+                                                            .maxHitDiceRoll)
+                                                    .floor();
+                                          }
+                                        }
+
                                         //check if it's a spellcaster
                                         if (CLASSLIST[index].classType !=
                                             "Martial") {
@@ -5781,6 +5846,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                     builder: (context) => PdfPreviewPage(
                         invoice: Character(
                             playerName: playerName,
+                            skillsSelected: selectedSkillsQ,
+                            subrace: subraceExample,
+                            mainToolProficiencies: toolProficiencies,
                             savingThrowProficiencies:
                                 savingThrowProficiencies ?? [],
                             inspired: inspired,

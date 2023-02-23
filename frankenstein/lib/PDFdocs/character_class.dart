@@ -1,4 +1,5 @@
 import "package:frankenstein/globals.dart";
+import "dart:collection";
 
 class AbilityScore {
   int value;
@@ -14,6 +15,8 @@ class Character {
   final String playerName;
   final List<int> classLevels;
   final bool inspired;
+  final List<String> mainToolProficiencies;
+  final Queue<int>? skillsSelected;
 
   final List<String> savingThrowProficiencies;
   final List<String> skillProficiencies;
@@ -22,6 +25,7 @@ class Character {
   final int characterExperience;
 
   final Race race;
+  final Subrace? subrace;
   //Races
   final List<int> raceAbilityScoreIncreases;
   //Background
@@ -44,7 +48,10 @@ class Character {
 
   factory Character.fromJson(Map<String, dynamic> data) {
     final name = data["Name"] as String;
-
+    final subrace = data["Subrace"] as Subrace;
+    final skillsSelected = data["SkillsSelected"] as Queue<int>?;
+    final mainToolProficiencies =
+        data["MainToolProficiencies"].cast<String>() as List<String>;
     final savingThrowProficiencies =
         data["SavingThrowProficiencies"].cast<String>() as List<String>;
     final skillProficiencies =
@@ -76,7 +83,10 @@ class Character {
     final inspired = data["Inspired"] as bool;
 
     return Character(
+      skillsSelected: skillsSelected,
+      subrace: subrace,
       savingThrowProficiencies: savingThrowProficiencies,
+      mainToolProficiencies: mainToolProficiencies,
       inspired: inspired,
       skillProficiencies: skillProficiencies,
       maxHealth: maxHealth,
@@ -103,6 +113,8 @@ class Character {
   }
   Character(
       {required this.name,
+      required this.skillsSelected,
+      required this.mainToolProficiencies,
       required this.savingThrowProficiencies,
       required this.skillProficiencies,
       required this.inspired,
@@ -124,5 +136,6 @@ class Character {
       required this.wisdom,
       required this.charisma,
       required this.featsASIScoreIncreases,
-      required this.currency});
+      required this.currency,
+      this.subrace});
 }

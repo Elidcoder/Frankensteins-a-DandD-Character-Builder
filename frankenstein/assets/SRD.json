@@ -100,7 +100,8 @@
                         "Sourcebook": "Player's Handbook",
                         "Languages": ["Common", "Extra"],
                         "Mystery1S": 0,
-                        "Mystery2S": 2
+                        "Mystery2S": 2,
+                        "ToolProficiencies":["Dragon chess"]
 
                 }, {
                         "Name": "Tiefling",
@@ -154,8 +155,9 @@
                                 "Flaw": ["I judge others harshly, and myself even more severely.","I put too much trust in those who wield power within my temple’s hierarchy.","My piety sometimes leads me to blindly trust those that profess faith in my god.","I am inflexible in my thinking.","I am suspicious of strangers and expect the worst of them.","Once I pick a goal, I become obsessed with it to the detriment of everything else in my life."],
 
                                 "Features": ["Shelter of the Faithful: As an acolyte, you command the respect of those who share your faith, and you can perform the religious ceremonies of your deity. You and your adventuring companions can expect to receive free healing and care at a temple, shrine, or other established presence of your faith, though you must provide any material components needed for spells. Those who share your religion will support you (but only you) at a modest lifestyle.You might also have ties to a specific temple dedicated to your chosen deity or pantheon, and you have a residence there. This could be the temple where you used to serve, if you remain on good terms with it, or a temple where you have found a new home. While near your temple, you can call upon the priests for assistance, provided the assistance you ask for is not hazardous and you remain in good standing with your temple."],
-                                "InitialSkillProficiencies": ["Insight","Religion"],
+                                "InitialProficiencies": ["Insight","Religion"],
                                 "NumberOfLanguageChoices": 2,
+                                "ToolProficiencies":["Regular chess"],
                                 "Equipment": ["A holy symbol (a gift to you when you entered the priesthood)"," a prayer book or prayer wheel"," 5 sticks of incense"," vestments"," a set of common clothes"," and a pouch containing 15 gp"]
                                 
                         },
@@ -183,6 +185,8 @@
                         "SavingThrowProficiencies":["Strength","Constitution"],
                         "GainedProficiencies": ["Simple Weapons", "Martial Weapons", "Shields","Armour"],
                         "NumberOfSkillChoices":2,
+                        "ToolProficiencies":["Medival chess"],
+                        
                         "EquipmentOptions":[[["Dagger"],["Arrow"]]],
                         "OptionsForSkillProficiencies":["Acrobatics", "Animal Handling", "Athletics", "History", "Insight", "Intimidation", "Perception", "Survival"],
                         "GainAtEachLevel":[
