@@ -15,6 +15,21 @@ String formatNumber(int number) {
 //color: const PdfColor.fromInt(0xffEBA834),
 Future<Uint8List> makePdf(Character userCharacter) async {
   final pdf = Document();
+
+  final classSkills = (userCharacter.classList.isNotEmpty)
+      ? CLASSLIST
+          .firstWhere((element) =>
+              userCharacter.classList.isNotEmpty &&
+              element.name == userCharacter.classList.first)
+          .optionsForSkillProficiencies
+          .where((element) => userCharacter.classSkillsSelected[CLASSLIST
+              .firstWhere((element) =>
+                  userCharacter.classList.isNotEmpty &&
+                  element.name == userCharacter.classList.first)
+              .optionsForSkillProficiencies
+              .indexOf(element)])
+          .toList()
+      : [];
   final List<String> skillsSelected = [
     for (var x in userCharacter.skillsSelected?.toList() ?? [])
       userCharacter.background.optionalSkillProficiencies?[x] ??
@@ -1048,6 +1063,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Acrobatics"))
@@ -1066,6 +1082,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Acrobatics"))
@@ -1105,6 +1122,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Animal Handling"))
@@ -1123,6 +1141,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Animal Handling"))
@@ -1163,6 +1182,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Arcana"))
@@ -1181,6 +1201,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Arcana"))
@@ -1220,6 +1241,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Athletics"))
@@ -1238,6 +1260,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Athletics"))
@@ -1277,6 +1300,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Deception"))
@@ -1295,6 +1319,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Deception"))
@@ -1334,6 +1359,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "History"))
@@ -1352,6 +1378,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "History"))
@@ -1391,6 +1418,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Insight"))
@@ -1409,6 +1437,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Insight"))
@@ -1448,6 +1477,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Intimidation"))
@@ -1466,6 +1496,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Intimidation"))
@@ -1506,6 +1537,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Investigation"))
@@ -1524,6 +1556,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Investigation"))
@@ -1564,6 +1597,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Medicine"))
@@ -1582,6 +1616,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Medicine"))
@@ -1621,6 +1656,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Nature"))
@@ -1639,6 +1675,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Nature"))
@@ -1678,6 +1715,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Perception"))
@@ -1696,6 +1734,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Perception"))
@@ -1735,6 +1774,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Performance"))
@@ -1753,6 +1793,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Performance"))
@@ -1793,6 +1834,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Persuasion"))
@@ -1811,6 +1853,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Persuasion"))
@@ -1850,6 +1893,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Religion"))
@@ -1868,6 +1912,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Religion"))
@@ -1907,6 +1952,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Sleight of Hand"))
@@ -1925,6 +1971,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Sleight of Hand"))
@@ -1965,6 +2012,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Stealth"))
@@ -1983,6 +2031,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Stealth"))
@@ -2022,6 +2071,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Survival"))
@@ -2040,6 +2090,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .background
                                                                       .initialProficiencies ??
                                                                   [],
+                                                              ...classSkills,
                                                               ...skillsSelected
                                                             ].contains(
                                                                     "Survival"))
@@ -2124,24 +2175,35 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                 //Bottom box
                                 Container(
                                     alignment: Alignment.center,
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 2, 0, 0),
                                     height: 132.0,
                                     decoration: BoxDecoration(
                                         border: Border.all(width: 0.8)),
                                     child: Column(children: [
-                                      Text(
-                                          "Other proficiencies and languages:"),
-                                      Text([
-                                        ...userCharacter
-                                                .background.toolProficiencies ??
-                                            [],
-                                        ...userCharacter
-                                                .race.toolProficiencies ??
-                                            [],
-                                        ...userCharacter
-                                                .subrace?.toolProficiencies ??
-                                            [],
-                                        ...userCharacter.mainToolProficiencies
-                                      ].join(","))
+                                      Text("Other proficiencies & languages:",
+                                          style:
+                                              const TextStyle(fontSize: 10.5)),
+                                      Container(
+                                          height: 117,
+                                          padding: const EdgeInsets.fromLTRB(
+                                              5, 0, 5, 0),
+                                          child: Text(
+                                              "Other proficiencies - ${[
+                                                ...userCharacter.background
+                                                        .toolProficiencies ??
+                                                    [],
+                                                ...userCharacter.race
+                                                        .toolProficiencies ??
+                                                    [],
+                                                ...userCharacter.subrace
+                                                        ?.toolProficiencies ??
+                                                    [],
+                                                ...userCharacter
+                                                    .mainToolProficiencies
+                                              ].join(", ")}\nLanguages Known - ${userCharacter.languagesKnown.join(", ")}",
+                                              style:
+                                                  const TextStyle(fontSize: 8)))
                                     ]))
                               ])),
                           //Column two
@@ -2471,11 +2533,22 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                     ])),
                                 SizedBox(height: 8),
                                 Container(
-                                  alignment: Alignment.center,
-                                  height: 375.5,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(width: 0.8)),
-                                ),
+                                    alignment: Alignment.center,
+                                    height: 375.5,
+                                    padding:
+                                        const EdgeInsets.fromLTRB(3, 2, 3, 0),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(width: 0.8)),
+                                    child: Column(children: [
+                                      Text("Features & traits:"),
+                                      Container(
+                                          height: 359,
+                                          child: Text(
+                                              userCharacter.featuresAndTraits
+                                                  .join(",\n"),
+                                              style:
+                                                  const TextStyle(fontSize: 6)))
+                                    ])),
                               ])),
                         ])),
                 //Text(userCharacter.name)

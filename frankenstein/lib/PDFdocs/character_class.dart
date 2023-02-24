@@ -10,6 +10,9 @@ class AbilityScore {
 
 class Character {
   //general
+  final List<String> languagesKnown;
+  final List<String> featuresAndTraits;
+  final List<String> classList;
   final Map<String, int> currency;
   final String name;
   final String playerName;
@@ -23,6 +26,7 @@ class Character {
   final int maxHealth;
 
   final int characterExperience;
+  final List<bool> classSkillsSelected;
 
   final Race race;
   final Subrace? subrace;
@@ -47,7 +51,12 @@ class Character {
   final List<int> featsASIScoreIncreases;
 
   factory Character.fromJson(Map<String, dynamic> data) {
+    final featuresAndTraits =
+        data["FeaturesAndTraits"].cast<String>() as List<String>;
+    final classList = data["ClassList"].cast<String>() as List<String>;
     final name = data["Name"] as String;
+    final classSkillsSelected =
+        data["ClassSkillsSelected"].cast<bool>() as List<bool>;
     final subrace = data["Subrace"] as Subrace;
     final skillsSelected = data["SkillsSelected"] as Queue<int>?;
     final mainToolProficiencies =
@@ -81,10 +90,16 @@ class Character {
     final featsASIScoreIncreases =
         data["FeatsASIScoreIncreases"].cast<int>() as List<int>;
     final inspired = data["Inspired"] as bool;
+    final languagesKnown =
+        data["LanguagesKnown"].cast<String>() as List<String>;
 
     return Character(
+      languagesKnown: languagesKnown,
+      featuresAndTraits: featuresAndTraits,
       skillsSelected: skillsSelected,
       subrace: subrace,
+      classSkillsSelected: classSkillsSelected,
+      classList: classList,
       savingThrowProficiencies: savingThrowProficiencies,
       mainToolProficiencies: mainToolProficiencies,
       inspired: inspired,
@@ -113,6 +128,9 @@ class Character {
   }
   Character(
       {required this.name,
+      required this.featuresAndTraits,
+      required this.languagesKnown,
+      required this.classList,
       required this.skillsSelected,
       required this.mainToolProficiencies,
       required this.savingThrowProficiencies,
@@ -131,6 +149,7 @@ class Character {
       required this.raceAbilityScoreIncreases,
       required this.strength,
       required this.dexterity,
+      required this.classSkillsSelected,
       required this.constitution,
       required this.intelligence,
       required this.wisdom,

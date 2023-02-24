@@ -15,6 +15,8 @@ isAllowedContend returns allowed content
 
 small:
 ASI screen should show modifiers produced
+using classlist instead
+starting with languages as well as being able to choose some
 magic items and notes to classes
 ensure that classes actually use a list of equipment
 class starting wealth

@@ -974,6 +974,8 @@ class MainCreateCharacter extends State<CreateACharacter>
   List<String> skillProficiencies = [];
   int maxHealth = 0;
 
+  List<String> classList = [];
+
   List<Widget> widgetsInPlay = []; //added to each time a class is selected
   List<int> levelsPerClass = List.filled(CLASSLIST.length, 0);
   Map<String, List<dynamic>> selections = {};
@@ -987,6 +989,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   String backgroundIdeal = BACKGROUNDLIST.first.ideal.first;
   String backgroundBond = BACKGROUNDLIST.first.bond.first;
   String backgroundFlaw = BACKGROUNDLIST.first.flaw.first;
+  List<String> languagesKnown = ["Common"];
   //creates an array where it auto selects the first (n) possible skills initially
   List<bool> backgroundSkillChoices =
       List.filled(BACKGROUNDLIST.first.numberOfSkillChoices ?? 0, true) +
@@ -2197,6 +2200,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                           levelsPerClass.reduce(
                                               (value, element) =>
                                                   value + element)) {
+                                        classList.add(CLASSLIST[index].name);
                                         if ((CLASSLIST[index]
                                                 .gainAtEachLevel[
                                                     levelsPerClass[index]]
@@ -2233,19 +2237,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     allSelected: allSelected,
                                                   )));
                                             } else {
-                                              leveGainParser(
-                                                  x,
-                                                  ACList,
-                                                  speedBonusMap,
-                                                  intelligence,
-                                                  wisdom,
-                                                  strength,
-                                                  dexterity,
-                                                  charisma,
-                                                  constitution,
-                                                  currencyStored,
-                                                  CLASSLIST[index],
-                                                  featuresAndTraits);
+                                              levelGainParser(
+                                                  x, CLASSLIST[index]);
                                             }
                                           }
                                         }
@@ -2758,7 +2751,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                           for (var x in LANGUAGELIST)
                             MultiSelectCard(value: x, label: x)
                         ],
-                        onChange: (allSelectedItems, selectedItem) {}),
+                        onChange: (allSelectedItems, selectedItem) {
+                          if (allSelectedItems.contains(selectedItem)) {
+                            languagesKnown.add(selectedItem as String);
+                          } else {
+                            languagesKnown.remove(selectedItem as String);
+                          }
+                        }),
                 ],
               )),
           //ability scores
@@ -5846,11 +5845,15 @@ class MainCreateCharacter extends State<CreateACharacter>
                     builder: (context) => PdfPreviewPage(
                         invoice: Character(
                             playerName: playerName,
+                            classList: classList,
+                            classSkillsSelected: classSkillChoices,
                             skillsSelected: selectedSkillsQ,
                             subrace: subraceExample,
                             mainToolProficiencies: toolProficiencies,
                             savingThrowProficiencies:
                                 savingThrowProficiencies ?? [],
+                            languagesKnown: languagesKnown,
+                            featuresAndTraits: featuresAndTraits,
                             inspired: inspired,
                             skillProficiencies: skillProficiencies,
                             maxHealth: maxHealth,
@@ -5906,6 +5909,95 @@ class MainCreateCharacter extends State<CreateACharacter>
         ]),
       ),
     );
+  }
+
+  Widget? levelGainParser(List<dynamic> x, Class selectedClass) {
+    //Levelup(class?)
+    if (x[0] == "Level") {
+      // ("Level", "numb")
+      return Text(
+        "${selectedClass.name} Level ${x[1]} choice(s):",
+        style: const TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.w700,
+            color: Color.fromARGB(255, 0, 168, 252)),
+      );
+    } else if (x[0] == "Nothing") {
+      // ("Nothing", "numb")
+      return Text(
+        "No choices needed for ${selectedClass.name} level ${x[1]}",
+        style: const TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.w700,
+            color: Color.fromARGB(255, 0, 168, 252)),
+      );
+    } else if (x[0] == "Bonus") {
+      // ("Bonus","String description")
+      featuresAndTraits.add(x[1] +": "+ x[2]);
+    } else if (x[0] == "AC") {
+      // ("AC","intelligence + 2", "RQUIREMENT")
+      ACList.add([x[1], x[2]]);
+    } /* else if (x[0] == "ACModifier") {
+    //("ACModifier", "2/intelligence", "armour"(requirement))
+    SPEEDLIST.append([x[1], x[2]]);
+  }*/
+    else if (x[0] == "Speed") {
+      //note base speed is given by race
+      //("speed", (w/s/c/f/h), numb/expression")
+      speedBonusMap[x[1]]?.add(x[2]);
+    } else if (x[0] == "AttributeBoost") {
+      if (x[1] == "Intelligence") {
+        intelligence.value += int.parse(x[2]);
+      } else if (x[1] == "Strength") {
+        strength.value += int.parse(x[2]);
+      } else if (x[1] == "Constitution") {
+        constitution.value += int.parse(x[2]);
+      } else if (x[1] == "Dexterity") {
+        dexterity.value += int.parse(x[2]);
+      } else if (x[1] == "Wisdom") {
+        wisdom.value += int.parse(x[2]);
+      } else if (x[1] == "charisma") {
+        charisma.value += int.parse(x[2]);
+      }
+      //do this later
+    } /*else if (x[0] == "Equipment") {
+    //note base speed is given by race
+    //("speed", "10", "(w/s/c/f)")
+    SPEEDLIST.append([x[1], x[2]]);
+  }*/
+    else if (x[0] == "Money") {
+      //("Money", "Copper Pieces", "10")
+      currencyStored[x[1]] = currencyStored[x[1]]! + int.parse(x[2]);
+    } //deal with these later
+    /*else if (x[0] == "Spell") {
+    ///
+  } else if (x[0] == "ASI") {
+    ("ASI")
+      ASINUMB ++;
+  } else if (x[0] == "Feat") {
+    ("Feat","Any/ featname")
+    if (x[1]== "Any"){
+      FEATNUMB ++;
+    }
+    else{
+      FEATLIST.add(correct feat)
+    }
+      
+  }*/
+    /*else if (x[0] == "Choice") {
+    List<Widget> temporaryWidgetList = [];
+    //("choice", [option].....)
+    /*for (List<dynamic> string in x.sublist(2)) {
+      temporaryWidgetList.add(OutlinedButton(
+        child: Text(string[1]),
+        onPressed: () {
+          // When the button is pressed, add the string to the outputStrings list
+          setState(() => outputStrings.add(string));
+        },
+      ));
+    }*/
+    return Row(children: temporaryWidgetList);
+  }*/
   }
 
   int levelZeroGetSpellsKnown(int index) {
