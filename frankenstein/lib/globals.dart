@@ -1,5 +1,5 @@
-import 'dart:convert';
-import 'dart:io';
+import "dart:convert";
+import "dart:io";
 
 List<List<List<dynamic>>> parseJsonToMultiList(List jsonData) {
   List<List<List<dynamic>>> multiList = [];
@@ -21,19 +21,21 @@ List<List<List<dynamic>>> parseJsonToMultiList(List jsonData) {
 
 class Proficiency {
   final List<String> proficiencyTree;
-  //final String sourceBook;
-  factory Proficiency.fromJson(Map<String, dynamic> data) {
-    final proficiencyTree =
-        data['ProficiencyTree'].cast<String>() as List<String>;
 
-    return Proficiency(proficiencyTree: proficiencyTree
-        //sourceBook: sourceBook,
-        );
-  }
   Proficiency({
     required this.proficiencyTree,
-    //required this.sourcebook,});
   });
+
+  factory Proficiency.fromJson(Map<String, dynamic> data) {
+    final proficiencyTree = data["ProficiencyTree"].cast<String>();
+    return Proficiency(proficiencyTree: proficiencyTree);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "ProficiencyTree": [...proficiencyTree],
+    };
+  }
 }
 
 class Item {
@@ -50,6 +52,13 @@ class Item {
       required this.weight,
       required this.stackable,
       this.description});
+  Map<String, dynamic> toJson() => {
+        "Name": name,
+        "Cost": cost,
+        "Weight": weight,
+        "Stackable": stackable,
+        "Description": description,
+      };
 
   factory Item.fromJson(Map<String, dynamic> data) {
     return Item(
@@ -77,6 +86,15 @@ class Armour extends Item {
       required this.strengthRequirement,
       required this.armourType})
       : super(name: name, cost: cost, stackable: stackable, weight: weight);
+  @override
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = super.toJson();
+    data["ArmourFormula"] = armourFormula;
+    data["ImposeStealthDisadvantage"] = imposeStealthDisadvantage;
+    data["StrengthRequirement"] = strengthRequirement;
+    data["armourType"] = armourType;
+    return data;
+  }
 
   factory Armour.fromJson(Map<String, dynamic> data) {
     return Armour(
@@ -103,6 +121,13 @@ class Weapon extends Item {
       required this.damageDiceAndType,
       required this.properties})
       : super(name: name, cost: cost, stackable: stackable, weight: weight);
+  @override
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = super.toJson();
+    data["DamageDiceAndType"] = damageDiceAndType;
+    data["Properties"] = properties;
+    return data;
+  }
 
   factory Weapon.fromJson(Map<String, dynamic> data) {
     return Weapon(
@@ -121,14 +146,23 @@ class Feat {
   final String sourceBook;
   final int numberOfTimesTakeable;
   final String description;
+  Map<String, dynamic> toJson() {
+    return {
+      "Name": name,
+      "Abilities": abilites,
+      "SourceBook": sourceBook,
+      "NumberOfTimesTakeable": numberOfTimesTakeable,
+      "Description": description
+    };
+  }
 
   factory Feat.fromJson(Map<String, dynamic> data) {
     return Feat(
-        name: data['Name'],
-        sourceBook: data['SourceBook'],
-        abilites: data['Abilities'].cast<List<String>>(),
-        description: data['Description'],
-        numberOfTimesTakeable: data['NumberOfTimesTakeable']
+        name: data["Name"],
+        sourceBook: data["SourceBook"],
+        abilites: data["Abilities"].cast<List<String>>(),
+        description: data["Description"],
+        numberOfTimesTakeable: data["NumberOfTimesTakeable"]
         //sourceBook: sourceBook,
         );
   }
@@ -141,10 +175,10 @@ class Feat {
   });
 }
 
-///file loaded as a string 'jsonString'
+///file loaded as a string "jsonString"
 String jsonString = File("assets/SRD.json").readAsStringSync();
-//String data =  rootBundle.loadString('assets/$path.json')
-///file decoded into 'jsonmap'
+//String data =  rootBundle.loadString("assets/$path.json")
+///file decoded into "jsonmap"
 final dynamic jsonmap = decoder.convert(jsonString);
 // ignore: non_constant_identifier_names
 List<String> LANGUAGELIST = jsonmap["Languages"].cast<String>() as List<String>;
@@ -165,15 +199,32 @@ class Subrace {
   final int mystery1S;
   final int mystery2S;
   final List<String>? toolProficiencies;
+  Map<String, dynamic> toJson() => {
+        "Name": name,
+        "AbilityScoreMap": subRaceScoreIncrease,
+        "Languages": languages ?? [],
+        "Darkvision": darkVision,
+        "Sourcebook": sourceBook,
+        "Resistances": resistances ?? [],
+        "Abilities": abilities ?? [],
+        "GainedProficiencies": proficienciesGained
+                ?.map((proficiency) => proficiency.toString())
+                .toList() ??
+            [],
+        "ToolProficiencies": toolProficiencies ?? [],
+        "WalkingSpeed": walkingSpeed,
+        "Mystery1S": mystery1S,
+        "Mystery2S": mystery2S,
+      };
   factory Subrace.fromJson(Map<String, dynamic> data) {
-    final name = data['Name'] as String;
+    final name = data["Name"] as String;
     final subRaceScoreIncrease =
-        data['AbilityScoreMap'].cast<int>() as List<int>;
-    final languages = data['Languages']?.cast<String>() as List<String>?;
-    final darkVision = data['Darkvision'] as int?;
+        data["AbilityScoreMap"].cast<int>() as List<int>;
+    final languages = data["Languages"]?.cast<String>() as List<String>?;
+    final darkVision = data["Darkvision"] as int?;
     final sourceBook = data["Sourcebook"] as String;
     final resistances = data["Resistances"]?.cast<String>() as List<String>?;
-    final abilities = data['Abilities']?.cast<String>() as List<String>?;
+    final abilities = data["Abilities"]?.cast<String>() as List<String>?;
     final proficienciesGainedNames =
         data["GainedProficiencies"]?.cast<String>() as List<String>?;
     final proficienciesGained = (proficienciesGainedNames?.map((thisprof) =>
@@ -181,7 +232,7 @@ class Subrace {
                 (listprof) => listprof.proficiencyTree.last == thisprof))))
         ?.toList();
     final toolProficiencies =
-        data['ToolProficiencies']?.cast<String>() as List<String>?;
+        data["ToolProficiencies"]?.cast<String>() as List<String>?;
     final walkingSpeed = data["WalkingSpeed"];
     final mystery1S = data["Mystery1S"] as int;
     final mystery2S = data["Mystery2S"] as int;
@@ -229,18 +280,35 @@ class Race {
   final int walkingSpeed;
   final int mystery1S;
   final int mystery2S;
+  Map<String, dynamic> toJson() => {
+        "Name": name,
+        "AbilityScoreMap": raceScoreIncrease,
+        "Languages": languages,
+        "Darkvision": darkVision,
+        "Sourcebook": sourceBook,
+        "Subraces": subRaces?.map((subrace) => subrace.toJson()).toList(),
+        "Resistances": resistances,
+        "Abilities": abilities,
+        "GainedProficiencies": proficienciesGained
+            ?.map((prof) => prof.proficiencyTree.last)
+            .toList(),
+        "ToolProficiencies": toolProficiencies,
+        "WalkingSpeed": walkingSpeed,
+        "Mystery1S": mystery1S,
+        "Mystery2S": mystery2S,
+      };
   factory Race.fromJson(Map<String, dynamic> data) {
-    final name = data['Name'] as String;
-    final raceScoreIncrease = data['AbilityScoreMap'].cast<int>() as List<int>;
-    final languages = data['Languages'].cast<String>() as List<String>?;
-    final darkVision = data['Darkvision'] as int?;
+    final name = data["Name"] as String;
+    final raceScoreIncrease = data["AbilityScoreMap"].cast<int>() as List<int>;
+    final languages = data["Languages"].cast<String>() as List<String>?;
+    final darkVision = data["Darkvision"] as int?;
     final sourceBook = data["Sourcebook"] as String?;
-    final subRaceData = data['Subraces'] as List<dynamic>?;
+    final subRaceData = data["Subraces"] as List<dynamic>?;
     final subRaces = subRaceData
         ?.map((subRaceData) => Subrace.fromJson(subRaceData))
         .toList();
     final resistances = data["Resistances"]?.cast<String>() as List<String>?;
-    final abilities = data['Abilities']?.cast<String>() as List<String>?;
+    final abilities = data["Abilities"]?.cast<String>() as List<String>?;
     final proficienciesGainedNames =
         data["GainedProficiencies"]?.cast<String>() as List<String>?;
     final proficienciesGained = (proficienciesGainedNames?.map((thisprof) =>
@@ -248,7 +316,7 @@ class Race {
                 (listprof) => listprof.proficiencyTree.last == thisprof))))
         ?.toList();
     final toolProficiencies =
-        data['ToolProficiencies']?.cast<String>() as List<String>?;
+        data["ToolProficiencies"]?.cast<String>() as List<String>?;
     final walkingSpeed = data["WalkingSpeed"];
     final mystery1S = data["Mystery1S"] as int;
     final mystery2S = data["Mystery2S"] as int;
@@ -309,15 +377,37 @@ class Class {
 
   final List<List<dynamic>> gainAtEachLevel; //replace string with something?
   final String sourceBook;
+  Map<String, dynamic> toJson() {
+    return {
+      "Name": name,
+      "MainOrSpellcastingAbility": mainOrSpellcastingAbility,
+      "ClassType": classType,
+      "MaxHitDiceRoll": maxHitDiceRoll,
+      "RoundDown": roundDown,
+      "NumberOfSkillChoices": numberOfSkillChoices,
+      "OptionsForSkillProficiencies": optionsForSkillProficiencies,
+      "SavingThrowProficiencies": savingThrowProficiencies,
+      "SpellsAndSpellSlots": spellsAndSpellSlots,
+      "Sourcebook": sourceBook,
+      "EquipmentOptions": equipmentOptions
+          .map((option) =>
+              option.map((innerList) => innerList.toList()).toList())
+          .toList(),
+      "GainedProficiencies": proficienciesGained,
+      "GainAtEachLevel": gainAtEachLevel,
+      "SpellsKnownFormula": spellsKnownFormula,
+      "SpellsKnownPerLevel": spellsKnownPerLevel,
+    };
+  }
 
   factory Class.fromJson(Map<String, dynamic> data) {
-    final name = data['Name'] as String;
+    final name = data["Name"] as String;
     final mainOrSpellcastingAbility =
         data["MainOrSpellcastingAbility"] as String;
-    final classType = data['ClassType'] as String;
-    final maxHitDiceRoll = data['MaxHitDiceRoll'] as int;
-    final roundDown = data['RoundDown'] as bool?;
-    final numberOfSkillChoices = data['NumberOfSkillChoices'] as int;
+    final classType = data["ClassType"] as String;
+    final maxHitDiceRoll = data["MaxHitDiceRoll"] as int;
+    final roundDown = data["RoundDown"] as bool?;
+    final numberOfSkillChoices = data["NumberOfSkillChoices"] as int;
     final sourceBook = data["Sourcebook"] as String;
 
     final spellsAndSpellSlots =
@@ -328,7 +418,7 @@ class Class {
         data["SavingThrowProficiencies"].cast<String>() as List<String>;
 
     final equipmentOptions = parseJsonToMultiList(data[
-            'EquipmentOptions']) /*
+            "EquipmentOptions"]) /*
         .where((outerList) => outerList is List)
         .map((outerList) => outerList
             .where((innerList) => innerList is List)
@@ -350,7 +440,7 @@ class Class {
         spellsAndSpellSlots: spellsAndSpellSlots,
         sourceBook: sourceBook,
         equipmentOptions: equipmentOptions,
-        gainAtEachLevel: (data['GainAtEachLevel'].cast<List<dynamic>>()),
+        gainAtEachLevel: (data["GainAtEachLevel"].cast<List<dynamic>>()),
         proficienciesGained: proficienciesGained,
         spellsKnownFormula: data["SpellsKnownFormula"],
         spellsKnownPerLevel: data["SpellsKnownPerLevel"]?.cast<int>());
@@ -382,14 +472,25 @@ class Subclass {
   final List<List<List<String>>>
       gainAtEachLevel; //replace string with something?
   final String sourceBook;
+  Map<String, dynamic> toJson() {
+    return {
+      "Name": name,
+      "ClassType": classType,
+      "RoundDown": roundDown,
+      "MainOrSpellcastingAbility": mainOrSpellcastingAbility,
+      "GainAtEachLevel": gainAtEachLevel,
+      "Sourcebook": sourceBook,
+    };
+  }
+
   factory Subclass.fromJson(Map<String, dynamic> data) {
-    final name = data['Name'] as String;
+    final name = data["Name"] as String;
     final mainOrSpellcastingAbility =
         data["MainOrSpellcastingAbility"] as String;
-    final classType = data['ClassType'] as String;
-    final roundDown = data['RoundDown'] as bool?;
+    final classType = data["ClassType"] as String;
+    final roundDown = data["RoundDown"] as bool?;
     final sourceBook = data["Sourcebook"] as String;
-    final gainAtEachLevel = data['GainAtEachLevel'].cast<List<List<String>>>()
+    final gainAtEachLevel = data["GainAtEachLevel"].cast<List<List<String>>>()
         as List<List<List<String>>>;
     return Subclass(
         classType: classType,
@@ -419,17 +520,31 @@ class Spell {
   final String? material;
   final List<dynamic> castingTime;
   final List<String> availableTo;
+  Map<String, dynamic> toJson() {
+    return {
+      "Name": name,
+      "Effect": effect,
+      "SpellSchool": spellSchool,
+      "Level": level,
+      "Verbal": verbal,
+      "Somatic": somatic,
+      "Material": material,
+      "CastingTime": castingTime,
+      "AvailableTo": availableTo,
+    };
+  }
+
   factory Spell.fromJson(Map<String, dynamic> data) {
     // note the explicit cast to String
     // this is required if robust lint rules are enabled
     //COULD GO THROUGH EVERY DATA[SPELL[X,Y,Z*]] TO ALLOW LESS FILES TO BE ADDED WITH CONTENT
-    final level = data['Level'] as int?;
-    final verbal = data['Verbal'] as bool?;
-    final somatic = data['Somatic'] as bool?;
-    final material = data['Material'] as String?;
+    final level = data["Level"] as int?;
+    final verbal = data["Verbal"] as bool?;
+    final somatic = data["Somatic"] as bool?;
+    final material = data["Material"] as String?;
     return Spell(
-        name: data['Name'],
-        effect: data['Effect'],
+        name: data["Name"],
+        effect: data["Effect"],
         level: level ?? 0,
         verbal: verbal ?? false,
         somatic: somatic ?? false,
@@ -468,24 +583,39 @@ class Background {
   final List<String> flaw;
   //make classes for every equipment type
   final List<String>? equipment;
+  Map<String, dynamic> toJson() => {
+        "Name": name,
+        "NumberOfSkillChoices": numberOfSkillChoices,
+        "Sourcebook": sourceBook,
+        "NumberOfLanguageChoices": numberOfLanguageChoices,
+        "Features": features,
+        "InitialProficiencies": initialProficiencies,
+        "OptionalSkillProficiencies": optionalSkillProficiencies,
+        "ToolProficiencies": toolProficiencies,
+        "PersonalityTrait": personalityTrait,
+        "Ideal": ideal,
+        "Bond": bond,
+        "Flaw": flaw,
+        "Equipment": equipment,
+      };
   factory Background.fromJson(Map<String, dynamic> data) {
-    final name = data['Name'] as String;
+    final name = data["Name"] as String;
     final sourceBook = data["Sourcebook"] as String;
 
     final personalityTrait =
-        data['PersonalityTrait'].cast<String>() as List<String>;
-    final ideal = data['Ideal'].cast<String>() as List<String>;
-    final bond = data['Bond'].cast<String>() as List<String>;
-    final flaw = data['Flaw'].cast<String>() as List<String>;
+        data["PersonalityTrait"].cast<String>() as List<String>;
+    final ideal = data["Ideal"].cast<String>() as List<String>;
+    final bond = data["Bond"].cast<String>() as List<String>;
+    final flaw = data["Flaw"].cast<String>() as List<String>;
 
-    final numberOfSkillChoices = data['NumberOfSkillChoices'] as int?;
-    final numberOfLanguageChoices = data['NumberOfLanguageChoices'] as int?;
+    final numberOfSkillChoices = data["NumberOfSkillChoices"] as int?;
+    final numberOfLanguageChoices = data["NumberOfLanguageChoices"] as int?;
     //final sourceBook = data["Sourcebook"];
     final features = data["Features"]?.cast<String>() as List<String>?;
     final equipment = data["Equipment"]?.cast<String>() as List<String>?;
 
     final toolProficiencies =
-        data['ToolProficiencies']?.cast<String>() as List<String>?;
+        data["ToolProficiencies"]?.cast<String>() as List<String>?;
     final intialProficiencies =
         data["InitialProficiencies"]?.cast<String>() as List<String>?;
     /*final proficienciesGainedNames =
@@ -496,11 +626,12 @@ class Background {
                 (listprof) => listprof.proficiencyTree.last == thisprof))))
         ?.toList();*/
     final optionalSkillProficiencies =
-        data['OptionalSkillProficiencies']?.cast<String>() as List<String>?;
+        data["OptionalSkillProficiencies"]?.cast<String>() as List<String>?;
     return Background(
       name: name,
       personalityTrait: personalityTrait,
       ideal: ideal,
+      sourceBook: sourceBook,
       bond: bond,
       flaw: flaw,
       equipment: equipment,
@@ -509,26 +640,23 @@ class Background {
       numberOfSkillChoices: numberOfSkillChoices,
       toolProficiencies: toolProficiencies,
       initialProficiencies: intialProficiencies,
-      sourceBook: sourceBook,
       features: features,
     );
   }
-  Background({
-    required this.sourceBook,
-    required this.name,
-    required this.personalityTrait,
-    required this.ideal,
-    required this.bond,
-    required this.flaw,
-    this.numberOfSkillChoices,
-    this.numberOfLanguageChoices,
-    this.initialProficiencies,
-    this.features,
-    this.equipment,
-    this.optionalSkillProficiencies,
-    this.toolProficiencies,
-    //required this.sourcebook,});
-  });
+  Background(
+      {required this.sourceBook,
+      required this.name,
+      required this.personalityTrait,
+      required this.ideal,
+      required this.bond,
+      required this.flaw,
+      this.numberOfSkillChoices,
+      this.numberOfLanguageChoices,
+      this.initialProficiencies,
+      this.features,
+      this.equipment,
+      this.optionalSkillProficiencies,
+      this.toolProficiencies});
 }
 
 //WIP

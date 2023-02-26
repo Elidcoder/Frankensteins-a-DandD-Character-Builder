@@ -15,7 +15,9 @@ isAllowedContend returns allowed content
 
 small:
 ASI screen should show modifiers produced
-using classlist instead
+using classlist 
+hashnumbers for different characters vs just namechecks
+subrace is missing in something
 starting with languages as well as being able to choose some
 magic items and notes to classes
 ensure that classes actually use a list of equipment

@@ -6,6 +6,8 @@ import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:frankenstein/PDFdocs/character_class.dart';
 import 'package:frankenstein/PDFdocs/pdf_final_display.dart';
 import 'dart:math';
+import 'dart:convert';
+import 'dart:io';
 
 int abilityScoreCost(int x) {
   if (x > 12) {
@@ -937,7 +939,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   bool? averageHitPoints = false;
   bool? multiclassing = true;
   bool? milestoneLevelling = false;
-  bool? myCustomContent = false;
+  bool? useCustomContent = false;
   bool? optionalClassFeatures = false;
   bool? criticalRoleContent = false;
   bool? encumberanceRules = false;
@@ -1000,7 +1002,6 @@ class MainCreateCharacter extends State<CreateACharacter>
 
   Queue<int>? selectedSkillsQ = Queue<int>.from(
       Iterable.generate(BACKGROUNDLIST.first.numberOfSkillChoices ?? 0));
-
   //Ability score variables initialised
   AbilityScore strength = AbilityScore(name: "Strength", value: 8);
   AbilityScore dexterity = AbilityScore(name: "Dexterity", value: 8);
@@ -1025,9 +1026,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   List<String> weaponList = [];
   List<String> itemList = [];
   String? coinTypeSelected;
-  List<String> equipmentChosenInOptions = [];
-  Map<int, dynamic> equipmentSelected = {};
-  List<dynamic>? equipmentSelectedExperiment;
+  List<dynamic>? equipmentSelectedFromChoices;
   //{thing:numb,...}
   Map<String, int> stackableEquipmentSelected = {};
   List<dynamic> unstackableEquipmentSelected = [];
@@ -1821,10 +1820,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 const SizedBox(height: 15),
                                 CheckboxListTile(
                                   title: const Text('Use created content'),
-                                  value: myCustomContent,
+                                  value: useCustomContent,
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      myCustomContent = value;
+                                      useCustomContent = value;
                                     });
                                   },
                                   secondary: const Icon(Icons.insert_photo),
@@ -2253,7 +2252,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   .savingThrowProficiencies;
                                           maxHealth +=
                                               CLASSLIST[index].maxHitDiceRoll;
-                                          equipmentSelectedExperiment =
+                                          equipmentSelectedFromChoices =
                                               CLASSLIST[index].equipmentOptions;
                                           classSkillChoices = List.filled(
                                               CLASSLIST[index]
@@ -5286,7 +5285,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                             children: [
                               const Text(
                                   "Pick your equipment from options gained:"),
-                              if (equipmentSelectedExperiment != null)
+                              if (equipmentSelectedFromChoices != null)
                                 SizedBox(
                                   height: 300,
                                   width: 200,
@@ -5297,10 +5296,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                           [
                                         for (var i = 0;
                                             i <
-                                                equipmentSelectedExperiment!
+                                                equipmentSelectedFromChoices!
                                                     .length;
                                             i++)
-                                          (equipmentSelectedExperiment![i]
+                                          (equipmentSelectedFromChoices![i]
                                                       .length ==
                                                   2)
                                               ? Container(
@@ -5319,16 +5318,16 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                                 i][0][0];
                                                                 
                                                       }*/
-                                                            equipmentSelectedExperiment![
+                                                            equipmentSelectedFromChoices![
                                                                 i] = [
-                                                              equipmentSelectedExperiment![
+                                                              equipmentSelectedFromChoices![
                                                                   i][0]
                                                             ];
                                                           });
                                                         },
                                                         child: Text(
                                                           produceEquipmentOptionDescription(
-                                                              equipmentSelectedExperiment![
+                                                              equipmentSelectedFromChoices![
                                                                   i][0]),
                                                           style:
                                                               const TextStyle(
@@ -5370,9 +5369,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                                           .equipmentOptions[
                                                                       i][1][0];
                                                             }*/
-                                                            equipmentSelectedExperiment![
+                                                            equipmentSelectedFromChoices![
                                                                 i] = [
-                                                              equipmentSelectedExperiment![
+                                                              equipmentSelectedFromChoices![
                                                                   i][1]
                                                             ];
                                                           });
@@ -5380,7 +5379,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                         //String produceEquipmentOptionDescription(List<dynamic> optionDescription)
                                                         child: Text(
                                                           produceEquipmentOptionDescription(
-                                                              equipmentSelectedExperiment![
+                                                              equipmentSelectedFromChoices![
                                                                   i][1]),
                                                           style:
                                                               const TextStyle(
@@ -5414,7 +5413,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   ),
                                                 )
                                               : Text(produceEquipmentOptionDescription(
-                                                  equipmentSelectedExperiment![
+                                                  equipmentSelectedFromChoices![
                                                       i][0]))
 
                                         /*Container(
@@ -5506,7 +5505,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                 ),*/
                                         ,
                                         /*for (var choice
-                                            in equipmentSelectedExperiment
+                                            in equipmentSelectedFromChoices
                                                 .where((element) =>
                                                     element.length == 1)
                                                 .toList())
@@ -5832,12 +5831,181 @@ class MainCreateCharacter extends State<CreateACharacter>
           const Icon(Icons.directions_bike),
           //Finishing up
           Scaffold(
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => PdfPreviewPage(
-                        invoice: Character(
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => PdfPreviewPage(
+                          invoice: Character(
+                              levelsPerClass: levelsPerClass,
+                              selections: selections,
+                              allSelected: allSelected,
+                              classSubclassMapper: classSubclassMapper,
+                              ACList: ACList,
+                              ASIRemaining: ASIRemaining,
+                              allSpellsSelected: allSpellsSelected,
+                              allSpellsSelectedAsListsOfThings:
+                                  allSpellsSelectedAsListsOfThings,
+                              armourList: armourList,
+                              averageHitPoints: averageHitPoints,
+                              backgroundSkillChoices: backgroundSkillChoices,
+                              characterAge: characterAge,
+                              characterEyes: characterEyes,
+                              characterHair: characterHair,
+                              characterHeight: characterHeight,
+                              characterSkin: characterSkin,
+                              characterWeight: characterWeight,
+                              coinTypeSelected: coinTypeSelected,
+                              criticalRoleContent: criticalRoleContent,
+                              encumberanceRules: encumberanceRules,
+                              extraFeatAtLevel1: extraFeatAtLevel1,
+                              featsAllowed: featsAllowed,
+                              featsSelected: featsSelected,
+                              firearmsUsable: firearmsUsable,
+                              fullFeats: fullFeats,
+                              halfFeats: halfFeats,
+                              gender: characterGender,
+                              includeCoinsForWeight: includeCoinsForWeight,
+                              itemList: itemList,
+                              milestoneLevelling: milestoneLevelling,
+                              multiclassing: multiclassing,
+                              useCustomContent: useCustomContent,
+                              equipmentSelectedFromChoices:
+                                  equipmentSelectedFromChoices,
+                              optionalClassFeatures: optionalClassFeatures,
+                              optionalOnesStates: optionalOnesStates,
+                              optionalTwosStates: optionalTwosStates,
+                              pointsRemaining: pointsRemaining,
+                              speedBonuses: speedBonusMap,
+                              unearthedArcanaContent: unearthedArcanaContent,
+                              weaponList: weaponList,
+                              numberOfRemainingFeatOrASIs:
+                                  numberOfRemainingFeatOrASIs,
+                              playerName: playerName,
+                              classList: classList,
+                              stackableEquipmentSelected:
+                                  stackableEquipmentSelected,
+                              unstackableEquipmentSelected:
+                                  unstackableEquipmentSelected,
+                              classSkillsSelected: classSkillChoices,
+                              skillsSelected: selectedSkillsQ,
+                              subrace: subraceExample,
+                              mainToolProficiencies: toolProficiencies,
+                              savingThrowProficiencies:
+                                  savingThrowProficiencies ?? [],
+                              languagesKnown: languagesKnown,
+                              featuresAndTraits: featuresAndTraits,
+                              inspired: inspired,
+                              skillProficiencies: skillProficiencies,
+                              maxHealth: maxHealth,
+                              background: currentBackground,
+                              classLevels: levelsPerClass,
+                              race: initialRace,
+                              characterExperience: characterExperience,
+                              currency: currencyStored,
+                              backgroundPersonalityTrait:
+                                  backgroundPersonalityTrait,
+                              backgroundIdeal: backgroundIdeal,
+                              backgroundBond: backgroundBond,
+                              backgroundFlaw: backgroundFlaw,
+                              name: characterName,
+                              raceAbilityScoreIncreases: abilityScoreIncreases,
+                              featsASIScoreIncreases: ASIBonuses,
+                              strength: strength,
+                              dexterity: dexterity,
+                              constitution: constitution,
+                              intelligence: intelligence,
+                              wisdom: wisdom,
+                              charisma: charisma)),
+                    ),
+                  );
+                  // rootBundle.
+                },
+                child: const Icon(Icons.picture_as_pdf),
+              ),
+              /*body: ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Card(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "TestCharacter",
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),*/
+              body: Row(children: [
+                Expanded(
+                    child: OutlinedButton(
+                  child: const Text("Save Character"),
+                  onPressed: () {
+                    final String jsonContent =
+                        File("assets/Characters.json").readAsStringSync();
+                    final Map<String, dynamic> json = jsonDecode(jsonContent);
+
+                    final List<dynamic> characters = json["Characters"];
+                    final String curCharacterName = characterName;
+                    final int index = characters.indexWhere(
+                        (character) => character["Name"] == curCharacterName);
+
+                    if (index != -1) {
+                      characters.removeAt(index);
+                    }
+
+                    characters.add(Character(
+                            levelsPerClass: levelsPerClass,
+                            selections: selections,
+                            allSelected: allSelected,
+                            classSubclassMapper: classSubclassMapper,
+                            ACList: ACList,
+                            ASIRemaining: ASIRemaining,
+                            allSpellsSelected: allSpellsSelected,
+                            allSpellsSelectedAsListsOfThings:
+                                allSpellsSelectedAsListsOfThings,
+                            armourList: armourList,
+                            averageHitPoints: averageHitPoints,
+                            backgroundSkillChoices: backgroundSkillChoices,
+                            characterAge: characterAge,
+                            characterEyes: characterEyes,
+                            characterHair: characterHair,
+                            characterHeight: characterHeight,
+                            characterSkin: characterSkin,
+                            characterWeight: characterWeight,
+                            coinTypeSelected: coinTypeSelected,
+                            criticalRoleContent: criticalRoleContent,
+                            encumberanceRules: encumberanceRules,
+                            extraFeatAtLevel1: extraFeatAtLevel1,
+                            featsAllowed: featsAllowed,
+                            featsSelected: featsSelected,
+                            firearmsUsable: firearmsUsable,
+                            fullFeats: fullFeats,
+                            halfFeats: halfFeats,
+                            gender: characterGender,
+                            includeCoinsForWeight: includeCoinsForWeight,
+                            itemList: itemList,
+                            milestoneLevelling: milestoneLevelling,
+                            multiclassing: multiclassing,
+                            useCustomContent: useCustomContent,
+                            equipmentSelectedFromChoices:
+                                equipmentSelectedFromChoices,
+                            optionalClassFeatures: optionalClassFeatures,
+                            optionalOnesStates: optionalOnesStates,
+                            optionalTwosStates: optionalTwosStates,
+                            pointsRemaining: pointsRemaining,
+                            speedBonuses: speedBonusMap,
+                            unearthedArcanaContent: unearthedArcanaContent,
+                            weaponList: weaponList,
+                            numberOfRemainingFeatOrASIs:
+                                numberOfRemainingFeatOrASIs,
                             playerName: playerName,
                             classList: classList,
                             stackableEquipmentSelected:
@@ -5873,37 +6041,15 @@ class MainCreateCharacter extends State<CreateACharacter>
                             constitution: constitution,
                             intelligence: intelligence,
                             wisdom: wisdom,
-                            charisma: charisma)),
-                  ),
-                );
-                // rootBundle.
-              },
-              child: const Icon(Icons.picture_as_pdf),
-            ),
-            appBar: AppBar(
-              title: const Text("TestCharacter"),
-            ),
-            body: ListView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Card(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "TestCharacter",
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+                            charisma: charisma)
+                        .toJson());
+
+                    File("assets/Characters.json")
+                        .writeAsStringSync(jsonEncode(json));
+                  },
+                )),
+                const Expanded(flex: 2, child: Text("Preview"))
+              ])),
         ]),
       ),
     );

@@ -12,6 +12,10 @@ String formatNumber(int number) {
   return number >= 0 ? "+$number" : "$number";
 }
 
+int decodeBonus(List<String> x) {
+  return 0;
+}
+
 //color: const PdfColor.fromInt(0xffEBA834),
 Future<Uint8List> makePdf(Character userCharacter) async {
   final pdf = Document();
@@ -160,7 +164,8 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                               width: 140.0,
 
                               //child: Text(" ${userCharacter.name}")
-                              child: (["", " "].contains(userCharacter.name))
+                              child: (userCharacter.name.replaceAll(" ", "") ==
+                                      "")
                                   ? Text(
                                       "No data to display",
                                     )
@@ -229,7 +234,10 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                     width: 90.0,
                                     child: FittedBox(
                                       fit: BoxFit.scaleDown,
-                                      child: Text(userCharacter.race.name,
+                                      child: Text(
+                                          (userCharacter.subrace == null)
+                                              ? userCharacter.race.name
+                                              : "${userCharacter.race.name} (${userCharacter.subrace!.name})",
                                           style: const TextStyle(
                                               decoration:
                                                   TextDecoration.underline)),
@@ -302,8 +310,8 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                   width: 90.0,
                                   child: FittedBox(
                                     fit: BoxFit.scaleDown,
-                                    child: (["", " "]
-                                            .contains(userCharacter.playerName))
+                                    child: (userCharacter.playerName.replaceAll(" ", "") ==
+                                      "")
                                         ? Text(
                                             "No data to display",
                                           )
@@ -2224,20 +2232,136 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                     child: Column(children: [
                                       SizedBox(height: 9),
                                       Container(
-                                        alignment: Alignment.center,
-                                        height: 53.0,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                              topLeft: Radius.circular(6),
-                                              topRight: Radius.circular(6),
-                                              bottomLeft: Radius.circular(6),
-                                              bottomRight: Radius.circular(6),
-                                            ),
-                                            color: const PdfColor.fromInt(
-                                                0xffffffff),
-                                            border: Border.all(width: 0.8)),
-                                      ),
+                                          alignment: Alignment.center,
+                                          height: 47.0,
+                                          child: Row(children: [
+                                            Container(
+                                                alignment: Alignment.center,
+                                                width: 45,
+                                                height: 47,
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        5, 2, 5, 0),
+                                                decoration: BoxDecoration(
+                                                  color: const PdfColor.fromInt(
+                                                      0xffffffff),
+                                                  border:
+                                                      Border.all(width: 0.8),
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                    topLeft: Radius.circular(8),
+                                                    topRight:
+                                                        Radius.circular(8),
+                                                    bottomLeft:
+                                                        Radius.circular(24),
+                                                    bottomRight:
+                                                        Radius.circular(24),
+                                                  ),
+                                                ),
+                                                child: Column(children: [
+                                                  Text("Armour\nClass:",
+                                                      style: const TextStyle(
+                                                          fontSize: 9.5)),
+                                                  Container(
+                                                    width: 155,
+                                                    //child:
+                                                  ),
+                                                ])),
+                                            SizedBox(width: 5),
+                                            Container(
+                                                //alignment: Alignment.center,
+                                                height: 47,
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        1, 4, 1, 0),
+                                                width: 45,
+                                                decoration: BoxDecoration(
+                                                    color:
+                                                        const PdfColor.fromInt(
+                                                            0xffffffff),
+                                                    border:
+                                                        Border.all(width: 0.8),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            6.0)),
+                                                child: Column(children: [
+                                                  Text("Initiative:",
+                                                      style: const TextStyle(
+                                                          fontSize: 9.5)),
+                                                  SizedBox(height: 3),
+                                                  Container(
+                                                      padding: const EdgeInsets
+                                                          .fromLTRB(1, 0, 0, 0),
+                                                      child: ([
+                                                        ...userCharacter
+                                                            .skillProficiencies,
+                                                        ...userCharacter
+                                                                .background
+                                                                .initialProficiencies ??
+                                                            [],
+                                                        ...classSkills,
+                                                        ...skillsSelected
+                                                      ].contains("Initiative"))
+                                                          ? Text(
+                                                              "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          18))
+                                                          : Text(
+                                                              "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0)} ",
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          18)))
+                                                ])),
+                                            SizedBox(width: 5),
+                                            Container(
+                                                //alignment: Alignment.center,
+                                                height: 47,
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        1, 4, 1, 0),
+                                                width: 45,
+                                                decoration: BoxDecoration(
+                                                    color:
+                                                        const PdfColor.fromInt(
+                                                            0xffffffff),
+                                                    border:
+                                                        Border.all(width: 0.8),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            6.0)),
+                                                child: Column(children: [
+                                                  Text("Speed",
+                                                      style: const TextStyle(
+                                                          fontSize: 9.5)),
+                                                  SizedBox(height: 3),
+                                                  Container(
+                                                      padding: const EdgeInsets
+                                                          .fromLTRB(1, 0, 0, 0),
+                                                      child: (userCharacter
+                                                                  .subrace ==
+                                                              null)
+                                                          ? Text(
+                                                              "${userCharacter.race.walkingSpeed + decodeBonus(userCharacter.speedBonuses["Walking"] ?? [])}ft",
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          18))
+                                                          : Text(
+                                                              "${userCharacter.subrace!.walkingSpeed + decodeBonus(userCharacter.speedBonuses["Walking"] ?? [])}ft",
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          18))),
+                                                  Container(
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(1, 0, 0, 0),
+                                                    //child:
+                                                  ),
+                                                ]))
+                                          ])),
                                       SizedBox(height: 10),
                                       Container(
                                         alignment: Alignment.center,
@@ -2260,10 +2384,10 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                           Container(
                                               width: 155,
                                               child: Row(children: [
-                                                SizedBox(width: 32),
-                                                Text("Hit point maximim: ",
+                                                SizedBox(width: 26),
+                                                Text("Hit point maximum: ",
                                                     style: TextStyle(
-                                                        fontSize: 8,
+                                                        fontSize: 9.6,
                                                         fontItalic: Font
                                                             .timesBoldItalic(),
                                                         color: const PdfColor
@@ -2272,7 +2396,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                 Text(
                                                     " ${userCharacter.maxHealth}",
                                                     style: const TextStyle(
-                                                        fontSize: 9,
+                                                        fontSize: 10.6,
                                                         decoration:
                                                             TextDecoration
                                                                 .underline))
@@ -2305,7 +2429,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                         Container(
                                             alignment: Alignment.center,
                                             width: 70,
-                                            height: 48.0,
+                                            height: 54.0,
                                             padding: const EdgeInsets.fromLTRB(
                                                 5, 2, 5, 0),
                                             decoration: BoxDecoration(
@@ -2319,7 +2443,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                   style: const TextStyle(
                                                       fontSize: 10.5)),
                                               Container(
-                                                width: 155,
+                                                height: 54,
                                                 child: FittedBox(
                                                   fit: BoxFit.contain,
                                                   child: Row(
@@ -2364,7 +2488,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                         SizedBox(width: 5),
                                         Container(
                                             //alignment: Alignment.center,
-                                            height: 48.0,
+                                            height: 54.0,
                                             padding: const EdgeInsets.fromLTRB(
                                                 1, 3, 1, 0),
                                             width: 70,
