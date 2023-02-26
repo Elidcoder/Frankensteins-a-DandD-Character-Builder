@@ -2220,13 +2220,20 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                       color: const PdfColor.fromInt(0xff9c9995),
                                     ),
                                     padding:
-                                        const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                        const EdgeInsets.fromLTRB(5, 4, 5, 0),
                                     child: Column(children: [
                                       SizedBox(height: 9),
                                       Container(
                                         alignment: Alignment.center,
                                         height: 53.0,
                                         decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                              topLeft: Radius.circular(6),
+                                              topRight: Radius.circular(6),
+                                              bottomLeft: Radius.circular(6),
+                                              bottomRight: Radius.circular(6),
+                                            ),
                                             color: const PdfColor.fromInt(
                                                 0xffffffff),
                                             border: Border.all(width: 0.8)),
@@ -2234,30 +2241,185 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                       SizedBox(height: 10),
                                       Container(
                                         alignment: Alignment.center,
-                                        height: 60.0,
+                                        height: 56.0,
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 1, 0, 0),
                                         decoration: BoxDecoration(
-                                            color: const PdfColor.fromInt(
-                                                0xffffffff),
-                                            border: Border.all(width: 0.8)),
+                                          color: const PdfColor.fromInt(
+                                              0xffffffff),
+                                          border: Border.all(width: 0.8),
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(6),
+                                            topRight: Radius.circular(6),
+                                            bottomLeft: Radius.circular(2),
+                                            bottomRight: Radius.circular(2),
+                                          ),
+                                        ),
+                                        child: Column(children: [
+                                          Text("Health:"),
+                                          Container(
+                                              width: 155,
+                                              child: Row(children: [
+                                                SizedBox(width: 32),
+                                                Text("Hit point maximim: ",
+                                                    style: TextStyle(
+                                                        fontSize: 8,
+                                                        fontItalic: Font
+                                                            .timesBoldItalic(),
+                                                        color: const PdfColor
+                                                                .fromInt(
+                                                            0xff6B6E73))),
+                                                Text(
+                                                    " ${userCharacter.maxHealth}",
+                                                    style: const TextStyle(
+                                                        fontSize: 9,
+                                                        decoration:
+                                                            TextDecoration
+                                                                .underline))
+                                              ]))
+                                        ]),
                                       ),
                                       SizedBox(height: 7),
                                       Container(
-                                        alignment: Alignment.center,
-                                        height: 40.0,
-                                        decoration: BoxDecoration(
-                                            color: const PdfColor.fromInt(
-                                                0xffffffff),
-                                            border: Border.all(width: 0.8)),
-                                      ),
-                                      SizedBox(height: 10),
-                                      Container(
-                                        alignment: Alignment.center,
-                                        height: 45.0,
-                                        decoration: BoxDecoration(
-                                            color: const PdfColor.fromInt(
-                                                0xffffffff),
-                                            border: Border.all(width: 0.8)),
-                                      )
+                                          width: 155,
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 2, 0, 0),
+                                          height: 44.0,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                topLeft: Radius.circular(2),
+                                                topRight: Radius.circular(2),
+                                                bottomLeft: Radius.circular(6),
+                                                bottomRight: Radius.circular(6),
+                                              ),
+                                              color: const PdfColor.fromInt(
+                                                  0xffffffff),
+                                              border: Border.all(width: 0.8)),
+                                          child: Text(
+                                              "           Temporary hit points:",
+                                              style: const TextStyle(
+                                                  fontSize: 9.5))),
+                                      SizedBox(height: 7),
+                                      Row(children: [
+                                        Container(
+                                            alignment: Alignment.center,
+                                            width: 70,
+                                            height: 48.0,
+                                            padding: const EdgeInsets.fromLTRB(
+                                                5, 2, 5, 0),
+                                            decoration: BoxDecoration(
+                                                color: const PdfColor.fromInt(
+                                                    0xffffffff),
+                                                border: Border.all(width: 0.8),
+                                                borderRadius:
+                                                    BorderRadius.circular(4.0)),
+                                            child: Column(children: [
+                                              Text("Hit Dice:",
+                                                  style: const TextStyle(
+                                                      fontSize: 10.5)),
+                                              Container(
+                                                width: 155,
+                                                child: FittedBox(
+                                                  fit: BoxFit.contain,
+                                                  child: Row(
+                                                    children: [
+                                                      SizedBox(width: 5),
+                                                      Text("Total: ",
+                                                          style: TextStyle(
+                                                              fontSize: 8,
+                                                              fontItalic: Font
+                                                                  .timesBoldItalic(),
+                                                              color: const PdfColor
+                                                                      .fromInt(
+                                                                  0xff6B6E73))),
+                                                      Text(
+                                                          CLASSLIST
+                                                              .where((car) => userCharacter
+                                                                  .classList
+                                                                  .contains(
+                                                                      car.name))
+                                                              .fold<Map<String, int>>(
+                                                                  {},
+                                                                  (map, car) => map
+                                                                    ..update(car.name, (count) => count + 1,
+                                                                        ifAbsent: () =>
+                                                                            1))
+                                                              .entries
+                                                              .where((entry) =>
+                                                                  entry.value >
+                                                                  0)
+                                                              .map((entry) =>
+                                                                  "${(userCharacter.classList.where((car) => car == entry.key).length)}D${CLASSLIST.firstWhere((car) => car.name == entry.key).maxHitDiceRoll}")
+                                                              .join(", "),
+                                                          style: const TextStyle(
+                                                              fontSize: 9,
+                                                              decoration: TextDecoration.underline)),
+                                                      SizedBox(width: 5),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ])),
+                                        SizedBox(width: 5),
+                                        Container(
+                                            //alignment: Alignment.center,
+                                            height: 48.0,
+                                            padding: const EdgeInsets.fromLTRB(
+                                                1, 3, 1, 0),
+                                            width: 70,
+                                            decoration: BoxDecoration(
+                                                color: const PdfColor.fromInt(
+                                                    0xffffffff),
+                                                border: Border.all(width: 0.8),
+                                                borderRadius:
+                                                    BorderRadius.circular(4.0)),
+                                            child: Column(children: [
+                                              Text(" Death Saves:",
+                                                  style: const TextStyle(
+                                                      fontSize: 9.5)),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        1, 0, 0, 0),
+                                                child: Row(children: [
+                                                  Text("Successes:",
+                                                      style: TextStyle(
+                                                          fontSize: 7,
+                                                          fontItalic: Font
+                                                              .timesBoldItalic(),
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xff6B6E73))),
+                                                  Text(" O-O-O",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 9.5))
+                                                ]),
+                                              ),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        1, 0, 0, 0),
+                                                child: Row(children: [
+                                                  Text("Fails:",
+                                                      style: TextStyle(
+                                                          fontSize: 7,
+                                                          fontItalic: Font
+                                                              .timesBoldItalic(),
+                                                          color: const PdfColor
+                                                                  .fromInt(
+                                                              0xff6B6E73))),
+                                                  Text(" O-O-O",
+                                                      style: TextStyle(
+                                                          fontSize: 9.5,
+                                                          fontWeight:
+                                                              FontWeight.bold))
+                                                ]),
+                                              )
+                                            ]))
+                                      ]),
                                     ])),
                                 //middle box
                                 Container(
@@ -2410,8 +2572,32 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                               ])),
                                       //Equipment?
                                       Container(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              2, 2, 2, 0),
                                           alignment: Alignment.center,
-                                          width: 110.0)
+                                          width: 110.0,
+                                          child: Column(children: [
+                                            Text("Equipment"),
+                                            Container(
+                                                child: Text(
+                                                    [
+                                                      ...userCharacter
+                                                          .unstackableEquipmentSelected
+                                                          .map((entry) =>
+                                                              entry.name),
+                                                      ...userCharacter
+                                                          .stackableEquipmentSelected
+                                                          .entries
+                                                          .map((entry) =>
+                                                              "${entry.value}x${entry.key}"),
+                                                      ...userCharacter
+                                                              .background
+                                                              .equipment ??
+                                                          []
+                                                    ].join(", "),
+                                                    style: const TextStyle(
+                                                        fontSize: 8)))
+                                          ]))
                                     ]))
                               ])),
                           //Column three
@@ -2424,7 +2610,6 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                     height: 244.5,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8.0),
-                                      color: const PdfColor.fromInt(0xff9c9995),
                                     ),
                                     padding: const EdgeInsets.fromLTRB(
                                         7.5, 9, 7.5, 0),

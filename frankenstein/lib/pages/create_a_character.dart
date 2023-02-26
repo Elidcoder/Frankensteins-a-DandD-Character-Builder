@@ -1029,8 +1029,8 @@ class MainCreateCharacter extends State<CreateACharacter>
   Map<int, dynamic> equipmentSelected = {};
   List<dynamic>? equipmentSelectedExperiment;
   //{thing:numb,...}
-  Map<String, int> stackablesSelected = {};
-  List<dynamic> unstackablesSelected = [];
+  Map<String, int> stackableEquipmentSelected = {};
+  List<dynamic> unstackableEquipmentSelected = [];
   //BackgroundVariables
   String characterAge = "";
   String characterHeight = "";
@@ -5247,32 +5247,26 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                             "${ITEMLIST[index].cost[1]} Pieces"]! -
                                                         (ITEMLIST[index].cost[0]
                                                             as int);
-                                                if (ITEMLIST[index]
-                                                        .stackableNumber >
-                                                    1) {
-                                                  if (stackablesSelected
+                                                if (ITEMLIST[index].stackable) {
+                                                  if (stackableEquipmentSelected
                                                       .containsKey(
                                                           ITEMLIST[index]
                                                               .name)) {
-                                                    stackablesSelected[
+                                                    stackableEquipmentSelected[
                                                             ITEMLIST[index]
                                                                 .name] =
-                                                        stackablesSelected[
+                                                        stackableEquipmentSelected[
                                                                 ITEMLIST[index]
                                                                     .name]! +
-                                                            (ITEMLIST[index]
-                                                                    .stackableNumber
-                                                                as int);
+                                                            1;
                                                     //add it in
                                                   } else {
-                                                    stackablesSelected[
-                                                            ITEMLIST[index]
-                                                                .name] =
+                                                    stackableEquipmentSelected[
                                                         ITEMLIST[index]
-                                                            .stackableNumber;
+                                                            .name] = 1;
                                                   }
                                                 } else {
-                                                  unstackablesSelected
+                                                  unstackableEquipmentSelected
                                                       .add(ITEMLIST[index]);
                                                 }
                                               }
@@ -5846,6 +5840,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                         invoice: Character(
                             playerName: playerName,
                             classList: classList,
+                            stackableEquipmentSelected:
+                                stackableEquipmentSelected,
+                            unstackableEquipmentSelected:
+                                unstackableEquipmentSelected,
                             classSkillsSelected: classSkillChoices,
                             skillsSelected: selectedSkillsQ,
                             subrace: subraceExample,
@@ -5933,7 +5931,7 @@ class MainCreateCharacter extends State<CreateACharacter>
       );
     } else if (x[0] == "Bonus") {
       // ("Bonus","String description")
-      featuresAndTraits.add(x[1] +": "+ x[2]);
+      featuresAndTraits.add(x[1] + ": " + x[2]);
     } else if (x[0] == "AC") {
       // ("AC","intelligence + 2", "RQUIREMENT")
       ACList.add([x[1], x[2]]);

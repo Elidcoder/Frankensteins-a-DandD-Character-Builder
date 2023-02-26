@@ -158,7 +158,7 @@
                                 "InitialProficiencies": ["Insight","Religion"],
                                 "NumberOfLanguageChoices": 2,
                                 "ToolProficiencies":["Regular chess"],
-                                "Equipment": ["A holy symbol (a gift to you when you entered the priesthood)"," a prayer book or prayer wheel"," 5 sticks of incense"," vestments"," a set of common clothes"," and a pouch containing 15 gp"]
+                                "Equipment": ["A holy symbol (a gift to you when you entered the priesthood)"," a prayer book or prayer wheel"," 5 sticks of incense"," vestments"," a set of common clothes"," a pouch containing 15 gp"]
                                 
                         },
                         {
@@ -256,7 +256,7 @@
                         "EquipmentType": ["Item"],
                         "Cost": [1, "Gold"],
                         "Weight":1.0,
-                        "StackableNumber":1,
+                        "Stackable": true,
                         "Description":"Arrows are used with a weapon that has the ammunition property to make a ranged attack. Each time you attack with the weapon, you expend one piece of ammunition. Drawing the ammunition from a quiver, case, or other container is part of the attack (you need a free hand to load a one-handed weapon). At the end of the battle, you can recover half your expended ammunition by taking a minute to search the battlefield."
                 },
                 {

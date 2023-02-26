@@ -49,7 +49,9 @@ class Character {
 
   //ASI feats
   final List<int> featsASIScoreIncreases;
-
+  //Equipment
+  final Map<String, int> stackableEquipmentSelected;
+  final List<dynamic> unstackableEquipmentSelected;
   factory Character.fromJson(Map<String, dynamic> data) {
     final featuresAndTraits =
         data["FeaturesAndTraits"].cast<String>() as List<String>;
@@ -92,11 +94,16 @@ class Character {
     final inspired = data["Inspired"] as bool;
     final languagesKnown =
         data["LanguagesKnown"].cast<String>() as List<String>;
-
+    final stackableEquipmentSelected = data["StackableEquipmentSelected"]
+        .cast<String, int>() as Map<String, int>;
+    final unstackableEquipmentSelected =
+        data["UnunstackableEquipmentSelected"] as List<dynamic>;
     return Character(
       languagesKnown: languagesKnown,
       featuresAndTraits: featuresAndTraits,
       skillsSelected: skillsSelected,
+      stackableEquipmentSelected: stackableEquipmentSelected,
+      unstackableEquipmentSelected: unstackableEquipmentSelected,
       subrace: subrace,
       classSkillsSelected: classSkillsSelected,
       classList: classList,
@@ -128,9 +135,11 @@ class Character {
   }
   Character(
       {required this.name,
+      required this.unstackableEquipmentSelected,
       required this.featuresAndTraits,
       required this.languagesKnown,
       required this.classList,
+      required this.stackableEquipmentSelected,
       required this.skillsSelected,
       required this.mainToolProficiencies,
       required this.savingThrowProficiencies,
