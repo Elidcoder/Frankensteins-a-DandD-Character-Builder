@@ -1025,7 +1025,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   List<String> armourList = [];
   List<String> weaponList = [];
   List<String> itemList = [];
-  String? coinTypeSelected;
+  String? coinTypeSelected = "Gold Pieces";
   List<dynamic>? equipmentSelectedFromChoices;
   //{thing:numb,...}
   Map<String, int> stackableEquipmentSelected = {};

@@ -107,77 +107,79 @@ class Character {
   final String characterSkin;
   final String characterHair;
   Map<String, dynamic> toJson() => {
-        "languagesKnown": languagesKnown,
-        "featuresAndTraits": featuresAndTraits,
-        "classList": classList,
-        "currency": currency,
-        "name": name,
-        "playerName": playerName,
-        "classLevels": classLevels,
-        "inspired": inspired,
-        "mainToolProficiencies": mainToolProficiencies,
-        "skillsSelected": skillsSelected?.toList(),
-        "speedBonuses": speedBonuses,
+        "LanguagesKnown": languagesKnown,
+        "FeaturesAndTraits": featuresAndTraits,
+        "ClassList": classList,
+        "Currency": currency,
+        "Name": name,
+        "PlayerName": playerName,
+        "ClassLevels": classLevels,
+        "Inspired": inspired,
+        "MainToolProficiencies": mainToolProficiencies,
+        "SkillsSelected": skillsSelected?.toList(),
+        "SpeedBonuses": speedBonuses,
         "ACList": ACList,
-        "gender": gender,
-        "featsAllowed": featsAllowed,
-        "averageHitPoints": averageHitPoints,
-        "multiclassing": multiclassing,
-        "milestoneLevelling": milestoneLevelling,
-        "useCustomContent": useCustomContent,
-        "optionalClassFeatures": optionalClassFeatures,
-        "criticalRoleContent": criticalRoleContent,
-        "encumberanceRules": encumberanceRules,
-        "includeCoinsForWeight": includeCoinsForWeight,
-        "unearthedArcanaContent": unearthedArcanaContent,
-        "firearmsUsable": firearmsUsable,
-        "extraFeatAtLevel1": extraFeatAtLevel1,
-        "savingThrowProficiencies": savingThrowProficiencies,
-        "skillProficiencies": skillProficiencies,
-        "maxHealth": maxHealth,
-        "characterExperience": characterExperience,
-        "classSkillsSelected": classSkillsSelected,
-        "race": race,
-        "subrace": subrace,
-        "optionalOnesStates": optionalOnesStates,
-        "optionalTwosStates": optionalTwosStates,
-        "raceAbilityScoreIncreases": raceAbilityScoreIncreases,
-        "background": background,
-        "backgroundPersonalityTrait": backgroundPersonalityTrait,
-        "backgroundIdeal": backgroundIdeal,
-        "backgroundBond": backgroundBond,
-        "backgroundFlaw": backgroundFlaw,
-        "backgroundSkillChoices": backgroundSkillChoices,
-        "strength": strength,
-        "dexterity": dexterity,
-        "constitution": constitution,
-        "intelligence": intelligence,
-        "wisdom": wisdom,
-        "charisma": charisma,
-        "pointsRemaining": pointsRemaining,
-        "levelsPerClass": levelsPerClass,
-        "selections": selections,
-        "allSelected": allSelected,
-        "classSubclassMapper": classSubclassMapper,
-        "featsASIScoreIncreases": featsASIScoreIncreases,
-        "featsSelected": featsSelected,
+        "Gender": gender,
+        "FeatsAllowed": featsAllowed,
+        "AverageHitPoints": averageHitPoints,
+        "Multiclassing": multiclassing,
+        "MilestoneLevelling": milestoneLevelling,
+        "UseCustomContent": useCustomContent,
+        "OptionalClassFeatures": optionalClassFeatures,
+        "CriticalRoleContent": criticalRoleContent,
+        "EncumberanceRules": encumberanceRules,
+        "IncludeCoinsForWeight": includeCoinsForWeight,
+        "UnearthedArcanaContent": unearthedArcanaContent,
+        "FirearmsUsable": firearmsUsable,
+        "ExtraFeatAtLevel1": extraFeatAtLevel1,
+        "SavingThrowProficiencies": savingThrowProficiencies,
+        "SkillProficiencies": skillProficiencies,
+        "MaxHealth": maxHealth,
+        "CharacterExperience": characterExperience,
+        "ClassSkillsSelected": classSkillsSelected,
+        "Race": race,
+        "Subrace": subrace,
+        "OptionalOnesStates": optionalOnesStates,
+        "OptionalTwosStates": optionalTwosStates,
+        "RaceAbilityScoreIncreases": raceAbilityScoreIncreases,
+        "Background": background,
+        "BackgroundPersonalityTrait": backgroundPersonalityTrait,
+        "BackgroundIdeal": backgroundIdeal,
+        "BackgroundBond": backgroundBond,
+        "BackgroundFlaw": backgroundFlaw,
+        "BackgroundSkillChoices": backgroundSkillChoices,
+        "Strength": strength,
+        "Dexterity": dexterity,
+        "Constitution": constitution,
+        "Intelligence": intelligence,
+        "Wisdom": wisdom,
+        "Charisma": charisma,
+        "PointsRemaining": pointsRemaining,
+        "LevelsPerClass": levelsPerClass,
+        "Selections": selections,
+        "AllSelected": allSelected,
+        "ClassSubclassMapper": classSubclassMapper,
+        "FeatsASIScoreIncreases": featsASIScoreIncreases,
+        "FeatsSelected": featsSelected,
         "ASIRemaining": ASIRemaining,
-        "numberOfRemainingFeatOrASIs": numberOfRemainingFeatOrASIs,
-        "halfFeats": halfFeats,
-        "fullFeats": fullFeats,
-        "allSpellsSelected": allSpellsSelected,
-        "allSpellsSelectedAsListsOfThings": allSpellsSelectedAsListsOfThings,
-        "stackableEquipmentSelected": stackableEquipmentSelected,
-        "unstackableEquipmentSelected": unstackableEquipmentSelected,
-        "armourList": armourList,
-        "weaponList": weaponList,
-        "itemList": itemList,
-        "coinTypeSelected": coinTypeSelected,
-        "equipmentSelectedFromChoices": equipmentSelectedFromChoices,
-        "characterAge": characterAge,
-        "characterHeight": characterHeight,
-        "characterWeight": characterWeight,
-        "characterEyes": characterEyes,
+        "NumberOfRemainingFeatOrASIs": numberOfRemainingFeatOrASIs,
+        "HalfFeats": halfFeats,
+        "FullFeats": fullFeats,
+        "AllSpellsSelected": allSpellsSelected,
+        "AllSpellsSelectedAsListsOfThings": allSpellsSelectedAsListsOfThings,
+        "StackableEquipmentSelected": stackableEquipmentSelected,
+        "UnstackableEquipmentSelected": unstackableEquipmentSelected,
+        "ArmourList": armourList,
+        "WeaponList": weaponList,
+        "ItemList": itemList,
+        "CoinTypeSelected": coinTypeSelected,
+        "EquipmentSelectedFromChoices": equipmentSelectedFromChoices,
+        "CharacterAge": characterAge,
+        "CharacterHeight": characterHeight,
+        "CharacterWeight": characterWeight,
+        "CharacterEyes": characterEyes,
+        "CharacterHair": characterHair,
+        "CharacterSkin": characterHair
       };
 
   factory Character.fromJson(Map<String, dynamic> data) {
@@ -250,8 +252,10 @@ class Character {
     final name = data["Name"] as String;
     final classSkillsSelected =
         data["ClassSkillsSelected"].cast<bool>() as List<bool>;
-    final subrace = data["Subrace"] as Subrace;
-    final skillsSelected = data["SkillsSelected"] as Queue<int>?;
+    final subrace = data["Subrace"] as Subrace?;
+    final skillsSelected = Queue<int>()
+            .addAll(data["SkillsSelected"].cast<int>() as List<int>? ?? [])
+        as Queue<int>?;
     final mainToolProficiencies =
         data["MainToolProficiencies"].cast<String>() as List<String>;
     final savingThrowProficiencies =
@@ -261,10 +265,10 @@ class Character {
     final maxHealth = data["MaxHealth"] as int;
 
     final playerName = data["PlayerName"] as String;
-    final currency = data["Currency"] as Map<String, int>;
+    final currency = data["Currency"].cast<String, int>() as Map<String, int>;
     final classLevels = data["ClassLevels"].cast<int>() as List<int>;
-    final race = data["Race"] as Race;
-    final background = data["Background"] as Background;
+    final race = Race.fromJson(data["Race"]);
+    final background = Background.fromJson(data["Background"]);
     final backgroundFlaw = data["BackgroundFlaw"] as String;
     final backgroundPersonalityTrait =
         data["BackgroundPersonalityTrait"] as String;
@@ -274,12 +278,12 @@ class Character {
     final raceAbilityScoreIncreases =
         data["RaceAbilityScoreIncreases"].cast<int>() as List<int>;
 
-    final strength = data["Strength"] as AbilityScore;
-    final dexterity = data["Dexterity"] as AbilityScore;
-    final constitution = data["Constitution"] as AbilityScore;
-    final intelligence = data["Intelligence"] as AbilityScore;
-    final wisdom = data["Wisdom"] as AbilityScore;
-    final charisma = data["Charisma"] as AbilityScore;
+    final strength = AbilityScore.fromJson(data["Strength"]);
+    final dexterity = AbilityScore.fromJson(data["Dexterity"]);
+    final constitution = AbilityScore.fromJson(data["Constitution"]);
+    final intelligence = AbilityScore.fromJson(data["Intelligence"]);
+    final wisdom = AbilityScore.fromJson(data["Wisdom"]);
+    final charisma = AbilityScore.fromJson(data["Charisma"]);
     final featsASIScoreIncreases =
         data["FeatsASIScoreIncreases"].cast<int>() as List<int>;
     final inspired = data["Inspired"] as bool;
@@ -288,7 +292,7 @@ class Character {
     final stackableEquipmentSelected = data["StackableEquipmentSelected"]
         .cast<String, int>() as Map<String, int>;
     final unstackableEquipmentSelected =
-        data["UnunstackableEquipmentSelected"] as List<dynamic>;
+        data["UnstackableEquipmentSelected"] as List<dynamic>;
     return Character(
       levelsPerClass: levelsPerClass,
       selections: selections,
