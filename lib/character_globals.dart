@@ -1,5 +1,7 @@
-import "package:frankenstein/globals.dart";
+import 'package:frankenstein/SRD_globals.dart';
 import "dart:collection";
+import "dart:convert";
+import "dart:io";
 
 class AbilityScore {
   int value;
@@ -106,7 +108,10 @@ class Character {
   final String characterEyes;
   final String characterSkin;
   final String characterHair;
+  //finishing up variables
+  final String? group;
   Map<String, dynamic> toJson() => {
+        "Group": group,
         "LanguagesKnown": languagesKnown,
         "FeaturesAndTraits": featuresAndTraits,
         "ClassList": classList,
@@ -183,6 +188,7 @@ class Character {
       };
 
   factory Character.fromJson(Map<String, dynamic> data) {
+    final group = data["Group"] as String?;
     final levelsPerClass = data["LevelsPerClass"].cast<int>() as List<int>;
     final selections = data["Selections"].cast<String, List<dynamic>>()
         as Map<String, List<dynamic>>;
@@ -224,7 +230,7 @@ class Character {
     final multiclassing = data["Multiclassing"] as bool;
     final useCustomContent = data["UseCustomContent"] as bool;
     final equipmentSelectedFromChoices =
-        data["EquipmentSelectedFromChoices"] as List<dynamic>;
+        data["EquipmentSelectedFromChoices"] ?? [] as List<dynamic>;
     final optionalClassFeatures = data["OptionalClassFeatures"] as bool;
     final optionalOnesStates = (data["OptionalOnesStates"] as List<dynamic>)
         .map((row) =>
@@ -311,6 +317,7 @@ class Character {
       characterHeight: characterHeight,
       characterSkin: characterSkin,
       characterWeight: characterWeight,
+      group: group,
       coinTypeSelected: coinTypeSelected,
       criticalRoleContent: criticalRoleContent,
       encumberanceRules: encumberanceRules,
@@ -443,5 +450,22 @@ class Character {
       required this.charisma,
       required this.featsASIScoreIncreases,
       required this.currency,
-      this.subrace});
+      this.subrace,
+      this.group});
+}
+
+final String jsonContent = File("assets/Characters.json").readAsStringSync();
+final Map<String, dynamic> readJson = jsonDecode(jsonContent);
+//final List<dynamic> characters = json["Characters"];
+List<Character> CHARACTERLIST = [
+  for (var x in readJson["Characters"]) Character.fromJson(x)
+];
+List<String> GROUPLIST = readJson["Groups"].cast<String>() as List<String>;
+
+void updateCharacterVariables() {
+  final String jsonContent = File("assets/Characters.json").readAsStringSync();
+  final Map<String, dynamic> readJson = jsonDecode(jsonContent);
+//final List<dynamic> characters = json["Characters"];
+  CHARACTERLIST = [for (var x in readJson["Characters"]) Character.fromJson(x)];
+  GROUPLIST = readJson["Groups"].cast<String>() as List<String>;
 }

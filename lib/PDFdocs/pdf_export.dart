@@ -3,8 +3,8 @@ import 'dart:typed_data';
 //import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:pdf/pdf.dart';
-import 'package:frankenstein/PDFdocs/character_class.dart';
-import "package:frankenstein/globals.dart";
+import 'package:frankenstein/character_globals.dart';
+import 'package:frankenstein/SRD_globals.dart';
 
 //1038xidk
 //ARGB => 0x(AA)(RR)(GG)(BB)

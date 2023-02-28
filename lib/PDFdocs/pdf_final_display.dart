@@ -4,7 +4,7 @@ import 'package:printing/printing.dart';
 //import 'package:makepdfs/pages/pdfexport/pdf/pdfexport.dart';
 //import 'package:frankenstein/PDFdocs/pdf_export.dart';
 //import 'package:printing/printing.dart';
-import 'package:frankenstein/PDFdocs/character_class.dart';
+import 'package:frankenstein/character_globals.dart';
 import 'package:frankenstein/PDFdocs/pdf_export.dart';
 
 //import 'package:frankenstein/PDFdocs/preview_page.dart';

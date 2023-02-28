@@ -1,4 +1,4 @@
-import "package:frankenstein/globals.dart";
+import 'package:frankenstein/SRD_globals.dart';
 import 'package:flutter/material.dart';
 
 class AbilityScore {
@@ -18,7 +18,7 @@ int pointsRemaining = 27;
 //STR/DEX/CON/INT/WIS/CHAR
 
 //const MainCreateCharacter({Key? key}) //: super(key: key);
-Spell spellExample = list.first;
+//Spell spellExample = list.first;
 String? levellingMethod;
 Race initialRace = RACELIST.first;
 List<int> abilityScoreIncreases = RACELIST.first.raceScoreIncrease;

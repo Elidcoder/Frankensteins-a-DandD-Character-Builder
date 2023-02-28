@@ -63,3 +63,21 @@ CLASSLIST
                                                               .map((entry) =>
                                                                   "${entry.value}D${CLASSLIST.firstWhere((car) => car.name == entry.key).maxHitDiceRoll}")
                                                               .join(", ")
+{"Characters":[],"Groups":[]}
+{
+    "Sourcebooks":[
+        ["Coders Handbook","Official"], ["C0d3rs handbook","Homebrew"]
+],
+
+"Spells": [
+{
+        "Name": "Shield2",
+        "Effect": "An invisible barrier of magical force appears and protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from magic missile.",
+        "Level": 1,
+        "Somatic":true,
+        "Verbal":true,
+        "SpellSchool":"Abjuration",
+        "CastingTime": ["Reaction",1],
+        "AvailableTo":["Wizard","Sorcerer", "Battle Smith", "The Hexblade","Artillerist"]
+}]
+}

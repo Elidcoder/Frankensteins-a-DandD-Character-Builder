@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frankenstein/character_creation_globals.dart';
+import 'package:frankenstein/Other%20stuff/createACharacterTabs/character_creation_globals.dart';
 
 class GetBasicsPage extends StatefulWidget {
   @override

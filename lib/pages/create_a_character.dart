@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 //import 'package:frankenstein/character_creation_globals.dart';
-import "package:frankenstein/globals.dart";
+import 'package:frankenstein/SRD_globals.dart';
 import "dart:collection";
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
-import 'package:frankenstein/PDFdocs/character_class.dart';
+import 'package:frankenstein/character_globals.dart';
 import 'package:frankenstein/PDFdocs/pdf_final_display.dart';
 import 'dart:math';
 import 'dart:convert';
@@ -128,14 +128,14 @@ bool isAllowedContent(dynamic x) {
 //Map<String, String> characterTypeReturner = {0.0:"Martial",1.0:"Full Caster", 0.5: "Half Caster", 0.3:"Third caster"};
 Spell listgetter(String spellname) {
   //huge issue with adding content WITH DUPLICATE NAME AND (TYPE)
-  for (int x = 0; x < list.length; x++) {
-    if (list[x].name == spellname) {
-      return list[x];
+  for (int x = 0; x < SPELLLIST.length; x++) {
+    if (SPELLLIST[x].name == spellname) {
+      return SPELLLIST[x];
     }
   }
   //ADD SOMETHING FOR FAILED COMPARISONS
   ///fix really  really really
-  return list[0];
+  return SPELLLIST[0];
 } //}
 
 class CreateACharacter extends StatefulWidget {
@@ -926,7 +926,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   List<List<dynamic>> ACList = [
     ["10 + dexterity"]
   ];
-  Spell spellExample = list.first;
+  //Spell spellExample = list.first;
   String? levellingMethod;
   //Basics variables initialised
   String? characterLevel = "1";
@@ -1038,7 +1038,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   String characterSkin = "";
   String characterHair = "";
   //finishing up variables
-
+  String? group;
   @override
   Widget build(
     BuildContext context,
@@ -5310,14 +5310,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                       OutlinedButton(
                                                         onPressed: () {
                                                           setState(() {
-                                                            /*if (!equipmentSelected
-                                                          .containsKey(i)) {
-                                                        equipmentSelected[i] ==
-                                                            classSelectedAtLevel1!
-                                                                    .equipmentOptions[
-                                                                i][0][0];
-                                                                
-                                                      }*/
                                                             equipmentSelectedFromChoices![
                                                                 i] = [
                                                               equipmentSelectedFromChoices![
@@ -5331,44 +5323,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                                   i][0]),
                                                           style:
                                                               const TextStyle(
-                                                            /*
-                                                            fontWeight: (equipmentSelected
-                                                                        .containsKey(
-                                                                            i) &&
-                                                                    equipmentSelected[
-                                                                            i] ==
-                                                                        classSelectedAtLevel1!.equipmentOptions[i][0]
-                                                                            [0])
-                                                                ? FontWeight
-                                                                    .bold
-                                                                : FontWeight
-                                                                    .normal,*/
-                                                            color: /*(equipmentSelected
-                                                                        .containsKey(
-                                                                            i) &&
-                                                                    equipmentSelected[
-                                                                            i] ==
-                                                                        classSelectedAtLevel1!.equipmentOptions[i]
-                                                                            [
-                                                                            0][0])
-                                                                ? Colors.red
-                                                                : Colors.black*/
-                                                                Colors.blue,
+                                                            color: Colors.blue,
                                                           ),
                                                         ),
                                                       ),
                                                       OutlinedButton(
                                                         onPressed: () {
                                                           setState(() {
-                                                            /*if (!equipmentSelected
-                                                                .containsKey(
-                                                                    i)) {
-                                                              equipmentSelected[
-                                                                      i] ==
-                                                                  classSelectedAtLevel1!
-                                                                          .equipmentOptions[
-                                                                      i][1][0];
-                                                            }*/
                                                             equipmentSelectedFromChoices![
                                                                 i] = [
                                                               equipmentSelectedFromChoices![
@@ -5383,29 +5344,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                                   i][1]),
                                                           style:
                                                               const TextStyle(
-                                                            /*
-                                                            fontWeight: (equipmentSelected
-                                                                        .containsKey(
-                                                                            i) &&
-                                                                    equipmentSelected[
-                                                                            i] ==
-                                                                        classSelectedAtLevel1!.equipmentOptions[i][1]
-                                                                            [0])
-                                                                ? FontWeight
-                                                                    .bold
-                                                                : FontWeight
-                                                                    .normal,*/
-                                                            color: /*(equipmentSelected
-                                                                        .containsKey(
-                                                                            i) &&
-                                                                    equipmentSelected[
-                                                                            i] ==
-                                                                        classSelectedAtLevel1!.equipmentOptions[i]
-                                                                            [
-                                                                            1][0])
-                                                                ? Colors.red
-                                                                : Colors.black*/
-                                                                Colors.blue,
+                                                            color: Colors.blue,
                                                           ),
                                                         ),
                                                       )
@@ -5415,107 +5354,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               : Text(produceEquipmentOptionDescription(
                                                   equipmentSelectedFromChoices![
                                                       i][0]))
-
-                                        /*Container(
-                                                  margin: const EdgeInsets.all(
-                                                      10.0),
-                                                  child: Column(
-                                                    children: [
-                                                      const Text(
-                                                          "Please choose between the following options:"),
-                                                      Container(
-                                                        width: 100, height: 50,
-                                                        child: Text(
-                                                          produceEquipmentOptionDescription(
-                                                              classSelectedAtLevel1!
-                                                                      .equipmentOptions[
-                                                                  i][0]),
-                                                          style: TextStyle(
-                                                            fontWeight: (equipmentSelected
-                                                                        .containsKey(
-                                                                            i) &&
-                                                                    equipmentSelected[
-                                                                            i] ==
-                                                                        classSelectedAtLevel1!.equipmentOptions[i][0]
-                                                                            [0])
-                                                                ? FontWeight
-                                                                    .bold
-                                                                : FontWeight
-                                                                    .normal,
-                                                            color: (equipmentSelected
-                                                                        .containsKey(
-                                                                            i) &&
-                                                                    equipmentSelected[
-                                                                            i] ==
-                                                                        classSelectedAtLevel1!.equipmentOptions[i]
-                                                                            [
-                                                                            0][0])
-                                                                ? Colors.red
-                                                                : Colors.black,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      OutlinedButton(
-                                                        onPressed: () {
-                                                          setState(() {
-                                                            if (!equipmentSelected
-                                                                .containsKey(
-                                                                    i)) {
-                                                              equipmentSelected[
-                                                                      i] ==
-                                                                  classSelectedAtLevel1!
-                                                                          .equipmentOptions[
-                                                                      i][1][0];
-                                                            }
-                                                          });
-                                                        },
-                                                        //String produceEquipmentOptionDescription(List<dynamic> optionDescription)
-                                                        child: Text(
-                                                          produceEquipmentOptionDescription(
-                                                              classSelectedAtLevel1!
-                                                                      .equipmentOptions[
-                                                                  i][1]),
-                                                          style: TextStyle(
-                                                            fontWeight: (equipmentSelected
-                                                                        .containsKey(
-                                                                            i) &&
-                                                                    equipmentSelected[
-                                                                            i] ==
-                                                                        classSelectedAtLevel1!.equipmentOptions[i][1]
-                                                                            [0])
-                                                                ? FontWeight
-                                                                    .bold
-                                                                : FontWeight
-                                                                    .normal,
-                                                            color: (equipmentSelected
-                                                                        .containsKey(
-                                                                            i) &&
-                                                                    equipmentSelected[
-                                                                            i] ==
-                                                                        classSelectedAtLevel1!.equipmentOptions[i]
-                                                                            [
-                                                                            1][0])
-                                                                ? Colors.red
-                                                                : Colors.black,
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),*/
-                                        ,
-                                        /*for (var choice
-                                            in equipmentSelectedFromChoices
-                                                .where((element) =>
-                                                    element.length == 1)
-                                                .toList())
-                                          ListTile(
-                                            title: Text(
-                                                produceEquipmentOptionDescription(
-                                                    choice[0])),
-                                          ),*/
-                                        //equipmentSelected
-                                        //]
                                       ],
                                     ),
                                   ),
@@ -5837,6 +5675,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                     MaterialPageRoute(
                       builder: (context) => PdfPreviewPage(
                           invoice: Character(
+                              group: group,
                               levelsPerClass: levelsPerClass,
                               selections: selections,
                               allSelected: allSelected,
@@ -5923,131 +5762,174 @@ class MainCreateCharacter extends State<CreateACharacter>
                 },
                 child: const Icon(Icons.picture_as_pdf),
               ),
-              /*body: ListView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Card(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "TestCharacter",
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),*/
               body: Row(children: [
                 Expanded(
-                    child: OutlinedButton(
-                  child: const Text("Save Character"),
-                  onPressed: () {
-                    final String jsonContent =
-                        File("assets/Characters.json").readAsStringSync();
-                    final Map<String, dynamic> json = jsonDecode(jsonContent);
+                    child: Column(children: [
+                  const Text("Add your character to a group:"),
+                  SizedBox(
+                      width: 128,
+                      height: 50,
+                      child: DropdownButton<String>(
+                        value: group,
+                        icon: const Icon(Icons.arrow_drop_down,
+                            color: Color.fromARGB(255, 7, 26, 239)),
+                        elevation: 16,
+                        style: const TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 20),
+                        underline: Container(
+                          height: 2,
+                          color: const Color.fromARGB(255, 7, 26, 239),
+                        ),
+                        onChanged: (String? value) {
+                          // This is called when the user selects an item.
+                          setState(() {
+                            group = value!;
+                          });
+                        },
+                        items: GROUPLIST
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: SizedBox(
+                                width: 100,
+                                child: FittedBox(
+                                    fit: BoxFit.scaleDown, child: Text(value))),
+                          );
+                        }).toList(),
+                      )),
+                  TextField(
+                      cursorColor: Colors.blue,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
+                          hintText: "Enter a group",
+                          hintStyle: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: Color.fromARGB(255, 212, 208, 224)),
+                          filled: true,
+                          fillColor: Color.fromARGB(211, 42, 63, 226),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12)))),
+                      onChanged: (groupNameEnteredValue) {
+                        group = groupNameEnteredValue;
+                      }),
+                  OutlinedButton(
+                    child: const Text("Save Character"),
+                    onPressed: () {
+                      setState(() {
+                        final String jsonContent =
+                            File("assets/Characters.json").readAsStringSync();
+                        final Map<String, dynamic> json =
+                            jsonDecode(jsonContent);
+                        final List<dynamic> characters = json["Characters"];
+                        final String curCharacterName = characterName;
+                        final int index = characters.indexWhere((character) =>
+                            character["Name"] == curCharacterName);
 
-                    final List<dynamic> characters = json["Characters"];
-                    final String curCharacterName = characterName;
-                    final int index = characters.indexWhere(
-                        (character) => character["Name"] == curCharacterName);
+                        if (index != -1) {
+                          characters.removeAt(index);
+                        }
 
-                    if (index != -1) {
-                      characters.removeAt(index);
-                    }
-
-                    characters.add(Character(
-                            levelsPerClass: levelsPerClass,
-                            selections: selections,
-                            allSelected: allSelected,
-                            classSubclassMapper: classSubclassMapper,
-                            ACList: ACList,
-                            ASIRemaining: ASIRemaining,
-                            allSpellsSelected: allSpellsSelected,
-                            allSpellsSelectedAsListsOfThings:
-                                allSpellsSelectedAsListsOfThings,
-                            armourList: armourList,
-                            averageHitPoints: averageHitPoints,
-                            backgroundSkillChoices: backgroundSkillChoices,
-                            characterAge: characterAge,
-                            characterEyes: characterEyes,
-                            characterHair: characterHair,
-                            characterHeight: characterHeight,
-                            characterSkin: characterSkin,
-                            characterWeight: characterWeight,
-                            coinTypeSelected: coinTypeSelected,
-                            criticalRoleContent: criticalRoleContent,
-                            encumberanceRules: encumberanceRules,
-                            extraFeatAtLevel1: extraFeatAtLevel1,
-                            featsAllowed: featsAllowed,
-                            featsSelected: featsSelected,
-                            firearmsUsable: firearmsUsable,
-                            fullFeats: fullFeats,
-                            halfFeats: halfFeats,
-                            gender: characterGender,
-                            includeCoinsForWeight: includeCoinsForWeight,
-                            itemList: itemList,
-                            milestoneLevelling: milestoneLevelling,
-                            multiclassing: multiclassing,
-                            useCustomContent: useCustomContent,
-                            equipmentSelectedFromChoices:
-                                equipmentSelectedFromChoices,
-                            optionalClassFeatures: optionalClassFeatures,
-                            optionalOnesStates: optionalOnesStates,
-                            optionalTwosStates: optionalTwosStates,
-                            pointsRemaining: pointsRemaining,
-                            speedBonuses: speedBonusMap,
-                            unearthedArcanaContent: unearthedArcanaContent,
-                            weaponList: weaponList,
-                            numberOfRemainingFeatOrASIs:
-                                numberOfRemainingFeatOrASIs,
-                            playerName: playerName,
-                            classList: classList,
-                            stackableEquipmentSelected:
-                                stackableEquipmentSelected,
-                            unstackableEquipmentSelected:
-                                unstackableEquipmentSelected,
-                            classSkillsSelected: classSkillChoices,
-                            skillsSelected: selectedSkillsQ,
-                            subrace: subraceExample,
-                            mainToolProficiencies: toolProficiencies,
-                            savingThrowProficiencies:
-                                savingThrowProficiencies ?? [],
-                            languagesKnown: languagesKnown,
-                            featuresAndTraits: featuresAndTraits,
-                            inspired: inspired,
-                            skillProficiencies: skillProficiencies,
-                            maxHealth: maxHealth,
-                            background: currentBackground,
-                            classLevels: levelsPerClass,
-                            race: initialRace,
-                            characterExperience: characterExperience,
-                            currency: currencyStored,
-                            backgroundPersonalityTrait:
-                                backgroundPersonalityTrait,
-                            backgroundIdeal: backgroundIdeal,
-                            backgroundBond: backgroundBond,
-                            backgroundFlaw: backgroundFlaw,
-                            name: characterName,
-                            raceAbilityScoreIncreases: abilityScoreIncreases,
-                            featsASIScoreIncreases: ASIBonuses,
-                            strength: strength,
-                            dexterity: dexterity,
-                            constitution: constitution,
-                            intelligence: intelligence,
-                            wisdom: wisdom,
-                            charisma: charisma)
-                        .toJson());
-
-                    File("assets/Characters.json")
-                        .writeAsStringSync(jsonEncode(json));
-                  },
-                )),
+                        characters.add(Character(
+                                levelsPerClass: levelsPerClass,
+                                selections: selections,
+                                allSelected: allSelected,
+                                classSubclassMapper: classSubclassMapper,
+                                ACList: ACList,
+                                ASIRemaining: ASIRemaining,
+                                allSpellsSelected: allSpellsSelected,
+                                allSpellsSelectedAsListsOfThings:
+                                    allSpellsSelectedAsListsOfThings,
+                                armourList: armourList,
+                                averageHitPoints: averageHitPoints,
+                                backgroundSkillChoices: backgroundSkillChoices,
+                                characterAge: characterAge,
+                                characterEyes: characterEyes,
+                                characterHair: characterHair,
+                                characterHeight: characterHeight,
+                                characterSkin: characterSkin,
+                                characterWeight: characterWeight,
+                                coinTypeSelected: coinTypeSelected,
+                                criticalRoleContent: criticalRoleContent,
+                                encumberanceRules: encumberanceRules,
+                                extraFeatAtLevel1: extraFeatAtLevel1,
+                                featsAllowed: featsAllowed,
+                                featsSelected: featsSelected,
+                                firearmsUsable: firearmsUsable,
+                                fullFeats: fullFeats,
+                                halfFeats: halfFeats,
+                                gender: characterGender,
+                                includeCoinsForWeight: includeCoinsForWeight,
+                                itemList: itemList,
+                                milestoneLevelling: milestoneLevelling,
+                                multiclassing: multiclassing,
+                                useCustomContent: useCustomContent,
+                                equipmentSelectedFromChoices:
+                                    equipmentSelectedFromChoices,
+                                optionalClassFeatures: optionalClassFeatures,
+                                optionalOnesStates: optionalOnesStates,
+                                optionalTwosStates: optionalTwosStates,
+                                pointsRemaining: pointsRemaining,
+                                speedBonuses: speedBonusMap,
+                                unearthedArcanaContent: unearthedArcanaContent,
+                                weaponList: weaponList,
+                                numberOfRemainingFeatOrASIs:
+                                    numberOfRemainingFeatOrASIs,
+                                playerName: playerName,
+                                classList: classList,
+                                stackableEquipmentSelected:
+                                    stackableEquipmentSelected,
+                                unstackableEquipmentSelected:
+                                    unstackableEquipmentSelected,
+                                classSkillsSelected: classSkillChoices,
+                                skillsSelected: selectedSkillsQ,
+                                subrace: subraceExample,
+                                mainToolProficiencies: toolProficiencies,
+                                savingThrowProficiencies:
+                                    savingThrowProficiencies ?? [],
+                                languagesKnown: languagesKnown,
+                                featuresAndTraits: featuresAndTraits,
+                                inspired: inspired,
+                                skillProficiencies: skillProficiencies,
+                                maxHealth: maxHealth,
+                                background: currentBackground,
+                                classLevels: levelsPerClass,
+                                race: initialRace,
+                                group: group,
+                                characterExperience: characterExperience,
+                                currency: currencyStored,
+                                backgroundPersonalityTrait:
+                                    backgroundPersonalityTrait,
+                                backgroundIdeal: backgroundIdeal,
+                                backgroundBond: backgroundBond,
+                                backgroundFlaw: backgroundFlaw,
+                                name: characterName,
+                                raceAbilityScoreIncreases:
+                                    abilityScoreIncreases,
+                                featsASIScoreIncreases: ASIBonuses,
+                                strength: strength,
+                                dexterity: dexterity,
+                                constitution: constitution,
+                                intelligence: intelligence,
+                                wisdom: wisdom,
+                                charisma: charisma)
+                            .toJson());
+                        if ((!GROUPLIST.contains(group)) &&
+                            group != null &&
+                            group!.replaceAll(" ", "") != "") {
+                          final List<dynamic> groupsList = json["Groups"];
+                          groupsList.add(group);
+                        }
+                        File("assets/Characters.json")
+                            .writeAsStringSync(jsonEncode(json));
+                        updateCharacterVariables();
+                      });
+                    },
+                  )
+                ])),
                 const Expanded(flex: 2, child: Text("Preview"))
               ])),
         ]),

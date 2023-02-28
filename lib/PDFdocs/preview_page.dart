@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 //import 'package:makepdfs/pages/pdfexport/pdf/pdfexport.dart';
 import 'package:frankenstein/PDFdocs/pdf_final_display.dart';
 //import 'package:printing/printing.dart';
-import 'package:frankenstein/PDFdocs/character_class.dart';
+import 'package:frankenstein/character_globals.dart';
 
 //import 'package:frankenstein/PDFdocs/preview_page.dart';
 class DetailPage extends StatelessWidget {

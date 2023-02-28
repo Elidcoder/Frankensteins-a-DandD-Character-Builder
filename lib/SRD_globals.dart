@@ -175,9 +175,10 @@ class Feat {
   });
 }
 
+//String data =  rootBundle.loadString("assets/$path.json")
 ///file loaded as a string "jsonString"
 String jsonString = File("assets/SRD.json").readAsStringSync();
-//String data =  rootBundle.loadString("assets/$path.json")
+
 ///file decoded into "jsonmap"
 final dynamic jsonmap = decoder.convert(jsonString);
 // ignore: non_constant_identifier_names
@@ -685,11 +686,11 @@ const JsonDecoder decoder = JsonDecoder();
 //for every background,race(sub),class(sub)
 // ignore: non_constant_identifier_names
 List<Race> RACELIST = [for (var x in jsonmap["Races"]) Race.fromJson(x)];
-List<Spell> list = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
+//List<Spell> list = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
 // ignore: non_constant_identifier_names
 List<Background> BACKGROUNDLIST = [
   //There is large issue IDK and cant remember what else wsas in the fix
-  for (var x in jsonmap["Background"]) Background.fromJson(x)
+  for (var x in jsonmap["Backgrounds"]) Background.fromJson(x)
 ];
 // ignore: non_constant_identifier_names
 List<Class> CLASSLIST = [for (var x in jsonmap["Classes"]) Class.fromJson(x)];
@@ -713,3 +714,29 @@ dynamic mapEquipment(x) {
 List<dynamic> ITEMLIST = [
   for (var x in jsonmap["Equipment"] ?? []) mapEquipment(x)
 ];
+
+void updateSRDGlobals() {
+  String jsonString = File("assets/SRD.json").readAsStringSync();
+
+  ///file decoded into "jsonmap"
+  final dynamic jsonmap = decoder.convert(jsonString);
+  // ignore: non_constant_identifier_names
+  LANGUAGELIST = jsonmap["Languages"].cast<String>() as List<String>;
+  // ignore: non_constant_identifier_names
+  PROFICIENCYLIST =
+      jsonmap["Proficiencies"].cast<Proficiency>() as List<Proficiency>;
+  RACELIST = [for (var x in jsonmap["Races"]) Race.fromJson(x)];
+  //list = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
+  // ignore: non_constant_identifier_names
+  BACKGROUNDLIST = [
+    for (var x in jsonmap["Backgrounds"]) Background.fromJson(x)
+  ];
+  // ignore: non_constant_identifier_names
+  CLASSLIST = [for (var x in jsonmap["Classes"]) Class.fromJson(x)];
+  // ignore: non_constant_identifier_names
+  SPELLLIST = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
+  // ignore: non_constant_identifier_names
+  FEATLIST = [for (var x in jsonmap["Feats"]) Feat.fromJson(x)];
+  // ignore: non_constant_identifier_names
+  ITEMLIST = [for (var x in jsonmap["Equipment"] ?? []) mapEquipment(x)];
+}

@@ -18,7 +18,7 @@ final Map<int, Widget> PAGELINKER = {
   1: CreateACharacter(),
   2: const SearchForContent(),
   3: MyCharacters(),
-  4: const RollDice(),
+  4: RollDice(),
   5: const CustomContent()
 };
 
