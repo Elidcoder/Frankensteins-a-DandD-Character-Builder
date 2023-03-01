@@ -1040,6 +1040,12 @@ class MainCreateCharacter extends State<CreateACharacter>
   //finishing up variables
   String? group;
   @override
+  void initState() {
+    super.initState();
+    updateGlobals();
+  }
+
+  @override
   Widget build(
     BuildContext context,
   ) {
@@ -5820,10 +5826,11 @@ class MainCreateCharacter extends State<CreateACharacter>
                     child: const Text("Save Character"),
                     onPressed: () {
                       setState(() {
-                        final String jsonContent =
-                            File("assets/Characters.json").readAsStringSync();
+                        updateGlobals();
+                        //final String jsonContent =
+                        //  File("assets/Characters.json").readAsStringSync();
                         final Map<String, dynamic> json =
-                            jsonDecode(jsonContent);
+                            jsonDecode(jsonString ?? "");
                         final List<dynamic> characters = json["Characters"];
                         final String curCharacterName = characterName;
                         final int index = characters.indexWhere((character) =>
@@ -5923,9 +5930,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                           final List<dynamic> groupsList = json["Groups"];
                           groupsList.add(group);
                         }
-                        File("assets/Characters.json")
-                            .writeAsStringSync(jsonEncode(json));
-                        updateCharacterVariables();
+                        writeJsonToFile(json, "userContent");
+                        //File("assets/Characters.json")
+                        //  .writeAsStringSync(jsonEncode(json));
+                        //updateCharacterGlobals();
                       });
                     },
                   )

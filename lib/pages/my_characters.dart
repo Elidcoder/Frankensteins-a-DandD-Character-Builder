@@ -17,6 +17,11 @@ class MyCharacters extends StatefulWidget {
 
 class MainMyCharacters extends State<MyCharacters> {
   //MainMyCharacters({Key? key}) : super(key: key);
+  @override
+  void initState() {
+    super.initState();
+    updateGlobals();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +203,7 @@ class MainMyCharacters extends State<MyCharacters> {
                                       }
                                       File("assets/Characters.json")
                                           .writeAsStringSync(jsonEncode(json));
-                                      updateCharacterVariables();
+                                      updateGlobals();
                                     });
                                   },
                                   child: const SizedBox(

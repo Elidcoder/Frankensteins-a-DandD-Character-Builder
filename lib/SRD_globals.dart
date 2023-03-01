@@ -1,5 +1,7 @@
 import "dart:convert";
 import "dart:io";
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:path_provider/path_provider.dart';
 
 List<List<List<dynamic>>> parseJsonToMultiList(List jsonData) {
   List<List<List<dynamic>>> multiList = [];
@@ -177,7 +179,8 @@ class Feat {
 
 //String data =  rootBundle.loadString("assets/$path.json")
 ///file loaded as a string "jsonString"
-String jsonString = File("assets/SRD.json").readAsStringSync();
+///
+/*String jsonString = File("assets/SRD.json").readAsStringSync();
 
 ///file decoded into "jsonmap"
 final dynamic jsonmap = decoder.convert(jsonString);
@@ -186,6 +189,43 @@ List<String> LANGUAGELIST = jsonmap["Languages"].cast<String>() as List<String>;
 // ignore: non_constant_identifier_names
 List<Proficiency> PROFICIENCYLIST =
     jsonmap["Proficiencies"].cast<Proficiency>() as List<Proficiency>;
+const JsonDecoder decoder = JsonDecoder();
+//make this maintainable
+//const String filepath =
+//  "C:\\Users\\arieh\\OneDrive\\Documents\\Dartwork\\frankenstein\\lib\\SRD.json";
+
+//for every background,race(sub),class(sub)
+// ignore: non_constant_identifier_names
+List<Race> RACELIST = [for (var x in jsonmap["Races"]) Race.fromJson(x)];
+//List<Spell> list = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
+// ignore: non_constant_identifier_names
+List<Background> BACKGROUNDLIST = [
+  //There is large issue IDK and cant remember what else wsas in the fix
+  for (var x in jsonmap["Backgrounds"]) Background.fromJson(x)
+];
+// ignore: non_constant_identifier_names
+List<Class> CLASSLIST = [for (var x in jsonmap["Classes"]) Class.fromJson(x)];
+// ignore: non_constant_identifier_names
+List<Spell> SPELLLIST = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
+// ignore: non_constant_identifier_names
+List<Feat> FEATLIST = [for (var x in jsonmap["Feats"]) Feat.fromJson(x)];
+
+dynamic mapEquipment(x) {
+  if (x["EquipmentType"].contains("Magic")) {
+    ///run through magic subtypes
+  } else if (x["EquipmentType"].contains("Armour")) {
+    return Armour.fromJson(x);
+  } else if (x["EquipmentType"].contains("Weapon")) {
+    return Weapon.fromJson(x);
+  }
+  return Item.fromJson(x);
+}
+
+// ignore: non_constant_identifier_names
+List<dynamic> ITEMLIST = [
+  for (var x in jsonmap["Equipment"] ?? []) mapEquipment(x)
+];
+*/
 
 class Subrace {
   final String name;
@@ -678,44 +718,8 @@ class Weapon {
       required this.weight});
 }
 */
-const JsonDecoder decoder = JsonDecoder();
-//make this maintainable
-//const String filepath =
-//  "C:\\Users\\arieh\\OneDrive\\Documents\\Dartwork\\frankenstein\\lib\\SRD.json";
 
-//for every background,race(sub),class(sub)
-// ignore: non_constant_identifier_names
-List<Race> RACELIST = [for (var x in jsonmap["Races"]) Race.fromJson(x)];
-//List<Spell> list = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
-// ignore: non_constant_identifier_names
-List<Background> BACKGROUNDLIST = [
-  //There is large issue IDK and cant remember what else wsas in the fix
-  for (var x in jsonmap["Backgrounds"]) Background.fromJson(x)
-];
-// ignore: non_constant_identifier_names
-List<Class> CLASSLIST = [for (var x in jsonmap["Classes"]) Class.fromJson(x)];
-// ignore: non_constant_identifier_names
-List<Spell> SPELLLIST = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
-// ignore: non_constant_identifier_names
-List<Feat> FEATLIST = [for (var x in jsonmap["Feats"]) Feat.fromJson(x)];
-
-dynamic mapEquipment(x) {
-  if (x["EquipmentType"].contains("Magic")) {
-    ///run through magic subtypes
-  } else if (x["EquipmentType"].contains("Armour")) {
-    return Armour.fromJson(x);
-  } else if (x["EquipmentType"].contains("Weapon")) {
-    return Weapon.fromJson(x);
-  }
-  return Item.fromJson(x);
-}
-
-// ignore: non_constant_identifier_names
-List<dynamic> ITEMLIST = [
-  for (var x in jsonmap["Equipment"] ?? []) mapEquipment(x)
-];
-
-void updateSRDGlobals() {
+/*void updateSRDGlobals() {
   String jsonString = File("assets/SRD.json").readAsStringSync();
 
   ///file decoded into "jsonmap"
@@ -739,4 +743,68 @@ void updateSRDGlobals() {
   FEATLIST = [for (var x in jsonmap["Feats"]) Feat.fromJson(x)];
   // ignore: non_constant_identifier_names
   ITEMLIST = [for (var x in jsonmap["Equipment"] ?? []) mapEquipment(x)];
+}*/
+
+String? jsonString;
+
+const JsonDecoder decoder = JsonDecoder();
+final dynamic jsonmap = decoder.convert(jsonString ?? "");
+
+List<String> LANGUAGELIST = [];
+
+List<Proficiency> PROFICIENCYLIST = [];
+//debugPrint("$RACELIST");
+List<Race> RACELIST = [];
+
+List<Background> BACKGROUNDLIST = [];
+
+List<Class> CLASSLIST = [];
+
+List<Spell> SPELLLIST = [];
+
+List<Feat> FEATLIST = [];
+List<dynamic> ITEMLIST = [];
+dynamic mapEquipment(x) {
+  if (x["EquipmentType"].contains("Magic")) {
+    ///run through magic subtypes
+  } else if (x["EquipmentType"].contains("Armour")) {
+    return Armour.fromJson(x);
+  } else if (x["EquipmentType"].contains("Weapon")) {
+    return Weapon.fromJson(x);
+  }
+  return Item.fromJson(x);
+}
+
+/*
+Future<dynamic> getFile(String location) async {
+  final jsonString = await rootBundle.loadString(location);
+  final jsonmap = decoder.convert(jsonString);
+  return jsonmap;
+}
+
+
+Future<void> writeToFile(String fileName, String data) async {
+  final directory = await getApplicationDocumentsDirectory();
+  final file = File('${directory.path}/$fileName');
+  await file.writeAsString(data);
+}*/
+Future<String> getFile(String filename) async {
+  final directory = await getApplicationDocumentsDirectory();
+  final file = File('${directory.path}/$filename.json');
+  final contents = await file.readAsString();
+  return contents;
+}
+
+Future<void> writeJsonToFile(
+    Map<String, dynamic> jsonData, String filename) async {
+  final jsonStr = jsonEncode(jsonData);
+  final bytes = utf8.encode(jsonStr);
+  final directory = await getApplicationDocumentsDirectory();
+  final file = File('${directory.path}/$filename.json');
+  await file.writeAsBytes(bytes);
+
+  // To copy from assets, uncomment the following code:
+  // final data = await rootBundle.load('assets/file.json');
+  // final bytes = data.buffer.asUint8List();
+  // await file.writeAsBytes(bytes);
 }

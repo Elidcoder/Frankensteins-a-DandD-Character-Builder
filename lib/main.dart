@@ -11,6 +11,8 @@ import 'pages/my_characters.dart';
 import 'pages/roll_dice.dart';
 import 'pages/search_for_content.dart';
 //import "package:frankenstein/globals.dart";
+import 'package:frankenstein/SRD_globals.dart';
+import 'package:frankenstein/character_globals.dart';
 
 // ignore: non_constant_identifier_names
 final Map<int, Widget> PAGELINKER = {
@@ -24,7 +26,10 @@ final Map<int, Widget> PAGELINKER = {
 
 //get rid of this later{
 
-void main() => runApp(const Homepage());
+void main() {
+  //updateSRDGlobals();
+  runApp(const Homepage());
+}
 
 class Homepage extends StatelessWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -33,6 +38,7 @@ class Homepage extends StatelessWidget {
   //late final Map<String, dynamic> jsonmap = decoder.convert(jsonString);
 
   static const String _title = 'Frankenstein\'s - a D&D 5e character builder';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -64,8 +70,10 @@ class ScreenTop extends StatelessWidget {
   final int? pagechoice;
   const ScreenTop({Key? key, this.pagechoice}) : super(key: key);
   static const String _title = 'Frankenstein\'s - a D&D 5e character builder';
+
   @override
   Widget build(BuildContext context) {
+    updateGlobals();
     return MaterialApp(
       title: _title,
       home: Scaffold(
@@ -112,6 +120,7 @@ class MainMenu extends StatelessWidget {
   const MainMenu({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    updateGlobals();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

@@ -454,18 +454,49 @@ class Character {
       this.group});
 }
 
-final String jsonContent = File("assets/Characters.json").readAsStringSync();
-final Map<String, dynamic> readJson = jsonDecode(jsonContent);
-//final List<dynamic> characters = json["Characters"];
-List<Character> CHARACTERLIST = [
-  for (var x in readJson["Characters"]) Character.fromJson(x)
-];
-List<String> GROUPLIST = readJson["Groups"].cast<String>() as List<String>;
+const JsonDecoder decoder = JsonDecoder();
 
-void updateCharacterVariables() {
+//final dynamic jsonmap = decoder.convert(jsonString ?? "");
+//final List<dynamic> characters = json["Characters"];
+List<Character> CHARACTERLIST = [];
+List<String> GROUPLIST = [];
+
+/*void updateCharacterVariables() {
   final String jsonContent = File("assets/Characters.json").readAsStringSync();
   final Map<String, dynamic> readJson = jsonDecode(jsonContent);
 //final List<dynamic> characters = json["Characters"];
   CHARACTERLIST = [for (var x in readJson["Characters"]) Character.fromJson(x)];
   GROUPLIST = readJson["Groups"].cast<String>() as List<String>;
+}*/
+
+void updateGlobals() async {
+  jsonString = await getFile("userContent");
+  final jsonmap = jsonDecode(jsonString ?? "");
+
+  ///file decoded into "jsonmap"
+  //final dynamic jsonmap = decoder.convert(jsonString??"");
+
+  // ignore: non_constant_identifier_names
+  LANGUAGELIST = jsonmap["Languages"].cast<String>() as List<String>;
+  // ignore: non_constant_identifier_names
+  PROFICIENCYLIST =
+      jsonmap["Proficiencies"].cast<Proficiency>() as List<Proficiency>;
+  RACELIST = [for (var x in jsonmap["Races"]) Race.fromJson(x)];
+  // ignore: non_constant_identifier_names
+  BACKGROUNDLIST = [
+    for (var x in jsonmap["Backgrounds"]) Background.fromJson(x)
+  ];
+  // ignore: non_constant_identifier_names
+  CLASSLIST = [for (var x in jsonmap["Classes"]) Class.fromJson(x)];
+  // ignore: non_constant_identifier_names
+  SPELLLIST = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
+  // ignore: non_constant_identifier_names
+  FEATLIST = [for (var x in jsonmap["Feats"]) Feat.fromJson(x)];
+  // ignore: non_constant_identifier_names
+  ITEMLIST = [for (var x in jsonmap["Equipment"] ?? []) mapEquipment(x)];
+  // ignore: non_constant_identifier_names
+  LANGUAGELIST = jsonmap["Groups"].cast<String>() as List<String>;
+  // ignore: non_constant_identifier_names
+
+  CHARACTERLIST = [for (var x in jsonmap["Characters"]) Character.fromJson(x)];
 }

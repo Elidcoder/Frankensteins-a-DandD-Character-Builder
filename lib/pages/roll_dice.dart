@@ -96,9 +96,14 @@ class MainRollDice extends State<RollDice> {
                 final contents = await file.readAsString();
                 final jsonData2 = json.decode(contents);
 
-                final String jsonContents =
-                    File("assets/SRD.json").readAsStringSync();
-                final Map<String, dynamic> jsonData = jsonDecode(jsonContents);
+                updateGlobals();
+                //final String jsonContent =
+                //  File("assets/Characters.json").readAsStringSync();
+
+                //final String jsonContents =
+                //  File("assets/SRD.json").readAsStringSync();
+                final Map<String, dynamic> jsonData =
+                    jsonDecode(jsonString ?? "");
 
                 //at some point actually check for dupes
                 final List<dynamic> characters = jsonData["Spells"];
@@ -128,9 +133,10 @@ class MainRollDice extends State<RollDice> {
                 final List<dynamic> feats = jsonData["Feats"];
                 feats.addAll(jsonData2["Feats"] ?? []);
 
-                File("assets/SRD.json").writeAsStringSync(jsonEncode(json));
+                //File("assets/SRD.json").writeAsStringSync(jsonEncode(json));
+                writeJsonToFile(jsonData, "userContent");
 
-                updateSRDGlobals();
+                updateGlobals();
 
                 // do something with the parsed JSON data
               }
