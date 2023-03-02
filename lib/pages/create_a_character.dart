@@ -5794,16 +5794,19 @@ class MainCreateCharacter extends State<CreateACharacter>
                             group = value!;
                           });
                         },
-                        items: GROUPLIST
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: SizedBox(
-                                width: 100,
-                                child: FittedBox(
-                                    fit: BoxFit.scaleDown, child: Text(value))),
-                          );
-                        }).toList(),
+                        items: (GROUPLIST != [])
+                            ? GROUPLIST
+                                .map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: SizedBox(
+                                      width: 100,
+                                      child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          child: Text(value))),
+                                );
+                              }).toList()
+                            : null,
                       )),
                   TextField(
                       cursorColor: Colors.blue,

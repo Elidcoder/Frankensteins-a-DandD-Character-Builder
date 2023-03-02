@@ -8,20 +8,29 @@ import 'package:flutter/material.dart';
 import 'pages/custom_content.dart';
 import 'pages/create_a_character.dart';
 import 'pages/my_characters.dart';
-import 'pages/roll_dice.dart';
+//import 'pages/roll_dice.dart';
 import 'pages/search_for_content.dart';
+import 'pages/custom_content_options/spells.dart';
+import 'pages/custom_content_options/items.dart';
+import 'pages/custom_content_options/weapons.dart';
 //import "package:frankenstein/globals.dart";
 import 'package:frankenstein/SRD_globals.dart';
 import 'package:frankenstein/character_globals.dart';
+import "dart:convert";
+import "dart:io";
+import 'package:file_picker/file_picker.dart';
 
 // ignore: non_constant_identifier_names
-final Map<int, Widget> PAGELINKER = {
-  0: const MainMenu(),
-  1: CreateACharacter(),
-  2: const SearchForContent(),
-  3: MyCharacters(),
-  4: RollDice(),
-  5: const CustomContent()
+final Map<String, Widget> PAGELINKER = {
+  "Main Menu": const MainMenu(),
+  "Create a Character": CreateACharacter(),
+  "Search for Content": const SearchForContent(),
+  "My Characters": MyCharacters(),
+  //"Roll Dice": RollDice(),
+  "Custom Content": const CustomContent(),
+  "Create spells": MakeASpell(),
+  "Create Items": MakeAnItem(),
+  "Create weapons": MakeAWeapon(),
 };
 
 //get rid of this later{
@@ -67,7 +76,7 @@ class Homepage extends StatelessWidget {
 }
 
 class ScreenTop extends StatelessWidget {
-  final int? pagechoice;
+  final String? pagechoice;
   const ScreenTop({Key? key, this.pagechoice}) : super(key: key);
   static const String _title = 'Frankenstein\'s - a D&D 5e character builder';
 
@@ -79,19 +88,19 @@ class ScreenTop extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              icon: (pagechoice == 0)
+              icon: (pagechoice == "Main Menu")
                   ? const Icon(Icons.image)
                   : const Icon(Icons.home),
-              tooltip: (pagechoice == 0)
+              tooltip: (pagechoice == "Main Menu")
                   ? "Put logo here"
                   : "Return to the main menu",
               onPressed: () {
-                if (pagechoice != 0) {
+                if (pagechoice != "Main Menu") {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              const ScreenTop(pagechoice: 0)));
+                              const ScreenTop(pagechoice: "Main Menu")));
                 }
               }),
           title: const Center(child: Text(_title)),
@@ -158,7 +167,8 @@ class MainMenu extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const ScreenTop(pagechoice: 1)),
+                      builder: (context) =>
+                          const ScreenTop(pagechoice: "Create a Character")),
                 );
               },
               child: const Text(
@@ -184,7 +194,8 @@ class MainMenu extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const ScreenTop(pagechoice: 2)),
+                      builder: (context) =>
+                          const ScreenTop(pagechoice: "Search for Content")),
                 );
               },
               child: const Text(
@@ -210,7 +221,8 @@ class MainMenu extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const ScreenTop(pagechoice: 3)),
+                      builder: (context) =>
+                          const ScreenTop(pagechoice: "My Characters")),
                 );
               },
               child: const Text(
@@ -237,13 +249,70 @@ class MainMenu extends StatelessWidget {
                 side: const BorderSide(
                     width: 5, color: Color.fromARGB(255, 7, 26, 239)),
               ),
+              onPressed: () async {
+                final result = await FilePicker.platform.pickFiles(
+                  type: FileType.custom,
+                  allowedExtensions: ['json'],
+                );
+                if (result != null) {
+                  final file =
+                      File(result.files.single.path ?? "Never going to happen");
+                  final contents = await file.readAsString();
+                  final jsonData2 = json.decode(contents);
+
+                  updateGlobals();
+                  //final String jsonContent =
+                  //  File("assets/Characters.json").readAsStringSync();
+
+                  //final String jsonContents =
+                  //  File("assets/SRD.json").readAsStringSync();
+                  final Map<String, dynamic> jsonData =
+                      jsonDecode(jsonString ?? "");
+
+                  //at some point actually check for dupes
+                  final List<dynamic> characters = jsonData["Spells"];
+                  characters.addAll(jsonData2["Spells"] ?? []);
+
+                  final List<dynamic> classes = jsonData["Classes"];
+                  classes.addAll(jsonData2["Classes"] ?? []);
+
+                  final List<dynamic> sourceBooks = jsonData["Sourcebooks"];
+                  sourceBooks.addAll(jsonData2["Sourcebooks"] ?? []);
+
+                  final List<dynamic> proficiencies = jsonData["Proficiencies"];
+                  proficiencies.addAll(jsonData2["Proficiencies"] ?? []);
+
+                  final List<dynamic> equipment = jsonData["Equipment"];
+                  equipment.addAll(jsonData2["Equipment"] ?? []);
+
+                  final List<dynamic> languages = jsonData["Languages"];
+                  languages.addAll(jsonData2["Languages"] ?? []);
+
+                  final List<dynamic> races = jsonData["Races"];
+                  races.addAll(jsonData2["Races"] ?? []);
+
+                  final List<dynamic> backgrounds = jsonData["Backgrounds"];
+                  backgrounds.addAll(jsonData2["Backgrounds"] ?? []);
+
+                  final List<dynamic> feats = jsonData["Feats"];
+                  feats.addAll(jsonData2["Feats"] ?? []);
+
+                  //File("assets/SRD.json").writeAsStringSync(jsonEncode(json));
+                  writeJsonToFile(jsonData, "userContent");
+
+                  updateGlobals();
+
+                  // do something with the parsed JSON data
+                }
+              },
+              /*
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => const ScreenTop(pagechoice: 4)),
                 );
-              },
+              },*/
               child: const Text(
                 'Roll dice',
                 style: TextStyle(
@@ -263,10 +332,12 @@ class MainMenu extends StatelessWidget {
                     width: 5, color: Color.fromARGB(255, 7, 26, 239)),
               ),
               onPressed: () {
+                //()
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const ScreenTop(pagechoice: 5)),
+                      builder: (context) =>
+                          const ScreenTop(pagechoice: "Custom Content")),
                 );
               },
               child: const Text(

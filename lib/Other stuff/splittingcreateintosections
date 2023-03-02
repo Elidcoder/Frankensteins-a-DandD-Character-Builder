@@ -15,6 +15,8 @@ isAllowedContend returns allowed content
 
 small:
 groups for characters
+spells allowed users should be updated as classes/subclasses are added
+also future subclasses
 ASI screen should show modifiers produced
 using classlist 
 hashnumbers for different characters vs just namechecks
