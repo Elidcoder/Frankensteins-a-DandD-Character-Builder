@@ -310,8 +310,9 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                   width: 90.0,
                                   child: FittedBox(
                                     fit: BoxFit.scaleDown,
-                                    child: (userCharacter.playerName.replaceAll(" ", "") ==
-                                      "")
+                                    child: (userCharacter.playerName
+                                                .replaceAll(" ", "") ==
+                                            "")
                                         ? Text(
                                             "No data to display",
                                           )

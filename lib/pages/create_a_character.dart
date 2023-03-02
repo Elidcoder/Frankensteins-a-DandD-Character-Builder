@@ -933,7 +933,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   String characterName = "";
   String playerName = "";
   String characterGender = "";
-  int characterExperience = 0;
+  double characterExperience = 0;
   //bools representing the states of the checkboxes (basics)
   bool? featsAllowed = true;
   bool? averageHitPoints = false;

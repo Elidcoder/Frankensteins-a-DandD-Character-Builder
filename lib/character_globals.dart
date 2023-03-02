@@ -53,7 +53,7 @@ class Character {
   final List<String> skillProficiencies;
   final int maxHealth;
 
-  final int characterExperience;
+  final double characterExperience;
   final List<bool> classSkillsSelected;
 
   final Race race;
@@ -280,7 +280,7 @@ class Character {
         data["BackgroundPersonalityTrait"] as String;
     final backgroundBond = data["BackgroundBond"] as String;
     final backgroundIdeal = data["BackgroundIdeal"] as String;
-    final characterExperience = data["CharacterExperience"] as int;
+    final characterExperience = data["CharacterExperience"] as double;
     final raceAbilityScoreIncreases =
         data["RaceAbilityScoreIncreases"].cast<int>() as List<int>;
 

@@ -6,6 +6,7 @@ import "dart:collection";
 import "package:flutter_multi_select_items/flutter_multi_select_items.dart";
 import 'package:frankenstein/character_globals.dart';
 import "package:frankenstein/PDFdocs/pdf_final_display.dart";
+import "my_character_options/edit_character.dart";
 import "dart:math";
 import "dart:convert";
 import "dart:io";
@@ -160,7 +161,14 @@ class MainMyCharacters extends State<MyCharacters> {
                               OutlinedButton(
                                   style: OutlinedButton.styleFrom(
                                       backgroundColor: Colors.green),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Edittop(CHARACTERLIST[index])),
+                                    );
+                                  },
                                   child: const SizedBox(
                                       width: 175,
                                       child: Text(
