@@ -5720,7 +5720,11 @@ class MainCreateCharacter extends State<CreateACharacter>
                               optionalClassFeatures: optionalClassFeatures,
                               optionalOnesStates: optionalOnesStates,
                               optionalTwosStates: optionalTwosStates,
-                              pointsRemaining: pointsRemaining,
+                              uniqueID: int.parse([
+                                for (var i in List.generate(
+                                    15, (_) => Random().nextInt(10)))
+                                  i.toString()
+                              ].join()),
                               speedBonuses: speedBonusMap,
                               unearthedArcanaContent: unearthedArcanaContent,
                               weaponList: weaponList,
@@ -5844,6 +5848,11 @@ class MainCreateCharacter extends State<CreateACharacter>
                         }
 
                         characters.add(Character(
+                                uniqueID: int.parse([
+                                  for (var i in List.generate(
+                                      15, (_) => Random().nextInt(10)))
+                                    i.toString()
+                                ].join()),
                                 levelsPerClass: levelsPerClass,
                                 selections: selections,
                                 allSelected: allSelected,
@@ -5882,7 +5891,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 optionalClassFeatures: optionalClassFeatures,
                                 optionalOnesStates: optionalOnesStates,
                                 optionalTwosStates: optionalTwosStates,
-                                pointsRemaining: pointsRemaining,
                                 speedBonuses: speedBonusMap,
                                 unearthedArcanaContent: unearthedArcanaContent,
                                 weaponList: weaponList,
@@ -5934,9 +5942,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                           groupsList.add(group);
                         }
                         writeJsonToFile(json, "userContent");
-                        //File("assets/Characters.json")
-                        //  .writeAsStringSync(jsonEncode(json));
-                        //updateCharacterGlobals();
+                        updateGlobals();
                       });
                     },
                   )

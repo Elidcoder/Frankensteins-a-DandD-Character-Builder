@@ -93,11 +93,9 @@ class EditACharacter extends StatefulWidget {
 }
 
 //null op here to locate if called by editor (to edit char so will contain info) or otherwise
-class EditCharacter extends State<EditACharacter>
-    with AutomaticKeepAliveClientMixin {
+class EditCharacter extends State<EditACharacter> {
   //random stsuff
-  @override
-  bool get wantKeepAlive => true;
+
   final Character character;
 
   EditCharacter({required this.character});
@@ -242,7 +240,7 @@ class EditCharacter extends State<EditACharacter>
   Widget build(
     BuildContext context,
   ) {
-    super.build(context);
+    //super.build(context);
     return DefaultTabController(
       length: 7,
       child: Scaffold(
@@ -2230,6 +2228,7 @@ class EditCharacter extends State<EditACharacter>
                     MaterialPageRoute(
                       builder: (context) => PdfPreviewPage(
                           invoice: Character(
+                              uniqueID: character.uniqueID,
                               group: group,
                               levelsPerClass: levelsPerClass,
                               selections: selections,
@@ -2280,7 +2279,6 @@ class EditCharacter extends State<EditACharacter>
                                   equipmentSelectedFromChoices,
                               optionalOnesStates: character.optionalOnesStates,
                               optionalTwosStates: character.optionalTwosStates,
-                              pointsRemaining: character.pointsRemaining,
                               speedBonuses: speedBonusMap,
                               weaponList: weaponList,
                               numberOfRemainingFeatOrASIs:
@@ -2391,16 +2389,13 @@ class EditCharacter extends State<EditACharacter>
                         //  File("assets/Characters.json").readAsStringSync();
                         final Map<String, dynamic> json =
                             jsonDecode(jsonString ?? "");
-                        final List<dynamic> characters = json["Characters"];
-                        final String curCharacterName = character.name;
-                        final int index = characters.indexWhere((character) =>
-                            character["Name"] == curCharacterName);
-
-                        if (index != -1) {
-                          characters.removeAt(index);
-                        }
+                        final List<dynamic> characters = json["Characters"]
+                            .where((element) =>
+                                element["UniqueID"] != character.uniqueID)
+                            .toList();
 
                         characters.add(Character(
+                                uniqueID: character.uniqueID,
                                 group: group,
                                 levelsPerClass: levelsPerClass,
                                 selections: selections,
@@ -2454,7 +2449,6 @@ class EditCharacter extends State<EditACharacter>
                                     character.optionalOnesStates,
                                 optionalTwosStates:
                                     character.optionalTwosStates,
-                                pointsRemaining: character.pointsRemaining,
                                 speedBonuses: speedBonusMap,
                                 weaponList: weaponList,
                                 numberOfRemainingFeatOrASIs:
@@ -2494,16 +2488,23 @@ class EditCharacter extends State<EditACharacter>
                                 wisdom: wisdom,
                                 charisma: charisma)
                             .toJson());
+                        List<dynamic> groupsList = json["Groups"];
+                        groupsList = groupsList
+                            .where((element) => [
+                                  for (var x in characters) x["Group"]
+                                ].contains(element))
+                            .toList();
                         if ((!GROUPLIST.contains(group)) &&
                             group != null &&
                             group!.replaceAll(" ", "") != "") {
-                          final List<dynamic> groupsList = json["Groups"];
+                          GROUPLIST.add(group ?? "Never happening");
                           groupsList.add(group);
                         }
+                        json["Groups"] = groupsList;
+                        json["Characters"] = characters;
                         writeJsonToFile(json, "userContent");
-                        //File("assets/Characters.json")
-                        //  .writeAsStringSync(jsonEncode(json));
-                        //updateCharacterGlobals();
+                        updateGlobals();
+                        //Navigator.pop(context);
                       });
                     },
                   )

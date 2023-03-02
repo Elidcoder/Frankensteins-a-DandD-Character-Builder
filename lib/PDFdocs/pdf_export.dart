@@ -702,8 +702,8 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                           child: Text(
                                                               (userCharacter
                                                                       .inspired)
-                                                                  ? ""
-                                                                  : "X",
+                                                                  ? "X"
+                                                                  : "",
                                                               style:
                                                                   const TextStyle(
                                                                       fontSize:

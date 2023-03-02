@@ -1,3 +1,4 @@
+import "package:flutter/material.dart";
 import 'package:frankenstein/SRD_globals.dart';
 import "dart:collection";
 import "dart:convert";
@@ -22,6 +23,7 @@ class AbilityScore {
 
 class Character {
   //general
+  final int uniqueID;
   final List<String> languagesKnown;
   final List<String> featuresAndTraits;
   final List<String> classList;
@@ -77,7 +79,7 @@ class Character {
   final AbilityScore intelligence;
   final AbilityScore wisdom;
   final AbilityScore charisma;
-  final int pointsRemaining;
+  //final int pointsRemaining;
   //Class
   final List<int> levelsPerClass;
   final Map<String, List<dynamic>> selections;
@@ -116,6 +118,7 @@ class Character {
         "FeaturesAndTraits": featuresAndTraits,
         "ClassList": classList,
         "Currency": currency,
+        "UniqueID": uniqueID,
         "Name": name,
         "PlayerName": playerName,
         "ClassLevels": classLevels,
@@ -159,7 +162,7 @@ class Character {
         "Intelligence": intelligence,
         "Wisdom": wisdom,
         "Charisma": charisma,
-        "PointsRemaining": pointsRemaining,
+        //"PointsRemaining": pointsRemaining,
         "LevelsPerClass": levelsPerClass,
         "Selections": selections,
         "AllSelected": allSelected,
@@ -198,6 +201,7 @@ class Character {
 
     final ACList = data["ACList"].cast<List<dynamic>>() as List<List<dynamic>>;
     final ASIRemaining = data["ASIRemaining"] as bool;
+    final uniqueID = data["UniqueID"] as int;
     final allSpellsSelected =
         data["AllSpellsSelected"].cast<Spell>() as List<Spell>;
     final allSpellsSelectedAsListsOfThings =
@@ -240,7 +244,7 @@ class Character {
         .map((row) =>
             (row as List<dynamic>).map((value) => value as bool).toList())
         .toList();
-    final pointsRemaining = data["PointsRemaining"] as int;
+    //final pointsRemaining = data["PointsRemaining"] as int;
 
     //error
     final speedBonuses = (data["SpeedBonuses"] as Map<String, dynamic>).map(
@@ -260,7 +264,7 @@ class Character {
         data["ClassSkillsSelected"].cast<bool>() as List<bool>;
     final subrace = data["Subrace"] as Subrace?;
     final skillsSelected = Queue<int>()
-            .addAll(data["SkillsSelected"].cast<int>() as List<int>? ?? [])
+            .addAll(data["SkillsSelected"]?.cast<int>() as List<int>? ?? [])
         as Queue<int>?;
     final mainToolProficiencies =
         data["MainToolProficiencies"].cast<String>() as List<String>;
@@ -328,6 +332,7 @@ class Character {
       fullFeats: fullFeats,
       halfFeats: halfFeats,
       gender: gender,
+      uniqueID: uniqueID,
       includeCoinsForWeight: includeCoinsForWeight,
       itemList: itemList,
       milestoneLevelling: milestoneLevelling,
@@ -337,7 +342,7 @@ class Character {
       optionalClassFeatures: optionalClassFeatures,
       optionalOnesStates: optionalOnesStates,
       optionalTwosStates: optionalTwosStates,
-      pointsRemaining: pointsRemaining,
+      //pointsRemaining: pointsRemaining,
       speedBonuses: speedBonuses,
       unearthedArcanaContent: unearthedArcanaContent,
       weaponList: weaponList,
@@ -413,7 +418,8 @@ class Character {
       required this.optionalClassFeatures,
       required this.optionalOnesStates,
       required this.optionalTwosStates,
-      required this.pointsRemaining,
+      required this.uniqueID,
+      //required this.pointsRemaining,
       required this.speedBonuses,
       required this.unearthedArcanaContent,
       required this.weaponList,
@@ -495,7 +501,7 @@ void updateGlobals() async {
   // ignore: non_constant_identifier_names
   ITEMLIST = [for (var x in jsonmap["Equipment"] ?? []) mapEquipment(x)];
   // ignore: non_constant_identifier_names
-  LANGUAGELIST = jsonmap["Groups"].cast<String>() as List<String>;
+  GROUPLIST = jsonmap["Groups"].cast<String>() as List<String>;
   // ignore: non_constant_identifier_names
 
   CHARACTERLIST = [for (var x in jsonmap["Characters"]) Character.fromJson(x)];

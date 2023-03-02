@@ -81,7 +81,7 @@ class MainMyCharacters extends State<MyCharacters> {
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white)),
                               Text(
-                                  "Level: ${CHARACTERLIST[index].classLevels.length}",
+                                  "Level: ${CHARACTERLIST[index].classList.length}",
                                   style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,

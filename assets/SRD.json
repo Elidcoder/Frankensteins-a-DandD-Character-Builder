@@ -24,61 +24,61 @@
         {
                 "Name": "Shield",
                 "Effect": "An invisible barrier of magical force appears and protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from magic missile.",
-                "Level": 1,
+                "Level": 1,"Range":"60 ft",
                 "Somatic":true,
                 "Verbal":true,
                 "SpellSchool":"Abjuration",
-                "CastingTime": ["Reaction",1],
+                "Timings": [1,"Reaction",2,"Bonus Action"],
                 "AvailableTo":["Wizard","Sorcerer", "Battle Smith", "The Hexblade","Artillerist"]
         },
         {
                 "Name": "spell placeholder 1",
                 "Effect": "An invisible barrier of magical force appears and protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from magic missile.",
-                "Level": 1,
+                "Level": 1,"Range":"60 ft",
                 "Somatic":true,
                 "Verbal":true,
                 "SpellSchool":"Abjuration",
-                "CastingTime": ["Reaction",1],
+                "Timings": [1,"Reaction",2,"Bonus Action"],
                 "AvailableTo":["Sorcerer", "Battle Smith", "The Hexblade","Artillerist"]
               },
               {
                 "Name": "spell placeholder 2",
                 "Effect": "An invisible barrier of magical force appears and protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from magic missile.",
-                "Level": 1,
+                "Level": 1,"Range":"60 ft",
                 "Somatic":true,
                 "Verbal":true,
                 "SpellSchool":"Abjuration",
-                "CastingTime": ["Reaction",1],
+                "Timings": [1,"Reaction",2,"Bonus Action"],
                 "AvailableTo":["Wizard","Sorcerer", "Battle Smith", "The Hexblade","Artillerist"]
               },
               {
                 "Name": "spell placeholder 3",
                 "Effect": "An invisible barrier of magical force appears and protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from magic missile.",
-                "Level": 1,
+                "Level": 1,"Range":"60 ft",
                 "Somatic":true,
                 "Verbal":true,
                 "SpellSchool":"Abjuration",
-                "CastingTime": ["Reaction",1],
+                "Timings": [1,"Reaction",2,"Bonus Action"],
                 "AvailableTo":["Wizard","Sorcerer", "Battle Smith", "The Hexblade","Artillerist"]
               },
               {
                 "Name": "spell placeholder 4",
                 "Effect": "An invisible barrier of magical force appears and protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from magic missile.",
-                "Level": 1,
+                "Level": 1,"Range":"60 ft",
                 "Somatic":true,
                 "Verbal":true,
                 "SpellSchool":"Abjuration",
-                "CastingTime": ["Reaction",1],
+                "Timings": [1,"Reaction",2,"Bonus Action"],
                 "AvailableTo":["Wizard","Sorcerer", "Battle Smith", "The Hexblade","Artillerist"]
               },
               {
                 "Name": "spell placeholder 5",
                 "Effect": "An invisible barrier of magical force appears and protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from magic missile.",
-                "Level": 1,
+                "Level": 1,"Range":"60 ft",
                 "Somatic":true,
                 "Verbal":true,
                 "SpellSchool":"Abjuration",
-                "CastingTime": ["Reaction",1],
+                "Timings": [1,"Reaction",2,"Bonus Action"],
                 "AvailableTo":["Wizard","Sorcerer", "Battle Smith", "The Hexblade","Artillerist"]
               }
         ],
@@ -102,7 +102,7 @@
                         "Mystery1S": 0,
                         "Mystery2S": 2,
                         "ToolProficiencies":["Dragon chess"]
-
+    
                 }, {
                         "Name": "Tiefling",
                         "AbilityScoreMap": [0,0,0,1,0,2],
@@ -153,7 +153,7 @@
                                 "Ideal": ["Tradition. The ancient traditions of worship and sacrifice must be preserved and upheld. (Lawful)","Charity. I always try to help those in need, no matter what the personal cost. (Good)","Change. We must help bring about the changes the gods are constantly working in the world. (Chaotic)","Power. I hope to one day rise to the top of my faith’s religious hierarchy. (Lawful)","Faith. I trust that my deity will guide my actions. I have faith that if I work hard, things will go well. (Lawful)","Aspiration. I seek to prove myself worthy of my god’s favor by matching my actions against his or her teachings. (Any)"],
                                 "Bond": ["I would die to recover an ancient relic of my faith that was lost long ago.","I will someday get revenge on the corrupt temple hierarchy who branded me a heretic.","I owe my life to the priest who took me in when my parents died.","Everything I do is for the common people.","I will do anything to protect the temple where I served.","I seek to preserve a sacred text that my enemies consider heretical and seek to destroy."],
                                 "Flaw": ["I judge others harshly, and myself even more severely.","I put too much trust in those who wield power within my temple’s hierarchy.","My piety sometimes leads me to blindly trust those that profess faith in my god.","I am inflexible in my thinking.","I am suspicious of strangers and expect the worst of them.","Once I pick a goal, I become obsessed with it to the detriment of everything else in my life."],
-
+    
                                 "Features": ["Shelter of the Faithful: As an acolyte, you command the respect of those who share your faith, and you can perform the religious ceremonies of your deity. You and your adventuring companions can expect to receive free healing and care at a temple, shrine, or other established presence of your faith, though you must provide any material components needed for spells. Those who share your religion will support you (but only you) at a modest lifestyle.You might also have ties to a specific temple dedicated to your chosen deity or pantheon, and you have a residence there. This could be the temple where you used to serve, if you remain on good terms with it, or a temple where you have found a new home. While near your temple, you can call upon the priests for assistance, provided the assistance you ask for is not hazardous and you remain in good standing with your temple."],
                                 "InitialProficiencies": ["Insight","Religion"],
                                 "NumberOfLanguageChoices": 2,
@@ -168,7 +168,7 @@
                                 "Ideal": ["Tradition. The ancient traditions of worship and sacrifice must be preserved and upheld. (Lawful)","Charity. I always try to help those in need, no matter what the personal cost. (Good)","Change. We must help bring about the changes the gods are constantly working in the world. (Chaotic)","Power. I hope to one day rise to the top of my faith’s religious hierarchy. (Lawful)","Faith. I trust that my deity will guide my actions. I have faith that if I work hard, things will go well. (Lawful)","Aspiration. I seek to prove myself worthy of my god’s favor by matching my actions against his or her teachings. (Any)"],
                                 "Bond": ["I would die to recover an ancient relic of my faith that was lost long ago.","I will someday get revenge on the corrupt temple hierarchy who branded me a heretic.","I owe my life to the priest who took me in when my parents died.","Everything I do is for the common people.","I will do anything to protect the temple where I served.","I seek to preserve a sacred text that my enemies consider heretical and seek to destroy."],
                                 "Flaw": ["I judge others harshly, and myself even more severely.","I put too much trust in those who wield power within my temple’s hierarchy.","My piety sometimes leads me to blindly trust those that profess faith in my god.","I am inflexible in my thinking.","I am suspicious of strangers and expect the worst of them.","Once I pick a goal, I become obsessed with it to the detriment of everything else in my life."],
-
+    
                                 "Features": ["Shelter of the Faithful: As an acolyte, you command the respect of those who share your faith, and you can perform the religious ceremonies of your deity. You and your adventuring companions can expect to receive free healing and care at a temple, shrine, or other established presence of your faith, though you must provide any material components needed for spells. Those who share your religion will support you (but only you) at a modest lifestyle.You might also have ties to a specific temple dedicated to your chosen deity or pantheon, and you have a residence there. This could be the temple where you used to serve, if you remain on good terms with it, or a temple where you have found a new home. While near your temple, you can call upon the priests for assistance, provided the assistance you ask for is not hazardous and you remain in good standing with your temple."],
                                 "OptionalSkillProficiencies": ["Insight","Religion"],
                                 "NumberOfSkillChoices":1
@@ -342,5 +342,5 @@
                         "Name": "Survival",
                         "RelevantAbility": "wisdom"
                 }
-                ]
-}
+                ],"Characters":[],"Groups":[]
+    }
