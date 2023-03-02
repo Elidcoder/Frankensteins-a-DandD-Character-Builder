@@ -14,7 +14,7 @@ isAllowedContend returns allowed content
 
 
 small:
-groups for characters
+spells should have a shourcebook
 spells allowed users should be updated as classes/subclasses are added
 also future subclasses
 ASI screen should show modifiers produced

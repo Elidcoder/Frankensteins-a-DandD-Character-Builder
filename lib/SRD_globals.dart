@@ -556,21 +556,26 @@ class Spell {
   final String effect;
   final String spellSchool;
   final int level;
+  final bool? ritual;
+  final String range;
   final bool? verbal;
   final bool? somatic;
   final String? material;
-  final List<dynamic> castingTime;
+  //[casting 1, number, duration 1, number]
+  final List<dynamic> timings;
   final List<String> availableTo;
   Map<String, dynamic> toJson() {
     return {
       "Name": name,
+      "Range": range,
+      "Ritual": ritual,
       "Effect": effect,
       "SpellSchool": spellSchool,
       "Level": level,
       "Verbal": verbal,
       "Somatic": somatic,
       "Material": material,
-      "CastingTime": castingTime,
+      "Timings": timings,
       "AvailableTo": availableTo,
     };
   }
@@ -583,24 +588,29 @@ class Spell {
     final verbal = data["Verbal"] as bool?;
     final somatic = data["Somatic"] as bool?;
     final material = data["Material"] as String?;
+    final ritual = data["Ritual"] as bool?;
     return Spell(
-        name: data["Name"],
+        range: data["Range"] as String,
+        name: data["Name"] as String,
         effect: data["Effect"],
+        ritual: ritual ?? false,
         level: level ?? 0,
         verbal: verbal ?? false,
         somatic: somatic ?? false,
         material: material ?? "None",
-        spellSchool: data["SpellSchool"],
-        castingTime: data["CastingTime"].cast<dynamic>(),
+        spellSchool: data["SpellSchool"] as String,
+        timings: data["Timings"].cast<dynamic>(),
         availableTo: data["AvailableTo"].cast<String>());
   }
   Spell(
       {required this.name,
       required this.level,
       required this.effect,
-      required this.castingTime,
+      required this.timings,
       required this.availableTo,
       required this.spellSchool,
+      required this.range,
+      this.ritual,
       this.material,
       this.somatic,
       this.verbal});

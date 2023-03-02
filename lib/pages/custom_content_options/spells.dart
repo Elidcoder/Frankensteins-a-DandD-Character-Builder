@@ -69,13 +69,19 @@ class MainMakeASpell extends State<MakeASpell> {
   //MainMakeASpell({Key? key}) : super(key: key);
   String name = "";
   String effect = "";
+
   String? spellSchool;
   int? level;
   bool? verbal = false;
   bool? somatic = false;
   String? material;
-  List<dynamic> castingTime = [];
-  List<String> availableTo = [];
+  String? range;
+  String rangeUnit = "";
+  bool? ritual = false;
+  String casting = "";
+  String duration = "";
+  List<dynamic> timings = [];
+  String availableTo = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +105,7 @@ class MainMakeASpell extends State<MakeASpell> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 30),
+                    //const SizedBox(height: 30),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -194,8 +200,8 @@ class MainMakeASpell extends State<MakeASpell> {
                                   borderSide: BorderSide.none,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(12)))),
-                          onChanged: (groupNameEnteredValue) {
-                            name = groupNameEnteredValue;
+                          onChanged: (effectEnteredValue) {
+                            effect = effectEnteredValue;
                           }),
                     ),
                     SizedBox(
@@ -254,22 +260,22 @@ class MainMakeASpell extends State<MakeASpell> {
                             ),
                             Expanded(
                                 child: CheckboxListTile(
-                              title: const Text('Somatic Component'),
-                              value: verbal,
+                              title: const Text(' Somatic Component'),
+                              value: somatic,
                               onChanged: (bool? value) {
                                 setState(() {
-                                  verbal = value;
+                                  somatic = value;
                                 });
                               },
-                              secondary: const Icon(Icons.insert_photo),
+                              secondary: const Icon(Icons.waving_hand),
                             )),
                             Expanded(
                               child: CheckboxListTile(
-                                title: const Text('Verbal Component'),
-                                value: somatic,
+                                title: const Text(' Verbal Component'),
+                                value: verbal,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    somatic = value;
+                                    verbal = value;
                                   });
                                 },
                                 secondary: const Icon(
@@ -299,8 +305,8 @@ class MainMakeASpell extends State<MakeASpell> {
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
-                              onChanged: (groupNameEnteredValue) {
-                                name = groupNameEnteredValue;
+                              onChanged: (materialsEnteredValue) {
+                                material = materialsEnteredValue;
                               }),
                         ),
                         const SizedBox(width: 10),
@@ -322,8 +328,8 @@ class MainMakeASpell extends State<MakeASpell> {
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
-                              onChanged: (groupNameEnteredValue) {
-                                name = groupNameEnteredValue;
+                              onChanged: (castableByEnteredValue) {
+                                availableTo = castableByEnteredValue;
                               }),
                         ),
                       ],
@@ -337,7 +343,7 @@ class MainMakeASpell extends State<MakeASpell> {
                               cursorColor: Colors.blue,
                               style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
-                                  hintText: "Action type:",
+                                  hintText: "Casting requirement:",
                                   hintStyle: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       color:
@@ -348,8 +354,8 @@ class MainMakeASpell extends State<MakeASpell> {
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
-                              onChanged: (groupNameEnteredValue) {
-                                name = groupNameEnteredValue;
+                              onChanged: (castingEnteredValue) {
+                                casting = castingEnteredValue;
                               }),
                         ),
                         const SizedBox(width: 10),
@@ -360,7 +366,7 @@ class MainMakeASpell extends State<MakeASpell> {
                               cursorColor: Colors.blue,
                               style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
-                                  hintText: "Number of that action required:",
+                                  hintText: "Duration:",
                                   hintStyle: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       color:
@@ -371,15 +377,151 @@ class MainMakeASpell extends State<MakeASpell> {
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
-                              onChanged: (groupNameEnteredValue) {
-                                name = groupNameEnteredValue;
+                              onChanged: (durationEnteredValue) {
+                                duration = durationEnteredValue;
                               }),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 150),
+                    SizedBox(
+                        width: 620,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 192.5,
+                              height: 70,
+                              child: TextField(
+                                  cursorColor: Colors.blue,
+                                  style: const TextStyle(color: Colors.white),
+                                  decoration: const InputDecoration(
+                                      hintText: "Range:",
+                                      hintStyle: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          color: Color.fromARGB(
+                                              255, 212, 208, 224)),
+                                      filled: true,
+                                      fillColor:
+                                          Color.fromARGB(211, 42, 63, 226),
+                                      border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(12)))),
+                                  onChanged: (rangeEnteredValue) {
+                                    range = rangeEnteredValue;
+                                  }),
+                            ),
+                            const SizedBox(width: 10),
+                            SizedBox(
+                              width: 192.5,
+                              height: 70,
+                              child: TextField(
+                                  cursorColor: Colors.blue,
+                                  style: const TextStyle(color: Colors.white),
+                                  decoration: const InputDecoration(
+                                      hintText: "Range unit:",
+                                      hintStyle: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          color: Color.fromARGB(
+                                              255, 212, 208, 224)),
+                                      filled: true,
+                                      fillColor:
+                                          Color.fromARGB(211, 42, 63, 226),
+                                      border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(12)))),
+                                  onChanged: (rangeUnitEnteredValue) {
+                                    rangeUnit = rangeUnitEnteredValue;
+                                  }),
+                            ),
+                            Expanded(
+                                child: CheckboxListTile(
+                              title: const Text(' Ritual '),
+                              value: ritual,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  ritual = value;
+                                });
+                              },
+                              secondary: const Icon(
+                                Icons.auto_stories_outlined,
+                              ),
+                            )),
+                          ],
+                        )),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        side: const BorderSide(
+                            width: 5, color: Color.fromARGB(255, 7, 26, 239)),
+                      ),
+                      onPressed: () async {
+                        //check the spell is in an accepted form
+                        if (validateSpell()) {
+                          //check it doesn't have the same name as another spell
+                          if (SPELLLIST
+                              .where((element) => element.name == name)
+                              .toList()
+                              .isEmpty) {
+                            updateGlobals();
+                            final Map<String, dynamic> jsonData =
+                                jsonDecode(jsonString ?? "");
+                            //at some point actually check for dupes
+                            final List<dynamic> characters = jsonData["Spells"];
+                            characters.add(Spell(
+                                name: name,
+                                range:
+                                    "$range ${rangeUnit.replaceAll(" ", "")}",
+                                ritual: ritual,
+                                spellSchool:
+                                    spellSchool ?? "This should never run",
+                                effect: effect,
+                                availableTo: availableTo
+                                    .replaceAll(", ", ",")
+                                    .replaceAll(" ,", ",")
+                                    .split(","),
+                                level: level ?? 0,
+                                timings: [
+                                  ...casting.split(","),
+                                  ...duration.split(",")
+                                ],
+                                somatic: somatic,
+                                verbal: verbal,
+                                material: material));
+                            writeJsonToFile(jsonData, "userContent");
+                            updateGlobals();
+                          }
+                        }
+                      },
+                      child: const Text(
+                        textAlign: TextAlign.center,
+                        'Save Spell',
+                        style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                    //const SizedBox(height: 100),
                   ])
             ]));
+  }
+
+  bool validateSpell() {
+    if (name.replaceAll(" ", "") != "" &&
+        level != null &&
+        spellSchool != null &&
+        range != null &&
+        (["SELF", "TOUCH"].contains(range!.toUpperCase()) ||
+            (double.tryParse(range ?? "") != null))) {
+      return true;
+    }
+
+    return false;
   }
 }
 /*ElevatedButton(
