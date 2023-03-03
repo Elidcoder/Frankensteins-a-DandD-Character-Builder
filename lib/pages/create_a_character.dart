@@ -8,6 +8,7 @@ import 'package:frankenstein/PDFdocs/pdf_final_display.dart';
 import 'dart:math';
 import 'dart:convert';
 import 'dart:io';
+import "package:frankenstein/main.dart";
 
 int abilityScoreCost(int x) {
   if (x > 12) {
@@ -934,6 +935,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   String playerName = "";
   String characterGender = "";
   double characterExperience = 0;
+  String enteredExperience = "";
   //bools representing the states of the checkboxes (basics)
   bool? featsAllowed = true;
   bool? averageHitPoints = false;
@@ -1037,6 +1039,8 @@ class MainCreateCharacter extends State<CreateACharacter>
   String characterEyes = "";
   String characterSkin = "";
   String characterHair = "";
+  String backstory = "";
+  String extraFeatures = "";
   //finishing up variables
   String? group;
   @override
@@ -2010,58 +2014,58 @@ class MainCreateCharacter extends State<CreateACharacter>
                   color: Colors.deepPurpleAccent,
                 ),
               ),
-              initialRace.subRaces != null
-                  ? DropdownButton<String>(
-                      onChanged: (String? value) {
-                        // This is called when the user selects an item.
-                        setState(() {
-                          //may cauase issues later
-                          abilityScoreIncreases = [0, 0, 0, 0, 0, 0];
-                          /*for (int i = 0; i < 6; i++) {
+              if (initialRace.subRaces != null)
+                DropdownButton<String>(
+                  onChanged: (String? value) {
+                    // This is called when the user selects an item.
+                    setState(() {
+                      //may cauase issues later
+                      abilityScoreIncreases = [0, 0, 0, 0, 0, 0];
+                      /*for (int i = 0; i < 6; i++) {
                             abilityScoreIncreases[i] -=
                                 subraceExample?.subRaceScoreIncrease[i] ?? 0;
                           }*/
-                          subraceExample = initialRace.subRaces
-                              ?.singleWhere((x) => x.name == value);
-                          for (int i = 0; i < 6; i++) {
-                            abilityScoreIncreases[i] +=
-                                (subraceExample?.subRaceScoreIncrease[i] ?? 0) +
-                                    initialRace.raceScoreIncrease[i];
-                          }
-                          optionalOnesStates = [
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false]
-                          ];
-                          optionalTwosStates = [
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false]
-                          ];
-                        });
-                      },
-                      value: subraceExample?.name,
-                      icon: const Icon(Icons.arrow_downward),
-                      items: initialRace.subRaces
-                          ?.map<DropdownMenuItem<String>>((Subrace value) {
-                        return DropdownMenuItem<String>(
-                          value: value.name,
-                          child: Text(value.name),
-                        );
-                      }).toList(),
-                      elevation: 2,
-                      style: const TextStyle(
-                          color: Colors.blue, fontWeight: FontWeight.w700),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.deepPurpleAccent,
-                      ),
-                    )
-                  : const SizedBox(),
+                      subraceExample = initialRace.subRaces
+                          ?.singleWhere((x) => x.name == value);
+                      for (int i = 0; i < 6; i++) {
+                        abilityScoreIncreases[i] +=
+                            (subraceExample?.subRaceScoreIncrease[i] ?? 0) +
+                                initialRace.raceScoreIncrease[i];
+                      }
+                      optionalOnesStates = [
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false]
+                      ];
+                      optionalTwosStates = [
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false]
+                      ];
+                    });
+                  },
+                  value: subraceExample?.name,
+                  icon: const Icon(Icons.arrow_downward),
+                  items: initialRace.subRaces
+                      ?.map<DropdownMenuItem<String>>((Subrace value) {
+                    return DropdownMenuItem<String>(
+                      value: value.name,
+                      child: Text(value.name),
+                    );
+                  }).toList(),
+                  elevation: 2,
+                  style: const TextStyle(
+                      color: Colors.blue, fontWeight: FontWeight.w700),
+                  underline: Container(
+                    height: 1,
+                    color: Colors.deepPurpleAccent,
+                  ),
+                ),
+
               //codebook
               if (initialRace.mystery1S + (subraceExample?.mystery1S ?? 0) != 0)
                 Expanded(
@@ -2184,10 +2188,12 @@ class MainCreateCharacter extends State<CreateACharacter>
                               OutlinedButton(
                                   style: OutlinedButton.styleFrom(
                                     backgroundColor: (int.parse(
-                                                characterLevel ?? "1") <=
-                                            levelsPerClass.reduce(
-                                                (value, element) =>
-                                                    value + element))
+                                                    characterLevel ?? "1") <=
+                                                levelsPerClass.reduce(
+                                                    (value, element) =>
+                                                        value + element) ||
+                                            (!multiclassingPossible(
+                                                CLASSLIST[index])))
                                         ? const Color.fromARGB(247, 56, 53, 52)
                                         : const Color.fromARGB(
                                             150, 61, 33, 243),
@@ -2202,9 +2208,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   onPressed: () {
                                     setState(() {
                                       if (int.parse(characterLevel ?? "1") >
-                                          levelsPerClass.reduce(
-                                              (value, element) =>
-                                                  value + element)) {
+                                              classList.length &&
+                                          (multiclassingPossible(
+                                              CLASSLIST[index]))) {
                                         classList.add(CLASSLIST[index].name);
                                         if ((CLASSLIST[index]
                                                 .gainAtEachLevel[
@@ -2919,14 +2925,27 @@ class MainCreateCharacter extends State<CreateACharacter>
                               ]),
                             ),
                             const SizedBox(height: 10),
-                            Text(
-                              textAlign: TextAlign.center,
-                              " (+${abilityScoreIncreases[0]})",
-                              style: const TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color.fromARGB(255, 7, 26, 239)),
-                            ),
+                            Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const SizedBox(width: 19),
+                                  Text(
+                                    textAlign: TextAlign.center,
+                                    " (+${abilityScoreIncreases[0]}) ",
+                                    style: const TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w700,
+                                        color: Color.fromARGB(255, 7, 26, 239)),
+                                  ),
+                                  Text(
+                                    textAlign: TextAlign.center,
+                                    " (+${ASIBonuses[0]}) ",
+                                    style: const TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.yellow),
+                                  ),
+                                ]),
                             const SizedBox(height: 10),
                             Container(
                               width: 90,
@@ -2942,7 +2961,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                               ),
                               child: Text(
                                 textAlign: TextAlign.center,
-                                (strength.value + abilityScoreIncreases[0])
+                                (strength.value +
+                                        abilityScoreIncreases[0] +
+                                        ASIBonuses[0])
                                     .toString(),
                                 style: const TextStyle(
                                     fontSize: 50,
@@ -3090,14 +3111,27 @@ class MainCreateCharacter extends State<CreateACharacter>
                               ]),
                             ),
                             const SizedBox(height: 10),
-                            Text(
-                              textAlign: TextAlign.center,
-                              " (+${abilityScoreIncreases[1]})",
-                              style: const TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color.fromARGB(255, 7, 26, 239)),
-                            ),
+                            Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const SizedBox(width: 19),
+                                  Text(
+                                    textAlign: TextAlign.center,
+                                    " (+${abilityScoreIncreases[1]}) ",
+                                    style: const TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w700,
+                                        color: Color.fromARGB(255, 7, 26, 239)),
+                                  ),
+                                  Text(
+                                    textAlign: TextAlign.center,
+                                    " (+${ASIBonuses[1]}) ",
+                                    style: const TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.yellow),
+                                  ),
+                                ]),
                             const SizedBox(height: 10),
                             Container(
                               width: 90,
@@ -3113,7 +3147,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                               ),
                               child: Text(
                                 textAlign: TextAlign.center,
-                                (dexterity.value + abilityScoreIncreases[1])
+                                (dexterity.value +
+                                        abilityScoreIncreases[1] +
+                                        ASIBonuses[1])
                                     .toString(),
                                 style: const TextStyle(
                                     fontSize: 50,
@@ -3261,14 +3297,27 @@ class MainCreateCharacter extends State<CreateACharacter>
                               ]),
                             ),
                             const SizedBox(height: 10),
-                            Text(
-                              textAlign: TextAlign.center,
-                              " (+${abilityScoreIncreases[2]})",
-                              style: const TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color.fromARGB(255, 7, 26, 239)),
-                            ),
+                            Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const SizedBox(width: 50),
+                                  Text(
+                                    textAlign: TextAlign.center,
+                                    " (+${abilityScoreIncreases[2]}) ",
+                                    style: const TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w700,
+                                        color: Color.fromARGB(255, 7, 26, 239)),
+                                  ),
+                                  Text(
+                                    textAlign: TextAlign.center,
+                                    " (+${ASIBonuses[2]}) ",
+                                    style: const TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.yellow),
+                                  ),
+                                ]),
                             const SizedBox(height: 10),
                             Container(
                               width: 90,
@@ -3284,7 +3333,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                               ),
                               child: Text(
                                 textAlign: TextAlign.center,
-                                (constitution.value + abilityScoreIncreases[2])
+                                (constitution.value +
+                                        abilityScoreIncreases[2] +
+                                        ASIBonuses[2])
                                     .toString(),
                                 style: const TextStyle(
                                     fontSize: 50,
@@ -3307,7 +3358,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   fontWeight: FontWeight.w800,
                                   color: Color.fromARGB(255, 0, 168, 252)),
                             ),
-                            const SizedBox(height: 25),
+                            const SizedBox(height: 22),
                             Container(
                               height: 110,
                               width: 116,
@@ -3432,14 +3483,27 @@ class MainCreateCharacter extends State<CreateACharacter>
                               ]),
                             ),
                             const SizedBox(height: 10),
-                            Text(
-                              textAlign: TextAlign.center,
-                              " (+${abilityScoreIncreases[3]})",
-                              style: const TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color.fromARGB(255, 7, 26, 239)),
-                            ),
+                            Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const SizedBox(width: 37),
+                                  Text(
+                                    textAlign: TextAlign.center,
+                                    " (+${abilityScoreIncreases[3]}) ",
+                                    style: const TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w700,
+                                        color: Color.fromARGB(255, 7, 26, 239)),
+                                  ),
+                                  Text(
+                                    textAlign: TextAlign.center,
+                                    " (+${ASIBonuses[3]}) ",
+                                    style: const TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.yellow),
+                                  ),
+                                ]),
                             const SizedBox(height: 10),
                             Container(
                               width: 90,
@@ -3455,7 +3519,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                               ),
                               child: Text(
                                 textAlign: TextAlign.center,
-                                (intelligence.value + abilityScoreIncreases[3])
+                                (intelligence.value +
+                                        abilityScoreIncreases[3] +
+                                        ASIBonuses[3])
                                     .toString(),
                                 style: const TextStyle(
                                     fontSize: 50,
@@ -3602,14 +3668,27 @@ class MainCreateCharacter extends State<CreateACharacter>
                               ]),
                             ),
                             const SizedBox(height: 10),
-                            Text(
-                              textAlign: TextAlign.center,
-                              " (+${abilityScoreIncreases[4]})",
-                              style: const TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color.fromARGB(255, 7, 26, 239)),
-                            ),
+                            Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    textAlign: TextAlign.center,
+                                    " (+${abilityScoreIncreases[4]}) ",
+                                    style: const TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w700,
+                                        color: Color.fromARGB(255, 7, 26, 239)),
+                                  ),
+                                  Text(
+                                    textAlign: TextAlign.center,
+                                    " (+${ASIBonuses[4]}) ",
+                                    style: const TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.yellow),
+                                  ),
+                                ]),
                             const SizedBox(height: 10),
                             Container(
                               width: 90,
@@ -3625,7 +3704,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                               ),
                               child: Text(
                                 textAlign: TextAlign.center,
-                                (wisdom.value + abilityScoreIncreases[4])
+                                (wisdom.value +
+                                        abilityScoreIncreases[4] +
+                                        ASIBonuses[4])
                                     .toString(),
                                 style: const TextStyle(
                                     fontSize: 50,
@@ -3772,14 +3853,27 @@ class MainCreateCharacter extends State<CreateACharacter>
                               ]),
                             ),
                             const SizedBox(height: 10),
-                            Text(
-                              textAlign: TextAlign.center,
-                              " (+${abilityScoreIncreases[5]})",
-                              style: const TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color.fromARGB(255, 7, 26, 239)),
-                            ),
+                            Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const SizedBox(width: 19),
+                                  Text(
+                                    textAlign: TextAlign.center,
+                                    " (+${abilityScoreIncreases[5]}) ",
+                                    style: const TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w700,
+                                        color: Color.fromARGB(255, 7, 26, 239)),
+                                  ),
+                                  Text(
+                                    textAlign: TextAlign.center,
+                                    " (+${ASIBonuses[5]}) ",
+                                    style: const TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.yellow),
+                                  ),
+                                ]),
                             const SizedBox(height: 10),
                             Container(
                               width: 90,
@@ -3795,7 +3889,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                               ),
                               child: Text(
                                 textAlign: TextAlign.center,
-                                (charisma.value + abilityScoreIncreases[5])
+                                (charisma.value +
+                                        abilityScoreIncreases[5] +
+                                        ASIBonuses[5])
                                     .toString(),
                                 style: const TextStyle(
                                     fontSize: 50,
@@ -5368,8 +5464,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                           ))),
                 ],
               )),
-          //Boons and magic items
-
           //Backstory
           SingleChildScrollView(
               scrollDirection: Axis.vertical,
@@ -5630,8 +5724,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   color: Color.fromARGB(255, 126, 122, 122)),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12)))),
-                      onChanged: (characterEyeEnteredValue) {
-                        characterEyes = characterEyeEnteredValue;
+                      onChanged: (backstoryEnteredValue) {
+                        backstory = backstoryEnteredValue;
                       }),
                 ),
                 const Text(
@@ -5666,8 +5760,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   color: Color.fromARGB(255, 126, 122, 122)),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12)))),
-                      onChanged: (characterEyeEnteredValue) {
-                        characterEyes = characterEyeEnteredValue;
+                      onChanged: (extraFeaturesEnteredValue) {
+                        extraFeatures = extraFeaturesEnteredValue;
                       }),
                 ),
               ])),
@@ -5682,6 +5776,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                       builder: (context) => PdfPreviewPage(
                           invoice: Character(
                               group: group,
+                              backstory: backstory,
+                              extraFeatures: extraFeatures,
                               levelsPerClass: levelsPerClass,
                               selections: selections,
                               allSelected: allSelected,
@@ -5772,186 +5868,449 @@ class MainCreateCharacter extends State<CreateACharacter>
                 },
                 child: const Icon(Icons.picture_as_pdf),
               ),
-              body: Row(children: [
+              body:
+                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+                const Expanded(child: SizedBox()),
                 Expanded(
-                    child: Column(children: [
-                  const Text("Add your character to a group:"),
-                  SizedBox(
-                      width: 128,
-                      height: 50,
-                      child: DropdownButton<String>(
-                        value: group,
-                        icon: const Icon(Icons.arrow_drop_down,
-                            color: Color.fromARGB(255, 7, 26, 239)),
-                        elevation: 16,
-                        style: const TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.w800,
-                            fontSize: 20),
-                        underline: Container(
-                          height: 2,
-                          color: const Color.fromARGB(255, 7, 26, 239),
-                        ),
-                        onChanged: (String? value) {
-                          // This is called when the user selects an item.
-                          setState(() {
-                            group = value!;
-                          });
-                        },
-                        items: (GROUPLIST != [])
-                            ? GROUPLIST
-                                .map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: SizedBox(
-                                      width: 100,
-                                      child: FittedBox(
-                                          fit: BoxFit.scaleDown,
-                                          child: Text(value))),
+                    flex: 5,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 40),
+                          const Text("Add your character to a group:",
+                              style: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.w800,
+                              )),
+                          const SizedBox(height: 20),
+                          const Text("Select an existing group:",
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w800,
+                              )),
+                          const SizedBox(height: 20),
+                          SizedBox(
+                              width: 128,
+                              height: 50,
+                              child: DropdownButton<String>(
+                                value: group,
+                                icon: const Icon(Icons.arrow_drop_down,
+                                    color: Color.fromARGB(255, 7, 26, 239)),
+                                elevation: 16,
+                                style: const TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 20),
+                                underline: Container(
+                                  height: 2,
+                                  color: const Color.fromARGB(255, 7, 26, 239),
+                                ),
+                                onChanged: (String? value) {
+                                  // This is called when the user selects an item.
+                                  setState(() {
+                                    group = value!;
+                                  });
+                                },
+                                items: (GROUPLIST != [])
+                                    ? GROUPLIST.map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: SizedBox(
+                                              width: 100,
+                                              child: FittedBox(
+                                                  fit: BoxFit.scaleDown,
+                                                  child: Text(value))),
+                                        );
+                                      }).toList()
+                                    : null,
+                              )),
+                          const SizedBox(height: 20),
+                          const Text("Or create a new one:",
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w800,
+                              )),
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            width: 300,
+                            child: TextField(
+                                cursorColor: Colors.blue,
+                                style: const TextStyle(color: Colors.white),
+                                decoration: const InputDecoration(
+                                    hintText: "Enter a group",
+                                    hintStyle: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        color:
+                                            Color.fromARGB(255, 212, 208, 224)),
+                                    filled: true,
+                                    fillColor: Color.fromARGB(211, 42, 63, 226),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(12)))),
+                                onChanged: (groupNameEnteredValue) {
+                                  group = groupNameEnteredValue;
+                                }),
+                          ),
+                          const SizedBox(height: 30),
+                          OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              padding:
+                                  const EdgeInsets.fromLTRB(45, 20, 45, 20),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              side: const BorderSide(
+                                  width: 3.5,
+                                  color: Color.fromARGB(255, 7, 26, 239)),
+                            ),
+                            child: const Text("Save Character",
+                                style: TextStyle(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.white,
+                                )),
+                            onPressed: () {
+                              setState(() {
+                                updateGlobals();
+                                //final String jsonContent =
+                                //  File("assets/Characters.json").readAsStringSync();
+                                final Map<String, dynamic> json =
+                                    jsonDecode(jsonString ?? "");
+                                final List<dynamic> characters =
+                                    json["Characters"];
+                                final String curCharacterName = characterName;
+                                final int index = characters.indexWhere(
+                                    (character) =>
+                                        character["Name"] == curCharacterName);
+
+                                if (index != -1) {
+                                  characters.removeAt(index);
+                                }
+
+                                characters.add(Character(
+                                        uniqueID: int.parse([
+                                          for (var i in List.generate(
+                                              15, (_) => Random().nextInt(10)))
+                                            i.toString()
+                                        ].join()),
+                                        backstory: backstory,
+                                        extraFeatures: extraFeatures,
+                                        levelsPerClass: levelsPerClass,
+                                        selections: selections,
+                                        allSelected: allSelected,
+                                        classSubclassMapper:
+                                            classSubclassMapper,
+                                        ACList: ACList,
+                                        ASIRemaining: ASIRemaining,
+                                        allSpellsSelected: allSpellsSelected,
+                                        allSpellsSelectedAsListsOfThings:
+                                            allSpellsSelectedAsListsOfThings,
+                                        armourList: armourList,
+                                        averageHitPoints: averageHitPoints,
+                                        backgroundSkillChoices:
+                                            backgroundSkillChoices,
+                                        characterAge: characterAge,
+                                        characterEyes: characterEyes,
+                                        characterHair: characterHair,
+                                        characterHeight: characterHeight,
+                                        characterSkin: characterSkin,
+                                        characterWeight: characterWeight,
+                                        coinTypeSelected: coinTypeSelected,
+                                        criticalRoleContent:
+                                            criticalRoleContent,
+                                        encumberanceRules: encumberanceRules,
+                                        extraFeatAtLevel1: extraFeatAtLevel1,
+                                        featsAllowed: featsAllowed,
+                                        featsSelected: featsSelected,
+                                        firearmsUsable: firearmsUsable,
+                                        fullFeats: fullFeats,
+                                        halfFeats: halfFeats,
+                                        gender: characterGender,
+                                        includeCoinsForWeight:
+                                            includeCoinsForWeight,
+                                        itemList: itemList,
+                                        milestoneLevelling: milestoneLevelling,
+                                        multiclassing: multiclassing,
+                                        useCustomContent: useCustomContent,
+                                        equipmentSelectedFromChoices:
+                                            equipmentSelectedFromChoices,
+                                        optionalClassFeatures:
+                                            optionalClassFeatures,
+                                        optionalOnesStates: optionalOnesStates,
+                                        optionalTwosStates: optionalTwosStates,
+                                        speedBonuses: speedBonusMap,
+                                        unearthedArcanaContent:
+                                            unearthedArcanaContent,
+                                        weaponList: weaponList,
+                                        numberOfRemainingFeatOrASIs:
+                                            numberOfRemainingFeatOrASIs,
+                                        playerName: playerName,
+                                        classList: classList,
+                                        stackableEquipmentSelected:
+                                            stackableEquipmentSelected,
+                                        unstackableEquipmentSelected:
+                                            unstackableEquipmentSelected,
+                                        classSkillsSelected: classSkillChoices,
+                                        skillsSelected: selectedSkillsQ,
+                                        subrace: subraceExample,
+                                        mainToolProficiencies:
+                                            toolProficiencies,
+                                        savingThrowProficiencies:
+                                            savingThrowProficiencies ?? [],
+                                        languagesKnown: languagesKnown,
+                                        featuresAndTraits: featuresAndTraits,
+                                        inspired: inspired,
+                                        skillProficiencies: skillProficiencies,
+                                        maxHealth: maxHealth,
+                                        background: currentBackground,
+                                        classLevels: levelsPerClass,
+                                        race: initialRace,
+                                        group: group,
+                                        characterExperience:
+                                            characterExperience,
+                                        currency: currencyStored,
+                                        backgroundPersonalityTrait:
+                                            backgroundPersonalityTrait,
+                                        backgroundIdeal: backgroundIdeal,
+                                        backgroundBond: backgroundBond,
+                                        backgroundFlaw: backgroundFlaw,
+                                        name: characterName,
+                                        raceAbilityScoreIncreases:
+                                            abilityScoreIncreases,
+                                        featsASIScoreIncreases: ASIBonuses,
+                                        strength: strength,
+                                        dexterity: dexterity,
+                                        constitution: constitution,
+                                        intelligence: intelligence,
+                                        wisdom: wisdom,
+                                        charisma: charisma)
+                                    .toJson());
+                                if ((!GROUPLIST.contains(group)) &&
+                                    group != null &&
+                                    group!.replaceAll(" ", "") != "") {
+                                  final List<dynamic> groupsList =
+                                      json["Groups"];
+                                  groupsList.add(group);
+                                }
+                                writeJsonToFile(json, "userContent");
+                                updateGlobals();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const ScreenTop(
+                                          pagechoice: "Main Menu")),
                                 );
-                              }).toList()
-                            : null,
-                      )),
-                  TextField(
-                      cursorColor: Colors.blue,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                          hintText: "Enter a group",
-                          hintStyle: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: Color.fromARGB(255, 212, 208, 224)),
-                          filled: true,
-                          fillColor: Color.fromARGB(211, 42, 63, 226),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)))),
-                      onChanged: (groupNameEnteredValue) {
-                        group = groupNameEnteredValue;
-                      }),
-                  OutlinedButton(
-                    child: const Text("Save Character"),
-                    onPressed: () {
-                      setState(() {
-                        updateGlobals();
-                        //final String jsonContent =
-                        //  File("assets/Characters.json").readAsStringSync();
-                        final Map<String, dynamic> json =
-                            jsonDecode(jsonString ?? "");
-                        final List<dynamic> characters = json["Characters"];
-                        final String curCharacterName = characterName;
-                        final int index = characters.indexWhere((character) =>
-                            character["Name"] == curCharacterName);
-
-                        if (index != -1) {
-                          characters.removeAt(index);
-                        }
-
-                        characters.add(Character(
-                                uniqueID: int.parse([
-                                  for (var i in List.generate(
-                                      15, (_) => Random().nextInt(10)))
-                                    i.toString()
-                                ].join()),
-                                levelsPerClass: levelsPerClass,
-                                selections: selections,
-                                allSelected: allSelected,
-                                classSubclassMapper: classSubclassMapper,
-                                ACList: ACList,
-                                ASIRemaining: ASIRemaining,
-                                allSpellsSelected: allSpellsSelected,
-                                allSpellsSelectedAsListsOfThings:
-                                    allSpellsSelectedAsListsOfThings,
-                                armourList: armourList,
-                                averageHitPoints: averageHitPoints,
-                                backgroundSkillChoices: backgroundSkillChoices,
-                                characterAge: characterAge,
-                                characterEyes: characterEyes,
-                                characterHair: characterHair,
-                                characterHeight: characterHeight,
-                                characterSkin: characterSkin,
-                                characterWeight: characterWeight,
-                                coinTypeSelected: coinTypeSelected,
-                                criticalRoleContent: criticalRoleContent,
-                                encumberanceRules: encumberanceRules,
-                                extraFeatAtLevel1: extraFeatAtLevel1,
-                                featsAllowed: featsAllowed,
-                                featsSelected: featsSelected,
-                                firearmsUsable: firearmsUsable,
-                                fullFeats: fullFeats,
-                                halfFeats: halfFeats,
-                                gender: characterGender,
-                                includeCoinsForWeight: includeCoinsForWeight,
-                                itemList: itemList,
-                                milestoneLevelling: milestoneLevelling,
-                                multiclassing: multiclassing,
-                                useCustomContent: useCustomContent,
-                                equipmentSelectedFromChoices:
-                                    equipmentSelectedFromChoices,
-                                optionalClassFeatures: optionalClassFeatures,
-                                optionalOnesStates: optionalOnesStates,
-                                optionalTwosStates: optionalTwosStates,
-                                speedBonuses: speedBonusMap,
-                                unearthedArcanaContent: unearthedArcanaContent,
-                                weaponList: weaponList,
-                                numberOfRemainingFeatOrASIs:
-                                    numberOfRemainingFeatOrASIs,
-                                playerName: playerName,
-                                classList: classList,
-                                stackableEquipmentSelected:
-                                    stackableEquipmentSelected,
-                                unstackableEquipmentSelected:
-                                    unstackableEquipmentSelected,
-                                classSkillsSelected: classSkillChoices,
-                                skillsSelected: selectedSkillsQ,
-                                subrace: subraceExample,
-                                mainToolProficiencies: toolProficiencies,
-                                savingThrowProficiencies:
-                                    savingThrowProficiencies ?? [],
-                                languagesKnown: languagesKnown,
-                                featuresAndTraits: featuresAndTraits,
-                                inspired: inspired,
-                                skillProficiencies: skillProficiencies,
-                                maxHealth: maxHealth,
-                                background: currentBackground,
-                                classLevels: levelsPerClass,
-                                race: initialRace,
-                                group: group,
-                                characterExperience: characterExperience,
-                                currency: currencyStored,
-                                backgroundPersonalityTrait:
-                                    backgroundPersonalityTrait,
-                                backgroundIdeal: backgroundIdeal,
-                                backgroundBond: backgroundBond,
-                                backgroundFlaw: backgroundFlaw,
-                                name: characterName,
-                                raceAbilityScoreIncreases:
-                                    abilityScoreIncreases,
-                                featsASIScoreIncreases: ASIBonuses,
-                                strength: strength,
-                                dexterity: dexterity,
-                                constitution: constitution,
-                                intelligence: intelligence,
-                                wisdom: wisdom,
-                                charisma: charisma)
-                            .toJson());
-                        if ((!GROUPLIST.contains(group)) &&
-                            group != null &&
-                            group!.replaceAll(" ", "") != "") {
-                          final List<dynamic> groupsList = json["Groups"];
-                          groupsList.add(group);
-                        }
-                        writeJsonToFile(json, "userContent");
-                        updateGlobals();
-                      });
-                    },
-                  )
-                ])),
-                const Expanded(flex: 2, child: Text("Preview"))
+                              });
+                            },
+                          )
+                        ])),
+                Expanded(
+                    flex: 7,
+                    child: Column(children: [
+                      //Basics
+                      const SizedBox(height: 40),
+                      const Text("Build checklist:",
+                          style: TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.w800,
+                          )),
+                      const SizedBox(height: 20),
+                      (characterName.replaceAll(" ", "") != "" &&
+                              characterGender.replaceAll(" ", "") != "" &&
+                              playerName.replaceAll(" ", "") != "" &&
+                              enteredExperience.replaceAll(" ", "") != "")
+                          ? const Text("Filled in all necessary basics:",
+                              style: TextStyle(
+                                color: Colors.green,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w700,
+                              ))
+                          : const Text("Filled in all necessary basics:",
+                              style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.orange)),
+                      //Ability Scores
+                      const SizedBox(height: 20),
+                      (pointsRemaining == 0)
+                          ? const Text("Used all ability score points",
+                              style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700))
+                          : Text(
+                              "$pointsRemaining unspent ability score points",
+                              style: const TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700)),
+                      /*Text("Made all race selections",
+                          style: TextStyle(
+                              color: (pointsRemaining == 0)
+                                  ? Colors.green
+                                  : Colors.red)),
+                      Text("Made all backround selections",
+                          style: TextStyle(
+                              color: (pointsRemaining == 0)
+                                  ? Colors.green
+                                  : Colors.red)),*/
+                      //ASI+feats
+                      const SizedBox(height: 20),
+                      (numberOfRemainingFeatOrASIs == 0)
+                          ? (ASIRemaining == false)
+                              ? const Text("Made all ASI/Feats choices",
+                                  style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w700))
+                              : const Text("You have an ASI remaining",
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w700))
+                          : Text(
+                              "You have $numberOfRemainingFeatOrASIs ASI/Feat (s) remaining",
+                              style: const TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700)),
+                      //Class
+                      const SizedBox(height: 20),
+                      (int.parse(characterLevel ?? "1") <= classList.length)
+                          ? const Text("Made all level selections",
+                              style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700))
+                          : Text(
+                              "${int.parse(characterLevel ?? "1") - classList.length} unused levels",
+                              style: const TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700)),
+                      const SizedBox(height: 20),
+                      Text("Made all selections for classes",
+                          style: TextStyle(
+                              color: (pointsRemaining == 0)
+                                  ? Colors.green
+                                  : Colors.red,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700)),
+                      const SizedBox(height: 20),
+                      //Equipment
+                      (equipmentSelectedFromChoices == null ||
+                              equipmentSelectedFromChoices!
+                                  .where((element) => element.length == 2)
+                                  .toList()
+                                  .isEmpty)
+                          ? const Text("Made all equipment selections",
+                              style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700))
+                          : Text(
+                              "Missed ${equipmentSelectedFromChoices!.where((element) => element.length == 2).toList().length} equipment choice(s)",
+                              style: const TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700)),
+                      const SizedBox(height: 20),
+                      //spells
+                      (allSpellsSelectedAsListsOfThings.isNotEmpty)
+                          ? (((allSpellsSelectedAsListsOfThings
+                                      .reduce((a, b) => a[1] + b[1]) as int) ==
+                                  allSpellsSelected.length))
+                              ? const Text("Chose all spells",
+                                  style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w700))
+                              : Text(
+                                  "Missed ${(allSpellsSelectedAsListsOfThings.reduce((a, b) => a[1] + b[1]) as int) - allSpellsSelected.length} spells",
+                                  style: const TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w700))
+                          : const Text("Have 0 spells to choose",
+                              style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700)),
+                      const SizedBox(height: 20),
+                      (characterAge.replaceAll(" ", "") != "" &&
+                              characterHeight.replaceAll(" ", "") != "" &&
+                              characterWeight.replaceAll(" ", "") != "" &&
+                              characterEyes.replaceAll(" ", "") != "" &&
+                              characterSkin.replaceAll(" ", "") != "" &&
+                              characterHair.replaceAll(" ", "") != "" &&
+                              backstory.replaceAll(" ", "") != "" &&
+                              extraFeatures.replaceAll(" ", "") != "")
+                          ? const Text("Completed backstory",
+                              style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700))
+                          : const Text("Completed backstory",
+                              style: TextStyle(
+                                  color: Colors.orange,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700)),
+                    ]))
               ])),
         ]),
       ),
     );
+  }
+
+  bool multiclassingPossible(Class selectedClass) {
+    List<int> requirements = selectedClass.multiclassingRequirements;
+    if (classList.contains(selectedClass.name)) {
+      return true;
+    }
+    int count = 0;
+    if (strength.value + abilityScoreIncreases[0] + ASIBonuses[0] >=
+        requirements[0]) count++;
+    if (dexterity.value + abilityScoreIncreases[1] + ASIBonuses[1] >=
+        requirements[1]) count++;
+    if (constitution.value + abilityScoreIncreases[2] + ASIBonuses[2] >=
+        requirements[2]) count++;
+    if (intelligence.value + abilityScoreIncreases[3] + ASIBonuses[3] >=
+        requirements[3]) count++;
+    if (wisdom.value + abilityScoreIncreases[4] + ASIBonuses[4] >=
+        requirements[4]) count++;
+    if (charisma.value + abilityScoreIncreases[5] + ASIBonuses[5] >=
+        requirements[5]) count++;
+
+    if (count < requirements[6]) {
+      return false;
+    }
+    for (var i = 0; i < classList.length; i++) {
+      requirements = CLASSLIST
+          .firstWhere((element) => element.name == classList[i])
+          .multiclassingRequirements;
+      int count = 0;
+      if (strength.value + abilityScoreIncreases[0] + ASIBonuses[0] >=
+          requirements[0]) count++;
+      if (dexterity.value + abilityScoreIncreases[1] + ASIBonuses[1] >=
+          requirements[1]) count++;
+      if (constitution.value + abilityScoreIncreases[2] + ASIBonuses[2] >=
+          requirements[2]) count++;
+      if (intelligence.value + abilityScoreIncreases[3] + ASIBonuses[3] >=
+          requirements[3]) count++;
+      if (wisdom.value + abilityScoreIncreases[4] + ASIBonuses[4] >=
+          requirements[4]) count++;
+      if (charisma.value + abilityScoreIncreases[5] + ASIBonuses[5] >=
+          requirements[5]) count++;
+
+      if (count < requirements[6]) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   Widget? levelGainParser(List<dynamic> x, Class selectedClass) {
@@ -5980,11 +6339,7 @@ class MainCreateCharacter extends State<CreateACharacter>
     } else if (x[0] == "AC") {
       // ("AC","intelligence + 2", "RQUIREMENT")
       ACList.add([x[1], x[2]]);
-    } /* else if (x[0] == "ACModifier") {
-    //("ACModifier", "2/intelligence", "armour"(requirement))
-    SPEEDLIST.append([x[1], x[2]]);
-  }*/
-    else if (x[0] == "Speed") {
+    } else if (x[0] == "Speed") {
       //note base speed is given by race
       //("speed", (w/s/c/f/h), numb/expression")
       speedBonusMap[x[1]]?.add(x[2]);
@@ -6011,36 +6366,7 @@ class MainCreateCharacter extends State<CreateACharacter>
     else if (x[0] == "Money") {
       //("Money", "Copper Pieces", "10")
       currencyStored[x[1]] = currencyStored[x[1]]! + int.parse(x[2]);
-    } //deal with these later
-    /*else if (x[0] == "Spell") {
-    ///
-  } else if (x[0] == "ASI") {
-    ("ASI")
-      ASINUMB ++;
-  } else if (x[0] == "Feat") {
-    ("Feat","Any/ featname")
-    if (x[1]== "Any"){
-      FEATNUMB ++;
-    }
-    else{
-      FEATLIST.add(correct feat)
-    }
-      
-  }*/
-    /*else if (x[0] == "Choice") {
-    List<Widget> temporaryWidgetList = [];
-    //("choice", [option].....)
-    /*for (List<dynamic> string in x.sublist(2)) {
-      temporaryWidgetList.add(OutlinedButton(
-        child: Text(string[1]),
-        onPressed: () {
-          // When the button is pressed, add the string to the outputStrings list
-          setState(() => outputStrings.add(string));
-        },
-      ));
-    }*/
-    return Row(children: temporaryWidgetList);
-  }*/
+    } //deal
   }
 
   int levelZeroGetSpellsKnown(int index) {

@@ -2228,6 +2228,8 @@ class EditCharacter extends State<EditACharacter> {
                     MaterialPageRoute(
                       builder: (context) => PdfPreviewPage(
                           invoice: Character(
+                              backstory: character.backstory,
+                              extraFeatures: character.extraFeatures,
                               uniqueID: character.uniqueID,
                               group: group,
                               levelsPerClass: levelsPerClass,
@@ -2395,6 +2397,8 @@ class EditCharacter extends State<EditACharacter> {
                             .toList();
 
                         characters.add(Character(
+                                backstory: character.backstory,
+                                extraFeatures: character.extraFeatures,
                                 uniqueID: character.uniqueID,
                                 group: group,
                                 levelsPerClass: levelsPerClass,

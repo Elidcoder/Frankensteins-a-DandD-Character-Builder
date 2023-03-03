@@ -110,9 +110,14 @@ class Character {
   final String characterEyes;
   final String characterSkin;
   final String characterHair;
+  final String backstory;
+  final String extraFeatures;
+
   //finishing up variables
   final String? group;
   Map<String, dynamic> toJson() => {
+        "ExtraFeatures": extraFeatures,
+        "Backstory": backstory,
         "Group": group,
         "LanguagesKnown": languagesKnown,
         "FeaturesAndTraits": featuresAndTraits,
@@ -191,6 +196,8 @@ class Character {
       };
 
   factory Character.fromJson(Map<String, dynamic> data) {
+    final backstory = data["Backstory"] as String;
+    final extraFeatures = data["ExtraFeatures"] as String;
     final group = data["Group"] as String?;
     final levelsPerClass = data["LevelsPerClass"].cast<int>() as List<int>;
     final selections = data["Selections"].cast<String, List<dynamic>>()
@@ -304,6 +311,8 @@ class Character {
     final unstackableEquipmentSelected =
         data["UnstackableEquipmentSelected"] as List<dynamic>;
     return Character(
+      backstory: backstory,
+      extraFeatures: extraFeatures,
       levelsPerClass: levelsPerClass,
       selections: selections,
       allSelected: allSelected,
@@ -383,6 +392,8 @@ class Character {
   }
   Character(
       {required this.levelsPerClass,
+      required this.extraFeatures,
+      required this.backstory,
       required this.selections,
       required this.allSelected,
       required this.classSubclassMapper,

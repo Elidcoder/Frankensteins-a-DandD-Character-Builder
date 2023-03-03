@@ -404,7 +404,8 @@ class Class {
   final bool? roundDown;
   final String mainOrSpellcastingAbility;
   //starting gold
-
+  //[STR/DEX/CON/INT/WIS/CHAR/numbrequired]
+  final List<int> multiclassingRequirements;
   final int numberOfSkillChoices;
   final List<String> optionsForSkillProficiencies;
   final List<String>? spellsAndSpellSlots; //replace with list both or 2 lists
@@ -421,6 +422,7 @@ class Class {
   Map<String, dynamic> toJson() {
     return {
       "Name": name,
+      "MulticlassingRequirements": multiclassingRequirements,
       "MainOrSpellcastingAbility": mainOrSpellcastingAbility,
       "ClassType": classType,
       "MaxHitDiceRoll": maxHitDiceRoll,
@@ -442,6 +444,8 @@ class Class {
   }
 
   factory Class.fromJson(Map<String, dynamic> data) {
+    final multiclassingRequirements =
+        data["MulticlassingRequirements"].cast<int>() as List<int>;
     final name = data["Name"] as String;
     final mainOrSpellcastingAbility =
         data["MainOrSpellcastingAbility"] as String;
@@ -470,6 +474,7 @@ class Class {
     final proficienciesGained =
         data["GainedProficiencies"]?.cast<String>() as List<String>?;
     return Class(
+        multiclassingRequirements: multiclassingRequirements,
         mainOrSpellcastingAbility: mainOrSpellcastingAbility,
         classType: classType,
         maxHitDiceRoll: maxHitDiceRoll,
@@ -488,7 +493,8 @@ class Class {
   }
 
   Class(
-      {required this.name,
+      {required this.multiclassingRequirements,
+      required this.name,
       required this.mainOrSpellcastingAbility,
       required this.classType,
       required this.maxHitDiceRoll,

@@ -227,33 +227,5 @@ class MainMyCharacters extends State<MyCharacters> {
                   ),
                 ),
         ]));
-
-    /*Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      
-      children: [
-        Container(
-          height: 60,
-          color: Colors.blue,
-          child: const Text(
-            textAlign: TextAlign.center,
-            "My Characters",
-            style: TextStyle(
-                fontSize: 45, fontWeight: FontWeight.w700, color: Colors.white),
-          ),
-        ),
-        Container(
-          height: 40,
-          color: Colors.blue,
-          child: const Text(
-            textAlign: TextAlign.center,
-            "Search parameters here",
-            style: TextStyle(
-                fontSize: 35, fontWeight: FontWeight.w700, color: Colors.white),
-          ),
-        ),
-        const Text("characters here")
-      ],
-    );*/
   }
 }
