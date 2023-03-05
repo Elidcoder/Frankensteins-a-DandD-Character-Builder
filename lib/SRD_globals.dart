@@ -77,7 +77,6 @@ class Armour extends Item {
   bool imposeStealthDisadvantage;
   bool strengthRequirement;
   String armourType;
-
   Armour(
       {required String name,
       required List<dynamic> cost,
@@ -411,7 +410,7 @@ class Class {
   final List<String>? spellsAndSpellSlots; //replace with list both or 2 lists
 
   final List<String> savingThrowProficiencies;
-  final List<List<List<dynamic>>>
+  final List<List<dynamic>>
       equipmentOptions; //replace string => equipment//2 options for every one
   //Wrong change later
   final List<String>?
@@ -462,15 +461,10 @@ class Class {
     final savingThrowProficiencies =
         data["SavingThrowProficiencies"].cast<String>() as List<String>;
 
-    final equipmentOptions = parseJsonToMultiList(data[
-            "EquipmentOptions"]) /*
-        .where((outerList) => outerList is List)
-        .map((outerList) => outerList
-            .where((innerList) => innerList is List)
-            .map((innerList) => innerList.cast<dynamic>())
-            .toList())
-        .toList()*/
-        ;
+    final equipmentOptions = parseJsonToMultiList(data["EquipmentOptions"])
+        .map((outerList) =>
+            outerList.map((innerList) => innerList.cast<dynamic>()).toList())
+        .toList();
     final proficienciesGained =
         data["GainedProficiencies"]?.cast<String>() as List<String>?;
     return Class(
@@ -491,7 +485,6 @@ class Class {
         spellsKnownFormula: data["SpellsKnownFormula"],
         spellsKnownPerLevel: data["SpellsKnownPerLevel"]?.cast<int>());
   }
-
   Class(
       {required this.multiclassingRequirements,
       required this.name,
@@ -570,22 +563,6 @@ class Spell {
   //[casting 1, number, duration 1, number]
   final List<dynamic> timings;
   final List<String> availableTo;
-  Map<String, dynamic> toJson() {
-    return {
-      "Name": name,
-      "Range": range,
-      "Ritual": ritual,
-      "Effect": effect,
-      "SpellSchool": spellSchool,
-      "Level": level,
-      "Verbal": verbal,
-      "Somatic": somatic,
-      "Material": material,
-      "Timings": timings,
-      "AvailableTo": availableTo,
-    };
-  }
-
   factory Spell.fromJson(Map<String, dynamic> data) {
     // note the explicit cast to String
     // this is required if robust lint rules are enabled

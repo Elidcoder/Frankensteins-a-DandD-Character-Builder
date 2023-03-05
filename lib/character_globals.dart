@@ -102,7 +102,7 @@ class Character {
   final List<String> weaponList;
   final List<String> itemList;
   final String? coinTypeSelected;
-  final List<dynamic>? equipmentSelectedFromChoices;
+  final List<List<dynamic>>? equipmentSelectedFromChoices;
   //Background
   final String characterAge;
   final String characterHeight;
@@ -241,7 +241,8 @@ class Character {
     final multiclassing = data["Multiclassing"] as bool;
     final useCustomContent = data["UseCustomContent"] as bool;
     final equipmentSelectedFromChoices =
-        data["EquipmentSelectedFromChoices"] ?? [] as List<dynamic>;
+        (data["EquipmentSelectedFromChoices"] ?? []).cast<List<dynamic>>()
+            as List<List<dynamic>>;
     final optionalClassFeatures = data["OptionalClassFeatures"] as bool;
     final optionalOnesStates = (data["OptionalOnesStates"] as List<dynamic>)
         .map((row) =>

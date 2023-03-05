@@ -210,7 +210,9 @@ class MainMenu extends StatelessWidget {
             const SizedBox(width: 100),
             OutlinedButton(
               style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: (CHARACTERLIST.isNotEmpty || 1 == 1)
+                    ? Colors.blue
+                    : Colors.grey,
                 padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -218,12 +220,14 @@ class MainMenu extends StatelessWidget {
                     width: 5, color: Color.fromARGB(255, 7, 26, 239)),
               ),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const ScreenTop(pagechoice: "My Characters")),
-                );
+                if (CHARACTERLIST.isNotEmpty || 1 == 1) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const ScreenTop(pagechoice: "My Characters")),
+                  );
+                }
               },
               child: const Text(
                 textAlign: TextAlign.center,
@@ -243,7 +247,7 @@ class MainMenu extends StatelessWidget {
             OutlinedButton(
               style: OutlinedButton.styleFrom(
                 backgroundColor: Colors.blue,
-                padding: const EdgeInsets.fromLTRB(30, 42, 30, 42),
+                padding: const EdgeInsets.fromLTRB(45, 25, 45, 25),
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 side: const BorderSide(
@@ -314,9 +318,9 @@ class MainMenu extends StatelessWidget {
                 );
               },*/
               child: const Text(
-                'Roll dice',
+                'Download\n Content',
                 style: TextStyle(
-                    fontSize: 45,
+                    fontSize: 35,
                     fontWeight: FontWeight.w700,
                     color: Colors.white),
               ),
@@ -342,7 +346,7 @@ class MainMenu extends StatelessWidget {
               },
               child: const Text(
                 textAlign: TextAlign.center,
-                'Custom \ncontent',
+                'Create \ncontent',
                 style: TextStyle(
                     fontSize: 35,
                     fontWeight: FontWeight.w700,

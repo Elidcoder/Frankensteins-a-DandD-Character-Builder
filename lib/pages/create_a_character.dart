@@ -1017,7 +1017,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   List<int> ASIBonuses = [0, 0, 0, 0, 0, 0];
   List<List<dynamic>> featsSelected = [];
   bool ASIRemaining = false;
-  int numberOfRemainingFeatOrASIs = 1;
+  int numberOfRemainingFeatOrASIs = 11;
   bool halfFeats = true;
   bool fullFeats = true;
   //Spell variables
@@ -1028,7 +1028,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   List<String> weaponList = [];
   List<String> itemList = [];
   String? coinTypeSelected = "Gold Pieces";
-  List<dynamic>? equipmentSelectedFromChoices;
+  List<List<dynamic>>? equipmentSelectedFromChoices;
   //{thing:numb,...}
   Map<String, int> stackableEquipmentSelected = {};
   List<dynamic> unstackableEquipmentSelected = [];
@@ -1505,464 +1505,451 @@ class MainCreateCharacter extends State<CreateACharacter>
         body: TabBarView(children: [
           //basics
           SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                //mainAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 60),
-                  Row(
-                    children: [
-                      //decide on the color of T.boxes
-                      Expanded(
-                          child: Column(
-                              //mainAxisAlignment: MainAxisAlignment.center,
-
-                              children: [
-                            Container(
-                              width: 280,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                border: Border.all(
-                                  color: const Color.fromARGB(255, 7, 26, 239),
-                                  width: 2,
-                                ),
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(5)),
-                              ),
-                              child: const Center(
-                                  child: Text(
-                                textAlign: TextAlign.center,
-                                "Character info",
-                                style: TextStyle(
-                                    fontSize: 35,
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                const SizedBox(height: 60),
+                Row(
+                  children: [
+                    Expanded(
+                        child: Column(children: [
+                      //title
+                      Container(
+                        width: 280,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          border: Border.all(
+                            color: const Color.fromARGB(255, 7, 26, 239),
+                            width: 2,
+                          ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(5)),
+                        ),
+                        child: const Center(
+                            child: Text(
+                          textAlign: TextAlign.center,
+                          "Character info",
+                          style: TextStyle(
+                              fontSize: 35,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white),
+                        )),
+                      ),
+                      const SizedBox(height: 30),
+                      //Character name input
+                      SizedBox(
+                        width: 250,
+                        height: 50,
+                        child: TextField(
+                            cursorColor: Colors.blue,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: const InputDecoration(
+                                hintText: "Enter character's name",
+                                hintStyle: TextStyle(
                                     fontWeight: FontWeight.w700,
-                                    color: Colors.white),
-                              )),
-                            ),
-                            const SizedBox(height: 30),
-                            SizedBox(
-                              width: 250,
-                              height: 50,
-                              child: TextField(
-                                  cursorColor: Colors.blue,
-                                  style: const TextStyle(color: Colors.white),
-                                  decoration: const InputDecoration(
-                                      hintText: "Enter character's name",
-                                      hintStyle: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          color: Color.fromARGB(
-                                              255, 212, 208, 224)),
-                                      filled: true,
-                                      fillColor:
-                                          Color.fromARGB(211, 42, 63, 226),
-                                      border: OutlineInputBorder(
-                                          borderSide: BorderSide.none,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(12)))),
-                                  onChanged: (characterNameEnteredValue) {
-                                    characterName = characterNameEnteredValue;
-                                  }),
-                            ),
-                            //ask level or exp
-                            //add switch + list tittle stuff for lvl/exp
-                            const SizedBox(height: 15),
-                            SizedBox(
-                                width: 250,
-                                height: 50,
-                                child: TextField(
-                                    cursorColor: Colors.blue,
-                                    style: const TextStyle(color: Colors.white),
-                                    decoration: const InputDecoration(
-                                        hintText: "Enter the player's name",
-                                        hintStyle: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 212, 208, 224)),
-                                        filled: true,
-                                        fillColor:
-                                            Color.fromARGB(255, 124, 112, 112),
-                                        border: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(12)))),
-                                    onChanged: (playerNameEnteredValue) {
-                                      playerName = playerNameEnteredValue;
-                                    })),
-                            const SizedBox(height: 15),
-                            const SizedBox(
-                                width: 250,
-                                height: 50,
-                                child: TextField(
-                                    cursorColor: Colors.blue,
-                                    style: TextStyle(color: Colors.white),
-                                    decoration: InputDecoration(
-                                        hintText:
-                                            "Enter the character's gender",
-                                        hintStyle: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 212, 208, 224)),
-                                        filled: true,
-                                        fillColor:
-                                            Color.fromARGB(255, 124, 112, 112),
-                                        border: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(12)))))),
-                            const SizedBox(height: 15),
-                            SizedBox(
-                                width: 300,
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      RadioListTile(
-                                        title: const Text("Use experience"),
-                                        value: "Experience",
-                                        groupValue: levellingMethod,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            levellingMethod = value.toString();
-                                          });
-                                        },
-                                      ),
-                                      const SizedBox(height: 15),
-                                      Container(
-                                          child: levellingMethod == "Experience"
-                                              ? SizedBox(
-                                                  width: 250,
-                                                  height: 50,
-                                                  child: TextField(
-                                                      cursorColor: Colors.blue,
-                                                      style: const TextStyle(
-                                                          color: Colors.white),
-                                                      decoration: InputDecoration(
-                                                          hintText:
-                                                              "Enter the character's exp",
-                                                          hintStyle: const TextStyle(
-                                                              color:
-                                                                  Color.fromARGB(
-                                                                      255,
-                                                                      212,
-                                                                      208,
-                                                                      224)),
-                                                          filled: true,
-                                                          fillColor:
-                                                              const Color.fromARGB(
-                                                                  255,
-                                                                  124,
-                                                                  112,
-                                                                  112),
-                                                          border: OutlineInputBorder(
-                                                              borderSide:
-                                                                  BorderSide
-                                                                      .none,
-                                                              borderRadius:
-                                                                  BorderRadius.circular(12)))))
-                                              : RadioListTile(
-                                                  title:
-                                                      const Text("Use levels"),
-                                                  value: "Levels",
-                                                  groupValue: levellingMethod,
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      levellingMethod =
-                                                          value.toString();
-                                                    });
-                                                  },
-                                                )),
-                                      const SizedBox(height: 5),
-                                      Container(
-                                        child: levellingMethod == "Experience"
-                                            ? RadioListTile(
-                                                title: const Text("Use levels"),
-                                                value: "Levels",
-                                                groupValue: levellingMethod,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    levellingMethod =
-                                                        value.toString();
-                                                  });
-                                                },
-                                              )
-                                            : SizedBox(
-                                                width: 50,
-                                                height: 50,
-                                                child: DropdownButton<String>(
-                                                  value: characterLevel,
-                                                  icon: const Icon(
-                                                      Icons.arrow_drop_down,
-                                                      color: Color.fromARGB(
-                                                          255, 7, 26, 239)),
-                                                  elevation: 16,
-                                                  style: const TextStyle(
-                                                      color: Colors.blue,
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      fontSize: 20),
-                                                  underline: Container(
-                                                    height: 2,
-                                                    color: const Color.fromARGB(
-                                                        255, 7, 26, 239),
-                                                  ),
-                                                  onChanged: (String? value) {
-                                                    // This is called when the user selects an item.
-                                                    setState(() {
-                                                      characterLevel = value!;
-                                                    });
-                                                  },
-                                                  items: [
-                                                    "1",
-                                                    "2",
-                                                    "3",
-                                                    "4",
-                                                    "5",
-                                                    "6",
-                                                    "7",
-                                                    "8",
-                                                    "9",
-                                                    "10",
-                                                    "11",
-                                                    "12",
-                                                    "13",
-                                                    "14",
-                                                    "15",
-                                                    "16",
-                                                    "17",
-                                                    "18",
-                                                    "19",
-                                                    "20"
-                                                  ]
-                                                      .where((element) =>
-                                                          int.parse(element) >=
-                                                          int.parse(
-                                                              characterLevel ??
-                                                                  "1"))
-                                                      .toList()
-                                                      .map<
-                                                              DropdownMenuItem<
-                                                                  String>>(
-                                                          (String value) {
-                                                    return DropdownMenuItem<
-                                                        String>(
-                                                      value: value,
-                                                      child: Center(
-                                                          child: Text(value)),
-                                                    );
-                                                  }).toList(),
-                                                )),
-                                      ),
-                                      const SizedBox(height: 10),
-                                    ]))
-                          ])),
-                      Expanded(
+                                    color: Color.fromARGB(255, 212, 208, 224)),
+                                filled: true,
+                                fillColor: Color.fromARGB(211, 42, 63, 226),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(12)))),
+                            onChanged: (characterNameEnteredValue) {
+                              characterName = characterNameEnteredValue;
+                            }),
+                      ),
+                      const SizedBox(height: 15),
+                      //Player name input
+                      SizedBox(
+                          width: 250,
+                          height: 50,
+                          child: TextField(
+                              cursorColor: Colors.blue,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                  hintText: "Enter the player's name",
+                                  hintStyle: TextStyle(
+                                      color:
+                                          Color.fromARGB(255, 212, 208, 224)),
+                                  filled: true,
+                                  fillColor: Color.fromARGB(255, 124, 112, 112),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(12)))),
+                              onChanged: (playerNameEnteredValue) {
+                                playerName = playerNameEnteredValue;
+                              })),
+                      const SizedBox(height: 15),
+                      //Character gender input
+                      const SizedBox(
+                          width: 250,
+                          height: 50,
+                          child: TextField(
+                              cursorColor: Colors.blue,
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                  hintText: "Enter the character's gender",
+                                  hintStyle: TextStyle(
+                                      color:
+                                          Color.fromARGB(255, 212, 208, 224)),
+                                  filled: true,
+                                  fillColor: Color.fromARGB(255, 124, 112, 112),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(12)))))),
+                      const SizedBox(height: 15),
+                      //exp/levels section
+                      SizedBox(
+                          width: 300,
                           child: Column(
-                        children: [
-                          Container(
-                            width: 325,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.blue,
-                              border: Border.all(
-                                color: const Color.fromARGB(255, 7, 26, 239),
-                                width: 2,
-                              ),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(5)),
-                            ),
-                            child: const Center(
-                                child: Text(
-                              textAlign: TextAlign.center,
-                              "Build Parameters",
-                              style: TextStyle(
-                                  fontSize: 35,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white),
-                            )),
-                          ),
-                          const SizedBox(height: 30),
-                          SizedBox(
-                            width: 325,
-                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                CheckboxListTile(
-                                  title: const Text('Feats in use'),
-                                  value: featsAllowed,
-                                  onChanged: (bool? value) {
+                                //use experience
+                                RadioListTile(
+                                  title: const Text("Use experience"),
+                                  value: "Experience",
+                                  groupValue: levellingMethod,
+                                  onChanged: (value) {
                                     setState(() {
-                                      featsAllowed = value;
+                                      levellingMethod = value.toString();
                                     });
                                   },
-                                  secondary: const Icon(Icons.insert_photo),
                                 ),
                                 const SizedBox(height: 15),
-                                CheckboxListTile(
-                                  title: const Text('Use average for hit dice'),
-                                  value: averageHitPoints,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      averageHitPoints = value;
-                                    });
-                                  },
-                                  secondary: const Icon(Icons.insert_photo),
+                                //Experience enterence option if experience is selected
+                                //otherwise display the use levels radio tile
+                                Container(
+                                    child: levellingMethod == "Experience"
+                                        ? SizedBox(
+                                            width: 250,
+                                            height: 50,
+                                            child: TextField(
+                                                cursorColor: Colors.blue,
+                                                style: const TextStyle(
+                                                    color: Colors.white),
+                                                decoration: InputDecoration(
+                                                    hintText:
+                                                        "Enter the character's exp",
+                                                    hintStyle: const TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255,
+                                                            212,
+                                                            208,
+                                                            224)),
+                                                    filled: true,
+                                                    fillColor:
+                                                        const Color.fromARGB(
+                                                            255, 124, 112, 112),
+                                                    border: OutlineInputBorder(
+                                                        borderSide:
+                                                            BorderSide.none,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12)))))
+                                        : RadioListTile(
+                                            title: const Text("Use levels"),
+                                            value: "Levels",
+                                            groupValue: levellingMethod,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                levellingMethod =
+                                                    value.toString();
+                                              });
+                                            },
+                                          )),
+                                const SizedBox(height: 5),
+                                //levels radio tile if experience is selected
+                                //otherwise the levels selection option
+                                Container(
+                                  child: levellingMethod == "Experience"
+                                      ? RadioListTile(
+                                          title: const Text("Use levels"),
+                                          value: "Levels",
+                                          groupValue: levellingMethod,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              levellingMethod =
+                                                  value.toString();
+                                            });
+                                          },
+                                        )
+                                      : SizedBox(
+                                          width: 50,
+                                          height: 50,
+                                          child: DropdownButton<String>(
+                                            value: characterLevel,
+                                            icon: const Icon(
+                                                Icons.arrow_drop_down,
+                                                color: Color.fromARGB(
+                                                    255, 7, 26, 239)),
+                                            elevation: 16,
+                                            style: const TextStyle(
+                                                color: Colors.blue,
+                                                fontWeight: FontWeight.w800,
+                                                fontSize: 20),
+                                            underline: Container(
+                                              height: 2,
+                                              color: const Color.fromARGB(
+                                                  255, 7, 26, 239),
+                                            ),
+                                            onChanged: (String? value) {
+                                              // This is called when the user selects an item.
+                                              setState(() {
+                                                characterLevel = value!;
+                                              });
+                                            },
+                                            items: [
+                                              "1",
+                                              "2",
+                                              "3",
+                                              "4",
+                                              "5",
+                                              "6",
+                                              "7",
+                                              "8",
+                                              "9",
+                                              "10",
+                                              "11",
+                                              "12",
+                                              "13",
+                                              "14",
+                                              "15",
+                                              "16",
+                                              "17",
+                                              "18",
+                                              "19",
+                                              "20"
+                                            ]
+                                                .where((element) =>
+                                                    int.parse(element) >=
+                                                    int.parse(
+                                                        characterLevel ?? "1"))
+                                                .toList()
+                                                .map<DropdownMenuItem<String>>(
+                                                    (String value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child:
+                                                    Center(child: Text(value)),
+                                              );
+                                            }).toList(),
+                                          )),
                                 ),
-                                const SizedBox(height: 15),
-                                CheckboxListTile(
-                                  title: const Text('Allow multiclassing'),
-                                  value: multiclassing,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      multiclassing = value;
-                                    });
-                                  },
-                                  secondary: const Icon(Icons.insert_photo),
-                                ),
-                                const SizedBox(height: 15),
-                                CheckboxListTile(
-                                  title: const Text('Use milestone levelling'),
-                                  value: milestoneLevelling,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      milestoneLevelling = value;
-                                    });
-                                  },
-                                  secondary: const Icon(Icons.insert_photo),
-                                ),
-                                const SizedBox(height: 15),
-                                CheckboxListTile(
-                                  title: const Text('Use created content'),
-                                  value: useCustomContent,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      useCustomContent = value;
-                                    });
-                                  },
-                                  secondary: const Icon(Icons.insert_photo),
-                                ),
-                                const SizedBox(height: 15),
-                                CheckboxListTile(
-                                  title:
-                                      const Text('Use optional class features'),
-                                  value: optionalClassFeatures,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      optionalClassFeatures = value;
-                                    });
-                                  },
-                                  secondary: const Icon(Icons.insert_photo),
-                                ),
-                                const SizedBox(height: 8),
-                              ],
+                                const SizedBox(height: 10),
+                              ]))
+                    ])),
+                    Expanded(
+                        child: Column(
+                      children: [
+                        Container(
+                          width: 325,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            border: Border.all(
+                              color: const Color.fromARGB(255, 7, 26, 239),
+                              width: 2,
                             ),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
                           ),
-                        ],
-                      )),
-                      Expanded(
+                          child: const Center(
+                              child: Text(
+                            textAlign: TextAlign.center,
+                            "Build Parameters",
+                            style: TextStyle(
+                                fontSize: 35,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white),
+                          )),
+                        ),
+                        const SizedBox(height: 30),
+                        SizedBox(
+                          width: 325,
                           child: Column(
-                        children: [
-                          Container(
-                            width: 325,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.blue,
-                              border: Border.all(
-                                color: const Color.fromARGB(255, 7, 26, 239),
-                                width: 2,
+                            children: [
+                              CheckboxListTile(
+                                title: const Text('Feats in use'),
+                                value: featsAllowed,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    featsAllowed = value;
+                                  });
+                                },
+                                secondary: const Icon(Icons.insert_photo),
                               ),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(5)),
-                            ),
-                            child: const Center(
-                                child: Text(
-                              textAlign: TextAlign.center,
-                              "Rarer Parameters",
-                              style: TextStyle(
-                                  fontSize: 35,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white),
-                            )),
+                              const SizedBox(height: 15),
+                              CheckboxListTile(
+                                title: const Text('Use average for hit dice'),
+                                value: averageHitPoints,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    averageHitPoints = value;
+                                  });
+                                },
+                                secondary: const Icon(Icons.insert_photo),
+                              ),
+                              const SizedBox(height: 15),
+                              CheckboxListTile(
+                                title: const Text('Allow multiclassing'),
+                                value: multiclassing,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    multiclassing = value;
+                                  });
+                                },
+                                secondary: const Icon(Icons.insert_photo),
+                              ),
+                              const SizedBox(height: 15),
+                              CheckboxListTile(
+                                title: const Text('Use milestone levelling'),
+                                value: milestoneLevelling,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    milestoneLevelling = value;
+                                  });
+                                },
+                                secondary: const Icon(Icons.insert_photo),
+                              ),
+                              const SizedBox(height: 15),
+                              CheckboxListTile(
+                                title: const Text('Use created content'),
+                                value: useCustomContent,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    useCustomContent = value;
+                                  });
+                                },
+                                secondary: const Icon(Icons.insert_photo),
+                              ),
+                              const SizedBox(height: 15),
+                              CheckboxListTile(
+                                title:
+                                    const Text('Use optional class features'),
+                                value: optionalClassFeatures,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    optionalClassFeatures = value;
+                                  });
+                                },
+                                secondary: const Icon(Icons.insert_photo),
+                              ),
+                              const SizedBox(height: 8),
+                            ],
                           ),
-                          const SizedBox(height: 30),
-                          SizedBox(
-                            width: 325,
-                            child: Column(
-                              children: [
-                                CheckboxListTile(
-                                  title:
-                                      const Text('Use critical role content'),
-                                  value: criticalRoleContent,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      criticalRoleContent = value;
-                                    });
-                                  },
-                                  secondary: const Icon(Icons.insert_photo),
-                                ),
-                                const SizedBox(height: 15),
-                                CheckboxListTile(
-                                  title: const Text('Use encumberance rules'),
-                                  value: encumberanceRules,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      encumberanceRules = value;
-                                    });
-                                  },
-                                  secondary: const Icon(Icons.insert_photo),
-                                ),
-                                const SizedBox(height: 15),
-                                CheckboxListTile(
-                                  title: const Text("Incude coins' weights"),
-                                  value: includeCoinsForWeight,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      includeCoinsForWeight = value;
-                                    });
-                                  },
-                                  secondary: const Icon(Icons.insert_photo),
-                                ),
-                                const SizedBox(height: 15),
-                                CheckboxListTile(
-                                  title: const Text('Use UA content'),
-                                  value: unearthedArcanaContent,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      unearthedArcanaContent = value;
-                                    });
-                                  },
-                                  secondary: const Icon(Icons.insert_photo),
-                                ),
-                                const SizedBox(height: 15),
-                                CheckboxListTile(
-                                  title: const Text('Allow firearms'),
-                                  value: firearmsUsable,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      firearmsUsable = value;
-                                    });
-                                  },
-                                  secondary: const Icon(Icons.insert_photo),
-                                ),
-                                const SizedBox(height: 15),
-                                CheckboxListTile(
-                                  title:
-                                      const Text('Give an extra feat at lvl 1'),
-                                  value: extraFeatAtLevel1,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      extraFeatAtLevel1 = value;
-                                    });
-                                  },
-                                  secondary: const Icon(Icons.insert_photo),
-                                ),
-                                const SizedBox(height: 8),
-                              ],
+                        ),
+                      ],
+                    )),
+                    Expanded(
+                        child: Column(
+                      children: [
+                        Container(
+                          width: 325,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            border: Border.all(
+                              color: const Color.fromARGB(255, 7, 26, 239),
+                              width: 2,
                             ),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
                           ),
-                        ],
-                      ))
-                    ],
-                  )
-                ],
-              )),
+                          child: const Center(
+                              child: Text(
+                            textAlign: TextAlign.center,
+                            "Rarer Parameters",
+                            style: TextStyle(
+                                fontSize: 35,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white),
+                          )),
+                        ),
+                        const SizedBox(height: 30),
+                        SizedBox(
+                          width: 325,
+                          child: Column(
+                            children: [
+                              CheckboxListTile(
+                                title: const Text('Use critical role content'),
+                                value: criticalRoleContent,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    criticalRoleContent = value;
+                                  });
+                                },
+                                secondary: const Icon(Icons.insert_photo),
+                              ),
+                              const SizedBox(height: 15),
+                              CheckboxListTile(
+                                title: const Text('Use encumberance rules'),
+                                value: encumberanceRules,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    encumberanceRules = value;
+                                  });
+                                },
+                                secondary: const Icon(Icons.insert_photo),
+                              ),
+                              const SizedBox(height: 15),
+                              CheckboxListTile(
+                                title: const Text("Incude coins' weights"),
+                                value: includeCoinsForWeight,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    includeCoinsForWeight = value;
+                                  });
+                                },
+                                secondary: const Icon(Icons.insert_photo),
+                              ),
+                              const SizedBox(height: 15),
+                              CheckboxListTile(
+                                title: const Text('Use UA content'),
+                                value: unearthedArcanaContent,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    unearthedArcanaContent = value;
+                                  });
+                                },
+                                secondary: const Icon(Icons.insert_photo),
+                              ),
+                              const SizedBox(height: 15),
+                              CheckboxListTile(
+                                title: const Text('Allow firearms'),
+                                value: firearmsUsable,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    firearmsUsable = value;
+                                  });
+                                },
+                                secondary: const Icon(Icons.insert_photo),
+                              ),
+                              const SizedBox(height: 15),
+                              CheckboxListTile(
+                                title:
+                                    const Text('Give an extra feat at lvl 1'),
+                                value: extraFeatAtLevel1,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    extraFeatAtLevel1 = value;
+                                  });
+                                },
+                                secondary: const Icon(Icons.insert_photo),
+                              ),
+                              const SizedBox(height: 8),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ))
+                  ],
+                )
+              ],
+            ),
+          ),
           //race
           Column(
             children: [
@@ -5420,9 +5407,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                           });
                                                         },
                                                         child: Text(
-                                                          produceEquipmentOptionDescription(
-                                                              equipmentSelectedFromChoices![
-                                                                  i][0]),
+                                                          (equipmentSelectedFromChoices![
+                                                                  i][0]
+                                                              .toList()[0]),
                                                           style:
                                                               const TextStyle(
                                                             color: Colors.blue,
@@ -5441,9 +5428,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                         },
                                                         //String produceEquipmentOptionDescription(List<dynamic> optionDescription)
                                                         child: Text(
-                                                          produceEquipmentOptionDescription(
-                                                              equipmentSelectedFromChoices![
-                                                                  i][1]),
+                                                          (equipmentSelectedFromChoices![
+                                                                  i][1][0]
+                                                              as String),
                                                           style:
                                                               const TextStyle(
                                                             color: Colors.blue,
@@ -5453,9 +5440,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     ],
                                                   ),
                                                 )
-                                              : Text(produceEquipmentOptionDescription(
-                                                  equipmentSelectedFromChoices![
-                                                      i][0]))
+                                              : Text(
+                                                  (equipmentSelectedFromChoices![
+                                                      i][0] as String))
                                       ],
                                     ),
                                   ),
@@ -6266,6 +6253,9 @@ class MainCreateCharacter extends State<CreateACharacter>
   }
 
   bool multiclassingPossible(Class selectedClass) {
+    if (classList.isEmpty) {
+      return true;
+    }
     List<int> requirements = selectedClass.multiclassingRequirements;
     if (classList.contains(selectedClass.name)) {
       return true;
