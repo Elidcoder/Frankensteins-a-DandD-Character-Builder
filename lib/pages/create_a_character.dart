@@ -1028,7 +1028,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   List<String> weaponList = [];
   List<String> itemList = [];
   String? coinTypeSelected = "Gold Pieces";
-  List<List<dynamic>>? equipmentSelectedFromChoices;
+  List<dynamic> equipmentSelectedFromChoices = [];
   //{thing:numb,...}
   Map<String, int> stackableEquipmentSelected = {};
   List<dynamic> unstackableEquipmentSelected = [];
@@ -2247,8 +2247,11 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   .savingThrowProficiencies;
                                           maxHealth +=
                                               CLASSLIST[index].maxHitDiceRoll;
-                                          equipmentSelectedFromChoices =
-                                              CLASSLIST[index].equipmentOptions;
+                                          //equipmentSelectedFromChoices =
+                                          //CLASSLIST[index].equipmentOptions;
+                                          equipmentSelectedFromChoices.addAll(
+                                              CLASSLIST[index]
+                                                  .equipmentOptions);
                                           classSkillChoices = List.filled(
                                               CLASSLIST[index]
                                                   .optionsForSkillProficiencies
@@ -5370,7 +5373,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                             children: [
                               const Text(
                                   "Pick your equipment from options gained:"),
-                              if (equipmentSelectedFromChoices != null)
+                              if (equipmentSelectedFromChoices != [])
                                 SizedBox(
                                   height: 300,
                                   width: 200,
@@ -5381,10 +5384,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                           [
                                         for (var i = 0;
                                             i <
-                                                equipmentSelectedFromChoices!
+                                                equipmentSelectedFromChoices
                                                     .length;
                                             i++)
-                                          (equipmentSelectedFromChoices![i]
+                                          (equipmentSelectedFromChoices[i]
                                                       .length ==
                                                   2)
                                               ? Container(
@@ -5395,15 +5398,15 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                       OutlinedButton(
                                                         onPressed: () {
                                                           setState(() {
-                                                            equipmentSelectedFromChoices![
+                                                            equipmentSelectedFromChoices[
                                                                 i] = [
-                                                              equipmentSelectedFromChoices![
+                                                              equipmentSelectedFromChoices[
                                                                   i][0]
                                                             ];
                                                           });
                                                         },
                                                         child: Text(
-                                                          (equipmentSelectedFromChoices![
+                                                          (equipmentSelectedFromChoices[
                                                                   i][0]
                                                               .toList()[0]),
                                                           style:
@@ -5415,16 +5418,16 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                       OutlinedButton(
                                                         onPressed: () {
                                                           setState(() {
-                                                            equipmentSelectedFromChoices![
+                                                            equipmentSelectedFromChoices[
                                                                 i] = [
-                                                              equipmentSelectedFromChoices![
+                                                              equipmentSelectedFromChoices[
                                                                   i][1]
                                                             ];
                                                           });
                                                         },
                                                         //String produceEquipmentOptionDescription(List<dynamic> optionDescription)
                                                         child: Text(
-                                                          (equipmentSelectedFromChoices![
+                                                          (equipmentSelectedFromChoices[
                                                                   i][1][0]
                                                               as String),
                                                           style:
@@ -5437,8 +5440,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   ),
                                                 )
                                               : Text(
-                                                  (equipmentSelectedFromChoices![
-                                                      i][0] as String))
+                                                  (equipmentSelectedFromChoices[
+                                                      i][0][0] as String))
                                       ],
                                     ),
                                   ),
@@ -6196,8 +6199,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                               fontWeight: FontWeight.w700)),*/
                       const SizedBox(height: 20),
                       //Equipment
-                      (equipmentSelectedFromChoices == null ||
-                              equipmentSelectedFromChoices!
+                      (equipmentSelectedFromChoices == [] ||
+                              equipmentSelectedFromChoices
                                   .where((element) => element.length == 2)
                                   .toList()
                                   .isEmpty)
@@ -6207,7 +6210,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   fontSize: 22,
                                   fontWeight: FontWeight.w700))
                           : Text(
-                              "Missed ${equipmentSelectedFromChoices!.where((element) => element.length == 2).toList().length} equipment choice(s)",
+                              "Missed ${equipmentSelectedFromChoices.where((element) => element.length == 2).toList().length} equipment choice(s)",
                               style: const TextStyle(
                                   color: Colors.red,
                                   fontSize: 22,

@@ -161,7 +161,7 @@ class EditCharacter extends State<EditACharacter> {
   List<String> weaponList = [];
   List<String> itemList = [];
   String? coinTypeSelected = "Gold Pieces";
-  List<List<dynamic>>? equipmentSelectedFromChoices;
+  List<dynamic>? equipmentSelectedFromChoices;
   //{thing:numb,...}
   Map<String, int> stackableEquipmentSelected = {};
   List<dynamic> unstackableEquipmentSelected = [];
