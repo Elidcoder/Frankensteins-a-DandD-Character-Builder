@@ -210,9 +210,8 @@ class MainMenu extends StatelessWidget {
             const SizedBox(width: 100),
             OutlinedButton(
               style: OutlinedButton.styleFrom(
-                backgroundColor: (CHARACTERLIST.isNotEmpty || 1 == 1)
-                    ? Colors.blue
-                    : Colors.grey,
+                backgroundColor:
+                    (CHARACTERLIST.isNotEmpty) ? Colors.blue : Colors.grey,
                 padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -220,7 +219,7 @@ class MainMenu extends StatelessWidget {
                     width: 5, color: Color.fromARGB(255, 7, 26, 239)),
               ),
               onPressed: () {
-                if (CHARACTERLIST.isNotEmpty || 1 == 1) {
+                if (CHARACTERLIST.isNotEmpty) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -265,11 +264,7 @@ class MainMenu extends StatelessWidget {
                   final jsonData2 = json.decode(contents);
 
                   updateGlobals();
-                  //final String jsonContent =
-                  //  File("assets/Characters.json").readAsStringSync();
 
-                  //final String jsonContents =
-                  //  File("assets/SRD.json").readAsStringSync();
                   final Map<String, dynamic> jsonData =
                       jsonDecode(jsonString ?? "");
 

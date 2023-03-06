@@ -2006,12 +2006,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                   onChanged: (String? value) {
                     // This is called when the user selects an item.
                     setState(() {
-                      //may cauase issues later
                       abilityScoreIncreases = [0, 0, 0, 0, 0, 0];
-                      /*for (int i = 0; i < 6; i++) {
-                            abilityScoreIncreases[i] -=
-                                subraceExample?.subRaceScoreIncrease[i] ?? 0;
-                          }*/
+
                       subraceExample = initialRace.subRaces
                           ?.singleWhere((x) => x.name == value);
                       for (int i = 0; i < 6; i++) {
@@ -2630,7 +2626,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                         children: currentBackground.optionalSkillProficiencies!
                             .map((x) => Text(" $x "))
                             .toList()),
-                  if (currentBackground.numberOfSkillChoices != null)
+                  /*if (currentBackground.numberOfSkillChoices != null)
                     MultiSelectContainer(
                         prefix: MultiSelectPrefix(
                             selectedPrefix: const Padding(
@@ -2685,7 +2681,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   [])
                             MultiSelectCard(value: x, label: x)
                         ],
-                        onChange: (allSelectedItems, selectedItem) {}),
+                        onChange: (allSelectedItems, selectedItem) {}),*/
                   if (currentBackground.numberOfLanguageChoices != null)
                     Text(
                         "Pick ${(currentBackground.numberOfLanguageChoices)} language(s) to learn",
@@ -5504,7 +5500,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
                               onChanged: (characterAgeEnteredValue) {
-                                characterAge = characterAgeEnteredValue;
+                                setState(() {
+                                  characterAge = characterAgeEnteredValue;
+                                });
                               }),
                         ),
                         const SizedBox(height: 10),
@@ -5536,7 +5534,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
                               onChanged: (characterEyeEnteredValue) {
-                                characterEyes = characterEyeEnteredValue;
+                                setState(() {
+                                  characterEyes = characterEyeEnteredValue;
+                                });
                               }),
                         ),
                       ],
@@ -5572,7 +5572,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
                               onChanged: (characterHeightEnteredValue) {
-                                characterHeight = characterHeightEnteredValue;
+                                setState(() {
+                                  characterHeight = characterHeightEnteredValue;
+                                });
                               }),
                         ),
                         const SizedBox(height: 10),
@@ -5604,7 +5606,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
                               onChanged: (characterSkinEnteredValue) {
-                                characterSkin = characterSkinEnteredValue;
+                                setState(() {
+                                  characterSkin = characterSkinEnteredValue;
+                                });
                               }),
                         ),
                       ],
@@ -5640,7 +5644,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
                               onChanged: (characterWeightEnteredValue) {
-                                characterWeight = characterWeightEnteredValue;
+                                setState(() {
+                                  characterWeight = characterWeightEnteredValue;
+                                });
                               }),
                         ),
                         const SizedBox(height: 10),
@@ -5672,7 +5678,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
                               onChanged: (characterHairEnteredValue) {
-                                characterHair = characterHairEnteredValue;
+                                setState(() {
+                                  characterHair = characterHairEnteredValue;
+                                });
                               }),
                         ),
                       ],
@@ -5712,7 +5720,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12)))),
                       onChanged: (backstoryEnteredValue) {
-                        backstory = backstoryEnteredValue;
+                        setState(() {
+                          backstory = backstoryEnteredValue;
+                        });
                       }),
                 ),
                 const Text(
@@ -5748,7 +5758,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12)))),
                       onChanged: (extraFeaturesEnteredValue) {
-                        extraFeatures = extraFeaturesEnteredValue;
+                        setState(() {
+                          extraFeatures = extraFeaturesEnteredValue;
+                        });
                       }),
                 ),
               ])),
@@ -5962,8 +5974,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                             onPressed: () {
                               setState(() {
                                 updateGlobals();
-                                //final String jsonContent =
-                                //  File("assets/Characters.json").readAsStringSync();
                                 final Map<String, dynamic> json =
                                     jsonDecode(jsonString ?? "");
                                 final List<dynamic> characters =
@@ -5972,11 +5982,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 final int index = characters.indexWhere(
                                     (character) =>
                                         character["Name"] == curCharacterName);
-
                                 if (index != -1) {
                                   characters.removeAt(index);
                                 }
-
                                 characters.add(Character(
                                         uniqueID: int.parse([
                                           for (var i in List.generate(
@@ -6084,11 +6092,11 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 }
                                 writeJsonToFile(json, "userContent");
                                 updateGlobals();
+                                Navigator.pop(context);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const ScreenTop(
-                                          pagechoice: "Main Menu")),
+                                      builder: (context) => const Homepage()),
                                 );
                               });
                             },
@@ -6178,14 +6186,14 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   color: Colors.red,
                                   fontSize: 22,
                                   fontWeight: FontWeight.w700)),
-                      const SizedBox(height: 20),
+                      /*const SizedBox(height: 20),
                       Text("Made all selections for classes",
                           style: TextStyle(
                               color: (pointsRemaining == 0)
                                   ? Colors.green
                                   : Colors.red,
                               fontSize: 22,
-                              fontWeight: FontWeight.w700)),
+                              fontWeight: FontWeight.w700)),*/
                       const SizedBox(height: 20),
                       //Equipment
                       (equipmentSelectedFromChoices == null ||
@@ -6206,9 +6214,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   fontWeight: FontWeight.w700)),
                       const SizedBox(height: 20),
                       //spells
-                      (allSpellsSelectedAsListsOfThings.isNotEmpty)
+                      (allSpellsSelectedAsListsOfThings.length > 1)
                           ? (((allSpellsSelectedAsListsOfThings
-                                      .reduce((a, b) => a[1] + b[1]) as int) ==
+                                      .reduce((a, b) => a[2] + b[2]) as int) ==
                                   allSpellsSelected.length))
                               ? const Text("Chose all spells",
                                   style: TextStyle(
@@ -6216,16 +6224,30 @@ class MainCreateCharacter extends State<CreateACharacter>
                                       fontSize: 22,
                                       fontWeight: FontWeight.w700))
                               : Text(
-                                  "Missed ${(allSpellsSelectedAsListsOfThings.reduce((a, b) => a[1] + b[1]) as int) - allSpellsSelected.length} spells",
+                                  "Missed ${(allSpellsSelectedAsListsOfThings.reduce((a, b) => a[2] + b[2]) as int) - allSpellsSelected.length} spells",
                                   style: const TextStyle(
                                       color: Colors.red,
                                       fontSize: 22,
                                       fontWeight: FontWeight.w700))
-                          : const Text("Have 0 spells to choose",
-                              style: TextStyle(
-                                  color: Colors.green,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700)),
+                          : (allSpellsSelectedAsListsOfThings.isEmpty)
+                              ? const Text("Have 0 spells to choose",
+                                  style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w700))
+                              : (allSpellsSelectedAsListsOfThings[0][2] ==
+                                      allSpellsSelected.length)
+                                  ? const Text("Chose all spells",
+                                      style: TextStyle(
+                                          color: Colors.green,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w700))
+                                  : Text(
+                                      "Missed ${allSpellsSelectedAsListsOfThings[0][2] - allSpellsSelected.length} spells",
+                                      style: const TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w700)),
                       const SizedBox(height: 20),
                       (characterAge.replaceAll(" ", "") != "" &&
                               characterHeight.replaceAll(" ", "") != "" &&
@@ -6253,13 +6275,16 @@ class MainCreateCharacter extends State<CreateACharacter>
   }
 
   bool multiclassingPossible(Class selectedClass) {
+    //check if it is their first class
     if (classList.isEmpty) {
       return true;
     }
     List<int> requirements = selectedClass.multiclassingRequirements;
+    //check if they already have a level in the class
     if (classList.contains(selectedClass.name)) {
       return true;
     }
+    //check the class they want to take
     int count = 0;
     if (strength.value + abilityScoreIncreases[0] + ASIBonuses[0] >=
         requirements[0]) count++;
@@ -6277,6 +6302,7 @@ class MainCreateCharacter extends State<CreateACharacter>
     if (count < requirements[6]) {
       return false;
     }
+    //check all other classes they have a level in
     for (var i = 0; i < classList.length; i++) {
       requirements = CLASSLIST
           .firstWhere((element) => element.name == classList[i])

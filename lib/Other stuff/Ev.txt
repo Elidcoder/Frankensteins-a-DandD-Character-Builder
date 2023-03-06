@@ -46,23 +46,23 @@ debugPrint("${CLASSLIST.first.gainAtEachLevel[0]}");
 flutter create . -> rebuilds the windows file #
 hit dice attempt 1:
 CLASSLIST
-                                                              .where((car) => userCharacter
-                                                                  .classList
-                                                                  .contains(
-                                                                      car.name))
-                                                              .fold<Map<String, int>>(
-                                                                  {},
-                                                                  (map, car) => map
-                                                                    ..update(car.name, (count) => count + 1,
-                                                                        ifAbsent: () =>
-                                                                            1))
-                                                              .entries
-                                                              .where((entry) =>
-                                                                  entry.value >
-                                                                  0)
-                                                              .map((entry) =>
-                                                                  "${entry.value}D${CLASSLIST.firstWhere((car) => car.name == entry.key).maxHitDiceRoll}")
-                                                              .join(", ")
+.where((car) => userCharacter
+    .classList
+    .contains(
+        car.name))
+.fold<Map<String, int>>(
+    {},
+    (map, car) => map
+      ..update(car.name, (count) => count + 1,
+          ifAbsent: () =>
+              1))
+.entries
+.where((entry) =>
+    entry.value >
+    0)
+.map((entry) =>
+    "${entry.value}D${CLASSLIST.firstWhere((car) => car.name == entry.key).maxHitDiceRoll}")
+.join(", ")
 {"Characters":[],"Groups":[]}
 {
     "Sourcebooks":[

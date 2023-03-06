@@ -38,11 +38,7 @@ Spell listgetter(String spellname) {
 class Edittop extends StatelessWidget {
   final Character character;
   const Edittop(this.character, {Key? key}) : super(key: key);
-  //String jsonString = File(filepath).readAsStringSync();
-  //late final Map<String, dynamic> jsonmap = decoder.convert(jsonString);
-
   static const String _title = 'Frankenstein\'s - a D&D 5e character builder';
-
   @override
   Widget build(BuildContext context) {
     updateGlobals();
@@ -340,7 +336,7 @@ class EditCharacter extends State<EditACharacter> {
                       if (double.tryParse(experienceIncrease ?? "NOT NUMBER") !=
                           null) {
                         experience += double.tryParse(
-                                experienceIncrease ?? "NOTNUMBER") ??
+                                experienceIncrease ?? "NOT NUMBER") ??
                             0;
                         //validate level
                       }
@@ -2618,12 +2614,6 @@ class EditCharacter extends State<EditACharacter> {
                                   color: Colors.red,
                                   fontSize: 22,
                                   fontWeight: FontWeight.w700)),
-                      const SizedBox(height: 20),
-                      Text("Made all selections for classes",
-                          style: TextStyle(
-                              color: (1 == 0) ? Colors.green : Colors.red,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700)),
                       const SizedBox(height: 20),
                       //Equipment
                       (equipmentSelectedFromChoices == null ||

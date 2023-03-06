@@ -489,7 +489,7 @@ List<String> GROUPLIST = [];
 
 void updateGlobals() async {
   jsonString = await getFile("userContent");
-  final jsonmap = jsonDecode(jsonString ?? "");
+  final jsonmap = jsonDecode(jsonString ?? "{}");
 
   ///file decoded into "jsonmap"
   //final dynamic jsonmap = decoder.convert(jsonString??"");

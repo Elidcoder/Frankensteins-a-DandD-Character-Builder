@@ -50,6 +50,7 @@ class MainMyCharacters extends State<MyCharacters> {
                       textAlign: TextAlign.center,
                     ))),
           ]),
+          const SizedBox(height: 15),
           (CHARACTERLIST.isEmpty)
               ? const Text("You have no created characters to view")
               : SingleChildScrollView(

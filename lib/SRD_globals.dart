@@ -739,10 +739,8 @@ class Weapon {
 }*/
 
 String? jsonString;
-
 const JsonDecoder decoder = JsonDecoder();
-final dynamic jsonmap = decoder.convert(jsonString ?? "");
-
+final dynamic jsonmap = decoder.convert(jsonString ?? "{}");
 List<String> LANGUAGELIST = [];
 
 List<Proficiency> PROFICIENCYLIST = [];
@@ -768,19 +766,6 @@ dynamic mapEquipment(x) {
   return Item.fromJson(x);
 }
 
-/*
-Future<dynamic> getFile(String location) async {
-  final jsonString = await rootBundle.loadString(location);
-  final jsonmap = decoder.convert(jsonString);
-  return jsonmap;
-}
-
-
-Future<void> writeToFile(String fileName, String data) async {
-  final directory = await getApplicationDocumentsDirectory();
-  final file = File('${directory.path}/$fileName');
-  await file.writeAsString(data);
-}*/
 Future<String> getFile(String filename) async {
   final directory = await getApplicationDocumentsDirectory();
   final file = File('${directory.path}/$filename.json');
@@ -795,9 +780,9 @@ Future<void> writeJsonToFile(
   final directory = await getApplicationDocumentsDirectory();
   final file = File('${directory.path}/$filename.json');
   await file.writeAsBytes(bytes);
+}
 
   // To copy from assets, uncomment the following code:
   // final data = await rootBundle.load('assets/file.json');
   // final bytes = data.buffer.asUint8List();
   // await file.writeAsBytes(bytes);
-}

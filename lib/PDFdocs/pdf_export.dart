@@ -5,11 +5,13 @@ import 'package:pdf/widgets.dart';
 import 'package:pdf/pdf.dart';
 import 'package:frankenstein/character_globals.dart';
 import 'package:frankenstein/SRD_globals.dart';
+import 'package:google_fonts/google_fonts.dart';
 
+//final font = Font.ttf(await rootBundle.load("assets/fonts/your_font.ttf"));
 //1038xidk
 //ARGB => 0x(AA)(RR)(GG)(BB)
 String formatNumber(int number) {
-  return number >= 0 ? "+$number" : "$number";
+  return (number >= 0) ? "+$number" : "$number";
 }
 
 int decodeBonus(List<String> x) {
@@ -378,10 +380,12 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                           ),
                                           padding: const EdgeInsets.fromLTRB(
                                               5, 0, 5, 0),
+                                          //ability scores
                                           child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceEvenly,
                                               children: [
+                                                //strength
                                                 Container(
                                                     height: 63,
                                                     width: 50,
@@ -405,31 +409,35 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       fontSize:
                                                                           10)),
                                                           Text(
-                                                              "${userCharacter.strength.value + userCharacter.raceAbilityScoreIncreases[0] + userCharacter.featsASIScoreIncreases[0]}",
+                                                              "${userCharacter.strength.value}",
                                                               style:
                                                                   const TextStyle(
                                                                       fontSize:
                                                                           23)),
                                                           Container(
                                                               height: 13,
-                                                              padding: const EdgeInsets
-                                                                      .fromLTRB(
-                                                                  5, 0, 5, 1),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .fromLTRB(
+                                                                      5,
+                                                                      0,
+                                                                      5,
+                                                                      1),
                                                               decoration: BoxDecoration(
                                                                   borderRadius:
                                                                       BorderRadius.circular(
                                                                           5.0),
-                                                                  border: Border.all(
-                                                                      width:
-                                                                          0.8)),
-                                                              child: Text(formatNumber(modifierFromAbilityScore[userCharacter
+                                                                  border: Border
+                                                                      .all(
+                                                                          width:
+                                                                              0.8)),
+                                                              child: Text(formatNumber(
+                                                                  modifierFromAbilityScore[userCharacter
                                                                           .strength
-                                                                          .value +
-                                                                      userCharacter
-                                                                          .raceAbilityScoreIncreases[0] +
-                                                                      userCharacter.featsASIScoreIncreases[0]] ??
-                                                                  0)))
+                                                                          .value] ??
+                                                                      0)))
                                                         ])),
+                                                //dexterity
                                                 Container(
                                                     height: 63,
                                                     width: 50,
@@ -478,6 +486,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       userCharacter.featsASIScoreIncreases[1]] ??
                                                                   0)))
                                                         ])),
+                                                //constituion
                                                 Container(
                                                     height: 63,
                                                     width: 50,
@@ -526,6 +535,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       userCharacter.featsASIScoreIncreases[2]] ??
                                                                   0)))
                                                         ])),
+                                                //intelligence
                                                 Container(
                                                     height: 63,
                                                     width: 50,
@@ -574,6 +584,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       userCharacter.featsASIScoreIncreases[3]] ??
                                                                   0)))
                                                         ])),
+                                                //wisdom
                                                 Container(
                                                     height: 63,
                                                     width: 50,
@@ -622,6 +633,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       userCharacter.featsASIScoreIncreases[4]] ??
                                                                   0)))
                                                         ])),
+                                                //charisma
                                                 Container(
                                                     height: 63,
                                                     width: 50,
@@ -2263,6 +2275,8 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                   Text("Armour\nClass:",
                                                       style: const TextStyle(
                                                           fontSize: 9.5)),
+                                                  Text(
+                                                      "${10 + (modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0)}"),
                                                   Container(
                                                     width: 155,
                                                     //child:
@@ -2488,7 +2502,6 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                             ])),
                                         SizedBox(width: 5),
                                         Container(
-                                            //alignment: Alignment.center,
                                             height: 54.0,
                                             padding: const EdgeInsets.fromLTRB(
                                                 1, 3, 1, 0),
@@ -2594,6 +2607,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceEvenly,
                                               children: [
+                                                //Platinum
                                                 Container(
                                                     alignment: Alignment.center,
                                                     height: 27.0,
@@ -2614,6 +2628,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Text(
                                                           "${userCharacter.currency["Platinum Pieces"] ?? "ERROR"}")
                                                     ])),
+                                                //Gold
                                                 Container(
                                                     alignment: Alignment.center,
                                                     height: 27.0,
@@ -2634,6 +2649,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Text(
                                                           "${userCharacter.currency["Gold Pieces"] ?? "ERROR"}")
                                                     ])),
+                                                //Electrum
                                                 Container(
                                                     alignment: Alignment.center,
                                                     height: 27.0,
@@ -2654,6 +2670,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Text(
                                                           "${userCharacter.currency["Electrum Pieces"] ?? "ERROR"}")
                                                     ])),
+                                                //Silver
                                                 Container(
                                                     alignment: Alignment.center,
                                                     height: 27.0,
@@ -2674,6 +2691,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                       Text(
                                                           "${userCharacter.currency["Silver Pieces"] ?? "ERROR"}")
                                                     ])),
+                                                //Copper
                                                 Container(
                                                     alignment: Alignment.center,
                                                     height: 27.0,
