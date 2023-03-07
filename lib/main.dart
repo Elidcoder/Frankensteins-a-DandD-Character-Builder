@@ -50,6 +50,7 @@ class Homepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    updateGlobals();
     return MaterialApp(
       title: _title,
       home: Scaffold(
