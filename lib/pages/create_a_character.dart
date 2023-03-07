@@ -1776,7 +1776,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 value: featsAllowed,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    featsAllowed = value;
+                                    if (featsSelected.isEmpty) {
+                                      featsAllowed = value;
+                                    }
                                   });
                                 },
                                 secondary: const Icon(Icons.insert_photo),
@@ -1934,7 +1936,17 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 value: extraFeatAtLevel1,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    extraFeatAtLevel1 = value;
+                                    if (classList.isNotEmpty) {
+                                      if (extraFeatAtLevel1 ?? false) {
+                                        if (numberOfRemainingFeatOrASIs > 0) {
+                                          numberOfRemainingFeatOrASIs--;
+                                          extraFeatAtLevel1 = false;
+                                        }
+                                      } else {
+                                        extraFeatAtLevel1 = true;
+                                        numberOfRemainingFeatOrASIs++;
+                                      }
+                                    }
                                   });
                                 },
                                 secondary: const Icon(Icons.insert_photo),
@@ -2195,6 +2207,11 @@ class MainCreateCharacter extends State<CreateACharacter>
                                           (multiclassingPossible(
                                               CLASSLIST[index]))) {
                                         classList.add(CLASSLIST[index].name);
+
+                                        if (extraFeatAtLevel1 ?? false) {
+                                          numberOfRemainingFeatOrASIs++;
+                                        }
+
                                         if ((CLASSLIST[index]
                                                 .gainAtEachLevel[
                                                     levelsPerClass[index]]
@@ -4377,133 +4394,140 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   )),
                                 ],
                               ))),
-                      Expanded(
-                          child: SizedBox(
-                              height: 435,
-                              child: Column(
-                                children: [
-                                  const Text("Feats"),
-                                  if (featsSelected.isNotEmpty)
-                                    Text(
-                                        "${featsSelected.length} Feats selected:"),
-                                  if (featsSelected.isNotEmpty)
-                                    SizedBox(
-                                        height: 50,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          shrinkWrap: true,
-                                          itemCount: featsSelected.length,
-                                          itemBuilder: (context, index) {
-                                            return OutlinedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                  backgroundColor:
-                                                      Colors.white),
-                                              onPressed: () {},
-                                              child: Text(
-                                                  featsSelected[index][0].name),
-                                            );
-                                          },
-                                        )),
-                                  const Text("Select Feats:"),
-                                  Row(children: [
-                                    OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                          backgroundColor: (fullFeats)
-                                              ? Colors.blue
-                                              : Colors.grey),
-                                      onPressed: () {
-                                        setState(() {
-                                          fullFeats = !fullFeats;
-                                        });
-                                      },
-                                      child: const Text("Full Feats",
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                    ),
-                                    //text for search
-                                    OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                          backgroundColor: (halfFeats)
-                                              ? Colors.blue
-                                              : Colors.grey),
-                                      onPressed: () {
-                                        setState(() {
-                                          halfFeats = !halfFeats;
-                                        });
-                                      },
-                                      child: const Text("Half Feats",
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                    ),
-                                  ]),
-                                  Container(
-                                    height: 140,
-                                    width: 300,
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 3,
-                                      ),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(10)),
-                                    ),
-                                    child: ListView.builder(
-                                      scrollDirection: Axis.vertical,
-                                      shrinkWrap: true,
-                                      itemCount: FEATLIST.length,
-                                      itemBuilder: (context, index) {
-                                        return OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                                backgroundColor: (featsSelected
-                                                            .where((element) =>
-                                                                element[0]
-                                                                    .name ==
-                                                                FEATLIST[index]
-                                                                    .name)
-                                                            .length ==
-                                                        FEATLIST[index]
-                                                            .numberOfTimesTakeable)
-                                                    ? Colors.green
-                                                    : (featsSelected
-                                                            .where((element) =>
-                                                                element[0]
-                                                                    .name ==
-                                                                FEATLIST[index]
-                                                                    .name)
-                                                            .isEmpty)
-                                                        ? Colors.white
-                                                        : Colors.lightGreen),
-                                            onPressed: () {
-                                              setState(
-                                                () {
-                                                  if (numberOfRemainingFeatOrASIs >
-                                                      0) {
-                                                    if (featsSelected
-                                                            .where((element) =>
-                                                                element[0]
-                                                                    .name ==
-                                                                FEATLIST[index]
-                                                                    .name)
-                                                            .length <
-                                                        FEATLIST[index]
-                                                            .numberOfTimesTakeable) {
-                                                      numberOfRemainingFeatOrASIs--;
-                                                      //call up the selection page
-                                                      featsSelected.add(
-                                                          [FEATLIST[index]]);
-                                                    }
-                                                  }
-                                                },
+                      if (featsAllowed ?? false)
+                        Expanded(
+                            child: SizedBox(
+                                height: 435,
+                                child: Column(
+                                  children: [
+                                    const Text("Feats"),
+                                    if (featsSelected.isNotEmpty)
+                                      Text(
+                                          "${featsSelected.length} Feats selected:"),
+                                    if (featsSelected.isNotEmpty)
+                                      SizedBox(
+                                          height: 50,
+                                          child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            shrinkWrap: true,
+                                            itemCount: featsSelected.length,
+                                            itemBuilder: (context, index) {
+                                              return OutlinedButton(
+                                                style: OutlinedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.white),
+                                                onPressed: () {},
+                                                child: Text(featsSelected[index]
+                                                        [0]
+                                                    .name),
                                               );
-                                              // Code to handle button press
                                             },
-                                            child: Text(FEATLIST[index].name));
-                                      },
+                                          )),
+                                    const Text("Select Feats:"),
+                                    Row(children: [
+                                      OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                            backgroundColor: (fullFeats)
+                                                ? Colors.blue
+                                                : Colors.grey),
+                                        onPressed: () {
+                                          setState(() {
+                                            fullFeats = !fullFeats;
+                                          });
+                                        },
+                                        child: const Text("Full Feats",
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                      ),
+                                      //text for search
+                                      OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                            backgroundColor: (halfFeats)
+                                                ? Colors.blue
+                                                : Colors.grey),
+                                        onPressed: () {
+                                          setState(() {
+                                            halfFeats = !halfFeats;
+                                          });
+                                        },
+                                        child: const Text("Half Feats",
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                      ),
+                                    ]),
+                                    Container(
+                                      height: 140,
+                                      width: 300,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        border: Border.all(
+                                          color: Colors.black,
+                                          width: 3,
+                                        ),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true,
+                                        itemCount: FEATLIST.length,
+                                        itemBuilder: (context, index) {
+                                          return OutlinedButton(
+                                              style: OutlinedButton.styleFrom(
+                                                  backgroundColor: (featsSelected
+                                                          .where((element) =>
+                                                              element[0].name ==
+                                                              FEATLIST[index]
+                                                                  .name)
+                                                          .isNotEmpty)
+                                                      ? Color.fromARGB(
+                                                          100 +
+                                                              (((featsSelected.where((element) => element[0].name == FEATLIST[index].name).length) /
+                                                                          FEATLIST[index]
+                                                                              .numberOfTimesTakeable) *
+                                                                      155)
+                                                                  .ceil(),
+                                                          0,
+                                                          50 +
+                                                              (((featsSelected.where((element) => element[0].name == FEATLIST[index].name).length) /
+                                                                          FEATLIST[index]
+                                                                              .numberOfTimesTakeable) *
+                                                                      205)
+                                                                  .ceil(),
+                                                          0)
+                                                      : Colors.white),
+                                              onPressed: () {
+                                                setState(
+                                                  () {
+                                                    if (numberOfRemainingFeatOrASIs >
+                                                        0) {
+                                                      if (featsSelected
+                                                              .where((element) =>
+                                                                  element[0]
+                                                                      .name ==
+                                                                  FEATLIST[
+                                                                          index]
+                                                                      .name)
+                                                              .length <
+                                                          FEATLIST[index]
+                                                              .numberOfTimesTakeable) {
+                                                        numberOfRemainingFeatOrASIs--;
+                                                        //call up the selection page
+                                                        featsSelected.add(
+                                                            [FEATLIST[index]]);
+                                                      }
+                                                    }
+                                                  },
+                                                );
+                                                // Code to handle button press
+                                              },
+                                              child:
+                                                  Text(FEATLIST[index].name));
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ))),
+                                  ],
+                                ))),
                     ],
                   )
                 ],
