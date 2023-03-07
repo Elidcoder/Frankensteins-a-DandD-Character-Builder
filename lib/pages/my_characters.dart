@@ -18,6 +18,7 @@ class MyCharacters extends StatefulWidget {
 
 class MainMyCharacters extends State<MyCharacters> {
   //MainMyCharacters({Key? key}) : super(key: key);
+  String searchTerm = "";
   @override
   void initState() {
     super.initState();
@@ -43,12 +44,31 @@ class MainMyCharacters extends State<MyCharacters> {
           Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
             Expanded(
                 child: Container(
-                    height: 40,
-                    color: Colors.grey,
-                    child: const Text(
-                      "Search filters here",
-                      textAlign: TextAlign.center,
-                    ))),
+              height: 50,
+              color: Colors.grey,
+              child: SizedBox(
+                width: 150,
+                child: TextField(
+                    cursorColor: Colors.blue,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                        hintText: "Character name here",
+                        hintStyle: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: Color.fromARGB(255, 212, 208, 224)),
+                        filled: true,
+                        fillColor: Colors.grey,
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12)))),
+                    onChanged: (searchEnteredValue) {
+                      setState(() {
+                        searchTerm = searchEnteredValue;
+                      });
+                    }),
+              ),
+            )),
           ]),
           const SizedBox(height: 15),
           (CHARACTERLIST.isEmpty)
@@ -61,7 +81,12 @@ class MainMyCharacters extends State<MyCharacters> {
                     alignment: WrapAlignment.center,
                     children:
                         // This is the list of buttons
-                        List.generate(CHARACTERLIST.length, (index) {
+                        List.generate(
+                            CHARACTERLIST
+                                .where((element) =>
+                                    element.name.contains(searchTerm))
+                                .toList()
+                                .length, (index) {
                       return Container(
                           width: 175,
                           height: 227,
@@ -76,13 +101,18 @@ class MainMyCharacters extends State<MyCharacters> {
                           ),
                           child: Column(
                             children: [
-                              Text(CHARACTERLIST[index].name,
+                              Text(
+                                  CHARACTERLIST
+                                      .where((element) =>
+                                          element.name.contains(searchTerm))
+                                      .toList()[index]
+                                      .name,
                                   style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white)),
                               Text(
-                                  "Level: ${CHARACTERLIST[index].classList.length}",
+                                  "Level: ${CHARACTERLIST.where((element) => element.name.contains(searchTerm)).toList()[index].classList.length}",
                                   style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
@@ -91,20 +121,31 @@ class MainMyCharacters extends State<MyCharacters> {
                                   width: 175.0,
                                   child: FittedBox(
                                     fit: BoxFit.scaleDown,
-                                    child: (CHARACTERLIST[index]
+                                    child: (CHARACTERLIST
+                                            .where((element) => element.name
+                                                .contains(searchTerm))
+                                            .toList()[index]
                                             .classLevels
                                             .any((x) => x != 0))
                                         ? Text(
-                                            CLASSLIST
+                                            CHARACTERLIST
+                                                .where((element) => element.name
+                                                    .contains(searchTerm))
+                                                .toList()
                                                 .asMap()
                                                 .entries
                                                 .where((entry) =>
-                                                    CHARACTERLIST[index]
+                                                    CHARACTERLIST
+                                                            .where((element) =>
+                                                                element.name
+                                                                    .contains(
+                                                                        searchTerm))
+                                                            .toList()[index]
                                                             .classLevels[
                                                         entry.key] !=
                                                     0)
                                                 .map((entry) =>
-                                                    "${entry.value.name}: ${CHARACTERLIST[index].classLevels[entry.key]}")
+                                                    "${entry.value.name}: ${CHARACTERLIST.where((element) => element.name.contains(searchTerm)).toList()[index].classLevels[entry.key]}")
                                                 .join(", "),
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.w700,
@@ -115,7 +156,8 @@ class MainMyCharacters extends State<MyCharacters> {
                                                 fontWeight: FontWeight.w700,
                                                 color: Colors.white)),
                                   )),
-                              Text("Health: ${CHARACTERLIST[index].maxHealth}",
+                              Text(
+                                  "Health: ${CHARACTERLIST.where((element) => element.name.contains(searchTerm)).toList()[index].maxHealth}",
                                   style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
@@ -125,7 +167,7 @@ class MainMyCharacters extends State<MyCharacters> {
                                   child: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Text(
-                                        "Group: ${CHARACTERLIST[index].group ?? "Not a part of a group"}",
+                                        "Group: ${CHARACTERLIST.where((element) => element.name.contains(searchTerm)).toList()[index].group ?? "Not a part of a group"}",
                                         style: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w700,
@@ -138,7 +180,11 @@ class MainMyCharacters extends State<MyCharacters> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                           builder: (context) => PdfPreviewPage(
-                                              invoice: CHARACTERLIST[index])),
+                                              invoice: CHARACTERLIST
+                                                  .where((element) => element
+                                                      .name
+                                                      .contains(searchTerm))
+                                                  .toList()[index])),
                                     );
                                   },
                                   child: const SizedBox(
@@ -166,8 +212,12 @@ class MainMyCharacters extends State<MyCharacters> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              Edittop(CHARACTERLIST[index])),
+                                          builder: (context) => Edittop(
+                                              CHARACTERLIST
+                                                  .where((element) => element
+                                                      .name
+                                                      .contains(searchTerm))
+                                                  .toList()[index])),
                                     );
                                   },
                                   child: const SizedBox(
@@ -189,8 +239,11 @@ class MainMyCharacters extends State<MyCharacters> {
                                           jsonDecode(jsonContent);
                                       final List<dynamic> characters =
                                           json["Characters"];
-                                      String curCharacterName =
-                                          CHARACTERLIST[index].name;
+                                      String curCharacterName = CHARACTERLIST
+                                          .where((element) =>
+                                              element.name.contains(searchTerm))
+                                          .toList()[index]
+                                          .name;
                                       final int Index = characters.indexWhere(
                                           (character) =>
                                               character["Name"] ==
@@ -198,14 +251,26 @@ class MainMyCharacters extends State<MyCharacters> {
                                       characters.firstWhere(
                                           (element) =>
                                               element["Group"] ==
-                                                  CHARACTERLIST[index].group &&
+                                                  CHARACTERLIST
+                                                      .where((element) =>
+                                                          element.name.contains(
+                                                              searchTerm))
+                                                      .toList()[index]
+                                                      .group &&
                                               element["Name"] !=
-                                                  CHARACTERLIST[index].name,
-                                          orElse: () {
+                                                  CHARACTERLIST
+                                                      .where((element) =>
+                                                          element.name.contains(
+                                                              searchTerm))
+                                                      .toList()[index]
+                                                      .name, orElse: () {
                                         final List<dynamic> groups =
                                             json["Groups"];
-                                        groups
-                                            .remove(CHARACTERLIST[index].group);
+                                        groups.remove(CHARACTERLIST
+                                            .where((element) => element.name
+                                                .contains(searchTerm))
+                                            .toList()[index]
+                                            .group);
                                       });
                                       if (Index != -1) {
                                         characters.removeAt(Index);
