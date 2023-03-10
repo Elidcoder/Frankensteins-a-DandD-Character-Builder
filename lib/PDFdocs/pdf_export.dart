@@ -14,6 +14,32 @@ String formatNumber(int number) {
   return (number >= 0) ? "+$number" : "$number";
 }
 
+String formatList(List list) {
+  // Initialize an empty string to store the result
+  String result = '';
+
+  // Iterate through the list
+  for (int i = 0; i < list.length; i++) {
+    // Check if the current element is a number
+    if (list[i] is num) {
+      // Append the current number and string pair to the result string
+      result += '${list[i]}x${list[i + 1]}';
+
+      // Skip over the next element (the string)
+      i++;
+    } else {
+      // Append just the current string to the result string
+      result += '${list[i]}';
+    }
+
+    // If this is not the last element, add a comma and space separator
+    if (i != list.length - 1) result += ', ';
+  }
+
+  // Return the final formatted string
+  return result;
+}
+
 int decodeBonus(List<String> x) {
   return 0;
 }
@@ -2318,13 +2344,13 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                         ...skillsSelected
                                                       ].contains("Initiative"))
                                                           ? Text(
-                                                              "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                              "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + (userCharacter.skillBonusMap["Initiative"] ?? 0) + userCharacter.featsASIScoreIncreases[1]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                               style:
                                                                   const TextStyle(
                                                                       fontSize:
                                                                           18))
                                                           : Text(
-                                                              "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0)} ",
+                                                              "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + (userCharacter.skillBonusMap["Initiative"] ?? 0) + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0)} ",
                                                               style:
                                                                   const TextStyle(
                                                                       fontSize:
@@ -2724,6 +2750,12 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                             Container(
                                                 child: Text(
                                                     [
+                                                      ...[
+                                                        for (var x in userCharacter
+                                                                .equipmentSelectedFromChoices ??
+                                                            [])
+                                                          formatList(x[0])
+                                                      ],
                                                       ...userCharacter
                                                           .unstackableEquipmentSelected
                                                           .map((entry) =>

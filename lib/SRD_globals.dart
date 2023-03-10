@@ -143,7 +143,7 @@ class Weapon extends Item {
 
 class Feat {
   final String name;
-  final List<List<String>> abilites;
+  final List<List<dynamic>> abilites;
   final String sourceBook;
   final int numberOfTimesTakeable;
   final String description;
@@ -161,7 +161,7 @@ class Feat {
     return Feat(
         name: data["Name"],
         sourceBook: data["SourceBook"],
-        abilites: data["Abilities"].cast<List<String>>(),
+        abilites: data["Abilities"].cast<List<dynamic>>(),
         description: data["Description"],
         numberOfTimesTakeable: data["NumberOfTimesTakeable"]
         //sourceBook: sourceBook,

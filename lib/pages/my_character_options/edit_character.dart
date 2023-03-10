@@ -2225,6 +2225,7 @@ class EditCharacter extends State<EditACharacter> {
                       builder: (context) => PdfPreviewPage(
                           invoice: Character(
                               backstory: character.backstory,
+                              skillBonusMap:character.skillBonusMap,
                               extraFeatures: character.extraFeatures,
                               uniqueID: character.uniqueID,
                               group: group,
@@ -2441,6 +2442,7 @@ class EditCharacter extends State<EditACharacter> {
 
                                 characters.add(Character(
                                         backstory: character.backstory,
+                                        skillBonusMap:character.skillBonusMap,
                                         extraFeatures: character.extraFeatures,
                                         uniqueID: character.uniqueID,
                                         group: group,

@@ -909,6 +909,34 @@ class MainCreateCharacter extends State<CreateACharacter>
   List<String> featuresAndTraits = [];
   List<String> toolProficiencies = [];
   bool inspired = false;
+  Map<String, int> skillBonusMap = {
+    "Acrobatics": 0,
+    "Animal Handling": 0,
+    "Arcana": 0,
+    "Athletics": 0,
+    "Deception": 0,
+    "History": 0,
+    "Insight": 0,
+    "Intimidation": 0,
+    "Investigation": 0,
+    "Medicine": 0,
+    "Nature": 0,
+    "Perception": 0,
+    "Performance": 0,
+    "Persuasion": 0,
+    "Religion": 0,
+    "Sleight of Hand": 0,
+    "Stealth": 0,
+    "Survival": 0,
+    "Strength Saving Throw": 0,
+    "Dexterity Saving Throw": 0,
+    "Constitution Saving Throw": 0,
+    "Intelligence Saving Throw": 0,
+    "Wisdom Saving Throw": 0,
+    "Charisma Saving Throw": 0,
+    "Passive Perception": 0,
+    "Initiative": 0,
+  };
   Map<String, List<String>> speedBonusMap = {
     "Hover": [],
     "Flying": [],
@@ -920,7 +948,7 @@ class MainCreateCharacter extends State<CreateACharacter>
     "Copper Pieces": 0,
     "Silver Pieces": 0,
     "Electrum Pieces": 0,
-    "Gold Pieces": 100,
+    "Gold Pieces": 0,
     "Platinum Pieces": 0
   };
   // ignore: non_constant_identifier_names
@@ -1017,7 +1045,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   List<int> ASIBonuses = [0, 0, 0, 0, 0, 0];
   List<List<dynamic>> featsSelected = [];
   bool ASIRemaining = false;
-  int numberOfRemainingFeatOrASIs = 11;
+  int numberOfRemainingFeatOrASIs = 0;
   bool halfFeats = true;
   bool fullFeats = true;
   //Spell variables
@@ -1479,7 +1507,7 @@ class MainCreateCharacter extends State<CreateACharacter>
           title: const Center(
             child: Text(
               textAlign: TextAlign.center,
-              'Create a character',
+              "Create a character",
               style: TextStyle(
                   fontSize: 45,
                   fontWeight: FontWeight.w700,
@@ -2236,23 +2264,23 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                 color: Color.fromARGB(
                                                     255, 0, 168, 252)),
                                           ));
-                                          for (List<dynamic> x
-                                              in CLASSLIST[index]
-                                                      .gainAtEachLevel[
-                                                  levelsPerClass[index]]) {
-                                            if (x[0] == "Choice") {
-                                              widgetsInPlay.add(SizedBox(
-                                                  height: 80,
-                                                  child: ChoiceRow(
-                                                    x: x.sublist(1),
-                                                    allSelected: allSelected,
-                                                  )));
-                                            } else {
-                                              levelGainParser(
-                                                  x, CLASSLIST[index]);
-                                            }
+                                        }
+                                        for (List<dynamic> x
+                                            in CLASSLIST[index].gainAtEachLevel[
+                                                levelsPerClass[index]]) {
+                                          if (x[0] == "Choice") {
+                                            widgetsInPlay.add(SizedBox(
+                                                height: 80,
+                                                child: ChoiceRow(
+                                                  x: x.sublist(1),
+                                                  allSelected: allSelected,
+                                                )));
+                                          } else {
+                                            levelGainParser(
+                                                x, CLASSLIST[index]);
                                           }
                                         }
+
                                         //level 1 bonuses
                                         if (levelsPerClass.reduce(
                                                 (value, element) =>
@@ -4515,6 +4543,28 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                         //call up the selection page
                                                         featsSelected.add(
                                                             [FEATLIST[index]]);
+                                                        for (List<dynamic> x
+                                                            in FEATLIST[index]
+                                                                .abilites) {
+                                                          if (x[0] ==
+                                                              "Choice") {
+                                                            widgetsInPlay.add(
+                                                                SizedBox(
+                                                                    height: 80,
+                                                                    child:
+                                                                        ChoiceRow(
+                                                                      x: x.sublist(
+                                                                          1),
+                                                                      allSelected:
+                                                                          allSelected,
+                                                                    )));
+                                                          } else {
+                                                            levelGainParser(
+                                                                x,
+                                                                CLASSLIST[
+                                                                    index]);
+                                                          }
+                                                        }
                                                       }
                                                     }
                                                   },
@@ -5774,6 +5824,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                     MaterialPageRoute(
                       builder: (context) => PdfPreviewPage(
                           invoice: Character(
+                              skillBonusMap: skillBonusMap,
                               group: group,
                               backstory: backstory,
                               extraFeatures: extraFeatures,
@@ -5986,6 +6037,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   characters.removeAt(index);
                                 }
                                 characters.add(Character(
+                                        skillBonusMap: skillBonusMap,
                                         uniqueID: int.parse([
                                           for (var i in List.generate(
                                               15, (_) => Random().nextInt(10)))
@@ -6096,7 +6148,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const Homepage()),
+                                      builder: (context) => Homepage()),
                                 );
                               });
                             },
@@ -6279,6 +6331,9 @@ class MainCreateCharacter extends State<CreateACharacter>
     if (classList.isEmpty) {
       return true;
     }
+    if (!(multiclassing ?? false)) {
+      return false;
+    }
     List<int> requirements = selectedClass.multiclassingRequirements;
     //check if they already have a level in the class
     if (classList.contains(selectedClass.name)) {
@@ -6374,7 +6429,14 @@ class MainCreateCharacter extends State<CreateACharacter>
         charisma.value += int.parse(x[2]);
       }
       //do this later
-    } /*else if (x[0] == "Equipment") {
+    } else if (x[0] == "Gained") {
+      skillBonusMap[x[1]] = skillBonusMap[x[1]]! + int.parse(x[2]);
+      //do this later
+    } else if (x[0] == "ASI") {
+      numberOfRemainingFeatOrASIs++;
+    }
+
+    /*else if (x[0] == "Equipment") {
     //note base speed is given by race
     //("speed", "10", "(w/s/c/f)")
     SPEEDLIST.append([x[1], x[2]]);
@@ -6383,6 +6445,7 @@ class MainCreateCharacter extends State<CreateACharacter>
       //("Money", "Copper Pieces", "10")
       currencyStored[x[1]] = currencyStored[x[1]]! + int.parse(x[2]);
     } //deal
+    return null;
   }
 
   int levelZeroGetSpellsKnown(int index) {

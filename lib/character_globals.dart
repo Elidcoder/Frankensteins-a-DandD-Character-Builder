@@ -33,6 +33,7 @@ class Character {
   final List<int> classLevels;
   final bool inspired;
   final List<String> mainToolProficiencies;
+  final Map<String, int> skillBonusMap;
   final Queue<int>? skillsSelected;
   //Basics
   final Map<String, List<String>> speedBonuses;
@@ -117,6 +118,7 @@ class Character {
   final String? group;
   Map<String, dynamic> toJson() => {
         "ExtraFeatures": extraFeatures,
+        "SkillBonusMap": skillBonusMap,
         "Backstory": backstory,
         "Group": group,
         "LanguagesKnown": languagesKnown,
@@ -205,7 +207,8 @@ class Character {
     final allSelected = data["AllSelected"] as List<dynamic>;
     final classSubclassMapper = data["ClassSubclassMapper"]
         .cast<String, String>() as Map<String, String>;
-
+    final skillBonusMap =
+        data["SkillBonusMap"].cast<String, int>() as Map<String, int>;
     final ACList = data["ACList"].cast<List<dynamic>>() as List<List<dynamic>>;
     final ASIRemaining = data["ASIRemaining"] as bool;
     final uniqueID = data["UniqueID"] as int;
@@ -311,6 +314,7 @@ class Character {
     final unstackableEquipmentSelected =
         data["UnstackableEquipmentSelected"] as List<dynamic>;
     return Character(
+      skillBonusMap: skillBonusMap,
       backstory: backstory,
       extraFeatures: extraFeatures,
       levelsPerClass: levelsPerClass,
@@ -391,7 +395,8 @@ class Character {
     );
   }
   Character(
-      {required this.levelsPerClass,
+      {required this.skillBonusMap,
+      required this.levelsPerClass,
       required this.extraFeatures,
       required this.backstory,
       required this.selections,
