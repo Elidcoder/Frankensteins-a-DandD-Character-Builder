@@ -435,7 +435,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       fontSize:
                                                                           10)),
                                                           Text(
-                                                              "${userCharacter.strength.value}",
+                                                              "${userCharacter.strength.value + userCharacter.raceAbilityScoreIncreases[0] + userCharacter.featsASIScoreIncreases[0]}",
                                                               style:
                                                                   const TextStyle(
                                                                       fontSize:
@@ -2344,13 +2344,13 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                         ...skillsSelected
                                                       ].contains("Initiative"))
                                                           ? Text(
-                                                              "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + (userCharacter.skillBonusMap["Initiative"] ?? 0) + userCharacter.featsASIScoreIncreases[1]] ?? 0 + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+                                                              "${formatNumber((modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0) + (userCharacter.skillBonusMap["Initiative"] ?? 0) + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
                                                               style:
                                                                   const TextStyle(
                                                                       fontSize:
                                                                           18))
                                                           : Text(
-                                                              "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + (userCharacter.skillBonusMap["Initiative"] ?? 0) + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0)} ",
+                                                              "${formatNumber((modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0) + (userCharacter.skillBonusMap["Initiative"] ?? 0))} ",
                                                               style:
                                                                   const TextStyle(
                                                                       fontSize:
@@ -2616,6 +2616,15 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                             height: 130.5,
                                             decoration: BoxDecoration(
                                                 border: Border.all(width: 0.8)),
+                                            child: ListView.builder(
+                                              itemCount: userCharacter
+                                                  .allSpellsSelected.length,
+                                              itemBuilder: (context, index) {
+                                                return Text(userCharacter
+                                                    .allSpellsSelected[index]
+                                                    .name);
+                                              },
+                                            ),
                                           ),
                                         ])),
                                 //bottom box

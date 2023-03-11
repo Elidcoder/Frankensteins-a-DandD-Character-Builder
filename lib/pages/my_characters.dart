@@ -117,44 +117,57 @@ class MainMyCharacters extends State<MyCharacters> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white)),
+                              //Classlist output
                               SizedBox(
                                   width: 175.0,
+                                  //make the text fit the space
                                   child: FittedBox(
                                     fit: BoxFit.scaleDown,
-                                    child: (CHARACTERLIST
-                                            .where((element) => element.name
-                                                .contains(searchTerm))
-                                            .toList()[index]
-                                            .classLevels
-                                            .any((x) => x != 0))
-                                        ? Text(
-                                            CHARACTERLIST
-                                                .where((element) => element.name
-                                                    .contains(searchTerm))
-                                                .toList()
-                                                .asMap()
-                                                .entries
-                                                .where((entry) =>
-                                                    CHARACTERLIST
-                                                            .where((element) =>
-                                                                element.name
-                                                                    .contains(
-                                                                        searchTerm))
-                                                            .toList()[index]
-                                                            .classLevels[
-                                                        entry.key] !=
-                                                    0)
-                                                .map((entry) =>
-                                                    "${entry.value.name}: ${CHARACTERLIST.where((element) => element.name.contains(searchTerm)).toList()[index].classLevels[entry.key]}")
-                                                .join(", "),
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          )
-                                        : const Text("No Classes to display",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white)),
+                                    child:
+                                        ( //Only for characters in the searchterm
+                                                CHARACTERLIST
+                                                    .where((element) => element
+                                                        .name
+                                                        .contains(searchTerm))
+                                                    .toList()[index]
+                                                    //check if the character has any levels in any classes
+                                                    .classList
+                                                    .isNotEmpty)
+                                            ? //if so:
+                                            Text(
+                                                //get every class
+                                                CLASSLIST
+                                                    .asMap()
+                                                    .entries
+                                                    .where(
+                                                        //where the character selected has a level in it
+                                                        (entry) =>
+                                                            CHARACTERLIST
+                                                                    //get the correct character
+                                                                    .where((element) => element
+                                                                        .name
+                                                                        .contains(
+                                                                            searchTerm))
+                                                                    .toList()[index]
+                                                                    .classLevels[
+                                                                entry.key] !=
+                                                            0)
+                                                    //for each one create a string with the information on how many times that class was taken and the class name
+                                                    .map((entry) =>
+                                                        "${entry.value.name}: ${CHARACTERLIST.where((element) => element.name.contains(searchTerm)).toList()[index].classLevels[entry.key]}")
+                                                    //Join all the strings together as the child of the fitted text widget
+                                                    .join(", "),
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    color: Colors.white),
+                                              )
+                                            //if no classes have been taken
+                                            : const Text(
+                                                //display no classes...
+                                                "No Classes to display",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    color: Colors.white)),
                                   )),
                               Text(
                                   "Health: ${CHARACTERLIST.where((element) => element.name.contains(searchTerm)).toList()[index].maxHealth}",

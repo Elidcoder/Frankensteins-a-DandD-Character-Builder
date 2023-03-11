@@ -563,6 +563,22 @@ class Spell {
   //[casting 1, number, duration 1, number]
   final List<dynamic> timings;
   final List<String> availableTo;
+  Map<String, dynamic> toJson() {
+    return {
+      "Name": name,
+      "Effect": effect,
+      "SpellSchool": spellSchool,
+      "Level": level,
+      "Ritual": ritual,
+      "Range": range,
+      "Verbal": verbal,
+      "Somatic": somatic,
+      "Material": material,
+      "Timings": timings,
+      "AvailableTo": availableTo,
+    };
+  }
+
   factory Spell.fromJson(Map<String, dynamic> data) {
     // note the explicit cast to String
     // this is required if robust lint rules are enabled

@@ -2236,10 +2236,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               CLASSLIST[index]))) {
                                         classList.add(CLASSLIST[index].name);
 
-                                        if (extraFeatAtLevel1 ?? false) {
-                                          numberOfRemainingFeatOrASIs++;
-                                        }
-
                                         if ((CLASSLIST[index]
                                                 .gainAtEachLevel[
                                                     levelsPerClass[index]]
@@ -2282,10 +2278,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         }
 
                                         //level 1 bonuses
-                                        if (levelsPerClass.reduce(
-                                                (value, element) =>
-                                                    value + element) ==
-                                            0) {
+                                        if (classList.length == 1) {
+                                          if (extraFeatAtLevel1 ?? false) {
+                                            numberOfRemainingFeatOrASIs++;
+                                          }
                                           maxHealth +=
                                               CLASSLIST[index].maxHitDiceRoll;
                                           //gain saving throw proficiencies
@@ -2380,7 +2376,12 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         //check if it's a spellcaster
                                         if (CLASSLIST[index].classType !=
                                             "Martial") {
-                                          if (levelsPerClass[index] == 0) {
+                                          if (classList
+                                                  .where((element) =>
+                                                      element ==
+                                                      CLASSLIST[index].name)
+                                                  .length ==
+                                              1) {
                                             allSpellsSelectedAsListsOfThings
                                                 .add([
                                               CLASSLIST[index].name,
@@ -2422,7 +2423,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               }
                                             }
 
-                                            allSpellsSelectedAsListsOfThings
+                                            /*allSpellsSelectedAsListsOfThings
                                                 .add([
                                               CLASSLIST[index].name,
                                               [],
@@ -2431,7 +2432,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                       .spellsKnownFormula ??
                                                   CLASSLIST[index]
                                                       .spellsKnownPerLevel
-                                            ]);
+                                            ]);*/
                                           }
                                         }
 

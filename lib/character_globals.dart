@@ -212,8 +212,10 @@ class Character {
     final ACList = data["ACList"].cast<List<dynamic>>() as List<List<dynamic>>;
     final ASIRemaining = data["ASIRemaining"] as bool;
     final uniqueID = data["UniqueID"] as int;
-    final allSpellsSelected =
-        data["AllSpellsSelected"].cast<Spell>() as List<Spell>;
+
+    final allSpellsSelected = [
+      for (var x in data["AllSpellsSelected"]) Spell.fromJson(x)
+    ];
     final allSpellsSelectedAsListsOfThings =
         data["AllSpellsSelectedAsListsOfThings"].cast<List<dynamic>>()
             as List<List<dynamic>>;
@@ -272,7 +274,11 @@ class Character {
     final name = data["Name"] as String;
     final classSkillsSelected =
         data["ClassSkillsSelected"].cast<bool>() as List<bool>;
-    final subrace = data["Subrace"] as Subrace?;
+    Subrace? subrace;
+    if (data["Subrace"] != null) {
+      subrace = Subrace.fromJson(data["Subrace"]);
+    }
+
     final skillsSelected = Queue<int>()
             .addAll(data["SkillsSelected"]?.cast<int>() as List<int>? ?? [])
         as Queue<int>?;
