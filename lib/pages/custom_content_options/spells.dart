@@ -10,6 +10,7 @@ import "dart:math";
 import "dart:convert";
 import "dart:io";
 import 'package:file_picker/file_picker.dart';
+import 'package:frankenstein/main.dart';
 
 class JsonFilePicker extends StatefulWidget {
   @override
@@ -130,7 +131,9 @@ class MainMakeASpell extends State<MakeASpell> {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
                               onChanged: (groupNameEnteredValue) {
-                                name = groupNameEnteredValue;
+                                setState(() {
+                                  name = groupNameEnteredValue;
+                                });
                               }),
                         ),
 
@@ -201,7 +204,9 @@ class MainMakeASpell extends State<MakeASpell> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(12)))),
                           onChanged: (effectEnteredValue) {
-                            effect = effectEnteredValue;
+                            setState(() {
+                              effect = effectEnteredValue;
+                            });
                           }),
                     ),
                     SizedBox(
@@ -306,7 +311,9 @@ class MainMakeASpell extends State<MakeASpell> {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
                               onChanged: (materialsEnteredValue) {
-                                material = materialsEnteredValue;
+                                setState(() {
+                                  material = materialsEnteredValue;
+                                });
                               }),
                         ),
                         const SizedBox(width: 10),
@@ -329,7 +336,9 @@ class MainMakeASpell extends State<MakeASpell> {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
                               onChanged: (castableByEnteredValue) {
-                                availableTo = castableByEnteredValue;
+                                setState(() {
+                                  availableTo = castableByEnteredValue;
+                                });
                               }),
                         ),
                       ],
@@ -355,7 +364,9 @@ class MainMakeASpell extends State<MakeASpell> {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
                               onChanged: (castingEnteredValue) {
-                                casting = castingEnteredValue;
+                                setState(() {
+                                  casting = castingEnteredValue;
+                                });
                               }),
                         ),
                         const SizedBox(width: 10),
@@ -378,7 +389,9 @@ class MainMakeASpell extends State<MakeASpell> {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
                               onChanged: (durationEnteredValue) {
-                                duration = durationEnteredValue;
+                                setState(() {
+                                  duration = durationEnteredValue;
+                                });
                               }),
                         ),
                       ],
@@ -407,7 +420,9 @@ class MainMakeASpell extends State<MakeASpell> {
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(12)))),
                                   onChanged: (rangeEnteredValue) {
-                                    range = rangeEnteredValue;
+                                    setState(() {
+                                      range = rangeEnteredValue;
+                                    });
                                   }),
                             ),
                             const SizedBox(width: 10),
@@ -431,7 +446,9 @@ class MainMakeASpell extends State<MakeASpell> {
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(12)))),
                                   onChanged: (rangeUnitEnteredValue) {
-                                    rangeUnit = rangeUnitEnteredValue;
+                                    setState(() {
+                                      rangeUnit = rangeUnitEnteredValue;
+                                    });
                                   }),
                             ),
                             Expanded(
@@ -451,7 +468,8 @@ class MainMakeASpell extends State<MakeASpell> {
                         )),
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.blue,
+                        backgroundColor:
+                            validateSpell() ? Colors.blue : Colors.grey,
                         padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
                         shape: const RoundedRectangleBorder(
                             borderRadius:
@@ -459,7 +477,7 @@ class MainMakeASpell extends State<MakeASpell> {
                         side: const BorderSide(
                             width: 5, color: Color.fromARGB(255, 7, 26, 239)),
                       ),
-                      onPressed: () async {
+                      onPressed: () {
                         //check the spell is in an accepted form
                         if (validateSpell()) {
                           //check it doesn't have the same name as another spell
@@ -494,6 +512,15 @@ class MainMakeASpell extends State<MakeASpell> {
                                 material: material));
                             writeJsonToFile(jsonData, "userContent");
                             updateGlobals();
+                            setState(() {
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Homepage()),
+                              );
+                              showCreationDialog(context);
+                            });
                           }
                         }
                       },
@@ -511,6 +538,27 @@ class MainMakeASpell extends State<MakeASpell> {
             ]));
   }
 
+  void showCreationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: const Text('Spell created correctly!',
+            style: TextStyle(
+                color: Colors.green,
+                fontSize: 50,
+                fontWeight: FontWeight.w800)),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Continue'),
+          ),
+        ],
+      ),
+    );
+  }
+
   bool validateSpell() {
     if (name.replaceAll(" ", "") != "" &&
         level != null &&
@@ -524,62 +572,3 @@ class MainMakeASpell extends State<MakeASpell> {
     return false;
   }
 }
-/*ElevatedButton(
-            onPressed: () async {
-              final result = await FilePicker.platform.pickFiles(
-                type: FileType.custom,
-                allowedExtensions: ['json'],
-              );
-              if (result != null) {
-                final file =
-                    File(result.files.single.path ?? "Never going to happen");
-                final contents = await file.readAsString();
-                final jsonData2 = json.decode(contents);
-
-                updateGlobals();
-                //final String jsonContent =
-                //  File("assets/Characters.json").readAsStringSync();
-
-                //final String jsonContents =
-                //  File("assets/SRD.json").readAsStringSync();
-                final Map<String, dynamic> jsonData =
-                    jsonDecode(jsonString ?? "");
-
-                //at some point actually check for dupes
-                final List<dynamic> characters = jsonData["Spells"];
-                characters.addAll(jsonData2["Spells"] ?? []);
-
-                final List<dynamic> classes = jsonData["Classes"];
-                classes.addAll(jsonData2["Classes"] ?? []);
-
-                final List<dynamic> sourceBooks = jsonData["Sourcebooks"];
-                sourceBooks.addAll(jsonData2["Sourcebooks"] ?? []);
-
-                final List<dynamic> proficiencies = jsonData["Proficiencies"];
-                proficiencies.addAll(jsonData2["Proficiencies"] ?? []);
-
-                final List<dynamic> equipment = jsonData["Equipment"];
-                equipment.addAll(jsonData2["Equipment"] ?? []);
-
-                final List<dynamic> languages = jsonData["Languages"];
-                languages.addAll(jsonData2["Languages"] ?? []);
-
-                final List<dynamic> races = jsonData["Races"];
-                races.addAll(jsonData2["Races"] ?? []);
-
-                final List<dynamic> backgrounds = jsonData["Backgrounds"];
-                backgrounds.addAll(jsonData2["Backgrounds"] ?? []);
-
-                final List<dynamic> feats = jsonData["Feats"];
-                feats.addAll(jsonData2["Feats"] ?? []);
-
-                //File("assets/SRD.json").writeAsStringSync(jsonEncode(json));
-                writeJsonToFile(jsonData, "userContent");
-
-                updateGlobals();
-
-                // do something with the parsed JSON data
-              }
-            },
-            child: Text('Select JSON file'),
-          ),*/

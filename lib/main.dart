@@ -494,11 +494,10 @@ class MainMenu extends StatelessWidget {
 
                   final List<dynamic> feats = jsonData["Feats"];
                   feats.addAll(jsonData2["Feats"] ?? []);
+                  writeJsonToFile(jsonData, "userContent");
+                  updateGlobals();
 
                   //File("assets/SRD.json").writeAsStringSync(jsonEncode(json));
-                  writeJsonToFile(jsonData, "userContent");
-
-                  updateGlobals();
 
                   // do something with the parsed JSON data
                 }
@@ -552,246 +551,23 @@ class MainMenu extends StatelessWidget {
       ],
     );
   }
-}
 
-
-/*
-class MainMenu extends StatefulWidget {
- 
-  @override
-  MainMainMenu createState() => MainMainMenu();
-}
-
-class MainMainMenu extends State<MainMenu> {
-  Color _currentColor = Colors.blue;
-  @override
-  Widget build(BuildContext context) {
-    updateGlobals();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                color: Colors.blue,
-                child: const Text(
-                  textAlign: TextAlign.center,
-                  'Main Menu',
-                  style: TextStyle(
-                      fontSize: 45,
-                      fontWeight: FontWeight.w700,
-                      color:  Homepage.primaryColor),
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 100),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: const BorderSide(
-                    width: 5, color: Color.fromARGB(255, 7, 26, 239)),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const ScreenTop(pagechoice: "Create a Character")),
-                );
-              },
-              child: const Text(
-                textAlign: TextAlign.center,
-                'Create a \ncharacter',
-                style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w700,
-                    color:  Homepage.primaryColor),
-              ),
-            ),
-            const SizedBox(width: 100),
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: const BorderSide(
-                    width: 5, color: Color.fromARGB(255, 7, 26, 239)),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const ScreenTop(pagechoice: "Search for Content")),
-                );
-              },
-              child: const Text(
-                textAlign: TextAlign.center,
-                'Search for\ncontent',
-                style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w700,
-                    color:  Homepage.primaryColor),
-              ),
-            ),
-            const SizedBox(width: 100),
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor:
-                    (CHARACTERLIST.isNotEmpty) ? Colors.blue : Colors.grey,
-                padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: const BorderSide(
-                    width: 5, color: Color.fromARGB(255, 7, 26, 239)),
-              ),
-              onPressed: () {
-                if (CHARACTERLIST.isNotEmpty) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            const ScreenTop(pagechoice: "My Characters")),
-                  );
-                }
-              },
-              child: const Text(
-                textAlign: TextAlign.center,
-                'My \ncharacters',
-                style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w700,
-                    color:  Homepage.primaryColor),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 100),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: const EdgeInsets.fromLTRB(45, 25, 45, 25),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: const BorderSide(
-                    width: 5, color: Color.fromARGB(255, 7, 26, 239)),
-              ),
-              onPressed: () async {
-                final result = await FilePicker.platform.pickFiles(
-                  type: FileType.custom,
-                  allowedExtensions: ['json'],
-                );
-                if (result != null) {
-                  final file =
-                      File(result.files.single.path ?? "Never going to happen");
-                  final contents = await file.readAsString();
-                  final jsonData2 = json.decode(contents);
-
-                  updateGlobals();
-
-                  final Map<String, dynamic> jsonData =
-                      jsonDecode(jsonString ?? "");
-
-                  //at some point actually check for dupes
-                  final List<dynamic> characters = jsonData["Spells"];
-                  characters.addAll(jsonData2["Spells"] ?? []);
-
-                  final List<dynamic> classes = jsonData["Classes"];
-                  classes.addAll(jsonData2["Classes"] ?? []);
-
-                  final List<dynamic> sourceBooks = jsonData["Sourcebooks"];
-                  sourceBooks.addAll(jsonData2["Sourcebooks"] ?? []);
-
-                  final List<dynamic> proficiencies = jsonData["Proficiencies"];
-                  proficiencies.addAll(jsonData2["Proficiencies"] ?? []);
-
-                  final List<dynamic> equipment = jsonData["Equipment"];
-                  equipment.addAll(jsonData2["Equipment"] ?? []);
-
-                  final List<dynamic> languages = jsonData["Languages"];
-                  languages.addAll(jsonData2["Languages"] ?? []);
-
-                  final List<dynamic> races = jsonData["Races"];
-                  races.addAll(jsonData2["Races"] ?? []);
-
-                  final List<dynamic> backgrounds = jsonData["Backgrounds"];
-                  backgrounds.addAll(jsonData2["Backgrounds"] ?? []);
-
-                  final List<dynamic> feats = jsonData["Feats"];
-                  feats.addAll(jsonData2["Feats"] ?? []);
-
-                  //File("assets/SRD.json").writeAsStringSync(jsonEncode(json));
-                  writeJsonToFile(jsonData, "userContent");
-
-                  updateGlobals();
-
-                  // do something with the parsed JSON data
-                }
-              },
-              /*
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ScreenTop(pagechoice: 4)),
-                );
-              },*/
-              child: const Text(
-                'Download\n Content',
-                style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w700,
-                    color:  Homepage.primaryColor),
-              ),
-            ),
-            const SizedBox(width: 100),
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: const BorderSide(
-                    width: 5, color: Color.fromARGB(255, 7, 26, 239)),
-              ),
-              onPressed: () {
-                //()
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const ScreenTop(pagechoice: "Custom Content")),
-                );
-              },
-              child: const Text(
-                textAlign: TextAlign.center,
-                'Create \ncontent',
-                style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w700,
-                    color:  Homepage.primaryColor),
-              ),
-            ),
-          ],
-        ),
-       
-      ],
+  void showErrorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: const Text('Json format incorrect, reformat and try again!',
+            style: TextStyle(
+                color: Colors.red, fontSize: 45, fontWeight: FontWeight.w800)),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Continue'),
+          ),
+        ],
+      ),
     );
   }
-
-  
 }
-*/

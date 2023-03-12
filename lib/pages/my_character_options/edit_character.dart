@@ -2394,8 +2394,7 @@ class EditCharacter extends State<EditACharacter> {
                                       .where((element) => element[2] != 0)
                                       .isEmpty)) {
                                 updateGlobals();
-                                //final String jsonContent =
-                                //  File("assets/Characters.json").readAsStringSync();
+
                                 final Map<String, dynamic> json =
                                     jsonDecode(jsonString ?? "");
                                 final List<dynamic> characters =

@@ -10,6 +10,7 @@ import "my_character_options/edit_character.dart";
 import "dart:math";
 import "dart:convert";
 import "dart:io";
+import "package:frankenstein/main.dart";
 
 class MyCharacters extends StatefulWidget {
   @override
@@ -245,22 +246,21 @@ class MainMyCharacters extends State<MyCharacters> {
                                       backgroundColor: Colors.red),
                                   onPressed: () {
                                     setState(() {
-                                      final String jsonContent =
-                                          File("assets/Characters.json")
-                                              .readAsStringSync();
+                                      updateGlobals();
                                       final Map<String, dynamic> json =
-                                          jsonDecode(jsonContent);
+                                          jsonDecode(jsonString ?? "");
                                       final List<dynamic> characters =
                                           json["Characters"];
-                                      String curCharacterName = CHARACTERLIST
-                                          .where((element) =>
-                                              element.name.contains(searchTerm))
-                                          .toList()[index]
-                                          .name;
+
                                       final int Index = characters.indexWhere(
                                           (character) =>
-                                              character["Name"] ==
-                                              curCharacterName);
+                                              character["UniqueID"] ==
+                                              CHARACTERLIST
+                                                  .where((element) => element
+                                                      .name
+                                                      .contains(searchTerm))
+                                                  .toList()[index]
+                                                  .uniqueID);
                                       characters.firstWhere(
                                           (element) =>
                                               element["Group"] ==
@@ -285,12 +285,19 @@ class MainMyCharacters extends State<MyCharacters> {
                                             .toList()[index]
                                             .group);
                                       });
+                                      //final check as a safety net incase something went wrong elsewhere
                                       if (Index != -1) {
                                         characters.removeAt(Index);
                                       }
-                                      File("assets/Characters.json")
-                                          .writeAsStringSync(jsonEncode(json));
+                                      writeJsonToFile(json, "userContent");
                                       updateGlobals();
+                                      Navigator.pop(context);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Homepage()),
+                                      );
+                                      showDeletionDialog(context);
                                     });
                                   },
                                   child: const SizedBox(
@@ -306,5 +313,24 @@ class MainMyCharacters extends State<MyCharacters> {
                   ),
                 ),
         ]));
+  }
+
+  void showDeletionDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: const Text('Character deleted!',
+            style: TextStyle(
+                color: Colors.red, fontSize: 50, fontWeight: FontWeight.w800)),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Continue'),
+          ),
+        ],
+      ),
+    );
   }
 }
