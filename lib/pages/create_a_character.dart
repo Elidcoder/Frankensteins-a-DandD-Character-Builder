@@ -5944,7 +5944,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               width: 128,
                               height: 50,
                               child: DropdownButton<String>(
-                                value: group,
+                                value: GROUPLIST.contains(group) ? group : null,
                                 icon: const Icon(Icons.arrow_drop_down,
                                     color: Color.fromARGB(255, 7, 26, 239)),
                                 elevation: 16,
@@ -6001,13 +6001,40 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(12)))),
                                 onChanged: (groupNameEnteredValue) {
-                                  group = groupNameEnteredValue;
+                                  setState(() {
+                                    group = groupNameEnteredValue;
+                                  });
                                 }),
                           ),
                           const SizedBox(height: 30),
                           OutlinedButton(
                             style: OutlinedButton.styleFrom(
-                              backgroundColor: Colors.blue,
+                              backgroundColor: (pointsRemaining == 0 &&
+                                      numberOfRemainingFeatOrASIs == 0 &&
+                                      !ASIRemaining &&
+                                      int.parse(characterLevel ?? "1") <=
+                                          classList.length &&
+                                      (equipmentSelectedFromChoices == [] ||
+                                          equipmentSelectedFromChoices
+                                              .where((element) =>
+                                                  element.length == 2)
+                                              .toList()
+                                              .isEmpty) &&
+                                      ((allSpellsSelectedAsListsOfThings
+                                                      .length >
+                                                  1 &&
+                                              ((allSpellsSelectedAsListsOfThings
+                                                          .reduce((a, b) =>
+                                                              a[2] + b[2])
+                                                      as int) ==
+                                                  allSpellsSelected.length)) ||
+                                          allSpellsSelectedAsListsOfThings
+                                              .isEmpty ||
+                                          (allSpellsSelectedAsListsOfThings[0]
+                                                  [2] ==
+                                              allSpellsSelected.length)))
+                                  ? Colors.blue
+                                  : Colors.grey,
                               padding:
                                   const EdgeInsets.fromLTRB(45, 20, 45, 20),
                               shape: const RoundedRectangleBorder(
@@ -6024,134 +6051,163 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   color: Colors.white,
                                 )),
                             onPressed: () {
-                              setState(() {
-                                updateGlobals();
-                                final Map<String, dynamic> json =
-                                    jsonDecode(jsonString ?? "");
-                                final List<dynamic> characters =
-                                    json["Characters"];
-                                final String curCharacterName = characterName;
-                                final int index = characters.indexWhere(
-                                    (character) =>
-                                        character["Name"] == curCharacterName);
-                                if (index != -1) {
-                                  characters.removeAt(index);
-                                }
-                                characters.add(Character(
-                                        skillBonusMap: skillBonusMap,
-                                        uniqueID: int.parse([
-                                          for (var i in List.generate(
-                                              15, (_) => Random().nextInt(10)))
-                                            i.toString()
-                                        ].join()),
-                                        backstory: backstory,
-                                        extraFeatures: extraFeatures,
-                                        levelsPerClass: levelsPerClass,
-                                        selections: selections,
-                                        allSelected: allSelected,
-                                        classSubclassMapper:
-                                            classSubclassMapper,
-                                        ACList: ACList,
-                                        ASIRemaining: ASIRemaining,
-                                        allSpellsSelected: allSpellsSelected,
-                                        allSpellsSelectedAsListsOfThings:
-                                            allSpellsSelectedAsListsOfThings,
-                                        armourList: armourList,
-                                        averageHitPoints: averageHitPoints,
-                                        backgroundSkillChoices:
-                                            backgroundSkillChoices,
-                                        characterAge: characterAge,
-                                        characterEyes: characterEyes,
-                                        characterHair: characterHair,
-                                        characterHeight: characterHeight,
-                                        characterSkin: characterSkin,
-                                        characterWeight: characterWeight,
-                                        coinTypeSelected: coinTypeSelected,
-                                        criticalRoleContent:
-                                            criticalRoleContent,
-                                        encumberanceRules: encumberanceRules,
-                                        extraFeatAtLevel1: extraFeatAtLevel1,
-                                        featsAllowed: featsAllowed,
-                                        featsSelected: featsSelected,
-                                        firearmsUsable: firearmsUsable,
-                                        fullFeats: fullFeats,
-                                        halfFeats: halfFeats,
-                                        gender: characterGender,
-                                        includeCoinsForWeight:
-                                            includeCoinsForWeight,
-                                        itemList: itemList,
-                                        milestoneLevelling: milestoneLevelling,
-                                        multiclassing: multiclassing,
-                                        useCustomContent: useCustomContent,
-                                        equipmentSelectedFromChoices:
-                                            equipmentSelectedFromChoices,
-                                        optionalClassFeatures:
-                                            optionalClassFeatures,
-                                        optionalOnesStates: optionalOnesStates,
-                                        optionalTwosStates: optionalTwosStates,
-                                        speedBonuses: speedBonusMap,
-                                        unearthedArcanaContent:
-                                            unearthedArcanaContent,
-                                        weaponList: weaponList,
-                                        numberOfRemainingFeatOrASIs:
-                                            numberOfRemainingFeatOrASIs,
-                                        playerName: playerName,
-                                        classList: classList,
-                                        stackableEquipmentSelected:
-                                            stackableEquipmentSelected,
-                                        unstackableEquipmentSelected:
-                                            unstackableEquipmentSelected,
-                                        classSkillsSelected: classSkillChoices,
-                                        skillsSelected: selectedSkillsQ,
-                                        subrace: subraceExample,
-                                        mainToolProficiencies:
-                                            toolProficiencies,
-                                        savingThrowProficiencies:
-                                            savingThrowProficiencies ?? [],
-                                        languagesKnown: languagesKnown,
-                                        featuresAndTraits: featuresAndTraits,
-                                        inspired: inspired,
-                                        skillProficiencies: skillProficiencies,
-                                        maxHealth: maxHealth,
-                                        background: currentBackground,
-                                        classLevels: levelsPerClass,
-                                        race: initialRace,
-                                        group: group,
-                                        characterExperience:
-                                            characterExperience,
-                                        currency: currencyStored,
-                                        backgroundPersonalityTrait:
-                                            backgroundPersonalityTrait,
-                                        backgroundIdeal: backgroundIdeal,
-                                        backgroundBond: backgroundBond,
-                                        backgroundFlaw: backgroundFlaw,
-                                        name: characterName,
-                                        raceAbilityScoreIncreases:
-                                            abilityScoreIncreases,
-                                        featsASIScoreIncreases: ASIBonuses,
-                                        strength: strength,
-                                        dexterity: dexterity,
-                                        constitution: constitution,
-                                        intelligence: intelligence,
-                                        wisdom: wisdom,
-                                        charisma: charisma)
-                                    .toJson());
-                                if ((!GROUPLIST.contains(group)) &&
-                                    group != null &&
-                                    group!.replaceAll(" ", "") != "") {
-                                  final List<dynamic> groupsList =
-                                      json["Groups"];
-                                  groupsList.add(group);
-                                }
-                                writeJsonToFile(json, "userContent");
-                                updateGlobals();
-                                Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Homepage()),
-                                );
-                              });
+                              if (pointsRemaining == 0 &&
+                                  numberOfRemainingFeatOrASIs == 0 &&
+                                  !ASIRemaining &&
+                                  int.parse(characterLevel ?? "1") <=
+                                      classList.length &&
+                                  (equipmentSelectedFromChoices == [] ||
+                                      equipmentSelectedFromChoices
+                                          .where(
+                                              (element) => element.length == 2)
+                                          .toList()
+                                          .isEmpty) &&
+                                  ((allSpellsSelectedAsListsOfThings.length >
+                                              1 &&
+                                          ((allSpellsSelectedAsListsOfThings
+                                                  .reduce((a, b) =>
+                                                      a[2] + b[2]) as int) ==
+                                              allSpellsSelected.length)) ||
+                                      allSpellsSelectedAsListsOfThings
+                                          .isEmpty ||
+                                      (allSpellsSelectedAsListsOfThings[0][2] ==
+                                          allSpellsSelected.length))) {
+                                setState(() {
+                                  updateGlobals();
+                                  final Map<String, dynamic> json =
+                                      jsonDecode(jsonString ?? "");
+                                  final List<dynamic> characters =
+                                      json["Characters"];
+                                  final String curCharacterName = characterName;
+                                  final int index = characters.indexWhere(
+                                      (character) =>
+                                          character["Name"] ==
+                                          curCharacterName);
+                                  if (index != -1) {
+                                    characters.removeAt(index);
+                                  }
+                                  characters.add(Character(
+                                          skillBonusMap: skillBonusMap,
+                                          uniqueID: int.parse([
+                                            for (var i in List.generate(15,
+                                                (_) => Random().nextInt(10)))
+                                              i.toString()
+                                          ].join()),
+                                          backstory: backstory,
+                                          extraFeatures: extraFeatures,
+                                          levelsPerClass: levelsPerClass,
+                                          selections: selections,
+                                          allSelected: allSelected,
+                                          classSubclassMapper:
+                                              classSubclassMapper,
+                                          ACList: ACList,
+                                          ASIRemaining: ASIRemaining,
+                                          allSpellsSelected: allSpellsSelected,
+                                          allSpellsSelectedAsListsOfThings:
+                                              allSpellsSelectedAsListsOfThings,
+                                          armourList: armourList,
+                                          averageHitPoints: averageHitPoints,
+                                          backgroundSkillChoices:
+                                              backgroundSkillChoices,
+                                          characterAge: characterAge,
+                                          characterEyes: characterEyes,
+                                          characterHair: characterHair,
+                                          characterHeight: characterHeight,
+                                          characterSkin: characterSkin,
+                                          characterWeight: characterWeight,
+                                          coinTypeSelected: coinTypeSelected,
+                                          criticalRoleContent:
+                                              criticalRoleContent,
+                                          encumberanceRules: encumberanceRules,
+                                          extraFeatAtLevel1: extraFeatAtLevel1,
+                                          featsAllowed: featsAllowed,
+                                          featsSelected: featsSelected,
+                                          firearmsUsable: firearmsUsable,
+                                          fullFeats: fullFeats,
+                                          halfFeats: halfFeats,
+                                          gender: characterGender,
+                                          includeCoinsForWeight:
+                                              includeCoinsForWeight,
+                                          itemList: itemList,
+                                          milestoneLevelling:
+                                              milestoneLevelling,
+                                          multiclassing: multiclassing,
+                                          useCustomContent: useCustomContent,
+                                          equipmentSelectedFromChoices:
+                                              equipmentSelectedFromChoices,
+                                          optionalClassFeatures:
+                                              optionalClassFeatures,
+                                          optionalOnesStates:
+                                              optionalOnesStates,
+                                          optionalTwosStates:
+                                              optionalTwosStates,
+                                          speedBonuses: speedBonusMap,
+                                          unearthedArcanaContent:
+                                              unearthedArcanaContent,
+                                          weaponList: weaponList,
+                                          numberOfRemainingFeatOrASIs:
+                                              numberOfRemainingFeatOrASIs,
+                                          playerName: playerName,
+                                          classList: classList,
+                                          stackableEquipmentSelected:
+                                              stackableEquipmentSelected,
+                                          unstackableEquipmentSelected:
+                                              unstackableEquipmentSelected,
+                                          classSkillsSelected:
+                                              classSkillChoices,
+                                          skillsSelected: selectedSkillsQ,
+                                          subrace: subraceExample,
+                                          mainToolProficiencies:
+                                              toolProficiencies,
+                                          savingThrowProficiencies:
+                                              savingThrowProficiencies ?? [],
+                                          languagesKnown: languagesKnown,
+                                          featuresAndTraits: featuresAndTraits,
+                                          inspired: inspired,
+                                          skillProficiencies:
+                                              skillProficiencies,
+                                          maxHealth: maxHealth,
+                                          background: currentBackground,
+                                          classLevels: levelsPerClass,
+                                          race: initialRace,
+                                          group: group,
+                                          characterExperience:
+                                              characterExperience,
+                                          currency: currencyStored,
+                                          backgroundPersonalityTrait:
+                                              backgroundPersonalityTrait,
+                                          backgroundIdeal: backgroundIdeal,
+                                          backgroundBond: backgroundBond,
+                                          backgroundFlaw: backgroundFlaw,
+                                          name: characterName,
+                                          raceAbilityScoreIncreases:
+                                              abilityScoreIncreases,
+                                          featsASIScoreIncreases: ASIBonuses,
+                                          strength: strength,
+                                          dexterity: dexterity,
+                                          constitution: constitution,
+                                          intelligence: intelligence,
+                                          wisdom: wisdom,
+                                          charisma: charisma)
+                                      .toJson());
+                                  if ((!GROUPLIST.contains(group)) &&
+                                      group != null &&
+                                      group!.replaceAll(" ", "") != "") {
+                                    final List<dynamic> groupsList =
+                                        json["Groups"];
+                                    groupsList.add(group);
+                                  }
+                                  writeJsonToFile(json, "userContent");
+                                  updateGlobals();
+                                  Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Homepage()),
+                                  );
+                                  showCongratulationsDialog(context);
+                                });
+                              }
                             },
                           )
                         ])),
@@ -6159,6 +6215,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                     flex: 7,
                     child: Column(children: [
                       //Basics
+
                       const SizedBox(height: 40),
                       const Text("Build checklist:",
                           style: TextStyle(
@@ -6323,6 +6380,27 @@ class MainCreateCharacter extends State<CreateACharacter>
                     ]))
               ])),
         ]),
+      ),
+    );
+  }
+
+  void showCongratulationsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: const Text('Character created!',
+            style: TextStyle(
+                color: Colors.green,
+                fontSize: 50,
+                fontWeight: FontWeight.w800)),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Continue'),
+          ),
+        ],
       ),
     );
   }
