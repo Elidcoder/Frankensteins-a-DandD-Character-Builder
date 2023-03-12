@@ -516,7 +516,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                                     .add(allAvailableSpells[index]);
                                 allSpellsSelected
                                     .add(allAvailableSpells[index]);
-                                thisDescription[2]--;
+                                thisDescription[2] -= 1;
                               }
                             }
                           }
@@ -1584,7 +1584,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(12)))),
                             onChanged: (characterNameEnteredValue) {
-                              characterName = characterNameEnteredValue;
+                              setState(() {
+                                characterName = characterNameEnteredValue;
+                              });
                             }),
                       ),
                       const SizedBox(height: 15),
@@ -1607,17 +1609,19 @@ class MainCreateCharacter extends State<CreateACharacter>
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
                               onChanged: (playerNameEnteredValue) {
-                                playerName = playerNameEnteredValue;
+                                setState(() {
+                                  playerName = playerNameEnteredValue;
+                                });
                               })),
                       const SizedBox(height: 15),
                       //Character gender input
-                      const SizedBox(
+                      SizedBox(
                           width: 250,
                           height: 50,
                           child: TextField(
                               cursorColor: Colors.blue,
-                              style: TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
                                   hintText: "Enter the character's gender",
                                   hintStyle: TextStyle(
                                       color:
@@ -1627,7 +1631,12 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   border: OutlineInputBorder(
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
-                                          Radius.circular(12)))))),
+                                          Radius.circular(12)))),
+                              onChanged: (characterGenderEnteredValue) {
+                                setState(() {
+                                  characterGender = characterGenderEnteredValue;
+                                });
+                              })),
                       const SizedBox(height: 15),
                       //exp/levels section
                       SizedBox(
@@ -6020,19 +6029,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   element.length == 2)
                                               .toList()
                                               .isEmpty) &&
-                                      ((allSpellsSelectedAsListsOfThings
-                                                      .length >
-                                                  1 &&
-                                              ((allSpellsSelectedAsListsOfThings
-                                                          .reduce((a, b) =>
-                                                              a[2] + b[2])
-                                                      as int) ==
-                                                  allSpellsSelected.length)) ||
-                                          allSpellsSelectedAsListsOfThings
-                                              .isEmpty ||
-                                          (allSpellsSelectedAsListsOfThings[0]
-                                                  [2] ==
-                                              allSpellsSelected.length)))
+                                      (allSpellsSelectedAsListsOfThings
+                                          .where((element) => element[2] != 0)
+                                          .isEmpty))
                                   ? Colors.blue
                                   : Colors.grey,
                               padding:
@@ -6062,16 +6061,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               (element) => element.length == 2)
                                           .toList()
                                           .isEmpty) &&
-                                  ((allSpellsSelectedAsListsOfThings.length >
-                                              1 &&
-                                          ((allSpellsSelectedAsListsOfThings
-                                                  .reduce((a, b) =>
-                                                      a[2] + b[2]) as int) ==
-                                              allSpellsSelected.length)) ||
-                                      allSpellsSelectedAsListsOfThings
-                                          .isEmpty ||
-                                      (allSpellsSelectedAsListsOfThings[0][2] ==
-                                          allSpellsSelected.length))) {
+                                  (allSpellsSelectedAsListsOfThings
+                                      .where((element) => element[2] != 0)
+                                      .isEmpty)) {
                                 setState(() {
                                   updateGlobals();
                                   final Map<String, dynamic> json =
@@ -6226,7 +6218,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                       (characterName.replaceAll(" ", "") != "" &&
                               characterGender.replaceAll(" ", "") != "" &&
                               playerName.replaceAll(" ", "") != "" &&
-                              enteredExperience.replaceAll(" ", "") != "")
+                              (enteredExperience.replaceAll(" ", "") != "" ||
+                                  levellingMethod != "Experience"))
                           ? const Text("Filled in all necessary basics:",
                               style: TextStyle(
                                 color: Colors.green,
@@ -6324,40 +6317,38 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   fontWeight: FontWeight.w700)),
                       const SizedBox(height: 20),
                       //spells
-                      (allSpellsSelectedAsListsOfThings.length > 1)
-                          ? (((allSpellsSelectedAsListsOfThings
-                                      .reduce((a, b) => a[2] + b[2]) as int) ==
-                                  allSpellsSelected.length))
-                              ? const Text("Chose all spells",
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w700))
-                              : Text(
-                                  "Missed ${(allSpellsSelectedAsListsOfThings.reduce((a, b) => a[2] + b[2]) as int) - allSpellsSelected.length} spells",
+                      //if the user has multiple classes with spells
+
+                      //All spell sections have 0 remaining options (all spells selected)
+                      (allSpellsSelectedAsListsOfThings
+                              .where((element) => element[2] != 0)
+                              .isEmpty)
+                          ?
+                          //if they selected every spell available
+                          const Text("Chose all spells",
+                              style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700))
+                          //if not
+                          : (allSpellsSelectedAsListsOfThings.length == 1)
+                              //if they only have 1 way to choose spells (as the reduce only works on lists of length >1,
+                              // otherwise it just returns the whole element which would break the code)
+                              ? Text(
+                                  //number remaining
+                                  "Missed ${(allSpellsSelectedAsListsOfThings[0][2])} spells",
                                   style: const TextStyle(
                                       color: Colors.red,
                                       fontSize: 22,
                                       fontWeight: FontWeight.w700))
-                          : (allSpellsSelectedAsListsOfThings.isEmpty)
-                              ? const Text("Have 0 spells to choose",
-                                  style: TextStyle(
-                                      color: Colors.green,
+                              : Text(
+                                  //number remaining with multiple ways to choose spells
+                                  "Missed ${(allSpellsSelectedAsListsOfThings.reduce((a, b) => a[2] + b[2]) as int)} spells",
+                                  style: const TextStyle(
+                                      color: Colors.red,
                                       fontSize: 22,
-                                      fontWeight: FontWeight.w700))
-                              : (allSpellsSelectedAsListsOfThings[0][2] ==
-                                      allSpellsSelected.length)
-                                  ? const Text("Chose all spells",
-                                      style: TextStyle(
-                                          color: Colors.green,
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w700))
-                                  : Text(
-                                      "Missed ${allSpellsSelectedAsListsOfThings[0][2] - allSpellsSelected.length} spells",
-                                      style: const TextStyle(
-                                          color: Colors.red,
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w700)),
+                                      fontWeight: FontWeight.w700)),
+
                       const SizedBox(height: 20),
                       (characterAge.replaceAll(" ", "") != "" &&
                               characterHeight.replaceAll(" ", "") != "" &&
@@ -6542,27 +6533,6 @@ class MainCreateCharacter extends State<CreateACharacter>
     }
     //decode as level + 1 and then take away [1].length
     return 3;
-  }
-
-  String formatlist(List<dynamic> optionDescription) {
-    return optionDescription[0] as String;
-  }
-
-  String formatList(List list) {
-    // Initialize an empty string to store the result
-    String result = '';
-
-    // Iterate through the list in steps of 2
-    for (int i = 0; i < list.length; i += 2) {
-      // Append the current number and string pair to the result string
-      result += '${list[i]}x${list[i + 1]}';
-
-      // If this is not the last pair, add a comma and space separator
-      if (i != list.length - 2) result += ', ';
-    }
-
-    // Return the final formatted string
-    return result;
   }
 
   String produceEquipmentOptionDescription(List list) {

@@ -2616,7 +2616,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                             height: 130.5,
                                             decoration: BoxDecoration(
                                                 border: Border.all(width: 0.8)),
-                                            child: ListView.builder(
+                                            /*child: ListView.builder(
                                               itemCount: userCharacter
                                                   .allSpellsSelected.length,
                                               itemBuilder: (context, index) {
@@ -2624,7 +2624,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                     .allSpellsSelected[index]
                                                     .name);
                                               },
-                                            ),
+                                            ),*/
                                           ),
                                         ])),
                                 //bottom box

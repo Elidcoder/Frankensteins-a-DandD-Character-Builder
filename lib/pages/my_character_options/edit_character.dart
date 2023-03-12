@@ -161,7 +161,7 @@ class EditCharacter extends State<EditACharacter> {
   List<String> weaponList = [];
   List<String> itemList = [];
   String? coinTypeSelected = "Gold Pieces";
-  List<dynamic>? equipmentSelectedFromChoices;
+  List<dynamic> equipmentSelectedFromChoices = [];
   //{thing:numb,...}
   Map<String, int> stackableEquipmentSelected = {};
   List<dynamic> unstackableEquipmentSelected = [];
@@ -223,7 +223,7 @@ class EditCharacter extends State<EditACharacter> {
     weaponList = character.weaponList;
     itemList = character.itemList;
     coinTypeSelected = character.coinTypeSelected;
-    equipmentSelectedFromChoices = character.equipmentSelectedFromChoices;
+    equipmentSelectedFromChoices = character.equipmentSelectedFromChoices ?? [];
     //{thing:numb,...}
     stackableEquipmentSelected = character.stackableEquipmentSelected;
     unstackableEquipmentSelected = character.unstackableEquipmentSelected;
@@ -352,7 +352,7 @@ class EditCharacter extends State<EditACharacter> {
               appBar: AppBar(
                 title: Center(
                   child: Text(
-                      '${level - character.classList.length} class level(s) available but unselected', //and ${widgetsInPlay.length - levelsPerClass.reduce((value, element) => value + element) - allSelected.length} choice(s)
+                      '${level - levelsPerClass.reduce((value, element) => value + element)} class level(s) available but unselected', //and ${widgetsInPlay.length - levelsPerClass.reduce((value, element) => value + element) - allSelected.length} choice(s)
                       style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w600,
@@ -434,7 +434,11 @@ class EditCharacter extends State<EditACharacter> {
                               OutlinedButton(
                                   style: OutlinedButton.styleFrom(
                                     backgroundColor: (level <=
-                                            character.classList.length)
+                                                levelsPerClass.reduce(
+                                                    (value, element) =>
+                                                        value + element) ||
+                                            (!multiclassingPossible(
+                                                CLASSLIST[index])))
                                         ? const Color.fromARGB(247, 56, 53, 52)
                                         : const Color.fromARGB(
                                             150, 61, 33, 243),
@@ -448,8 +452,11 @@ class EditCharacter extends State<EditACharacter> {
                                   ),
                                   onPressed: () {
                                     setState(() {
-                                      if (level > character.classList.length) {
+                                      if (level > classList.length &&
+                                          (multiclassingPossible(
+                                              CLASSLIST[index]))) {
                                         classList.add(CLASSLIST[index].name);
+
                                         if ((CLASSLIST[index]
                                                 .gainAtEachLevel[
                                                     levelsPerClass[index]]
@@ -474,117 +481,48 @@ class EditCharacter extends State<EditACharacter> {
                                                 color: Color.fromARGB(
                                                     255, 0, 168, 252)),
                                           ));
-                                          for (List<dynamic> x
-                                              in CLASSLIST[index]
-                                                      .gainAtEachLevel[
-                                                  levelsPerClass[index]]) {
-                                            if (x[0] == "Choice") {
-                                              widgetsInPlay.add(SizedBox(
-                                                  height: 80,
-                                                  child: ChoiceRow(
-                                                    x: x.sublist(1),
-                                                    allSelected: allSelected,
-                                                  )));
-                                            } else {
-                                              levelGainParser(
-                                                  x, CLASSLIST[index]);
-                                            }
+                                        }
+                                        for (List<dynamic> x
+                                            in CLASSLIST[index].gainAtEachLevel[
+                                                levelsPerClass[index]]) {
+                                          if (x[0] == "Choice") {
+                                            widgetsInPlay.add(SizedBox(
+                                                height: 80,
+                                                child: ChoiceRow(
+                                                  x: x.sublist(1),
+                                                  allSelected: allSelected,
+                                                )));
+                                          } else {
+                                            levelGainParser(
+                                                x, CLASSLIST[index]);
                                           }
                                         }
-                                        //level 1 bonuses
-                                        if (level == 0) {
-                                          //gain saving throw proficiencies
-                                          savingThrowProficiencies =
-                                              CLASSLIST[index]
-                                                  .savingThrowProficiencies;
-                                          maxHealth +=
-                                              CLASSLIST[index].maxHitDiceRoll;
-                                          equipmentSelectedFromChoices =
-                                              CLASSLIST[index].equipmentOptions;
-                                          classSkillChoices = List.filled(
-                                              CLASSLIST[index]
-                                                  .optionsForSkillProficiencies
-                                                  .length,
-                                              false);
-                                          widgetsInPlay.addAll([
-                                            Text(
-                                                "Pick ${(CLASSLIST[index].numberOfSkillChoices)} skill(s) to gain proficiency in",
-                                                style: const TextStyle(
-                                                    color: Colors.blue,
-                                                    fontSize: 18,
-                                                    fontWeight:
-                                                        FontWeight.w700)),
-                                            const SizedBox(
-                                              height: 7,
-                                            ),
-                                            ToggleButtons(
-                                                selectedColor:
-                                                    const Color.fromARGB(
-                                                        255, 0, 79, 206),
-                                                color: Colors.blue,
-                                                textStyle: const TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 18,
-                                                    color: Colors.white),
-                                                //color: Color.fromARGB(255, 15, 124, 174)
-                                                fillColor: const Color.fromARGB(
-                                                    162, 0, 255, 8),
-                                                borderColor:
-                                                    const Color.fromARGB(
-                                                        255, 7, 26, 239),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(20)),
-                                                borderWidth: 1.5,
-                                                onPressed: (int subIndex) {
-                                                  setState(() {
-                                                    //bsckgroundskillchoices
-                                                    if (classSkillChoices
-                                                            .where((b) => b)
-                                                            .length <
-                                                        CLASSLIST[index]
-                                                            .numberOfSkillChoices) {
-                                                      classSkillChoices[
-                                                              subIndex] =
-                                                          !classSkillChoices[
-                                                              subIndex];
-                                                    } else {
-                                                      if (classSkillChoices[
-                                                          subIndex]) {
-                                                        classSkillChoices[
-                                                            subIndex] = false;
-                                                      }
-                                                    }
-                                                  });
-                                                },
-                                                isSelected: classSkillChoices,
-                                                children: CLASSLIST[index]
-                                                    .optionsForSkillProficiencies
-                                                    .map((x) => Text(" $x "))
-                                                    .toList()),
-                                          ]);
 
-                                          //run first level functions := proficiencies, equipment health bonus
+                                        //No level 1 bonuses
+
+                                        if (character.averageHitPoints ??
+                                            false) {
+                                          maxHealth += ((CLASSLIST[index]
+                                                      .maxHitDiceRoll) /
+                                                  2)
+                                              .ceil();
                                         } else {
-                                          if (character.averageHitPoints ??
-                                              false) {
-                                            maxHealth += ((CLASSLIST[index]
-                                                        .maxHitDiceRoll) /
-                                                    2)
-                                                .ceil();
-                                          } else {
-                                            maxHealth += 1 +
-                                                (Random().nextDouble() *
-                                                        CLASSLIST[index]
-                                                            .maxHitDiceRoll)
-                                                    .floor();
-                                          }
+                                          maxHealth += 1 +
+                                              (Random().nextDouble() *
+                                                      CLASSLIST[index]
+                                                          .maxHitDiceRoll)
+                                                  .floor();
                                         }
 
                                         //check if it's a spellcaster
                                         if (CLASSLIST[index].classType !=
                                             "Martial") {
-                                          if (levelsPerClass[index] == 0) {
+                                          if (classList
+                                                  .where((element) =>
+                                                      element ==
+                                                      CLASSLIST[index].name)
+                                                  .length ==
+                                              1) {
                                             allSpellsSelectedAsListsOfThings
                                                 .add([
                                               CLASSLIST[index].name,
@@ -626,7 +564,7 @@ class EditCharacter extends State<EditACharacter> {
                                               }
                                             }
 
-                                            allSpellsSelectedAsListsOfThings
+                                            /*allSpellsSelectedAsListsOfThings
                                                 .add([
                                               CLASSLIST[index].name,
                                               [],
@@ -635,7 +573,7 @@ class EditCharacter extends State<EditACharacter> {
                                                       .spellsKnownFormula ??
                                                   CLASSLIST[index]
                                                       .spellsKnownPerLevel
-                                            ]);
+                                            ]);*/
                                           }
                                         }
 
@@ -655,7 +593,6 @@ class EditCharacter extends State<EditACharacter> {
             ),
           ),
 
-          //ASI + FEAT
           SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(
@@ -1140,498 +1077,488 @@ class EditCharacter extends State<EditACharacter> {
                                   )),
                                 ],
                               ))),
-                      Expanded(
-                          child: SizedBox(
-                              height: 435,
-                              child: Column(
-                                children: [
-                                  const Text("Feats"),
-                                  if (featsSelected.isNotEmpty)
-                                    Text(
-                                        "${featsSelected.length} Feats selected:"),
-                                  if (featsSelected.isNotEmpty)
-                                    SizedBox(
-                                        height: 50,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          shrinkWrap: true,
-                                          itemCount: featsSelected.length,
-                                          itemBuilder: (context, index) {
-                                            return OutlinedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                  backgroundColor:
-                                                      Colors.white),
-                                              onPressed: () {},
-                                              child: Text(
-                                                  featsSelected[index][0].name),
-                                            );
-                                          },
-                                        )),
-                                  const Text("Select Feats:"),
-                                  Row(children: [
-                                    OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                          backgroundColor: (fullFeats)
-                                              ? Colors.blue
-                                              : Colors.grey),
-                                      onPressed: () {
-                                        setState(() {
-                                          fullFeats = !fullFeats;
-                                        });
-                                      },
-                                      child: const Text("Full Feats",
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                    ),
-                                    //text for search
-                                    OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                          backgroundColor: (halfFeats)
-                                              ? Colors.blue
-                                              : Colors.grey),
-                                      onPressed: () {
-                                        setState(() {
-                                          halfFeats = !halfFeats;
-                                        });
-                                      },
-                                      child: const Text("Half Feats",
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                    ),
-                                  ]),
-                                  Container(
-                                    height: 140,
-                                    width: 300,
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 3,
-                                      ),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(10)),
-                                    ),
-                                    child: ListView.builder(
-                                      scrollDirection: Axis.vertical,
-                                      shrinkWrap: true,
-                                      itemCount: FEATLIST.length,
-                                      itemBuilder: (context, index) {
-                                        return OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                                backgroundColor: (featsSelected
-                                                            .where((element) =>
-                                                                element[0]
-                                                                    .name ==
-                                                                FEATLIST[index]
-                                                                    .name)
-                                                            .length ==
-                                                        FEATLIST[index]
-                                                            .numberOfTimesTakeable)
-                                                    ? Colors.green
-                                                    : (featsSelected
-                                                            .where((element) =>
-                                                                element[0]
-                                                                    .name ==
-                                                                FEATLIST[index]
-                                                                    .name)
-                                                            .isEmpty)
-                                                        ? Colors.white
-                                                        : Colors.lightGreen),
-                                            onPressed: () {
-                                              setState(
-                                                () {
-                                                  if (numberOfRemainingFeatOrASIs >
-                                                      0) {
-                                                    if (featsSelected
-                                                            .where((element) =>
-                                                                element[0]
-                                                                    .name ==
-                                                                FEATLIST[index]
-                                                                    .name)
-                                                            .length <
-                                                        FEATLIST[index]
-                                                            .numberOfTimesTakeable) {
-                                                      numberOfRemainingFeatOrASIs--;
-                                                      //call up the selection page
-                                                      featsSelected.add(
-                                                          [FEATLIST[index]]);
-                                                    }
-                                                  }
-                                                },
+                      if (character.featsAllowed ?? false)
+                        Expanded(
+                            child: SizedBox(
+                                height: 435,
+                                child: Column(
+                                  children: [
+                                    const Text("Feats"),
+                                    if (featsSelected.isNotEmpty)
+                                      Text(
+                                          "${featsSelected.length} Feats selected:"),
+                                    if (featsSelected.isNotEmpty)
+                                      SizedBox(
+                                          height: 50,
+                                          child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            shrinkWrap: true,
+                                            itemCount: featsSelected.length,
+                                            itemBuilder: (context, index) {
+                                              return OutlinedButton(
+                                                style: OutlinedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.white),
+                                                onPressed: () {},
+                                                child: Text(featsSelected[index]
+                                                        [0]
+                                                    .name),
                                               );
-                                              // Code to handle button press
                                             },
-                                            child: Text(FEATLIST[index].name));
-                                      },
+                                          )),
+                                    const Text("Select Feats:"),
+                                    Row(children: [
+                                      OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                            backgroundColor: (fullFeats)
+                                                ? Colors.blue
+                                                : Colors.grey),
+                                        onPressed: () {
+                                          setState(() {
+                                            fullFeats = !fullFeats;
+                                          });
+                                        },
+                                        child: const Text("Full Feats",
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                      ),
+                                      //text for search
+                                      OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                            backgroundColor: (halfFeats)
+                                                ? Colors.blue
+                                                : Colors.grey),
+                                        onPressed: () {
+                                          setState(() {
+                                            halfFeats = !halfFeats;
+                                          });
+                                        },
+                                        child: const Text("Half Feats",
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                      ),
+                                    ]),
+                                    Container(
+                                      height: 140,
+                                      width: 300,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        border: Border.all(
+                                          color: Colors.black,
+                                          width: 3,
+                                        ),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true,
+                                        itemCount: FEATLIST.length,
+                                        itemBuilder: (context, index) {
+                                          return OutlinedButton(
+                                              style: OutlinedButton.styleFrom(
+                                                  backgroundColor: (featsSelected
+                                                          .where((element) =>
+                                                              element[0].name ==
+                                                              FEATLIST[index]
+                                                                  .name)
+                                                          .isNotEmpty)
+                                                      ? Color.fromARGB(
+                                                          100 +
+                                                              (((featsSelected.where((element) => element[0].name == FEATLIST[index].name).length) /
+                                                                          FEATLIST[index]
+                                                                              .numberOfTimesTakeable) *
+                                                                      155)
+                                                                  .ceil(),
+                                                          0,
+                                                          50 +
+                                                              (((featsSelected.where((element) => element[0].name == FEATLIST[index].name).length) /
+                                                                          FEATLIST[index]
+                                                                              .numberOfTimesTakeable) *
+                                                                      205)
+                                                                  .ceil(),
+                                                          0)
+                                                      : Colors.white),
+                                              onPressed: () {
+                                                setState(
+                                                  () {
+                                                    if (numberOfRemainingFeatOrASIs >
+                                                        0) {
+                                                      if (featsSelected
+                                                              .where((element) =>
+                                                                  element[0]
+                                                                      .name ==
+                                                                  FEATLIST[
+                                                                          index]
+                                                                      .name)
+                                                              .length <
+                                                          FEATLIST[index]
+                                                              .numberOfTimesTakeable) {
+                                                        numberOfRemainingFeatOrASIs--;
+                                                        //call up the selection page
+                                                        featsSelected.add(
+                                                            [FEATLIST[index]]);
+                                                        for (List<dynamic> x
+                                                            in FEATLIST[index]
+                                                                .abilites) {
+                                                          if (x[0] ==
+                                                              "Choice") {
+                                                            widgetsInPlay.add(
+                                                                SizedBox(
+                                                                    height: 80,
+                                                                    child:
+                                                                        ChoiceRow(
+                                                                      x: x.sublist(
+                                                                          1),
+                                                                      allSelected:
+                                                                          allSelected,
+                                                                    )));
+                                                          } else {
+                                                            levelGainParser(
+                                                                x,
+                                                                CLASSLIST[
+                                                                    index]);
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  },
+                                                );
+                                                // Code to handle button press
+                                              },
+                                              child:
+                                                  Text(FEATLIST[index].name));
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ))),
+                                  ],
+                                ))),
                     ],
                   )
                 ],
               )),
           //spells
-          DefaultTabController(
-            length: 2,
-            child: Scaffold(
-              appBar: AppBar(
-                title: const Center(
-                  child: Text(" X spells available",
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white)),
-                ),
-                bottom: const TabBar(
-                  tabs: [
-                    Tab(
-                        child: Text(
-                            "Choose your spells from regular progression")),
-                    Tab(
-                        child: Text(
-                            "Make your selections for bonus spells gained elsewhere")),
-                  ],
-                ),
-              ),
-              body: TabBarView(children: [
-                Row(children: [
-                  Expanded(
-                      child: Column(children: [
-                    if (allSpellsSelected
+          Column(children: [
+            const Text("Choose your spells from regular progression",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w700,
+                )),
+            Row(children: [
+              Expanded(
+                  child: Column(children: [
+                if (allSpellsSelected
+                    .where((element) => element.level == 0)
+                    .toList()
+                    .isNotEmpty)
+                  const Text("Cantrips:"),
+                if (allSpellsSelected
+                    .where((element) => element.level == 0)
+                    .toList()
+                    .isNotEmpty)
+                  SizedBox(
+                      height: 50,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: allSpellsSelected
                             .where((element) => element.level == 0)
                             .toList()
-                            .isEmpty ==
-                        false)
-                      const Text("Cantrips:"),
-                    if (allSpellsSelected
-                            .where((element) => element.level == 0)
-                            .toList()
-                            .isEmpty ==
-                        false)
-                      SizedBox(
-                          height: 50,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemCount: allSpellsSelected
+                            .length,
+                        itemBuilder: (context, index) {
+                          return OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                                backgroundColor: Colors.white),
+                            onPressed: () {},
+                            child: Text(allSpellsSelected
                                 .where((element) => element.level == 0)
-                                .toList()
-                                .length,
-                            itemBuilder: (context, index) {
-                              return OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    backgroundColor: Colors.white),
-                                onPressed: () {},
-                                child: Text(allSpellsSelected
-                                    .where((element) => element.level == 0)
-                                    .toList()[index]
-                                    .name),
-                              );
-                            },
-                          )),
-                    if (allSpellsSelected
+                                .toList()[index]
+                                .name),
+                          );
+                        },
+                      )),
+                if (allSpellsSelected
+                    .where((element) => element.level == 1)
+                    .toList()
+                    .isNotEmpty)
+                  const Text("Level 1 Spells:"),
+                if (allSpellsSelected
+                    .where((element) => element.level == 1)
+                    .toList()
+                    .isNotEmpty)
+                  SizedBox(
+                      height: 50,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: allSpellsSelected
                             .where((element) => element.level == 1)
                             .toList()
-                            .isEmpty ==
-                        false)
-                      const Text("Level 1 Spells:"),
-                    if (allSpellsSelected
-                            .where((element) => element.level == 1)
-                            .toList()
-                            .isEmpty ==
-                        false)
-                      SizedBox(
-                          height: 50,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemCount: allSpellsSelected
+                            .length,
+                        itemBuilder: (context, index) {
+                          return OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                                backgroundColor: Colors.white),
+                            onPressed: () {},
+                            child: Text(allSpellsSelected
                                 .where((element) => element.level == 1)
-                                .toList()
-                                .length,
-                            itemBuilder: (context, index) {
-                              return OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    backgroundColor: Colors.white),
-                                onPressed: () {},
-                                child: Text(allSpellsSelected
-                                    .where((element) => element.level == 1)
-                                    .toList()[index]
-                                    .name),
-                              );
-                            },
-                          )),
-                    if (allSpellsSelected
+                                .toList()[index]
+                                .name),
+                          );
+                        },
+                      )),
+                if (allSpellsSelected
+                    .where((element) => element.level == 2)
+                    .toList()
+                    .isNotEmpty)
+                  const Text("Level 2 Spells:"),
+                if (allSpellsSelected
+                    .where((element) => element.level == 2)
+                    .toList()
+                    .isNotEmpty)
+                  SizedBox(
+                      height: 50,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: allSpellsSelected
                             .where((element) => element.level == 2)
                             .toList()
-                            .isEmpty ==
-                        false)
-                      const Text("Level 2 Spells:"),
-                    if (allSpellsSelected
-                            .where((element) => element.level == 2)
-                            .toList()
-                            .isEmpty ==
-                        false)
-                      SizedBox(
-                          height: 50,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemCount: allSpellsSelected
+                            .length,
+                        itemBuilder: (context, index) {
+                          return OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                                backgroundColor: Colors.white),
+                            onPressed: () {},
+                            child: Text(allSpellsSelected
                                 .where((element) => element.level == 2)
-                                .toList()
-                                .length,
-                            itemBuilder: (context, index) {
-                              return OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    backgroundColor: Colors.white),
-                                onPressed: () {},
-                                child: Text(allSpellsSelected
-                                    .where((element) => element.level == 2)
-                                    .toList()[index]
-                                    .name),
-                              );
-                            },
-                          )),
-                    if (allSpellsSelected
+                                .toList()[index]
+                                .name),
+                          );
+                        },
+                      )),
+                if (allSpellsSelected
+                    .where((element) => element.level == 3)
+                    .toList()
+                    .isNotEmpty)
+                  const Text("Level 3 Spells:"),
+                if (allSpellsSelected
+                    .where((element) => element.level == 3)
+                    .toList()
+                    .isNotEmpty)
+                  SizedBox(
+                      height: 50,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: allSpellsSelected
                             .where((element) => element.level == 3)
                             .toList()
-                            .isEmpty ==
-                        false)
-                      const Text("Level 3 Spells:"),
-                    if (allSpellsSelected
-                            .where((element) => element.level == 3)
-                            .toList()
-                            .isEmpty ==
-                        false)
-                      SizedBox(
-                          height: 50,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemCount: allSpellsSelected
+                            .length,
+                        itemBuilder: (context, index) {
+                          return OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                                backgroundColor: Colors.white),
+                            onPressed: () {},
+                            child: Text(allSpellsSelected
                                 .where((element) => element.level == 3)
-                                .toList()
-                                .length,
-                            itemBuilder: (context, index) {
-                              return OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    backgroundColor: Colors.white),
-                                onPressed: () {},
-                                child: Text(allSpellsSelected
-                                    .where((element) => element.level == 3)
-                                    .toList()[index]
-                                    .name),
-                              );
-                            },
-                          )),
-                    if (allSpellsSelected
+                                .toList()[index]
+                                .name),
+                          );
+                        },
+                      )),
+                if (allSpellsSelected
+                    .where((element) => element.level == 4)
+                    .toList()
+                    .isNotEmpty)
+                  const Text("Level 4 Spells:"),
+                if (allSpellsSelected
+                    .where((element) => element.level == 4)
+                    .toList()
+                    .isNotEmpty)
+                  SizedBox(
+                      height: 50,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: allSpellsSelected
                             .where((element) => element.level == 4)
                             .toList()
-                            .isEmpty ==
-                        false)
-                      const Text("Level 4 Spells:"),
-                    if (allSpellsSelected
-                            .where((element) => element.level == 4)
-                            .toList()
-                            .isEmpty ==
-                        false)
-                      SizedBox(
-                          height: 50,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemCount: allSpellsSelected
+                            .length,
+                        itemBuilder: (context, index) {
+                          return OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                                backgroundColor: Colors.white),
+                            onPressed: () {},
+                            child: Text(allSpellsSelected
                                 .where((element) => element.level == 4)
-                                .toList()
-                                .length,
-                            itemBuilder: (context, index) {
-                              return OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    backgroundColor: Colors.white),
-                                onPressed: () {},
-                                child: Text(allSpellsSelected
-                                    .where((element) => element.level == 4)
-                                    .toList()[index]
-                                    .name),
-                              );
-                            },
-                          )),
-                    if (allSpellsSelected
+                                .toList()[index]
+                                .name),
+                          );
+                        },
+                      )),
+                if (allSpellsSelected
+                    .where((element) => element.level == 5)
+                    .toList()
+                    .isNotEmpty)
+                  const Text("Level 5 Spells:"),
+                if (allSpellsSelected
+                    .where((element) => element.level == 5)
+                    .toList()
+                    .isNotEmpty)
+                  SizedBox(
+                      height: 50,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: allSpellsSelected
                             .where((element) => element.level == 5)
                             .toList()
-                            .isEmpty ==
-                        false)
-                      const Text("Level 5 Spells:"),
-                    if (allSpellsSelected
-                            .where((element) => element.level == 5)
-                            .toList()
-                            .isEmpty ==
-                        false)
-                      SizedBox(
-                          height: 50,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemCount: allSpellsSelected
+                            .length,
+                        itemBuilder: (context, index) {
+                          return OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                                backgroundColor: Colors.white),
+                            onPressed: () {},
+                            child: Text(allSpellsSelected
                                 .where((element) => element.level == 5)
-                                .toList()
-                                .length,
-                            itemBuilder: (context, index) {
-                              return OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    backgroundColor: Colors.white),
-                                onPressed: () {},
-                                child: Text(allSpellsSelected
-                                    .where((element) => element.level == 5)
-                                    .toList()[index]
-                                    .name),
-                              );
-                            },
-                          )),
-                    if (allSpellsSelected
+                                .toList()[index]
+                                .name),
+                          );
+                        },
+                      )),
+                if (allSpellsSelected
+                    .where((element) => element.level == 6)
+                    .toList()
+                    .isNotEmpty)
+                  const Text("Level 6 Spells:"),
+                if (allSpellsSelected
+                    .where((element) => element.level == 6)
+                    .toList()
+                    .isNotEmpty)
+                  SizedBox(
+                      height: 50,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: allSpellsSelected
                             .where((element) => element.level == 6)
                             .toList()
-                            .isEmpty ==
-                        false)
-                      const Text("Level 6 Spells:"),
-                    if (allSpellsSelected
-                            .where((element) => element.level == 6)
-                            .toList()
-                            .isEmpty ==
-                        false)
-                      SizedBox(
-                          height: 50,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemCount: allSpellsSelected
+                            .length,
+                        itemBuilder: (context, index) {
+                          return OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                                backgroundColor: Colors.white),
+                            onPressed: () {},
+                            child: Text(allSpellsSelected
                                 .where((element) => element.level == 6)
-                                .toList()
-                                .length,
-                            itemBuilder: (context, index) {
-                              return OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    backgroundColor: Colors.white),
-                                onPressed: () {},
-                                child: Text(allSpellsSelected
-                                    .where((element) => element.level == 6)
-                                    .toList()[index]
-                                    .name),
-                              );
-                            },
-                          )),
-                    if (allSpellsSelected
+                                .toList()[index]
+                                .name),
+                          );
+                        },
+                      )),
+                if (allSpellsSelected
+                    .where((element) => element.level == 7)
+                    .toList()
+                    .isNotEmpty)
+                  const Text("Level 7 Spells:"),
+                if (allSpellsSelected
+                    .where((element) => element.level == 7)
+                    .toList()
+                    .isNotEmpty)
+                  SizedBox(
+                      height: 50,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: allSpellsSelected
                             .where((element) => element.level == 7)
                             .toList()
-                            .isEmpty ==
-                        false)
-                      const Text("Level 7 Spells:"),
-                    if (allSpellsSelected
-                            .where((element) => element.level == 7)
-                            .toList()
-                            .isEmpty ==
-                        false)
-                      SizedBox(
-                          height: 50,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemCount: allSpellsSelected
+                            .length,
+                        itemBuilder: (context, index) {
+                          return OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                                backgroundColor: Colors.white),
+                            onPressed: () {},
+                            child: Text(allSpellsSelected
                                 .where((element) => element.level == 7)
-                                .toList()
-                                .length,
-                            itemBuilder: (context, index) {
-                              return OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    backgroundColor: Colors.white),
-                                onPressed: () {},
-                                child: Text(allSpellsSelected
-                                    .where((element) => element.level == 7)
-                                    .toList()[index]
-                                    .name),
-                              );
-                            },
-                          )),
-                    if (allSpellsSelected
+                                .toList()[index]
+                                .name),
+                          );
+                        },
+                      )),
+                if (allSpellsSelected
+                    .where((element) => element.level == 8)
+                    .toList()
+                    .isNotEmpty)
+                  const Text("Level 8 Spells:"),
+                if (allSpellsSelected
+                    .where((element) => element.level == 8)
+                    .toList()
+                    .isNotEmpty)
+                  SizedBox(
+                      height: 50,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: allSpellsSelected
                             .where((element) => element.level == 8)
                             .toList()
-                            .isEmpty ==
-                        false)
-                      const Text("Level 8 Spells:"),
-                    if (allSpellsSelected
-                            .where((element) => element.level == 8)
-                            .toList()
-                            .isEmpty ==
-                        false)
-                      SizedBox(
-                          height: 50,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemCount: allSpellsSelected
+                            .length,
+                        itemBuilder: (context, index) {
+                          return OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                                backgroundColor: Colors.white),
+                            onPressed: () {},
+                            child: Text(allSpellsSelected
                                 .where((element) => element.level == 8)
-                                .toList()
-                                .length,
-                            itemBuilder: (context, index) {
-                              return OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    backgroundColor: Colors.white),
-                                onPressed: () {},
-                                child: Text(allSpellsSelected
-                                    .where((element) => element.level == 8)
-                                    .toList()[index]
-                                    .name),
-                              );
-                            },
-                          )),
-                    if (allSpellsSelected
+                                .toList()[index]
+                                .name),
+                          );
+                        },
+                      )),
+                if (allSpellsSelected
+                    .where((element) => element.level == 9)
+                    .toList()
+                    .isNotEmpty)
+                  const Text("Level 9 Spells:"),
+                if (allSpellsSelected
+                    .where((element) => element.level == 9)
+                    .toList()
+                    .isNotEmpty)
+                  SizedBox(
+                      height: 50,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: allSpellsSelected
                             .where((element) => element.level == 9)
                             .toList()
-                            .isEmpty ==
-                        false)
-                      const Text("Level 9 Spells:"),
-                    if (allSpellsSelected
-                            .where((element) => element.level == 9)
-                            .toList()
-                            .isEmpty ==
-                        false)
-                      SizedBox(
-                          height: 50,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemCount: allSpellsSelected
+                            .length,
+                        itemBuilder: (context, index) {
+                          return OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                                backgroundColor: Colors.white),
+                            onPressed: () {},
+                            child: Text(allSpellsSelected
                                 .where((element) => element.level == 9)
-                                .toList()
-                                .length,
-                            itemBuilder: (context, index) {
-                              return OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    backgroundColor: Colors.white),
-                                onPressed: () {},
-                                child: Text(allSpellsSelected
-                                    .where((element) => element.level == 9)
-                                    .toList()[index]
-                                    .name),
-                              );
-                            },
-                          )),
-                  ])),
-                  Expanded(
-                    child: SingleChildScrollView(
-                        child: Column(
-                      children: allSpellsSelectedAsListsOfThings
-                          .map((s) => SpellSelections(allSpellsSelected, s))
-                          .toList(),
-                    )),
-                  )
-                ]),
-                const Text("PAGE")
-              ]),
-            ),
-          ),
+                                .toList()[index]
+                                .name),
+                          );
+                        },
+                      )),
+              ])),
+              Expanded(
+                child: SingleChildScrollView(
+                    child: Column(
+                  children: allSpellsSelectedAsListsOfThings
+                      .map((s) => SpellSelections(allSpellsSelected, s))
+                      .toList(),
+                )),
+              )
+            ]),
+          ]),
+
           //Equipment
           SingleChildScrollView(
               scrollDirection: Axis.vertical,
@@ -1642,11 +1569,15 @@ class EditCharacter extends State<EditACharacter> {
                       child: SizedBox(
                           height: 435,
                           child: Column(children: [
-                            const Text("Purchase Equipment"),
+                            const Text("Purchase Equipment",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w700)),
                             Text(
-                                "You have ${currencyStored["Platinum Pieces"]} platinum, ${currencyStored["Gold Pieces"]} gold, ${currencyStored["Electrum Pieces"]} electrum, ${currencyStored["Silver Pieces"]} silver and ${currencyStored["Copper Pieces"]} copper pieces to spend with"),
+                                "You have ${currencyStored["Platinum Pieces"]} platinum, ${currencyStored["Gold Pieces"]} gold, ${currencyStored["Electrum Pieces"]} electrum, ${currencyStored["Silver Pieces"]} silver and ${currencyStored["Copper Pieces"]} copper pieces to spend with",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w700)),
                             Row(children: [
-                              //armour
+                              //armour big button
                               OutlinedButton(
                                 style: OutlinedButton.styleFrom(
                                     backgroundColor: (armourList.length == 4)
@@ -1677,6 +1608,7 @@ class EditCharacter extends State<EditACharacter> {
                                                 fontSize: 22)),
                                         Row(
                                           children: [
+                                            //suboptions for armour
                                             OutlinedButton(
                                               style: OutlinedButton.styleFrom(
                                                   backgroundColor: (armourList
@@ -2136,11 +2068,13 @@ class EditCharacter extends State<EditACharacter> {
                           child: Column(
                             children: [
                               const Text(
-                                  "Pick your equipment from options gained:"),
-                              if (equipmentSelectedFromChoices != null)
+                                  "Pick your equipment from options gained:",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700)),
+                              if (equipmentSelectedFromChoices != [])
                                 SizedBox(
                                   height: 300,
-                                  width: 200,
                                   child: SingleChildScrollView(
                                     child: Column(
                                       children: /*[const Text(
@@ -2148,30 +2082,30 @@ class EditCharacter extends State<EditACharacter> {
                                           [
                                         for (var i = 0;
                                             i <
-                                                equipmentSelectedFromChoices!
+                                                equipmentSelectedFromChoices
                                                     .length;
                                             i++)
-                                          (equipmentSelectedFromChoices![i]
+                                          (equipmentSelectedFromChoices[i]
                                                       .length ==
                                                   2)
-                                              ? Container(
-                                                  margin: const EdgeInsets.all(
-                                                      10.0),
+                                              ? SingleChildScrollView(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
                                                   child: Row(
                                                     children: [
                                                       OutlinedButton(
                                                         onPressed: () {
                                                           setState(() {
-                                                            equipmentSelectedFromChoices![
+                                                            equipmentSelectedFromChoices[
                                                                 i] = [
-                                                              equipmentSelectedFromChoices![
+                                                              equipmentSelectedFromChoices[
                                                                   i][0]
                                                             ];
                                                           });
                                                         },
                                                         child: Text(
                                                           produceEquipmentOptionDescription(
-                                                              equipmentSelectedFromChoices![
+                                                              equipmentSelectedFromChoices[
                                                                   i][0]),
                                                           style:
                                                               const TextStyle(
@@ -2182,9 +2116,9 @@ class EditCharacter extends State<EditACharacter> {
                                                       OutlinedButton(
                                                         onPressed: () {
                                                           setState(() {
-                                                            equipmentSelectedFromChoices![
+                                                            equipmentSelectedFromChoices[
                                                                 i] = [
-                                                              equipmentSelectedFromChoices![
+                                                              equipmentSelectedFromChoices[
                                                                   i][1]
                                                             ];
                                                           });
@@ -2192,7 +2126,7 @@ class EditCharacter extends State<EditACharacter> {
                                                         //String produceEquipmentOptionDescription(List<dynamic> optionDescription)
                                                         child: Text(
                                                           produceEquipmentOptionDescription(
-                                                              equipmentSelectedFromChoices![
+                                                              equipmentSelectedFromChoices[
                                                                   i][1]),
                                                           style:
                                                               const TextStyle(
@@ -2203,9 +2137,13 @@ class EditCharacter extends State<EditACharacter> {
                                                     ],
                                                   ),
                                                 )
-                                              : Text(produceEquipmentOptionDescription(
-                                                  equipmentSelectedFromChoices![
-                                                      i][0]))
+                                              : Text(
+                                                  produceEquipmentOptionDescription(
+                                                      equipmentSelectedFromChoices[
+                                                          i][0]),
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w700))
                                       ],
                                     ),
                                   ),
@@ -2225,7 +2163,7 @@ class EditCharacter extends State<EditACharacter> {
                       builder: (context) => PdfPreviewPage(
                           invoice: Character(
                               backstory: character.backstory,
-                              skillBonusMap:character.skillBonusMap,
+                              skillBonusMap: character.skillBonusMap,
                               extraFeatures: character.extraFeatures,
                               uniqueID: character.uniqueID,
                               group: group,
@@ -2347,7 +2285,7 @@ class EditCharacter extends State<EditACharacter> {
                               width: 128,
                               height: 50,
                               child: DropdownButton<String>(
-                                value: group,
+                                value: GROUPLIST.contains(group) ? group : null,
                                 icon: const Icon(Icons.arrow_drop_down,
                                     color: Color.fromARGB(255, 7, 26, 239)),
                                 elevation: 16,
@@ -2404,13 +2342,29 @@ class EditCharacter extends State<EditACharacter> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(12)))),
                                 onChanged: (groupNameEnteredValue) {
-                                  group = groupNameEnteredValue;
+                                  setState(() {
+                                    group = groupNameEnteredValue;
+                                  });
                                 }),
                           ),
                           const SizedBox(height: 30),
                           OutlinedButton(
                             style: OutlinedButton.styleFrom(
-                              backgroundColor: Colors.blue,
+                              backgroundColor: (numberOfRemainingFeatOrASIs ==
+                                          0 &&
+                                      !ASIRemaining &&
+                                      level <= classList.length &&
+                                      (equipmentSelectedFromChoices == [] ||
+                                          equipmentSelectedFromChoices
+                                              .where((element) =>
+                                                  element.length == 2)
+                                              .toList()
+                                              .isEmpty) &&
+                                      (allSpellsSelectedAsListsOfThings
+                                          .where((element) => element[2] != 0)
+                                          .isEmpty))
+                                  ? Colors.blue
+                                  : Colors.grey,
                               padding:
                                   const EdgeInsets.fromLTRB(45, 20, 45, 20),
                               shape: const RoundedRectangleBorder(
@@ -2427,7 +2381,18 @@ class EditCharacter extends State<EditACharacter> {
                                   color: Colors.white,
                                 )),
                             onPressed: () {
-                              setState(() {
+                              if (numberOfRemainingFeatOrASIs == 0 &&
+                                  !ASIRemaining &&
+                                  level <= classList.length &&
+                                  (equipmentSelectedFromChoices == [] ||
+                                      equipmentSelectedFromChoices
+                                          .where(
+                                              (element) => element.length == 2)
+                                          .toList()
+                                          .isEmpty) &&
+                                  (allSpellsSelectedAsListsOfThings
+                                      .where((element) => element[2] != 0)
+                                      .isEmpty)) {
                                 updateGlobals();
                                 //final String jsonContent =
                                 //  File("assets/Characters.json").readAsStringSync();
@@ -2442,7 +2407,7 @@ class EditCharacter extends State<EditACharacter> {
 
                                 characters.add(Character(
                                         backstory: character.backstory,
-                                        skillBonusMap:character.skillBonusMap,
+                                        skillBonusMap: character.skillBonusMap,
                                         extraFeatures: character.extraFeatures,
                                         uniqueID: character.uniqueID,
                                         group: group,
@@ -2567,22 +2532,31 @@ class EditCharacter extends State<EditACharacter> {
                                 json["Characters"] = characters;
                                 writeJsonToFile(json, "userContent");
                                 updateGlobals();
-                                //Navigator.pop(context);
-                              });
+                                setState(() {
+                                  Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Homepage()),
+                                  );
+
+                                  showCongratulationsDialog(context);
+
+                                  //Navigator.pop(context);
+                                });
+                              }
                             },
                           )
                         ])),
                 Expanded(
                     flex: 7,
                     child: Column(children: [
-                      //Basics
                       const SizedBox(height: 40),
                       const Text("Build checklist:",
                           style: TextStyle(
                             fontSize: 32,
                             fontWeight: FontWeight.w800,
                           )),
-
                       //ASI+feats
                       const SizedBox(height: 20),
                       (numberOfRemainingFeatOrASIs == 0)
@@ -2616,10 +2590,11 @@ class EditCharacter extends State<EditACharacter> {
                                   color: Colors.red,
                                   fontSize: 22,
                                   fontWeight: FontWeight.w700)),
+
                       const SizedBox(height: 20),
                       //Equipment
-                      (equipmentSelectedFromChoices == null ||
-                              equipmentSelectedFromChoices!
+                      (equipmentSelectedFromChoices == [] ||
+                              equipmentSelectedFromChoices
                                   .where((element) => element.length == 2)
                                   .toList()
                                   .isEmpty)
@@ -2629,38 +2604,150 @@ class EditCharacter extends State<EditACharacter> {
                                   fontSize: 22,
                                   fontWeight: FontWeight.w700))
                           : Text(
-                              "Missed ${equipmentSelectedFromChoices!.where((element) => element.length == 2).toList().length} equipment choice(s)",
+                              "Missed ${equipmentSelectedFromChoices.where((element) => element.length == 2).toList().length} equipment choice(s)",
                               style: const TextStyle(
                                   color: Colors.red,
                                   fontSize: 22,
                                   fontWeight: FontWeight.w700)),
                       const SizedBox(height: 20),
                       //spells
-                      (allSpellsSelectedAsListsOfThings.isNotEmpty)
-                          ? (((allSpellsSelectedAsListsOfThings
-                                      .reduce((a, b) => a[1] + b[1]) as int) ==
-                                  allSpellsSelected.length))
-                              ? const Text("Chose all spells",
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w700))
-                              : Text(
-                                  "Missed ${(allSpellsSelectedAsListsOfThings.reduce((a, b) => a[1] + b[1]) as int) - allSpellsSelected.length} spells",
+                      //if the user has multiple classes with spells
+
+                      //All spell sections have 0 remaining options (all spells selected)
+                      (allSpellsSelectedAsListsOfThings
+                              .where((element) => element[2] != 0)
+                              .isEmpty)
+                          ?
+                          //if they selected every spell available
+                          const Text("Chose all spells",
+                              style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700))
+                          //if not
+                          : (allSpellsSelectedAsListsOfThings.length == 1)
+                              //if they only have 1 way to choose spells (as the reduce only works on lists of length >1,
+                              // otherwise it just returns the whole element which would break the code)
+                              ? Text(
+                                  //number remaining
+                                  "Missed ${(allSpellsSelectedAsListsOfThings[0][2])} spells",
                                   style: const TextStyle(
                                       color: Colors.red,
                                       fontSize: 22,
                                       fontWeight: FontWeight.w700))
-                          : const Text("Have 0 spells to choose",
-                              style: TextStyle(
-                                  color: Colors.green,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700)),
+                              : Text(
+                                  //number remaining with multiple ways to choose spells
+                                  "Missed ${(allSpellsSelectedAsListsOfThings.reduce((a, b) => a[2] + b[2]) as int)} spells",
+                                  style: const TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w700)),
                     ]))
               ])),
         ]),
       ),
     );
+  }
+
+  void showCongratulationsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: const Text('Character edit saved!',
+            style: TextStyle(
+                color: Colors.green,
+                fontSize: 50,
+                fontWeight: FontWeight.w800)),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Continue'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  bool multiclassingPossible(Class selectedClass) {
+    //check if it is their first class
+    if (classList.isEmpty) {
+      return true;
+    }
+    if (!(character.multiclassing ?? false)) {
+      return false;
+    }
+    List<int> requirements = selectedClass.multiclassingRequirements;
+    //check if they already have a level in the class
+    if (classList.contains(selectedClass.name)) {
+      return true;
+    }
+    //check the class they want to take
+    int count = 0;
+    if (strength.value +
+            character.raceAbilityScoreIncreases[0] +
+            ASIBonuses[0] >=
+        requirements[0]) count++;
+    if (dexterity.value +
+            character.raceAbilityScoreIncreases[1] +
+            ASIBonuses[1] >=
+        requirements[1]) count++;
+    if (constitution.value +
+            character.raceAbilityScoreIncreases[2] +
+            ASIBonuses[2] >=
+        requirements[2]) count++;
+    if (intelligence.value +
+            character.raceAbilityScoreIncreases[3] +
+            ASIBonuses[3] >=
+        requirements[3]) count++;
+    if (wisdom.value + character.raceAbilityScoreIncreases[4] + ASIBonuses[4] >=
+        requirements[4]) count++;
+    if (charisma.value +
+            character.raceAbilityScoreIncreases[5] +
+            ASIBonuses[5] >=
+        requirements[5]) count++;
+
+    if (count < requirements[6]) {
+      return false;
+    }
+    //check all other classes they have a level in
+    for (var i = 0; i < classList.length; i++) {
+      requirements = CLASSLIST
+          .firstWhere((element) => element.name == classList[i])
+          .multiclassingRequirements;
+      int count = 0;
+      if (strength.value +
+              character.raceAbilityScoreIncreases[0] +
+              ASIBonuses[0] >=
+          requirements[0]) count++;
+      if (dexterity.value +
+              character.raceAbilityScoreIncreases[1] +
+              ASIBonuses[1] >=
+          requirements[1]) count++;
+      if (constitution.value +
+              character.raceAbilityScoreIncreases[2] +
+              ASIBonuses[2] >=
+          requirements[2]) count++;
+      if (intelligence.value +
+              character.raceAbilityScoreIncreases[3] +
+              ASIBonuses[3] >=
+          requirements[3]) count++;
+      if (wisdom.value +
+              character.raceAbilityScoreIncreases[4] +
+              ASIBonuses[4] >=
+          requirements[4]) count++;
+      if (charisma.value +
+              character.raceAbilityScoreIncreases[5] +
+              ASIBonuses[5] >=
+          requirements[5]) count++;
+
+      if (count < requirements[6]) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   Widget? levelGainParser(List<dynamic> x, Class selectedClass) {
@@ -2689,11 +2776,7 @@ class EditCharacter extends State<EditACharacter> {
     } else if (x[0] == "AC") {
       // ("AC","intelligence + 2", "RQUIREMENT")
       ACList.add([x[1], x[2]]);
-    } /* else if (x[0] == "ACModifier") {
-    //("ACModifier", "2/intelligence", "armour"(requirement))
-    SPEEDLIST.append([x[1], x[2]]);
-  }*/
-    else if (x[0] == "Speed") {
+    } else if (x[0] == "Speed") {
       //note base speed is given by race
       //("speed", (w/s/c/f/h), numb/expression")
       speedBonusMap[x[1]]?.add(x[2]);
@@ -2712,7 +2795,15 @@ class EditCharacter extends State<EditACharacter> {
         charisma.value += int.parse(x[2]);
       }
       //do this later
-    } /*else if (x[0] == "Equipment") {
+    } else if (x[0] == "Gained") {
+      character.skillBonusMap[x[1]] =
+          character.skillBonusMap[x[1]]! + int.parse(x[2]);
+      //do this later
+    } else if (x[0] == "ASI") {
+      numberOfRemainingFeatOrASIs++;
+    }
+
+    /*else if (x[0] == "Equipment") {
     //note base speed is given by race
     //("speed", "10", "(w/s/c/f)")
     SPEEDLIST.append([x[1], x[2]]);
@@ -2720,36 +2811,8 @@ class EditCharacter extends State<EditACharacter> {
     else if (x[0] == "Money") {
       //("Money", "Copper Pieces", "10")
       currencyStored[x[1]] = currencyStored[x[1]]! + int.parse(x[2]);
-    } //deal with these later
-    /*else if (x[0] == "Spell") {
-    ///
-  } else if (x[0] == "ASI") {
-    ("ASI")
-      ASINUMB ++;
-  } else if (x[0] == "Feat") {
-    ("Feat","Any/ featname")
-    if (x[1]== "Any"){
-      FEATNUMB ++;
-    }
-    else{
-      FEATLIST.add(correct feat)
-    }
-      
-  }*/
-    /*else if (x[0] == "Choice") {
-    List<Widget> temporaryWidgetList = [];
-    //("choice", [option].....)
-    /*for (List<dynamic> string in x.sublist(2)) {
-      temporaryWidgetList.add(OutlinedButton(
-        child: Text(string[1]),
-        onPressed: () {
-          // When the button is pressed, add the string to the outputStrings list
-          setState(() => outputStrings.add(string));
-        },
-      ));
-    }*/
-    return Row(children: temporaryWidgetList);
-  }*/
+    } //deal
+    return null;
   }
 
   int levelZeroGetSpellsKnown(int index) {
@@ -2769,7 +2832,29 @@ class EditCharacter extends State<EditACharacter> {
     return 3;
   }
 
-  String produceEquipmentOptionDescription(List<dynamic> optionDescription) {
-    return optionDescription[0] as String;
+  String produceEquipmentOptionDescription(List list) {
+    // Initialize an empty string to store the result
+    String result = '';
+
+    // Iterate through the list
+    for (int i = 0; i < list.length; i++) {
+      // Check if the current element is a number
+      if (list[i] is num) {
+        // Append the current number and string pair to the result string
+        result += '${list[i]}x${list[i + 1]}';
+
+        // Skip over the next element (the string)
+        i++;
+      } else {
+        // Append just the current string to the result string
+        result += '${list[i]}';
+      }
+
+      // If this is not the last element, add a comma and space separator
+      if (i != list.length - 1) result += ', ';
+    }
+
+    // Return the final formatted string
+    return result;
   }
 }
