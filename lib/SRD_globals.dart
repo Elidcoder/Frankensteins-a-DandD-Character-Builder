@@ -47,14 +47,16 @@ class Item {
   double weight;
   bool stackable;
   String? description;
-
+  List<String> equipmentType;
   Item(
       {required this.name,
+      required this.equipmentType,
       required this.cost,
       required this.weight,
       required this.stackable,
       this.description});
   Map<String, dynamic> toJson() => {
+        "EquipmentType": equipmentType,
         "Name": name,
         "Cost": cost,
         "Weight": weight,
@@ -64,6 +66,7 @@ class Item {
 
   factory Item.fromJson(Map<String, dynamic> data) {
     return Item(
+        equipmentType: data["EquipmentType"].cast<String>() as List<String>,
         name: data["Name"],
         cost: data["Cost"],
         weight: data["Weight"],
@@ -82,11 +85,17 @@ class Armour extends Item {
       required List<dynamic> cost,
       required double weight,
       required bool stackable,
+      required List<String> equipmentType,
       required this.armourFormula,
       required this.imposeStealthDisadvantage,
       required this.strengthRequirement,
       required this.armourType})
-      : super(name: name, cost: cost, stackable: stackable, weight: weight);
+      : super(
+            name: name,
+            cost: cost,
+            stackable: stackable,
+            weight: weight,
+            equipmentType: equipmentType);
   @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = super.toJson();
@@ -106,6 +115,7 @@ class Armour extends Item {
         imposeStealthDisadvantage: data["ImposeStealthDisadvantage"] ?? false,
         stackable: data["Stackable"] ?? false,
         armourFormula: data["ArmourFormula"],
+        equipmentType: data["EquipmentType"].cast<String>() as List<String>,
         armourType: data["armourType"]);
   }
 }
@@ -119,9 +129,15 @@ class Weapon extends Item {
       required List<dynamic> cost,
       required bool stackable,
       required double weight,
+      required List<String> equipmentType,
       required this.damageDiceAndType,
       required this.properties})
-      : super(name: name, cost: cost, stackable: stackable, weight: weight);
+      : super(
+            name: name,
+            cost: cost,
+            stackable: stackable,
+            weight: weight,
+            equipmentType: equipmentType);
   @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = super.toJson();
@@ -137,7 +153,8 @@ class Weapon extends Item {
         weight: data["Weight"],
         stackable: data["Stackable"] ?? false,
         damageDiceAndType: data["DamageDiceAndType"].cast<List<String>>(),
-        properties: data["Properties"].cast<String>());
+        equipmentType: data["EquipmentType"].cast<String>() as List<String>,
+        properties: data["Properties"].cast<String>() as List<String>);
   }
 }
 

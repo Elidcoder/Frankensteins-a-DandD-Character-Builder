@@ -1055,7 +1055,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   List<String> armourList = [];
   List<String> weaponList = [];
   List<String> itemList = [];
-  String? coinTypeSelected = "Gold Pieces";
+  String? coinTypeSelected = "Gold";
   List<dynamic> equipmentSelectedFromChoices = [];
   //{thing:numb,...}
   Map<String, int> stackableEquipmentSelected = {};
@@ -5369,50 +5369,190 @@ class MainCreateCharacter extends State<CreateACharacter>
                                       spacing: 8.0,
                                       runSpacing: 8.0,
                                       alignment: WrapAlignment.center,
-                                      children: List.generate(ITEMLIST.length,
-                                          (index) {
+                                      children: List.generate(
+                                          ITEMLIST
+                                              .where((element) =>
+                                                  ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
+                                                      (element.equipmentType.contains(
+                                                              "Weapon") &&
+                                                          element.equipmentType
+                                                              .any((item) =>
+                                                                  weaponList.contains(
+                                                                      item))) ||
+                                                      (element.equipmentType.contains("Item") &&
+                                                          ((itemList.contains("Stackable") &&
+                                                                  element
+                                                                      .stackable) ||
+                                                              (itemList.contains("Unstackable") &&
+                                                                  !element.stackable)))) &&
+                                                  element.cost[1] == coinTypeSelected)
+                                              .toList()
+                                              .length, (index) {
                                         return OutlinedButton(
                                           style: OutlinedButton.styleFrom(
                                               backgroundColor: Colors.white),
                                           onPressed: () {
                                             setState(() {
-                                              if (ITEMLIST[index].cost[0] <=
-                                                  currencyStored[
-                                                      "${ITEMLIST[index].cost[1]} Pieces"]) {
-                                                currencyStored[
-                                                        "${ITEMLIST[index].cost[1]} Pieces"] =
-                                                    currencyStored[
-                                                            "${ITEMLIST[index].cost[1]} Pieces"]! -
-                                                        (ITEMLIST[index].cost[0]
-                                                            as int);
-                                                if (ITEMLIST[index].stackable) {
-                                                  if (stackableEquipmentSelected
-                                                      .containsKey(
-                                                          ITEMLIST[index]
-                                                              .name)) {
-                                                    stackableEquipmentSelected[
-                                                            ITEMLIST[index]
-                                                                .name] =
-                                                        stackableEquipmentSelected[
-                                                                ITEMLIST[index]
-                                                                    .name]! +
-                                                            1;
+                                              if (ITEMLIST
+                                                      .where((element) =>
+                                                          ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
+                                                              (element.equipmentType
+                                                                      .contains(
+                                                                          "Weapon") &&
+                                                                  element.equipmentType
+                                                                      .any((item) =>
+                                                                          weaponList.contains(
+                                                                              item))) ||
+                                                              (element.equipmentType
+                                                                      .contains(
+                                                                          "Item") &&
+                                                                  ((itemList.contains("Stackable") && element.stackable) ||
+                                                                      (itemList.contains("Unstackable") &&
+                                                                          !element
+                                                                              .stackable)))) &&
+                                                          element.cost[1] ==
+                                                              coinTypeSelected)
+                                                      .toList()[index]
+                                                      .cost[0] <=
+                                                  currencyStored["${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[1]} Pieces"]) {
+                                                currencyStored["${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[1]} Pieces"] = currencyStored[
+                                                        "${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[1]} Pieces"]! -
+                                                    (ITEMLIST
+                                                        .where((element) =>
+                                                            ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
+                                                                (element.equipmentType.contains("Weapon") &&
+                                                                    element.equipmentType.any((item) =>
+                                                                        weaponList.contains(
+                                                                            item))) ||
+                                                                (element.equipmentType.contains("Item") &&
+                                                                    ((itemList.contains("Stackable") && element.stackable) ||
+                                                                        (itemList.contains("Unstackable") &&
+                                                                            !element
+                                                                                .stackable)))) &&
+                                                            element.cost[1] ==
+                                                                coinTypeSelected)
+                                                        .toList()[index]
+                                                        .cost[0] as int);
+                                                if (ITEMLIST
+                                                    .where((element) =>
+                                                        ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
+                                                            (element.equipmentType
+                                                                    .contains(
+                                                                        "Weapon") &&
+                                                                element.equipmentType
+                                                                    .any((item) =>
+                                                                        weaponList.contains(
+                                                                            item))) ||
+                                                            (element.equipmentType
+                                                                    .contains(
+                                                                        "Item") &&
+                                                                ((itemList.contains("Stackable") && element.stackable) ||
+                                                                    (itemList.contains("Unstackable") &&
+                                                                        !element
+                                                                            .stackable)))) &&
+                                                        element.cost[1] ==
+                                                            coinTypeSelected)
+                                                    .toList()[index]
+                                                    .stackable) {
+                                                  if (stackableEquipmentSelected.containsKey(ITEMLIST
+                                                      .where((element) =>
+                                                          ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
+                                                              (element.equipmentType.contains("Weapon") &&
+                                                                  element.equipmentType.any((item) =>
+                                                                      weaponList.contains(
+                                                                          item))) ||
+                                                              (element.equipmentType.contains(
+                                                                      "Item") &&
+                                                                  ((itemList.contains("Stackable") && element.stackable) ||
+                                                                      (itemList.contains("Unstackable") &&
+                                                                          !element
+                                                                              .stackable)))) &&
+                                                          element.cost[1] ==
+                                                              coinTypeSelected)
+                                                      .toList()[index]
+                                                      .name)) {
+                                                    stackableEquipmentSelected[ITEMLIST
+                                                        .where((element) =>
+                                                            ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) &&
+                                                            element.cost[1] ==
+                                                                coinTypeSelected)
+                                                        .toList()[index]
+                                                        .name] = stackableEquipmentSelected[ITEMLIST
+                                                            .where((element) =>
+                                                                ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
+                                                                    (element.equipmentType.contains("Weapon") &&
+                                                                        element
+                                                                            .equipmentType
+                                                                            .any((item) => weaponList.contains(item))) ||
+                                                                    (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) &&
+                                                                element.cost[1] == coinTypeSelected)
+                                                            .toList()[index]
+                                                            .name]! +
+                                                        1;
                                                     //add it in
                                                   } else {
-                                                    stackableEquipmentSelected[
-                                                        ITEMLIST[index]
-                                                            .name] = 1;
+                                                    stackableEquipmentSelected[ITEMLIST
+                                                        .where((element) =>
+                                                            ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
+                                                                (element.equipmentType.contains(
+                                                                        "Weapon") &&
+                                                                    element.equipmentType.any((item) =>
+                                                                        weaponList.contains(
+                                                                            item))) ||
+                                                                (element.equipmentType.contains(
+                                                                        "Item") &&
+                                                                    ((itemList.contains("Stackable") && element.stackable) ||
+                                                                        (itemList.contains("Unstackable") &&
+                                                                            !element
+                                                                                .stackable)))) &&
+                                                            element.cost[1] ==
+                                                                coinTypeSelected)
+                                                        .toList()[index]
+                                                        .name] = 1;
                                                   }
                                                 } else {
-                                                  unstackableEquipmentSelected
-                                                      .add(ITEMLIST[index]);
+                                                  unstackableEquipmentSelected.add(ITEMLIST
+                                                      .where((element) =>
+                                                          ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
+                                                              (element.equipmentType.contains("Weapon") &&
+                                                                  element.equipmentType.any((item) =>
+                                                                      weaponList.contains(
+                                                                          item))) ||
+                                                              (element.equipmentType
+                                                                      .contains(
+                                                                          "Item") &&
+                                                                  ((itemList.contains("Stackable") && element.stackable) ||
+                                                                      (itemList.contains("Unstackable") &&
+                                                                          !element
+                                                                              .stackable)))) &&
+                                                          element.cost[1] ==
+                                                              coinTypeSelected)
+                                                      .toList()[index]);
                                                 }
                                               }
                                             });
 
                                             //subtract cost
                                           },
-                                          child: Text(ITEMLIST[index].name),
+                                          child: Text(ITEMLIST
+                                              .where((element) =>
+                                                  ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
+                                                      (element.equipmentType
+                                                              .contains(
+                                                                  "Weapon") &&
+                                                          element.equipmentType
+                                                              .any((item) =>
+                                                                  weaponList.contains(
+                                                                      item))) ||
+                                                      (element.equipmentType.contains("Item") &&
+                                                          ((itemList.contains("Stackable") &&
+                                                                  element
+                                                                      .stackable) ||
+                                                              (itemList.contains("Unstackable") &&
+                                                                  !element.stackable)))) &&
+                                                  element.cost[1] == coinTypeSelected)
+                                              .toList()[index]
+                                              .name),
                                         );
                                       }),
                                     )))
