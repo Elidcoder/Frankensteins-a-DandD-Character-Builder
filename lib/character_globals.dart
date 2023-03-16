@@ -497,7 +497,7 @@ List<String> GROUPLIST = [];
   GROUPLIST = readJson["Groups"].cast<String>() as List<String>;
 }*/
 
-void updateGlobals() async {
+Future<bool> updateGlobals() async {
   jsonString = await getFile("userContent");
   final jsonmap = jsonDecode(jsonString ?? "{}");
 
@@ -527,4 +527,10 @@ void updateGlobals() async {
   // ignore: non_constant_identifier_names
 
   CHARACTERLIST = [for (var x in jsonmap["Characters"]) Character.fromJson(x)];
+
+  COLORLIST = [
+    for (var x in jsonmap["Colours"])
+      [colorFromJson(x[0]), colorFromJson(x[1]), colorFromJson(x[2])]
+  ];
+  return true;
 }

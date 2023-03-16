@@ -102,16 +102,21 @@ class MainMyCharacters extends State<MyCharacters> {
                           ),
                           child: Column(
                             children: [
-                              Text(
-                                  CHARACTERLIST
-                                      .where((element) =>
-                                          element.name.contains(searchTerm))
-                                      .toList()[index]
-                                      .name,
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white)),
+                              SizedBox(
+                                  width: 175.0,
+                                  //make the text fit the space
+                                  child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                          CHARACTERLIST
+                                              .where((element) => element.name
+                                                  .contains(searchTerm))
+                                              .toList()[index]
+                                              .name,
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.white)))),
                               Text(
                                   "Level: ${CHARACTERLIST.where((element) => element.name.contains(searchTerm)).toList()[index].classList.length}",
                                   style: const TextStyle(

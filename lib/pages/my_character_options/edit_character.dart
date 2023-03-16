@@ -2189,8 +2189,7 @@ class EditCharacter extends State<EditACharacter> {
                               name: character.name,
                               playerName: character.playerName,
                               gender: character.gender,
-                              characterExperience:
-                                  character.characterExperience,
+                              characterExperience: experience,
                               //bools representing the states of the checkboxes (basics)
                               featsAllowed: character.featsAllowed,
                               averageHitPoints: character.averageHitPoints,
@@ -2435,8 +2434,7 @@ class EditCharacter extends State<EditACharacter> {
                                         name: character.name,
                                         playerName: character.playerName,
                                         gender: character.gender,
-                                        characterExperience:
-                                            character.characterExperience,
+                                        characterExperience: experience,
                                         //bools representing the states of the checkboxes (basics)
                                         featsAllowed: character.featsAllowed,
                                         averageHitPoints:

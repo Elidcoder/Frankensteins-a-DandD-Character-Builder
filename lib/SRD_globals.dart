@@ -1,5 +1,6 @@
 import "dart:convert";
 import "dart:io";
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:path_provider/path_provider.dart';
 
@@ -19,6 +20,16 @@ List<List<List<dynamic>>> parseJsonToMultiList(List jsonData) {
   }
 
   return multiList;
+}
+
+Color colorFromJson(Map<String, dynamic> json) {
+  return Color(json["value"] as int);
+}
+
+Map<String, dynamic> colorToJson(Color color) {
+  return {
+    "value": color.value,
+  };
 }
 
 class Proficiency {
@@ -788,6 +799,8 @@ List<Spell> SPELLLIST = [];
 
 List<Feat> FEATLIST = [];
 List<dynamic> ITEMLIST = [];
+
+List<List<dynamic>> COLORLIST = [];
 dynamic mapEquipment(x) {
   if (x["EquipmentType"].contains("Magic")) {
     ///run through magic subtypes

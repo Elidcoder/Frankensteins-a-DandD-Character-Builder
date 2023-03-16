@@ -37,36 +37,97 @@ final Map<String, Widget> PAGELINKER = {
 //get rid of this later{
 
 void main() {
-  //updateSRDGlobals();
   runApp(MaterialApp(
     home: Homepage(),
   ));
 }
 
 class Homepage extends StatefulWidget {
-  static Color primaryColor = Colors.white;
-  static Color backingColor = Colors.blue;
+  static Color textColor = COLORLIST.isEmpty ? Colors.white : COLORLIST.last[0];
+  static Color backingColor =
+      COLORLIST.isEmpty ? Colors.blue : COLORLIST.last[1];
+  static Color backgroundColor =
+      COLORLIST.isEmpty ? Colors.white : COLORLIST.last[2];
   @override
   MainHomepage createState() => MainHomepage();
 }
 
 class MainHomepage extends State<Homepage> {
-  Color currentColor = Colors.blue;
-  Color currentBackingColor = Colors.blue;
+  Color currentTextColor = Homepage.textColor;
+  Color currentBackingColor = Homepage.backingColor;
+  Color currentBackgroundColor = Homepage.backgroundColor;
+
   static const String _title = 'Frankenstein\'s - a D&D 5e character builder';
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder<void>(
+      //load globals
+      future: updateGlobals(),
+      //keep running until my app is built
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          // if updateGlobals is done successfully, return MaterialApp
+          if (COLORLIST.isNotEmpty) {
+            Homepage.backgroundColor = COLORLIST.last[2];
+            Homepage.backingColor = COLORLIST.last[1];
+            Homepage.textColor = COLORLIST.last[0];
+            currentTextColor = COLORLIST.last[0];
+            currentBackingColor = COLORLIST.last[1];
+            currentBackgroundColor = COLORLIST.last[2];
+          }
+          return MaterialApp(
+            theme: ThemeData(
+              primaryColor: Homepage.textColor,
+            ),
+            title: _title,
+            home: Scaffold(
+              appBar: AppBar(
+                foregroundColor: Homepage.textColor,
+                backgroundColor: Homepage.backingColor,
+                leading: IconButton(
+                    icon: const Icon(Icons.image),
+                    tooltip: 'Put logo here',
+                    onPressed: () {}),
+                title: const Center(child: Text(_title)),
+                actions: <Widget>[
+                  IconButton(
+                    icon: const Icon(Icons.settings),
+                    tooltip: 'Help, feedback and settings?',
+                    onPressed: () {
+                      setState(() {
+                        _showColorPicker(context);
+                      });
+                    },
+                  ),
+                ],
+              ),
+              body: const MainMenu(),
+            ),
+          );
+        } else {
+          // if updateGlobals is still loading, output some text to let the user know
+          return const Center(
+            child: Text(
+              "Please wait while the application saves or loads data",
+              style: TextStyle(color: Colors.blue, fontSize: 30),
+            ),
+          );
+        }
+      },
+    );
+  }
+  /*Widget build(BuildContext context) {
     updateGlobals();
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: Homepage.primaryColor,
+        primaryColor: Homepage.textColor,
         // other theme configuration options
       ),
       title: _title,
       home: Scaffold(
         appBar: AppBar(
-          foregroundColor: Homepage.primaryColor,
+          //foregroundColor: Homepage.textColor,
           backgroundColor: Homepage.backingColor,
           leading: IconButton(
               icon: const Icon(Icons.image),
@@ -91,7 +152,7 @@ class MainHomepage extends State<Homepage> {
         body: MainMenu(),
       ),
     );
-  }
+  }*/
 
   void _showColorPicker(BuildContext context) {
     showDialog(
@@ -196,7 +257,7 @@ https://github.com/Elidcoder/frankensteins2
                       style: TextStyle(fontSize: 20),
                     ),
                     const Text(
-                      'Select app colors:',
+                      'Select app colours:',
                       style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                     ),
@@ -204,7 +265,7 @@ https://github.com/Elidcoder/frankensteins2
                       height: 9,
                     ),
                     const Text(
-                      'Select background colors:',
+                      'Select box colours:',
                       style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                     ),
@@ -214,13 +275,11 @@ https://github.com/Elidcoder/frankensteins2
                     ColorPicker(
                       pickerColor: currentBackingColor,
                       onColorChanged: (color) {
-                        setState(() {
-                          currentBackingColor = color;
-                        });
+                        currentBackingColor = color;
                       },
                     ),
                     const Text(
-                      'Select text colors:',
+                      'Select text colour:',
                       style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                     ),
@@ -228,11 +287,25 @@ https://github.com/Elidcoder/frankensteins2
                       height: 9,
                     ),
                     ColorPicker(
-                      pickerColor: currentColor,
+                      pickerColor: currentTextColor,
                       onColorChanged: (color) {
-                        setState(() {
-                          currentColor = color;
-                        });
+                        currentTextColor = color;
+                      },
+                    ),
+                    const Text(
+                      'Select background colour:',
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(
+                      height: 9,
+                    ),
+                    ColorPicker(
+                      pickerColor: currentBackgroundColor,
+                      onColorChanged: (color) {
+                        //setState(() {
+                        currentBackgroundColor = color;
+                        //});
                       },
                     ),
                   ])),
@@ -246,9 +319,26 @@ https://github.com/Elidcoder/frankensteins2
                 TextButton(
                   onPressed: () {
                     setState(() {
-                      Homepage.primaryColor = currentColor;
+                      Homepage.textColor = currentTextColor;
                       Homepage.backingColor = currentBackingColor;
+                      Homepage.backgroundColor = currentBackgroundColor;
                       Navigator.of(context).pop();
+                      final Map<String, dynamic> json =
+                          jsonDecode(jsonString ?? "");
+                      List<dynamic> colors = json["Colours"];
+                      if (!colors.contains([
+                        colorToJson(Homepage.textColor),
+                        colorToJson(Homepage.backingColor),
+                        colorToJson(Homepage.backgroundColor)
+                      ])) {
+                        colors.add([
+                          colorToJson(Homepage.textColor),
+                          colorToJson(Homepage.backingColor),
+                          colorToJson(Homepage.backgroundColor)
+                        ]);
+                        writeJsonToFile(json, "userContent");
+                        updateGlobals();
+                      }
                     });
                   },
                   child: const Text('OK'),
@@ -260,19 +350,13 @@ https://github.com/Elidcoder/frankensteins2
       },
     );
   }
-
-  void _saveColor() {
-    // Save the selected color to a storage or database
-    // and update the app's primary color
-    // For example, to update the primary color of the app:
-    Homepage.primaryColor = currentColor;
-  }
 }
 
 class ScreenTop extends StatelessWidget {
   final String? pagechoice;
-  static Color primaryColor = Colors.white;
-  static Color backingColor = Colors.blue;
+  static Color textColor = Homepage.textColor;
+  static Color backingColor = Homepage.backingColor;
+  static Color backgroundColor = Homepage.backgroundColor;
   const ScreenTop({Key? key, this.pagechoice}) : super(key: key);
   static const String _title = 'Frankenstein\'s - a D&D 5e character builder';
 
@@ -283,7 +367,7 @@ class ScreenTop extends StatelessWidget {
       title: _title,
       home: Scaffold(
         appBar: AppBar(
-          foregroundColor: Homepage.primaryColor,
+          foregroundColor: Homepage.textColor,
           backgroundColor: Homepage.backingColor,
           leading: IconButton(
               icon: (pagechoice == "Main Menu")
@@ -328,181 +412,184 @@ class MainMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     updateGlobals();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                color: Homepage.backingColor,
-                child: Text(
-                  textAlign: TextAlign.center,
-                  'Main Menu',
-                  style: TextStyle(
-                      fontSize: 45,
-                      fontWeight: FontWeight.w700,
-                      color: Homepage.primaryColor),
+    return Scaffold(
+        backgroundColor: Homepage.backgroundColor,
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    color: Homepage.backingColor,
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      'Main Menu',
+                      style: TextStyle(
+                          fontSize: 45,
+                          fontWeight: FontWeight.w700,
+                          color: Homepage.textColor),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-        const SizedBox(height: 100),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: Homepage.backingColor,
-                padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: const BorderSide(
-                    width: 5, color: Color.fromARGB(255, 7, 26, 239)),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const ScreenTop(pagechoice: "Create a Character")),
-                );
-              },
-              child: Text(
-                textAlign: TextAlign.center,
-                'Create a \ncharacter',
-                style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w700,
-                    color: Homepage.primaryColor),
-              ),
+            const SizedBox(height: 100),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Homepage.backingColor,
+                    padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    side: const BorderSide(
+                        width: 5, color: Color.fromARGB(255, 7, 26, 239)),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ScreenTop(
+                              pagechoice: "Create a Character")),
+                    );
+                  },
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    'Create a \ncharacter',
+                    style: TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.w700,
+                        color: Homepage.textColor),
+                  ),
+                ),
+                const SizedBox(width: 100),
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Homepage.backingColor,
+                    padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    side: const BorderSide(
+                        width: 5, color: Color.fromARGB(255, 7, 26, 239)),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ScreenTop(
+                              pagechoice: "Search for Content")),
+                    );
+                  },
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    'Search for\ncontent',
+                    style: TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.w700,
+                        color: Homepage.textColor),
+                  ),
+                ),
+                const SizedBox(width: 100),
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: (CHARACTERLIST.isNotEmpty)
+                        ? Homepage.backingColor
+                        : Colors.grey,
+                    padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    side: const BorderSide(
+                        width: 5, color: Color.fromARGB(255, 7, 26, 239)),
+                  ),
+                  onPressed: () {
+                    if (CHARACTERLIST.isNotEmpty) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const ScreenTop(pagechoice: "My Characters")),
+                      );
+                    }
+                  },
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    'My \ncharacters',
+                    style: TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.w700,
+                        color: Homepage.textColor),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 100),
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: Homepage.backingColor,
-                padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: const BorderSide(
-                    width: 5, color: Color.fromARGB(255, 7, 26, 239)),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const ScreenTop(pagechoice: "Search for Content")),
-                );
-              },
-              child: Text(
-                textAlign: TextAlign.center,
-                'Search for\ncontent',
-                style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w700,
-                    color: Homepage.primaryColor),
-              ),
-            ),
-            const SizedBox(width: 100),
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: (CHARACTERLIST.isNotEmpty)
-                    ? Homepage.backingColor
-                    : Colors.grey,
-                padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: const BorderSide(
-                    width: 5, color: Color.fromARGB(255, 7, 26, 239)),
-              ),
-              onPressed: () {
-                if (CHARACTERLIST.isNotEmpty) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            const ScreenTop(pagechoice: "My Characters")),
-                  );
-                }
-              },
-              child: Text(
-                textAlign: TextAlign.center,
-                'My \ncharacters',
-                style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w700,
-                    color: Homepage.primaryColor),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 100),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: Homepage.backingColor,
-                padding: const EdgeInsets.fromLTRB(45, 25, 45, 25),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: const BorderSide(
-                    width: 5, color: Color.fromARGB(255, 7, 26, 239)),
-              ),
-              onPressed: () async {
-                final result = await FilePicker.platform.pickFiles(
-                  type: FileType.custom,
-                  allowedExtensions: ['json'],
-                );
-                if (result != null) {
-                  final file =
-                      File(result.files.single.path ?? "Never going to happen");
-                  final contents = await file.readAsString();
-                  final jsonData2 = json.decode(contents);
+            const SizedBox(height: 100),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Homepage.backingColor,
+                    padding: const EdgeInsets.fromLTRB(45, 25, 45, 25),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    side: const BorderSide(
+                        width: 5, color: Color.fromARGB(255, 7, 26, 239)),
+                  ),
+                  onPressed: () async {
+                    final result = await FilePicker.platform.pickFiles(
+                      type: FileType.custom,
+                      allowedExtensions: ['json'],
+                    );
+                    if (result != null) {
+                      final file = File(
+                          result.files.single.path ?? "Never going to happen");
+                      final contents = await file.readAsString();
+                      final jsonData2 = json.decode(contents);
 
-                  updateGlobals();
+                      updateGlobals();
 
-                  final Map<String, dynamic> jsonData =
-                      jsonDecode(jsonString ?? "");
+                      final Map<String, dynamic> jsonData =
+                          jsonDecode(jsonString ?? "");
 
-                  //at some point actually check for dupes
-                  final List<dynamic> characters = jsonData["Spells"];
-                  characters.addAll(jsonData2["Spells"] ?? []);
+                      //at some point actually check for dupes
+                      final List<dynamic> characters = jsonData["Spells"];
+                      characters.addAll(jsonData2["Spells"] ?? []);
 
-                  final List<dynamic> classes = jsonData["Classes"];
-                  classes.addAll(jsonData2["Classes"] ?? []);
+                      final List<dynamic> classes = jsonData["Classes"];
+                      classes.addAll(jsonData2["Classes"] ?? []);
 
-                  final List<dynamic> sourceBooks = jsonData["Sourcebooks"];
-                  sourceBooks.addAll(jsonData2["Sourcebooks"] ?? []);
+                      final List<dynamic> sourceBooks = jsonData["Sourcebooks"];
+                      sourceBooks.addAll(jsonData2["Sourcebooks"] ?? []);
 
-                  final List<dynamic> proficiencies = jsonData["Proficiencies"];
-                  proficiencies.addAll(jsonData2["Proficiencies"] ?? []);
+                      final List<dynamic> proficiencies =
+                          jsonData["Proficiencies"];
+                      proficiencies.addAll(jsonData2["Proficiencies"] ?? []);
 
-                  final List<dynamic> equipment = jsonData["Equipment"];
-                  equipment.addAll(jsonData2["Equipment"] ?? []);
+                      final List<dynamic> equipment = jsonData["Equipment"];
+                      equipment.addAll(jsonData2["Equipment"] ?? []);
 
-                  final List<dynamic> languages = jsonData["Languages"];
-                  languages.addAll(jsonData2["Languages"] ?? []);
+                      final List<dynamic> languages = jsonData["Languages"];
+                      languages.addAll(jsonData2["Languages"] ?? []);
 
-                  final List<dynamic> races = jsonData["Races"];
-                  races.addAll(jsonData2["Races"] ?? []);
+                      final List<dynamic> races = jsonData["Races"];
+                      races.addAll(jsonData2["Races"] ?? []);
 
-                  final List<dynamic> backgrounds = jsonData["Backgrounds"];
-                  backgrounds.addAll(jsonData2["Backgrounds"] ?? []);
+                      final List<dynamic> backgrounds = jsonData["Backgrounds"];
+                      backgrounds.addAll(jsonData2["Backgrounds"] ?? []);
 
-                  final List<dynamic> feats = jsonData["Feats"];
-                  feats.addAll(jsonData2["Feats"] ?? []);
-                  writeJsonToFile(jsonData, "userContent");
-                  updateGlobals();
+                      final List<dynamic> feats = jsonData["Feats"];
+                      feats.addAll(jsonData2["Feats"] ?? []);
+                      writeJsonToFile(jsonData, "userContent");
+                      updateGlobals();
 
-                  //File("assets/SRD.json").writeAsStringSync(jsonEncode(json));
+                      //File("assets/SRD.json").writeAsStringSync(jsonEncode(json));
 
-                  // do something with the parsed JSON data
-                }
-              },
-              /*
+                      // do something with the parsed JSON data
+                    }
+                  },
+                  /*
               onPressed: () {
                 Navigator.push(
                   context,
@@ -510,46 +597,46 @@ class MainMenu extends StatelessWidget {
                       builder: (context) => const ScreenTop(pagechoice: 4)),
                 );
               },*/
-              child: Text(
-                'Download\n Content',
-                style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w700,
-                    color: Homepage.primaryColor),
-              ),
-            ),
-            const SizedBox(width: 100),
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: Homepage.backingColor,
-                padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                side: const BorderSide(
-                    width: 5, color: Color.fromARGB(255, 7, 26, 239)),
-              ),
-              onPressed: () {
-                //()
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const ScreenTop(pagechoice: "Custom Content")),
-                );
-              },
-              child: Text(
-                textAlign: TextAlign.center,
-                'Create \ncontent',
-                style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w700,
-                    color: Homepage.primaryColor),
-              ),
+                  child: Text(
+                    'Download\n Content',
+                    style: TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.w700,
+                        color: Homepage.textColor),
+                  ),
+                ),
+                const SizedBox(width: 100),
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Homepage.backingColor,
+                    padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    side: const BorderSide(
+                        width: 5, color: Color.fromARGB(255, 7, 26, 239)),
+                  ),
+                  onPressed: () {
+                    //()
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const ScreenTop(pagechoice: "Custom Content")),
+                    );
+                  },
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    'Create \ncontent',
+                    style: TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.w700,
+                        color: Homepage.textColor),
+                  ),
+                ),
+              ],
             ),
           ],
-        ),
-      ],
-    );
+        ));
   }
 
   void showErrorDialog(BuildContext context) {
