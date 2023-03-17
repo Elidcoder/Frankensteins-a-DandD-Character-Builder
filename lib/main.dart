@@ -23,7 +23,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 // ignore: non_constant_identifier_names
 final Map<String, Widget> PAGELINKER = {
-  "Main Menu": const MainMenu(),
+  "Main Menu": MainMenu(),
   "Create a Character": CreateACharacter(),
   "Search for Content": const SearchForContent(),
   "My Characters": MyCharacters(),
@@ -87,13 +87,13 @@ class MainHomepage extends State<Homepage> {
                 backgroundColor: Homepage.backingColor,
                 leading: IconButton(
                     icon: const Icon(Icons.image),
-                    tooltip: 'Put logo here',
+                    tooltip: "Put logo here",
                     onPressed: () {}),
                 title: const Center(child: Text(_title)),
                 actions: <Widget>[
                   IconButton(
                     icon: const Icon(Icons.settings),
-                    tooltip: 'Help, feedback and settings?',
+                    tooltip: "Settings",
                     onPressed: () {
                       setState(() {
                         _showColorPicker(context);
@@ -102,7 +102,7 @@ class MainHomepage extends State<Homepage> {
                   ),
                 ],
               ),
-              body: const MainMenu(),
+              body: MainMenu(),
             ),
           );
         } else {
@@ -117,42 +117,6 @@ class MainHomepage extends State<Homepage> {
       },
     );
   }
-  /*Widget build(BuildContext context) {
-    updateGlobals();
-    return MaterialApp(
-      theme: ThemeData(
-        primaryColor: Homepage.textColor,
-        // other theme configuration options
-      ),
-      title: _title,
-      home: Scaffold(
-        appBar: AppBar(
-          //foregroundColor: Homepage.textColor,
-          backgroundColor: Homepage.backingColor,
-          leading: IconButton(
-              icon: const Icon(Icons.image),
-              tooltip: 'Put logo here',
-              onPressed: () {}),
-          title: const Center(child: Text(_title)),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.settings),
-              tooltip: 'Help, feedback and settings?',
-              onPressed: () {
-                setState(() {
-                  _showColorPicker(context);
-                });
-              },
-            ),
-          ],
-        ),
-        //appBar: AppBar(title: const Text(_title)),
-
-        //appBar: AppBar(title: new Center(child: const Text(_title))),
-        body: MainMenu(),
-      ),
-    );
-  }*/
 
   void _showColorPicker(BuildContext context) {
     showDialog(
@@ -168,104 +132,14 @@ class MainHomepage extends State<Homepage> {
               ),
             ),
             AlertDialog(
-              title: const Text('Help, information and settings',
+              title: const Text("Settings",
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700)),
               content: SingleChildScrollView(
                   child: Column(
                       //crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                     const Text(
-                      'App overview',
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      height: 9,
-                    ),
-                    Row(children: const [
-                      Expanded(
-                        child: Text(
-                          '''• Main Menu - This is the section you are currently in, 
-it allows you to navigate between every section.''',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      )
-                    ]),
-                    Row(children: const [
-                      Expanded(
-                        child: Text(
-                          '''• Create a Character - This is the section to build your character, 
-it contains tabs which will guide you through the creation process.''',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      )
-                    ]),
-                    Row(children: const [
-                      Expanded(
-                        child: Text(
-                          '''• Search for Content - This is the section to look through your content, 
-it allows you to search through and edit much of that content.''',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      )
-                    ]),
-                    Row(children: const [
-                      Expanded(
-                        child: Text(
-                          '''• My Characters -  This is the section to look through your characters, 
-it allows you to search through, delete, edit and fight with them.''',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      )
-                    ]),
-                    Row(children: const [
-                      Expanded(
-                        child: Text(
-                          '''• Download Content -  This is a button to install content, 
-it allows you to select content to install from your computer.''',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      )
-                    ]),
-                    Row(children: const [
-                      Expanded(
-                        child: Text(
-                          '''• Create Content -  This is the section to create new content, 
-it takes you to another page to select the type of content. Once there,
-you can create that type of content, saving it to your app.''',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      )
-                    ]),
-                    const SizedBox(
-                      height: 9,
-                    ),
-                    const Text(
-                      'Report a bug or ask for help:',
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      height: 9,
-                    ),
-                    const Text(
-                      '''This is an open source project, to report bugs, 
-ask for help or suggest improvements please go to:
-https://github.com/Elidcoder/frankensteins2
-''',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    const Text(
-                      'Select app colours:',
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      height: 9,
-                    ),
-                    const Text(
-                      'Select box colours:',
+                      "Select box colours:",
                       style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                     ),
@@ -279,7 +153,7 @@ https://github.com/Elidcoder/frankensteins2
                       },
                     ),
                     const Text(
-                      'Select text colour:',
+                      "Select text colour:",
                       style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                     ),
@@ -293,7 +167,7 @@ https://github.com/Elidcoder/frankensteins2
                       },
                     ),
                     const Text(
-                      'Select background colour:',
+                      "Select background colour:",
                       style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                     ),
@@ -314,7 +188,7 @@ https://github.com/Elidcoder/frankensteins2
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text('Cancel'),
+                  child: const Text("Cancel"),
                 ),
                 TextButton(
                   onPressed: () {
@@ -341,7 +215,7 @@ https://github.com/Elidcoder/frankensteins2
                       }
                     });
                   },
-                  child: const Text('OK'),
+                  child: const Text("Save settings"),
                 ),
               ],
             ),
@@ -407,13 +281,30 @@ class ScreenTop extends StatelessWidget {
   }
 }
 
-class MainMenu extends StatelessWidget {
-  const MainMenu({Key? key}) : super(key: key);
+class MainMenu extends StatefulWidget {
+  @override
+  MainMenupage createState() => MainMenupage();
+}
+
+class MainMenupage extends State<MainMenu> {
+  //const MainMenupage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    updateGlobals();
     return Scaffold(
         backgroundColor: Homepage.backgroundColor,
+        floatingActionButton: FloatingActionButton(
+          tooltip: "Help and guidance",
+          foregroundColor: Homepage.textColor,
+          backgroundColor: Homepage.backingColor,
+          onPressed: () {
+            setState(() {
+              _showInfoAndHelp(context);
+            });
+          },
+          child: const Icon(
+            Icons.info,
+          ),
+        ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -494,9 +385,7 @@ class MainMenu extends StatelessWidget {
                 const SizedBox(width: 100),
                 OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                    backgroundColor: (CHARACTERLIST.isNotEmpty)
-                        ? Homepage.backingColor
-                        : Colors.grey,
+                    backgroundColor: Homepage.backingColor,
                     padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -504,14 +393,12 @@ class MainMenu extends StatelessWidget {
                         width: 5, color: Color.fromARGB(255, 7, 26, 239)),
                   ),
                   onPressed: () {
-                    if (CHARACTERLIST.isNotEmpty) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const ScreenTop(pagechoice: "My Characters")),
-                      );
-                    }
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const ScreenTop(pagechoice: "My Characters")),
+                    );
                   },
                   child: Text(
                     textAlign: TextAlign.center,
@@ -637,6 +524,130 @@ class MainMenu extends StatelessWidget {
             ),
           ],
         ));
+  }
+
+  void _showInfoAndHelp(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Stack(
+          children: [
+            const Opacity(
+              opacity: 0.5,
+              child: ModalBarrier(
+                dismissible: false,
+                color: Colors.grey,
+              ),
+            ),
+            AlertDialog(
+              title: const Text("Help and information",
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700)),
+              content: SingleChildScrollView(
+                  child: Column(
+                      //crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                    const Text(
+                      "App overview",
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(
+                      height: 9,
+                    ),
+                    Row(children: const [
+                      Expanded(
+                        child: Text(
+                          '''• Main Menu - This is the section you are currently in, 
+it allows you to navigate between every section.''',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      )
+                    ]),
+                    Row(children: const [
+                      Expanded(
+                        child: Text(
+                          '''• Create a Character - This is the section to build your character, 
+it contains tabs which will guide you through the creation process.''',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      )
+                    ]),
+                    Row(children: const [
+                      Expanded(
+                        child: Text(
+                          '''• Search for Content - This is the section to look through your content, 
+it allows you to search through and edit much of that content.''',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      )
+                    ]),
+                    Row(children: const [
+                      Expanded(
+                        child: Text(
+                          '''• My Characters -  This is the section to look through your characters, 
+it allows you to search through, delete, edit and fight with them.''',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      )
+                    ]),
+                    Row(children: const [
+                      Expanded(
+                        child: Text(
+                          '''• Download Content -  This is a button to install content, 
+it allows you to select content to install from your computer.''',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      )
+                    ]),
+                    Row(children: const [
+                      Expanded(
+                        child: Text(
+                          '''• Create Content -  This is the section to create new content, 
+it takes you to another page to select the type of content. Once there,
+you can create that type of content, saving it to your app.''',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      )
+                    ]),
+                    const SizedBox(
+                      height: 9,
+                    ),
+                    const Text(
+                      'Report a bug or ask for help:',
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(
+                      height: 9,
+                    ),
+                    const Text(
+                      '''This is an open source project, to report bugs, 
+ask for help or suggest improvements please go to:
+https://github.com/Elidcoder/frankensteins2
+''',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ])),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void showErrorDialog(BuildContext context) {

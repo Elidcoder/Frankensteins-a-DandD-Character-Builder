@@ -2,14 +2,10 @@ import "package:flutter/material.dart";
 
 //import "package:frankenstein/character_creation_globals.dart";
 import 'package:frankenstein/SRD_globals.dart';
-import "dart:collection";
-import "package:flutter_multi_select_items/flutter_multi_select_items.dart";
 import 'package:frankenstein/character_globals.dart';
 import "package:frankenstein/PDFdocs/pdf_final_display.dart";
 import "my_character_options/edit_character.dart";
-import "dart:math";
 import "dart:convert";
-import "dart:io";
 import "package:frankenstein/main.dart";
 
 class MyCharacters extends StatefulWidget {
@@ -73,7 +69,8 @@ class MainMyCharacters extends State<MyCharacters> {
           ]),
           const SizedBox(height: 15),
           (CHARACTERLIST.isEmpty)
-              ? const Text("You have no created characters to view")
+              ? const Text("You have no created characters to view",
+                  style: TextStyle(color: Colors.blue, fontSize: 22))
               : SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Wrap(
@@ -104,6 +101,7 @@ class MainMyCharacters extends State<MyCharacters> {
                             children: [
                               SizedBox(
                                   width: 175.0,
+                                  height: 29,
                                   //make the text fit the space
                                   child: FittedBox(
                                       fit: BoxFit.scaleDown,
@@ -126,6 +124,7 @@ class MainMyCharacters extends State<MyCharacters> {
                               //Classlist output
                               SizedBox(
                                   width: 175.0,
+                                  height: 20,
                                   //make the text fit the space
                                   child: FittedBox(
                                     fit: BoxFit.scaleDown,
@@ -183,6 +182,7 @@ class MainMyCharacters extends State<MyCharacters> {
                                       color: Colors.white)),
                               SizedBox(
                                   width: 175,
+                                  height: 20,
                                   child: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Text(

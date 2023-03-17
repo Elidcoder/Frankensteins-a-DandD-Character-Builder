@@ -2135,14 +2135,46 @@ class MainCreateCharacter extends State<CreateACharacter>
           DefaultTabController(
             length: 2,
             child: Scaffold(
+              floatingActionButton: FloatingActionButton(
+                tooltip: "Increase character level by 1",
+                foregroundColor: Homepage.textColor,
+                backgroundColor: Homepage.backingColor,
+                onPressed: () {
+                  setState(() {
+                    characterLevel = "${int.parse(characterLevel ?? "1") + 1}";
+                  });
+                },
+                child: const Icon(
+                  Icons.exposure_plus_1,
+                ),
+              ),
               appBar: AppBar(
-                title: Center(
-                  child: Text(
-                      '${int.parse(characterLevel ?? "1") - levelsPerClass.reduce((value, element) => value + element)} class level(s) available but unselected', //and ${widgetsInPlay.length - levelsPerClass.reduce((value, element) => value + element) - allSelected.length} choice(s)
-                      style: const TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white)),
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(
+                        child: Text(
+                            "${int.parse(characterLevel ?? "1") - levelsPerClass.reduce((value, element) => value + element)} class level(s) available but unselected", //and ${widgetsInPlay.length - levelsPerClass.reduce((value, element) => value + element) - allSelected.length} choice(s)
+                            style: TextStyle(
+                                fontSize: 21,
+                                fontWeight: FontWeight.w600,
+                                color: Homepage.textColor),
+                            textAlign: TextAlign.center)),
+                    classList.isNotEmpty
+                        ? Text(
+                            "Classes and your levels in them: ${CLASSLIST.asMap().entries.where((entry) => levelsPerClass[entry.key] != 0).map((entry) => "${entry.value.name}: ${levelsPerClass[entry.key]}").join(", ")}",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Homepage.textColor),
+                            textAlign: TextAlign.center)
+                        : Text("You have no levels in any class",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Homepage.textColor),
+                            textAlign: TextAlign.center)
+                  ],
                 ),
                 bottom: const TabBar(
                   tabs: [
@@ -6156,9 +6188,45 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 }),
                           ),
                           const SizedBox(height: 30),
-                          OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              backgroundColor: (pointsRemaining == 0 &&
+                          Tooltip(
+                              message:
+                                  "This button will save your character putting it into the Json and then send you back to the main menu.",
+                              child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: (pointsRemaining == 0 &&
+                                          numberOfRemainingFeatOrASIs == 0 &&
+                                          !ASIRemaining &&
+                                          int.parse(characterLevel ?? "1") <=
+                                              classList.length &&
+                                          (equipmentSelectedFromChoices == [] ||
+                                              equipmentSelectedFromChoices
+                                                  .where((element) =>
+                                                      element.length == 2)
+                                                  .toList()
+                                                  .isEmpty) &&
+                                          (allSpellsSelectedAsListsOfThings
+                                              .where(
+                                                  (element) => element[2] != 0)
+                                              .isEmpty))
+                                      ? Colors.blue
+                                      : Colors.grey,
+                                  padding:
+                                      const EdgeInsets.fromLTRB(45, 20, 45, 20),
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  side: const BorderSide(
+                                      width: 3.5,
+                                      color: Color.fromARGB(255, 7, 26, 239)),
+                                ),
+                                child: const Text("Save Character",
+                                    style: TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.w800,
+                                      color: Colors.white,
+                                    )),
+                                onPressed: () {
+                                  if (pointsRemaining == 0 &&
                                       numberOfRemainingFeatOrASIs == 0 &&
                                       !ASIRemaining &&
                                       int.parse(characterLevel ?? "1") <=
@@ -6171,177 +6239,157 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               .isEmpty) &&
                                       (allSpellsSelectedAsListsOfThings
                                           .where((element) => element[2] != 0)
-                                          .isEmpty))
-                                  ? Colors.blue
-                                  : Colors.grey,
-                              padding:
-                                  const EdgeInsets.fromLTRB(45, 20, 45, 20),
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              side: const BorderSide(
-                                  width: 3.5,
-                                  color: Color.fromARGB(255, 7, 26, 239)),
-                            ),
-                            child: const Text("Save Character",
-                                style: TextStyle(
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.white,
-                                )),
-                            onPressed: () {
-                              if (pointsRemaining == 0 &&
-                                  numberOfRemainingFeatOrASIs == 0 &&
-                                  !ASIRemaining &&
-                                  int.parse(characterLevel ?? "1") <=
-                                      classList.length &&
-                                  (equipmentSelectedFromChoices == [] ||
-                                      equipmentSelectedFromChoices
-                                          .where(
-                                              (element) => element.length == 2)
-                                          .toList()
-                                          .isEmpty) &&
-                                  (allSpellsSelectedAsListsOfThings
-                                      .where((element) => element[2] != 0)
-                                      .isEmpty)) {
-                                setState(() {
-                                  updateGlobals();
-                                  final Map<String, dynamic> json =
-                                      jsonDecode(jsonString ?? "");
-                                  final List<dynamic> characters =
-                                      json["Characters"];
-                                  final String curCharacterName = characterName;
-                                  final int index = characters.indexWhere(
-                                      (character) =>
-                                          character["Name"] ==
-                                          curCharacterName);
-                                  if (index != -1) {
-                                    characters.removeAt(index);
+                                          .isEmpty)) {
+                                    setState(() {
+                                      updateGlobals();
+                                      final Map<String, dynamic> json =
+                                          jsonDecode(jsonString ?? "");
+                                      final List<dynamic> characters =
+                                          json["Characters"];
+                                      final String curCharacterName =
+                                          characterName;
+                                      final int index = characters.indexWhere(
+                                          (character) =>
+                                              character["Name"] ==
+                                              curCharacterName);
+                                      if (index != -1) {
+                                        characters.removeAt(index);
+                                      }
+                                      characters.add(Character(
+                                              skillBonusMap: skillBonusMap,
+                                              uniqueID: int.parse([
+                                                for (var i in List.generate(
+                                                    15,
+                                                    (_) =>
+                                                        Random().nextInt(10)))
+                                                  i.toString()
+                                              ].join()),
+                                              backstory: backstory,
+                                              extraFeatures: extraFeatures,
+                                              levelsPerClass: levelsPerClass,
+                                              selections: selections,
+                                              allSelected: allSelected,
+                                              classSubclassMapper:
+                                                  classSubclassMapper,
+                                              ACList: ACList,
+                                              ASIRemaining: ASIRemaining,
+                                              allSpellsSelected:
+                                                  allSpellsSelected,
+                                              allSpellsSelectedAsListsOfThings:
+                                                  allSpellsSelectedAsListsOfThings,
+                                              armourList: armourList,
+                                              averageHitPoints:
+                                                  averageHitPoints,
+                                              backgroundSkillChoices:
+                                                  backgroundSkillChoices,
+                                              characterAge: characterAge,
+                                              characterEyes: characterEyes,
+                                              characterHair: characterHair,
+                                              characterHeight: characterHeight,
+                                              characterSkin: characterSkin,
+                                              characterWeight: characterWeight,
+                                              coinTypeSelected:
+                                                  coinTypeSelected,
+                                              criticalRoleContent:
+                                                  criticalRoleContent,
+                                              encumberanceRules:
+                                                  encumberanceRules,
+                                              extraFeatAtLevel1:
+                                                  extraFeatAtLevel1,
+                                              featsAllowed: featsAllowed,
+                                              featsSelected: featsSelected,
+                                              firearmsUsable: firearmsUsable,
+                                              fullFeats: fullFeats,
+                                              halfFeats: halfFeats,
+                                              gender: characterGender,
+                                              includeCoinsForWeight:
+                                                  includeCoinsForWeight,
+                                              itemList: itemList,
+                                              milestoneLevelling:
+                                                  milestoneLevelling,
+                                              multiclassing: multiclassing,
+                                              useCustomContent:
+                                                  useCustomContent,
+                                              equipmentSelectedFromChoices:
+                                                  equipmentSelectedFromChoices,
+                                              optionalClassFeatures:
+                                                  optionalClassFeatures,
+                                              optionalOnesStates:
+                                                  optionalOnesStates,
+                                              optionalTwosStates:
+                                                  optionalTwosStates,
+                                              speedBonuses: speedBonusMap,
+                                              unearthedArcanaContent:
+                                                  unearthedArcanaContent,
+                                              weaponList: weaponList,
+                                              numberOfRemainingFeatOrASIs:
+                                                  numberOfRemainingFeatOrASIs,
+                                              playerName: playerName,
+                                              classList: classList,
+                                              stackableEquipmentSelected:
+                                                  stackableEquipmentSelected,
+                                              unstackableEquipmentSelected:
+                                                  unstackableEquipmentSelected,
+                                              classSkillsSelected:
+                                                  classSkillChoices,
+                                              skillsSelected: selectedSkillsQ,
+                                              subrace: subraceExample,
+                                              mainToolProficiencies:
+                                                  toolProficiencies,
+                                              savingThrowProficiencies:
+                                                  savingThrowProficiencies ??
+                                                      [],
+                                              languagesKnown: languagesKnown,
+                                              featuresAndTraits:
+                                                  featuresAndTraits,
+                                              inspired: inspired,
+                                              skillProficiencies:
+                                                  skillProficiencies,
+                                              maxHealth: maxHealth,
+                                              background: currentBackground,
+                                              classLevels: levelsPerClass,
+                                              race: initialRace,
+                                              group: group,
+                                              characterExperience:
+                                                  characterExperience,
+                                              currency: currencyStored,
+                                              backgroundPersonalityTrait:
+                                                  backgroundPersonalityTrait,
+                                              backgroundIdeal: backgroundIdeal,
+                                              backgroundBond: backgroundBond,
+                                              backgroundFlaw: backgroundFlaw,
+                                              name: characterName,
+                                              raceAbilityScoreIncreases:
+                                                  abilityScoreIncreases,
+                                              featsASIScoreIncreases:
+                                                  ASIBonuses,
+                                              strength: strength,
+                                              dexterity: dexterity,
+                                              constitution: constitution,
+                                              intelligence: intelligence,
+                                              wisdom: wisdom,
+                                              charisma: charisma)
+                                          .toJson());
+                                      if ((!GROUPLIST.contains(group)) &&
+                                          group != null &&
+                                          group!.replaceAll(" ", "") != "") {
+                                        final List<dynamic> groupsList =
+                                            json["Groups"];
+                                        groupsList.add(group);
+                                      }
+                                      writeJsonToFile(json, "userContent");
+                                      updateGlobals();
+                                      Navigator.pop(context);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Homepage()),
+                                      );
+                                      showCongratulationsDialog(context);
+                                    });
                                   }
-                                  characters.add(Character(
-                                          skillBonusMap: skillBonusMap,
-                                          uniqueID: int.parse([
-                                            for (var i in List.generate(15,
-                                                (_) => Random().nextInt(10)))
-                                              i.toString()
-                                          ].join()),
-                                          backstory: backstory,
-                                          extraFeatures: extraFeatures,
-                                          levelsPerClass: levelsPerClass,
-                                          selections: selections,
-                                          allSelected: allSelected,
-                                          classSubclassMapper:
-                                              classSubclassMapper,
-                                          ACList: ACList,
-                                          ASIRemaining: ASIRemaining,
-                                          allSpellsSelected: allSpellsSelected,
-                                          allSpellsSelectedAsListsOfThings:
-                                              allSpellsSelectedAsListsOfThings,
-                                          armourList: armourList,
-                                          averageHitPoints: averageHitPoints,
-                                          backgroundSkillChoices:
-                                              backgroundSkillChoices,
-                                          characterAge: characterAge,
-                                          characterEyes: characterEyes,
-                                          characterHair: characterHair,
-                                          characterHeight: characterHeight,
-                                          characterSkin: characterSkin,
-                                          characterWeight: characterWeight,
-                                          coinTypeSelected: coinTypeSelected,
-                                          criticalRoleContent:
-                                              criticalRoleContent,
-                                          encumberanceRules: encumberanceRules,
-                                          extraFeatAtLevel1: extraFeatAtLevel1,
-                                          featsAllowed: featsAllowed,
-                                          featsSelected: featsSelected,
-                                          firearmsUsable: firearmsUsable,
-                                          fullFeats: fullFeats,
-                                          halfFeats: halfFeats,
-                                          gender: characterGender,
-                                          includeCoinsForWeight:
-                                              includeCoinsForWeight,
-                                          itemList: itemList,
-                                          milestoneLevelling:
-                                              milestoneLevelling,
-                                          multiclassing: multiclassing,
-                                          useCustomContent: useCustomContent,
-                                          equipmentSelectedFromChoices:
-                                              equipmentSelectedFromChoices,
-                                          optionalClassFeatures:
-                                              optionalClassFeatures,
-                                          optionalOnesStates:
-                                              optionalOnesStates,
-                                          optionalTwosStates:
-                                              optionalTwosStates,
-                                          speedBonuses: speedBonusMap,
-                                          unearthedArcanaContent:
-                                              unearthedArcanaContent,
-                                          weaponList: weaponList,
-                                          numberOfRemainingFeatOrASIs:
-                                              numberOfRemainingFeatOrASIs,
-                                          playerName: playerName,
-                                          classList: classList,
-                                          stackableEquipmentSelected:
-                                              stackableEquipmentSelected,
-                                          unstackableEquipmentSelected:
-                                              unstackableEquipmentSelected,
-                                          classSkillsSelected:
-                                              classSkillChoices,
-                                          skillsSelected: selectedSkillsQ,
-                                          subrace: subraceExample,
-                                          mainToolProficiencies:
-                                              toolProficiencies,
-                                          savingThrowProficiencies:
-                                              savingThrowProficiencies ?? [],
-                                          languagesKnown: languagesKnown,
-                                          featuresAndTraits: featuresAndTraits,
-                                          inspired: inspired,
-                                          skillProficiencies:
-                                              skillProficiencies,
-                                          maxHealth: maxHealth,
-                                          background: currentBackground,
-                                          classLevels: levelsPerClass,
-                                          race: initialRace,
-                                          group: group,
-                                          characterExperience:
-                                              characterExperience,
-                                          currency: currencyStored,
-                                          backgroundPersonalityTrait:
-                                              backgroundPersonalityTrait,
-                                          backgroundIdeal: backgroundIdeal,
-                                          backgroundBond: backgroundBond,
-                                          backgroundFlaw: backgroundFlaw,
-                                          name: characterName,
-                                          raceAbilityScoreIncreases:
-                                              abilityScoreIncreases,
-                                          featsASIScoreIncreases: ASIBonuses,
-                                          strength: strength,
-                                          dexterity: dexterity,
-                                          constitution: constitution,
-                                          intelligence: intelligence,
-                                          wisdom: wisdom,
-                                          charisma: charisma)
-                                      .toJson());
-                                  if ((!GROUPLIST.contains(group)) &&
-                                      group != null &&
-                                      group!.replaceAll(" ", "") != "") {
-                                    final List<dynamic> groupsList =
-                                        json["Groups"];
-                                    groupsList.add(group);
-                                  }
-                                  writeJsonToFile(json, "userContent");
-                                  updateGlobals();
-                                  Navigator.pop(context);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Homepage()),
-                                  );
-                                  showCongratulationsDialog(context);
-                                });
-                              }
-                            },
-                          )
+                                },
+                              ))
                         ])),
                 Expanded(
                     flex: 7,
