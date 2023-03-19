@@ -5,7 +5,8 @@ import 'package:pdf/widgets.dart';
 import 'package:pdf/pdf.dart';
 import 'package:frankenstein/character_globals.dart';
 import 'package:frankenstein/SRD_globals.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+
 
 //final font = Font.ttf(await rootBundle.load("assets/fonts/your_font.ttf"));
 //1038xidk
@@ -2928,3 +2929,24 @@ Future<Uint8List> makePdf(Character userCharacter) async {
   );
   return pdf.save();
 }
+/*Future<Uint8List> makePdf(Character userCharacter) async {
+  final Uint8List imageBytes = (await rootBundle.load("assets/image.png")).buffer.asUint8List();
+  final MemoryImage image = MemoryImage(imageBytes);
+
+  Document pdf = Document();
+  pdf.addPage(Page(
+    build: (Context context) {
+      return Stack(
+        children: [
+          //background image
+          Center(
+            child: Image(image),
+          ),
+          //regular PDF stuff would be inside the container as normall
+          Container(
+            //old PDF code here
+          ),
+        ],
+      );
+    },
+  ));*/

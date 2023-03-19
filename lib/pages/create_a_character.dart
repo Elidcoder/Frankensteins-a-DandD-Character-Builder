@@ -6263,7 +6263,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                                           .where((element) => element[2] != 0)
                                           .isEmpty)) {
                                     setState(() {
-                                      updateGlobals();
                                       final Map<String, dynamic> json =
                                           jsonDecode(jsonString ?? "");
                                       final List<dynamic> characters =

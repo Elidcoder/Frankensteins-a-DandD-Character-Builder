@@ -95,9 +95,7 @@ class MainHomepage extends State<Homepage> {
                     icon: const Icon(Icons.settings),
                     tooltip: "Settings",
                     onPressed: () {
-                      setState(() {
-                        _showColorPicker(context);
-                      });
+                      _showColorPicker(context);
                     },
                   ),
                 ],
@@ -297,9 +295,7 @@ class MainMenupage extends State<MainMenu> {
           foregroundColor: Homepage.textColor,
           backgroundColor: Homepage.backingColor,
           onPressed: () {
-            setState(() {
-              _showInfoAndHelp(context);
-            });
+            _showInfoAndHelp(context);
           },
           child: const Icon(
             Icons.info,

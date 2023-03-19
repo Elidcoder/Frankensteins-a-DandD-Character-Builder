@@ -14,6 +14,9 @@ isAllowedContend returns allowed content
 
 
 small:
+equipment multiple coin types, 
+edit character section needs to be brought up to date,
+complete feat descriptions so it isn't just bonuses, 
 level 1 bonuses ?
 double levels per class
 points remaining shouldn't be passed in also feats remaining once the checks are in place
@@ -42,5 +45,6 @@ make sure that ASI max works
 make sure choices within feats work, and sort by options selected
 Subclasses:
 store a future area
+Spells:
 Spells bloc stuff - https://stackoverflow.com/questions/51798498/flutter-setstate-to-another-class/51798698#51798698
 also please actually decode at some point and also for all skill increases
