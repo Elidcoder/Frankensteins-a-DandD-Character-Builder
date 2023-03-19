@@ -200,8 +200,8 @@ class _SpellSelectionsState extends State<SpellSelections> {
         child: MaterialApp(
             home: Scaffold(
                 body: Column(children: [
-          //REPLACE
-          Text("${thisDescription[0]} spell choices",
+          Text(
+              "${thisDescription[2]} remaining ${thisDescription[0]} spell choices",
               style: const TextStyle(
                   color: Colors.blue,
                   fontSize: 22,
@@ -906,6 +906,26 @@ class MainCreateCharacter extends State<CreateACharacter>
   //random stsuff
   @override
   bool get wantKeepAlive => true;
+  //Text editing controllers
+  ////Basics
+  TextEditingController nameEnterController = TextEditingController();
+  TextEditingController playerNameEnterController = TextEditingController();
+  TextEditingController genderEnterController = TextEditingController();
+  ////Backstory
+  //////short answers
+  TextEditingController ageEnterController = TextEditingController();
+  TextEditingController heightEnterController = TextEditingController();
+  TextEditingController weightEnterController = TextEditingController();
+  TextEditingController eyeColourController = TextEditingController();
+  TextEditingController skinEnterController = TextEditingController();
+  TextEditingController hairEnterController = TextEditingController();
+  //////long answers
+  TextEditingController backstoryEnterController = TextEditingController();
+  TextEditingController additionalFeaturesEnterController =
+      TextEditingController();
+  ////Finishing up
+  TextEditingController groupEnterController = TextEditingController();
+
   List<String> featuresAndTraits = [];
   List<String> toolProficiencies = [];
   bool inspired = false;
@@ -1570,6 +1590,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                         width: 250,
                         height: 50,
                         child: TextField(
+                            controller: nameEnterController,
                             cursorColor: Colors.blue,
                             style: const TextStyle(color: Colors.white),
                             decoration: const InputDecoration(
@@ -1595,6 +1616,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                           width: 250,
                           height: 50,
                           child: TextField(
+                              controller: playerNameEnterController,
                               cursorColor: Colors.blue,
                               style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
@@ -1619,6 +1641,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                           width: 250,
                           height: 50,
                           child: TextField(
+                              controller: genderEnterController,
                               cursorColor: Colors.blue,
                               style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
@@ -4542,79 +4565,82 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         shrinkWrap: true,
                                         itemCount: FEATLIST.length,
                                         itemBuilder: (context, index) {
-                                          return OutlinedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                  backgroundColor: (featsSelected
-                                                          .where((element) =>
-                                                              element[0].name ==
-                                                              FEATLIST[index]
-                                                                  .name)
-                                                          .isNotEmpty)
-                                                      ? Color.fromARGB(
-                                                          100 +
-                                                              (((featsSelected.where((element) => element[0].name == FEATLIST[index].name).length) /
-                                                                          FEATLIST[index]
-                                                                              .numberOfTimesTakeable) *
-                                                                      155)
-                                                                  .ceil(),
-                                                          0,
-                                                          50 +
-                                                              (((featsSelected.where((element) => element[0].name == FEATLIST[index].name).length) /
-                                                                          FEATLIST[index]
-                                                                              .numberOfTimesTakeable) *
-                                                                      205)
-                                                                  .ceil(),
-                                                          0)
-                                                      : Colors.white),
-                                              onPressed: () {
-                                                setState(
-                                                  () {
-                                                    if (numberOfRemainingFeatOrASIs >
-                                                        0) {
-                                                      if (featsSelected
+                                          return Tooltip(
+                                              message:
+                                                  "${FEATLIST[index].name}: \n •  ${FEATLIST[index].abilites.where((element) => element[0] == "Bonus").toList().map((sublist) => sublist[2]).toList().join('\n • ')}",
+                                              child: OutlinedButton(
+                                                  style: OutlinedButton.styleFrom(
+                                                      backgroundColor: (featsSelected
                                                               .where((element) =>
                                                                   element[0]
                                                                       .name ==
-                                                                  FEATLIST[
-                                                                          index]
+                                                                  FEATLIST[index]
                                                                       .name)
-                                                              .length <
-                                                          FEATLIST[index]
-                                                              .numberOfTimesTakeable) {
-                                                        numberOfRemainingFeatOrASIs--;
-                                                        //call up the selection page
-                                                        featsSelected.add(
-                                                            [FEATLIST[index]]);
-                                                        for (List<dynamic> x
-                                                            in FEATLIST[index]
-                                                                .abilites) {
-                                                          if (x[0] ==
-                                                              "Choice") {
-                                                            widgetsInPlay.add(
-                                                                SizedBox(
-                                                                    height: 80,
-                                                                    child:
-                                                                        ChoiceRow(
-                                                                      x: x.sublist(
-                                                                          1),
-                                                                      allSelected:
-                                                                          allSelected,
-                                                                    )));
-                                                          } else {
-                                                            levelGainParser(
-                                                                x,
-                                                                CLASSLIST[
-                                                                    index]);
+                                                              .isNotEmpty)
+                                                          ? Color.fromARGB(
+                                                              100 +
+                                                                  (((featsSelected.where((element) => element[0].name == FEATLIST[index].name).length) / FEATLIST[index].numberOfTimesTakeable) *
+                                                                          155)
+                                                                      .ceil(),
+                                                              0,
+                                                              50 +
+                                                                  (((featsSelected.where((element) => element[0].name == FEATLIST[index].name).length) / FEATLIST[index].numberOfTimesTakeable) *
+                                                                          205)
+                                                                      .ceil(),
+                                                              0)
+                                                          : Colors.white),
+                                                  onPressed: () {
+                                                    setState(
+                                                      () {
+                                                        if (numberOfRemainingFeatOrASIs >
+                                                            0) {
+                                                          if (featsSelected
+                                                                  .where((element) =>
+                                                                      element[0]
+                                                                          .name ==
+                                                                      FEATLIST[
+                                                                              index]
+                                                                          .name)
+                                                                  .length <
+                                                              FEATLIST[index]
+                                                                  .numberOfTimesTakeable) {
+                                                            numberOfRemainingFeatOrASIs--;
+                                                            //call up the selection page
+                                                            featsSelected.add([
+                                                              FEATLIST[index]
+                                                            ]);
+                                                            for (List<dynamic> x
+                                                                in FEATLIST[
+                                                                        index]
+                                                                    .abilites) {
+                                                              if (x[0] ==
+                                                                  "Choice") {
+                                                                widgetsInPlay.add(
+                                                                    SizedBox(
+                                                                        height:
+                                                                            80,
+                                                                        child:
+                                                                            ChoiceRow(
+                                                                          x: x.sublist(
+                                                                              1),
+                                                                          allSelected:
+                                                                              allSelected,
+                                                                        )));
+                                                              } else {
+                                                                levelGainParser(
+                                                                    x,
+                                                                    CLASSLIST[
+                                                                        index]);
+                                                              }
+                                                            }
                                                           }
                                                         }
-                                                      }
-                                                    }
+                                                      },
+                                                    );
+                                                    // Code to handle button press
                                                   },
-                                                );
-                                                // Code to handle button press
-                                              },
-                                              child:
-                                                  Text(FEATLIST[index].name));
+                                                  child: Text(
+                                                      FEATLIST[index].name)));
                                         },
                                       ),
                                     ),
@@ -5566,25 +5592,8 @@ class MainCreateCharacter extends State<CreateACharacter>
 
                                             //subtract cost
                                           },
-                                          child: Text(ITEMLIST
-                                              .where((element) =>
-                                                  ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
-                                                      (element.equipmentType
-                                                              .contains(
-                                                                  "Weapon") &&
-                                                          element.equipmentType
-                                                              .any((item) =>
-                                                                  weaponList.contains(
-                                                                      item))) ||
-                                                      (element.equipmentType.contains("Item") &&
-                                                          ((itemList.contains("Stackable") &&
-                                                                  element
-                                                                      .stackable) ||
-                                                              (itemList.contains("Unstackable") &&
-                                                                  !element.stackable)))) &&
-                                                  element.cost[1] == coinTypeSelected)
-                                              .toList()[index]
-                                              .name),
+                                          child: Text(
+                                              "${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].name}: ${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[0]}x${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[1]}"),
                                         );
                                       }),
                                     )))
@@ -5704,6 +5713,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                   children: [
                     Column(
                       children: [
+                        //age text
                         const Text(
                           textAlign: TextAlign.center,
                           "Age:",
@@ -5713,10 +5723,12 @@ class MainCreateCharacter extends State<CreateACharacter>
                               color: Color.fromARGB(255, 0, 168, 252)),
                         ),
                         const SizedBox(height: 10),
+                        //age input
                         SizedBox(
                           width: 250,
                           height: 50,
                           child: TextField(
+                              controller: ageEnterController,
                               cursorColor: Colors.blue,
                               style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
@@ -5738,6 +5750,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               }),
                         ),
                         const SizedBox(height: 10),
+                        //eye text
                         const Text(
                           textAlign: TextAlign.center,
                           "Eyes:",
@@ -5747,10 +5760,12 @@ class MainCreateCharacter extends State<CreateACharacter>
                               color: Color.fromARGB(255, 0, 168, 252)),
                         ),
                         const SizedBox(height: 10),
+                        //eye input
                         SizedBox(
                           width: 250,
                           height: 50,
                           child: TextField(
+                              controller: eyeColourController,
                               cursorColor: Colors.blue,
                               style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
@@ -5789,6 +5804,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                           width: 250,
                           height: 50,
                           child: TextField(
+                              controller: heightEnterController,
                               cursorColor: Colors.blue,
                               style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
@@ -5823,6 +5839,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                           width: 250,
                           height: 50,
                           child: TextField(
+                              controller: skinEnterController,
                               cursorColor: Colors.blue,
                               style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
@@ -5861,6 +5878,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                           width: 250,
                           height: 50,
                           child: TextField(
+                              controller: weightEnterController,
                               cursorColor: Colors.blue,
                               style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
@@ -5895,6 +5913,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                           width: 250,
                           height: 50,
                           child: TextField(
+                              controller: hairEnterController,
                               cursorColor: Colors.blue,
                               style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
@@ -5932,6 +5951,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                   width: 1000,
                   height: 100,
                   child: TextField(
+                      controller: backstoryEnterController,
                       maxLines: 10000,
                       minLines: 4,
                       cursorColor: Colors.blue,
@@ -5970,6 +5990,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                   width: 1000,
                   height: 100,
                   child: TextField(
+                      controller: additionalFeaturesEnterController,
                       maxLines: 10000,
                       minLines: 4,
                       cursorColor: Colors.blue,
@@ -5978,7 +5999,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                           color: Color.fromARGB(255, 126, 122, 122)),
                       decoration: const InputDecoration(
                           hintText:
-                              "Write any additional features, skills or abilities which are not a part of the character's race/class/background etc. These should have been agreed apon by your DM or whoever is running the game.",
+                              "Write any additional features, skills or abilites which are not a part of the character's race/class/background etc. These should have been agreed apon by your DM or whoever is running the game.",
                           hintStyle: TextStyle(
                               fontWeight: FontWeight.w700,
                               color: Color.fromARGB(255, 126, 122, 122)),
@@ -6167,6 +6188,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                           SizedBox(
                             width: 300,
                             child: TextField(
+                                controller: groupEnterController,
                                 cursorColor: Colors.blue,
                                 style: const TextStyle(color: Colors.white),
                                 decoration: const InputDecoration(
