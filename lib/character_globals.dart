@@ -498,39 +498,43 @@ List<String> GROUPLIST = [];
 }*/
 
 Future<bool> updateGlobals() async {
-  jsonString = await getFile("userContent");
-  final jsonmap = jsonDecode(jsonString ?? "{}");
+  try {
+    jsonString = await getFile("userContent");
+    final jsonmap = jsonDecode(jsonString ?? "{}");
 
-  ///file decoded into "jsonmap"
-  //final dynamic jsonmap = decoder.convert(jsonString??"");
+    // ignore: non_constant_identifier_names
+    LANGUAGELIST = jsonmap["Languages"].cast<String>() as List<String>;
+    // ignore: non_constant_identifier_names
+    PROFICIENCYLIST =
+        jsonmap["Proficiencies"].cast<Proficiency>() as List<Proficiency>;
+    RACELIST = [for (var x in jsonmap["Races"]) Race.fromJson(x)];
+    // ignore: non_constant_identifier_names
+    BACKGROUNDLIST = [
+      for (var x in jsonmap["Backgrounds"]) Background.fromJson(x)
+    ];
+    // ignore: non_constant_identifier_names
+    CLASSLIST = [for (var x in jsonmap["Classes"]) Class.fromJson(x)];
+    // ignore: non_constant_identifier_names
+    SPELLLIST = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
+    // ignore: non_constant_identifier_names
+    FEATLIST = [for (var x in jsonmap["Feats"]) Feat.fromJson(x)];
+    // ignore: non_constant_identifier_names
+    ITEMLIST = [for (var x in jsonmap["Equipment"] ?? []) mapEquipment(x)];
+    // ignore: non_constant_identifier_names
+    GROUPLIST = jsonmap["Groups"].cast<String>() as List<String>;
+    // ignore: non_constant_identifier_names
 
-  // ignore: non_constant_identifier_names
-  LANGUAGELIST = jsonmap["Languages"].cast<String>() as List<String>;
-  // ignore: non_constant_identifier_names
-  PROFICIENCYLIST =
-      jsonmap["Proficiencies"].cast<Proficiency>() as List<Proficiency>;
-  RACELIST = [for (var x in jsonmap["Races"]) Race.fromJson(x)];
-  // ignore: non_constant_identifier_names
-  BACKGROUNDLIST = [
-    for (var x in jsonmap["Backgrounds"]) Background.fromJson(x)
-  ];
-  // ignore: non_constant_identifier_names
-  CLASSLIST = [for (var x in jsonmap["Classes"]) Class.fromJson(x)];
-  // ignore: non_constant_identifier_names
-  SPELLLIST = [for (var x in jsonmap["Spells"]) Spell.fromJson(x)];
-  // ignore: non_constant_identifier_names
-  FEATLIST = [for (var x in jsonmap["Feats"]) Feat.fromJson(x)];
-  // ignore: non_constant_identifier_names
-  ITEMLIST = [for (var x in jsonmap["Equipment"] ?? []) mapEquipment(x)];
-  // ignore: non_constant_identifier_names
-  GROUPLIST = jsonmap["Groups"].cast<String>() as List<String>;
-  // ignore: non_constant_identifier_names
+    CHARACTERLIST = [
+      for (var x in jsonmap["Characters"]) Character.fromJson(x)
+    ];
 
-  CHARACTERLIST = [for (var x in jsonmap["Characters"]) Character.fromJson(x)];
+    COLORLIST = [
+      for (var x in jsonmap["Colours"])
+        [colorFromJson(x[0]), colorFromJson(x[1]), colorFromJson(x[2])]
+    ];
+  } catch (e) {
+    debugPrint("Error");
+  }
 
-  COLORLIST = [
-    for (var x in jsonmap["Colours"])
-      [colorFromJson(x[0]), colorFromJson(x[1]), colorFromJson(x[2])]
-  ];
   return true;
 }

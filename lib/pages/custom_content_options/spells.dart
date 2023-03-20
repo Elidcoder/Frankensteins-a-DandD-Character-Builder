@@ -86,7 +86,10 @@ class MainMakeASpell extends State<MakeASpell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Homepage.backgroundColor,
         appBar: AppBar(
+          foregroundColor: Homepage.textColor,
+          backgroundColor: Homepage.backingColor,
           title: const Center(
             child: Text(
               textAlign: TextAlign.center,
@@ -117,16 +120,17 @@ class MainMakeASpell extends State<MakeASpell> {
                           height: 50,
                           child: TextField(
                               cursorColor: Colors.blue,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
-                                  hintText: "Spell name here",
+                              style: TextStyle(color: Homepage.textColor),
+                              decoration: InputDecoration(
+                                  hintText: "Spell name here e.g. My Spell",
                                   hintStyle: TextStyle(
                                       fontWeight: FontWeight.w700,
-                                      color:
-                                          Color.fromARGB(255, 212, 208, 224)),
+                                      color: Homepage.textColor),
                                   filled: true,
-                                  fillColor: Color.fromARGB(211, 42, 63, 226),
-                                  border: OutlineInputBorder(
+                                  fillColor: (name.replaceAll(" ", "") != "")
+                                      ? Homepage.backingColor
+                                      : Colors.red,
+                                  border: const OutlineInputBorder(
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
@@ -141,14 +145,18 @@ class MainMakeASpell extends State<MakeASpell> {
                             width: 170,
                             height: 70,
                             child: Column(children: [
-                              const Text("Select spell school:"),
+                              Text("Select spell school:",
+                                  style: TextStyle(
+                                      color: (spellSchool != null)
+                                          ? Homepage.backingColor
+                                          : Colors.red)),
                               DropdownButton<String>(
                                 value: spellSchool,
                                 icon: const Icon(Icons.arrow_drop_down,
                                     color: Color.fromARGB(255, 7, 26, 239)),
                                 elevation: 16,
-                                style: const TextStyle(
-                                    color: Colors.blue,
+                                style: TextStyle(
+                                    color: Homepage.backingColor,
                                     fontWeight: FontWeight.w800,
                                     fontSize: 20),
                                 underline: Container(
@@ -191,15 +199,16 @@ class MainMakeASpell extends State<MakeASpell> {
                           maxLines: 4,
                           minLines: 4,
                           cursorColor: Colors.blue,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: const InputDecoration(
-                              hintText: "Spell effect here:",
+                          style: TextStyle(color: Homepage.textColor),
+                          decoration: InputDecoration(
+                              hintText:
+                                  "Spell effect here e.g. A Magic shield appears, increasing your AC by 3 for the next minute",
                               hintStyle: TextStyle(
                                   fontWeight: FontWeight.w700,
-                                  color: Color.fromARGB(255, 212, 208, 224)),
+                                  color: Homepage.textColor),
                               filled: true,
-                              fillColor: Color.fromARGB(211, 42, 63, 226),
-                              border: OutlineInputBorder(
+                              fillColor: Homepage.backingColor,
+                              border: const OutlineInputBorder(
                                   borderSide: BorderSide.none,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(12)))),
@@ -217,14 +226,18 @@ class MainMakeASpell extends State<MakeASpell> {
                               width: 150,
                               height: 70,
                               child: Column(children: [
-                                const Text("Select the spell level"),
+                                Text("Select spell level:",
+                                    style: TextStyle(
+                                        color: (level != null)
+                                            ? Homepage.backingColor
+                                            : Colors.red)),
                                 DropdownButton<String>(
                                   value: (level == null) ? null : "$level",
                                   icon: const Icon(Icons.arrow_drop_down,
                                       color: Color.fromARGB(255, 7, 26, 239)),
                                   elevation: 16,
-                                  style: const TextStyle(
-                                      color: Colors.blue,
+                                  style: TextStyle(
+                                      color: Homepage.backingColor,
                                       fontWeight: FontWeight.w800,
                                       fontSize: 20),
                                   underline: Container(
@@ -265,7 +278,7 @@ class MainMakeASpell extends State<MakeASpell> {
                             ),
                             Expanded(
                                 child: CheckboxListTile(
-                              title: const Text(' Somatic Component'),
+                              title: const Text(" Somatic Component"),
                               value: somatic,
                               onChanged: (bool? value) {
                                 setState(() {
@@ -276,7 +289,7 @@ class MainMakeASpell extends State<MakeASpell> {
                             )),
                             Expanded(
                               child: CheckboxListTile(
-                                title: const Text(' Verbal Component'),
+                                title: const Text(" Verbal Component"),
                                 value: verbal,
                                 onChanged: (bool? value) {
                                   setState(() {
@@ -297,16 +310,16 @@ class MainMakeASpell extends State<MakeASpell> {
                           height: 70,
                           child: TextField(
                               cursorColor: Colors.blue,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
-                                  hintText: "Materials required:",
+                              style: TextStyle(color: Homepage.textColor),
+                              decoration: InputDecoration(
+                                  hintText:
+                                      "Materials required e.g. 3 diamonds worth 100gp",
                                   hintStyle: TextStyle(
                                       fontWeight: FontWeight.w700,
-                                      color:
-                                          Color.fromARGB(255, 212, 208, 224)),
+                                      color: Homepage.textColor),
                                   filled: true,
-                                  fillColor: Color.fromARGB(211, 42, 63, 226),
-                                  border: OutlineInputBorder(
+                                  fillColor: Homepage.backingColor,
+                                  border: const OutlineInputBorder(
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
@@ -322,16 +335,16 @@ class MainMakeASpell extends State<MakeASpell> {
                           height: 70,
                           child: TextField(
                               cursorColor: Colors.blue,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
-                                  hintText: "Can be cast by:",
+                              style: TextStyle(color: Homepage.textColor),
+                              decoration: InputDecoration(
+                                  hintText:
+                                      "Can be cast by: e.g. Wizard, Sorcerer, ...",
                                   hintStyle: TextStyle(
                                       fontWeight: FontWeight.w700,
-                                      color:
-                                          Color.fromARGB(255, 212, 208, 224)),
+                                      color: Homepage.textColor),
                                   filled: true,
-                                  fillColor: Color.fromARGB(211, 42, 63, 226),
-                                  border: OutlineInputBorder(
+                                  fillColor: Homepage.backingColor,
+                                  border: const OutlineInputBorder(
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
@@ -350,16 +363,16 @@ class MainMakeASpell extends State<MakeASpell> {
                           height: 70,
                           child: TextField(
                               cursorColor: Colors.blue,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
-                                  hintText: "Casting requirement:",
+                              style: TextStyle(color: Homepage.textColor),
+                              decoration: InputDecoration(
+                                  hintText:
+                                      "Casting requirement e.g. 1, Action",
                                   hintStyle: TextStyle(
                                       fontWeight: FontWeight.w700,
-                                      color:
-                                          Color.fromARGB(255, 212, 208, 224)),
+                                      color: Homepage.textColor),
                                   filled: true,
-                                  fillColor: Color.fromARGB(211, 42, 63, 226),
-                                  border: OutlineInputBorder(
+                                  fillColor: Homepage.backingColor,
+                                  border: const OutlineInputBorder(
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
@@ -375,16 +388,15 @@ class MainMakeASpell extends State<MakeASpell> {
                           height: 70,
                           child: TextField(
                               cursorColor: Colors.blue,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
-                                  hintText: "Duration:",
+                              style: TextStyle(color: Homepage.textColor),
+                              decoration: InputDecoration(
+                                  hintText: "Duration e.g. 2, Bonus Action",
                                   hintStyle: TextStyle(
                                       fontWeight: FontWeight.w700,
-                                      color:
-                                          Color.fromARGB(255, 212, 208, 224)),
+                                      color: Homepage.textColor),
                                   filled: true,
-                                  fillColor: Color.fromARGB(211, 42, 63, 226),
-                                  border: OutlineInputBorder(
+                                  fillColor: Homepage.backingColor,
+                                  border: const OutlineInputBorder(
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
@@ -405,17 +417,25 @@ class MainMakeASpell extends State<MakeASpell> {
                               height: 70,
                               child: TextField(
                                   cursorColor: Colors.blue,
-                                  style: const TextStyle(color: Colors.white),
-                                  decoration: const InputDecoration(
-                                      hintText: "Range:",
+                                  style: TextStyle(color: Homepage.textColor),
+                                  decoration: InputDecoration(
+                                      hintText: "Range: e.g. Touch / 60",
                                       hintStyle: TextStyle(
                                           fontWeight: FontWeight.w700,
-                                          color: Color.fromARGB(
-                                              255, 212, 208, 224)),
+                                          color: Homepage.textColor),
                                       filled: true,
-                                      fillColor:
-                                          Color.fromARGB(211, 42, 63, 226),
-                                      border: OutlineInputBorder(
+                                      fillColor: (range != null &&
+                                              ((double.tryParse(range ?? "") !=
+                                                      null) ||
+                                                  (["SELF", "TOUCH"].contains(
+                                                          range!
+                                                              .toUpperCase()) ||
+                                                      (double.tryParse(
+                                                              range ?? "") !=
+                                                          null))))
+                                          ? Homepage.backingColor
+                                          : Colors.red,
+                                      border: const OutlineInputBorder(
                                           borderSide: BorderSide.none,
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(12)))),
@@ -431,17 +451,21 @@ class MainMakeASpell extends State<MakeASpell> {
                               height: 70,
                               child: TextField(
                                   cursorColor: Colors.blue,
-                                  style: const TextStyle(color: Colors.white),
-                                  decoration: const InputDecoration(
-                                      hintText: "Range unit:",
+                                  style: TextStyle(color: Homepage.textColor),
+                                  decoration: InputDecoration(
+                                      hintText: "Range unit e.g. ft",
                                       hintStyle: TextStyle(
                                           fontWeight: FontWeight.w700,
-                                          color: Color.fromARGB(
-                                              255, 212, 208, 224)),
+                                          color: Homepage.textColor),
                                       filled: true,
-                                      fillColor:
-                                          Color.fromARGB(211, 42, 63, 226),
-                                      border: OutlineInputBorder(
+                                      fillColor: (rangeUnit.replaceAll(
+                                                      " ", "") !=
+                                                  "" ||
+                                              (["SELF", "TOUCH"].contains(
+                                                  (range ?? "").toUpperCase())))
+                                          ? Homepage.backingColor
+                                          : Colors.red,
+                                      border: const OutlineInputBorder(
                                           borderSide: BorderSide.none,
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(12)))),
@@ -453,7 +477,7 @@ class MainMakeASpell extends State<MakeASpell> {
                             ),
                             Expanded(
                                 child: CheckboxListTile(
-                              title: const Text(' Ritual '),
+                              title: const Text(" Ritual "),
                               value: ritual,
                               onChanged: (bool? value) {
                                 setState(() {
@@ -468,8 +492,9 @@ class MainMakeASpell extends State<MakeASpell> {
                         )),
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                        backgroundColor:
-                            validateSpell() ? Colors.blue : Colors.grey,
+                        backgroundColor: validateSpell()
+                            ? Homepage.backingColor
+                            : Colors.grey,
                         padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
                         shape: const RoundedRectangleBorder(
                             borderRadius:
@@ -524,13 +549,13 @@ class MainMakeASpell extends State<MakeASpell> {
                           }
                         }
                       },
-                      child: const Text(
+                      child: Text(
                         textAlign: TextAlign.center,
                         'Save Spell',
                         style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.w700,
-                            color: Colors.white),
+                            color: Homepage.textColor),
                       ),
                     ),
                     //const SizedBox(height: 100),

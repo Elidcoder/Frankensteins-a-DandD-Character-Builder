@@ -1,25 +1,25 @@
 ///Imports
 //import 'dart:ffi';
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 //import 'dart:convert';
 //add this back if there are errors:
 //import 'package:flutter/services.dart';
 //import 'dart:io';
-import 'pages/custom_content.dart';
-import 'pages/create_a_character.dart';
-import 'pages/my_characters.dart';
-//import 'pages/roll_dice.dart';
-import 'pages/search_for_content.dart';
-import 'pages/custom_content_options/spells.dart';
-import 'pages/custom_content_options/items.dart';
-import 'pages/custom_content_options/weapons.dart';
+import "pages/custom_content.dart";
+import "pages/create_a_character.dart";
+import "pages/my_characters.dart";
+//import "pages/roll_dice.dart";
+import "pages/search_for_content.dart";
+import "pages/custom_content_options/spells.dart";
+import "pages/custom_content_options/items.dart";
+import "pages/custom_content_options/weapons.dart";
 //import "package:frankenstein/globals.dart";
-import 'package:frankenstein/SRD_globals.dart';
-import 'package:frankenstein/character_globals.dart';
+import "package:frankenstein/SRD_globals.dart";
+import "package:frankenstein/character_globals.dart";
 import "dart:convert";
 import "dart:io";
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import "package:file_picker/file_picker.dart";
+import "package:flutter_colorpicker/flutter_colorpicker.dart";
 
 // ignore: non_constant_identifier_names
 final Map<String, Widget> PAGELINKER = {
@@ -57,7 +57,7 @@ class MainHomepage extends State<Homepage> {
   Color currentBackingColor = Homepage.backingColor;
   Color currentBackgroundColor = Homepage.backgroundColor;
 
-  static const String _title = 'Frankenstein\'s - a D&D 5e character builder';
+  static const String _title = "Frankenstein's - a D&D 5e character builder";
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +230,7 @@ class ScreenTop extends StatelessWidget {
   static Color backingColor = Homepage.backingColor;
   static Color backgroundColor = Homepage.backgroundColor;
   const ScreenTop({Key? key, this.pagechoice}) : super(key: key);
-  static const String _title = 'Frankenstein\'s - a D&D 5e character builder';
+  static const String _title = "Frankenstein's - a D&D 5e character builder";
 
   @override
   Widget build(BuildContext context) {
@@ -261,14 +261,14 @@ class ScreenTop extends StatelessWidget {
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.arrow_back),
-              tooltip: 'Return to the previous page',
+              tooltip: "Return to the previous page",
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
             IconButton(
                 icon: const Icon(Icons.settings),
-                tooltip: 'Settings??',
+                tooltip: "Settings??",
                 onPressed: () {}),
           ],
         ),
@@ -311,7 +311,7 @@ class MainMenupage extends State<MainMenu> {
                     color: Homepage.backingColor,
                     child: Text(
                       textAlign: TextAlign.center,
-                      'Main Menu',
+                      "Main Menu",
                       style: TextStyle(
                           fontSize: 45,
                           fontWeight: FontWeight.w700,
@@ -344,7 +344,7 @@ class MainMenupage extends State<MainMenu> {
                   },
                   child: Text(
                     textAlign: TextAlign.center,
-                    'Create a \ncharacter',
+                    "Create a \ncharacter",
                     style: TextStyle(
                         fontSize: 35,
                         fontWeight: FontWeight.w700,
@@ -371,7 +371,7 @@ class MainMenupage extends State<MainMenu> {
                   },
                   child: Text(
                     textAlign: TextAlign.center,
-                    'Search for\ncontent',
+                    "Search for\ncontent",
                     style: TextStyle(
                         fontSize: 35,
                         fontWeight: FontWeight.w700,
@@ -398,7 +398,7 @@ class MainMenupage extends State<MainMenu> {
                   },
                   child: Text(
                     textAlign: TextAlign.center,
-                    'My \ncharacters',
+                    "My \ncharacters",
                     style: TextStyle(
                         fontSize: 35,
                         fontWeight: FontWeight.w700,
@@ -422,17 +422,17 @@ class MainMenupage extends State<MainMenu> {
                   ),
                   onPressed: () async {
                     final result = await FilePicker.platform.pickFiles(
+                      dialogTitle:
+                          "Navigate to and select a Json file to download the contents from, this content can then be used in your characters",
                       type: FileType.custom,
-                      allowedExtensions: ['json'],
+                      allowedExtensions: ["json"],
                     );
                     if (result != null) {
                       final file = File(
                           result.files.single.path ?? "Never going to happen");
                       final contents = await file.readAsString();
                       final jsonData2 = json.decode(contents);
-
                       updateGlobals();
-
                       final Map<String, dynamic> jsonData =
                           jsonDecode(jsonString ?? "");
 
@@ -481,7 +481,7 @@ class MainMenupage extends State<MainMenu> {
                 );
               },*/
                   child: Text(
-                    'Download\n Content',
+                    "Download\n Content",
                     style: TextStyle(
                         fontSize: 35,
                         fontWeight: FontWeight.w700,
@@ -609,7 +609,7 @@ you can create that type of content, saving it to your app.''',
                       height: 9,
                     ),
                     const Text(
-                      'Report a bug or ask for help:',
+                      "Report a bug or ask for help:",
                       style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                     ),
@@ -630,13 +630,7 @@ https://github.com/Elidcoder/frankensteins2
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('OK'),
+                  child: const Text("OK"),
                 ),
               ],
             ),
@@ -650,7 +644,7 @@ https://github.com/Elidcoder/frankensteins2
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        content: const Text('Json format incorrect, reformat and try again!',
+        content: const Text("Json format incorrect, reformat and try again!",
             style: TextStyle(
                 color: Colors.red, fontSize: 45, fontWeight: FontWeight.w800)),
         actions: [
@@ -658,7 +652,7 @@ https://github.com/Elidcoder/frankensteins2
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: const Text('Continue'),
+            child: const Text("Continue"),
           ),
         ],
       ),
