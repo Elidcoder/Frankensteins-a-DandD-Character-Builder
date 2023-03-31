@@ -195,15 +195,16 @@ class MainHomepage extends State<Homepage> {
                           separatorBuilder: (BuildContext context, int index) {
                             return SizedBox(height: 15);
                           },
-                          itemCount: COLORLIST.length,
+                          itemCount: COLORLIST.reversed.toList().length,
                           itemBuilder: (BuildContext context, int index) {
                             return SizedBox(
                                 width: 305,
                                 height: 180,
                                 child: OutlinedButton(
                                   style: OutlinedButton.styleFrom(
-                                    backgroundColor: COLORLIST[index][2],
-                                    //COLORLIST[index][0]
+                                    backgroundColor:
+                                        COLORLIST.reversed.toList()[index][2],
+                                    //COLORLIST.reversed.toList()[index][0]
                                     side: const BorderSide(
                                         width: 0.7, color: Colors.black),
                                   ),
@@ -211,24 +212,28 @@ class MainHomepage extends State<Homepage> {
                                     Container(
                                         width: 305,
                                         height: 18,
-                                        color: COLORLIST[index][1],
+                                        color: COLORLIST.reversed
+                                            .toList()[index][1],
                                         child: Text(
                                           "Frankensteins  - a D&D 5e character builder:",
                                           style: TextStyle(
                                               fontWeight: FontWeight.w600,
                                               fontSize: 9,
-                                              color: COLORLIST[index][0]),
+                                              color: COLORLIST.reversed
+                                                  .toList()[index][0]),
                                           textAlign: TextAlign.center,
                                         )),
                                     Container(
                                         width: 305,
                                         height: 18,
-                                        color: COLORLIST[index][1],
+                                        color: COLORLIST.reversed
+                                            .toList()[index][1],
                                         child: Text("Main Menu",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w700,
                                                 fontSize: 12,
-                                                color: COLORLIST[index][0]),
+                                                color: COLORLIST.reversed
+                                                    .toList()[index][0]),
                                             textAlign: TextAlign.center)),
                                     const SizedBox(
                                       height: 28,
@@ -243,7 +248,8 @@ class MainHomepage extends State<Homepage> {
                                             width: 60,
                                             height: 31,
                                             decoration: BoxDecoration(
-                                                color: COLORLIST[index][1],
+                                                color: COLORLIST.reversed
+                                                    .toList()[index][1],
                                                 borderRadius:
                                                     const BorderRadius.all(
                                                         Radius.circular(4))),
@@ -251,7 +257,8 @@ class MainHomepage extends State<Homepage> {
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.w600,
                                                     fontSize: 10,
-                                                    color: COLORLIST[index][0]),
+                                                    color: COLORLIST.reversed
+                                                        .toList()[index][0]),
                                                 textAlign: TextAlign.center)),
                                         const SizedBox(
                                           width: 27.5,
@@ -260,7 +267,8 @@ class MainHomepage extends State<Homepage> {
                                             width: 60,
                                             height: 31,
                                             decoration: BoxDecoration(
-                                                color: COLORLIST[index][1],
+                                                color: COLORLIST.reversed
+                                                    .toList()[index][1],
                                                 borderRadius:
                                                     const BorderRadius.all(
                                                         Radius.circular(4))),
@@ -268,7 +276,8 @@ class MainHomepage extends State<Homepage> {
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.w600,
                                                     fontSize: 10,
-                                                    color: COLORLIST[index][0]),
+                                                    color: COLORLIST.reversed
+                                                        .toList()[index][0]),
                                                 textAlign: TextAlign.center)),
                                         const SizedBox(
                                           width: 27.5,
@@ -277,7 +286,8 @@ class MainHomepage extends State<Homepage> {
                                             width: 60,
                                             height: 31,
                                             decoration: BoxDecoration(
-                                                color: COLORLIST[index][1],
+                                                color: COLORLIST.reversed
+                                                    .toList()[index][1],
                                                 borderRadius:
                                                     const BorderRadius.all(
                                                         Radius.circular(4))),
@@ -285,7 +295,8 @@ class MainHomepage extends State<Homepage> {
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.w600,
                                                     fontSize: 10,
-                                                    color: COLORLIST[index][0]),
+                                                    color: COLORLIST.reversed
+                                                        .toList()[index][0]),
                                                 textAlign: TextAlign.center)),
                                       ],
                                     )),
@@ -302,7 +313,8 @@ class MainHomepage extends State<Homepage> {
                                             width: 74,
                                             height: 31,
                                             decoration: BoxDecoration(
-                                                color: COLORLIST[index][1],
+                                                color: COLORLIST.reversed
+                                                    .toList()[index][1],
                                                 borderRadius:
                                                     const BorderRadius.all(
                                                         Radius.circular(4))),
@@ -310,7 +322,8 @@ class MainHomepage extends State<Homepage> {
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.w600,
                                                     fontSize: 10,
-                                                    color: COLORLIST[index][0]),
+                                                    color: COLORLIST.reversed
+                                                        .toList()[index][0]),
                                                 textAlign: TextAlign.center)),
                                         const SizedBox(
                                           width: 27.5,
@@ -319,7 +332,8 @@ class MainHomepage extends State<Homepage> {
                                             width: 74,
                                             height: 31,
                                             decoration: BoxDecoration(
-                                                color: COLORLIST[index][1],
+                                                color: COLORLIST.reversed
+                                                    .toList()[index][1],
                                                 borderRadius:
                                                     const BorderRadius.all(
                                                         Radius.circular(4))),
@@ -327,12 +341,20 @@ class MainHomepage extends State<Homepage> {
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.w600,
                                                     fontSize: 10,
-                                                    color: COLORLIST[index][0]),
+                                                    color: COLORLIST.reversed
+                                                        .toList()[index][0]),
                                                 textAlign: TextAlign.center)),
                                       ],
                                     ))
                                   ]),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    currentTextColor =
+                                        COLORLIST.reversed.toList()[index][0];
+                                    currentBackingColor =
+                                        COLORLIST.reversed.toList()[index][1];
+                                    currentBackgroundColor =
+                                        COLORLIST.reversed.toList()[index][2];
+                                  },
                                 ));
                           },
                         )),
@@ -354,19 +376,38 @@ class MainHomepage extends State<Homepage> {
                       final Map<String, dynamic> json =
                           jsonDecode(jsonString ?? "");
                       List<dynamic> colors = json["Colours"];
-                      if (!colors.contains([
-                        colorToJson(Homepage.textColor),
-                        colorToJson(Homepage.backingColor),
-                        colorToJson(Homepage.backgroundColor)
-                      ])) {
+                      List<Color> selectedColours = [
+                        Homepage.textColor,
+                        Homepage.backingColor,
+                        Homepage.backgroundColor
+                      ];
+                      if (!COLORLIST.any((list) =>
+                          list[0] == Homepage.textColor &&
+                          list[1] == Homepage.backingColor &&
+                          list[2] == Homepage.backgroundColor)) {
                         colors.add([
                           colorToJson(Homepage.textColor),
                           colorToJson(Homepage.backingColor),
                           colorToJson(Homepage.backgroundColor)
                         ]);
-                        writeJsonToFile(json, "userContent");
-                        updateGlobals();
                       }
+                      //if the colour was chosen at some point in the past
+                      else {
+                        colors.removeWhere((list) =>
+                            list.toString() ==
+                            [
+                              colorToJson(Homepage.textColor),
+                              colorToJson(Homepage.backingColor),
+                              colorToJson(Homepage.backgroundColor)
+                            ].toString());
+                        colors.add([
+                          colorToJson(Homepage.textColor),
+                          colorToJson(Homepage.backingColor),
+                          colorToJson(Homepage.backgroundColor)
+                        ]);
+                      }
+                      writeJsonToFile(json, "userContent");
+                      updateGlobals();
                     });
                   },
                   child: const Text("Save settings"),
