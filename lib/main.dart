@@ -180,6 +180,162 @@ class MainHomepage extends State<Homepage> {
                         //});
                       },
                     ),
+                    const Text(
+                      "Or choose a theme:",
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(
+                      height: 9,
+                    ),
+                    SizedBox(
+                        height: 300,
+                        width: 307,
+                        child: ListView.separated(
+                          separatorBuilder: (BuildContext context, int index) {
+                            return SizedBox(height: 15);
+                          },
+                          itemCount: COLORLIST.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return SizedBox(
+                                width: 305,
+                                height: 180,
+                                child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    backgroundColor: COLORLIST[index][2],
+                                    //COLORLIST[index][0]
+                                    side: const BorderSide(
+                                        width: 0.7, color: Colors.black),
+                                  ),
+                                  child: Column(children: [
+                                    Container(
+                                        width: 305,
+                                        height: 18,
+                                        color: COLORLIST[index][1],
+                                        child: Text(
+                                          "Frankensteins  - a D&D 5e character builder:",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 9,
+                                              color: COLORLIST[index][0]),
+                                          textAlign: TextAlign.center,
+                                        )),
+                                    Container(
+                                        width: 305,
+                                        height: 18,
+                                        color: COLORLIST[index][1],
+                                        child: Text("Main Menu",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 12,
+                                                color: COLORLIST[index][0]),
+                                            textAlign: TextAlign.center)),
+                                    const SizedBox(
+                                      height: 28,
+                                    ),
+                                    Center(
+                                        child: Row(
+                                      children: [
+                                        const SizedBox(
+                                          width: 21,
+                                        ),
+                                        Container(
+                                            width: 60,
+                                            height: 31,
+                                            decoration: BoxDecoration(
+                                                color: COLORLIST[index][1],
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(4))),
+                                            child: Text("Create a \n character",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 10,
+                                                    color: COLORLIST[index][0]),
+                                                textAlign: TextAlign.center)),
+                                        const SizedBox(
+                                          width: 27.5,
+                                        ),
+                                        Container(
+                                            width: 60,
+                                            height: 31,
+                                            decoration: BoxDecoration(
+                                                color: COLORLIST[index][1],
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(4))),
+                                            child: Text("Search for\nContent",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 10,
+                                                    color: COLORLIST[index][0]),
+                                                textAlign: TextAlign.center)),
+                                        const SizedBox(
+                                          width: 27.5,
+                                        ),
+                                        Container(
+                                            width: 60,
+                                            height: 31,
+                                            decoration: BoxDecoration(
+                                                color: COLORLIST[index][1],
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(4))),
+                                            child: Text("My\nCharacters",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 10,
+                                                    color: COLORLIST[index][0]),
+                                                textAlign: TextAlign.center)),
+                                      ],
+                                    )),
+                                    const SizedBox(
+                                      height: 25,
+                                    ),
+                                    Center(
+                                        child: Row(
+                                      children: [
+                                        const SizedBox(
+                                          width: 50,
+                                        ),
+                                        Container(
+                                            width: 74,
+                                            height: 31,
+                                            decoration: BoxDecoration(
+                                                color: COLORLIST[index][1],
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(4))),
+                                            child: Text("Download\nContent",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 10,
+                                                    color: COLORLIST[index][0]),
+                                                textAlign: TextAlign.center)),
+                                        const SizedBox(
+                                          width: 27.5,
+                                        ),
+                                        Container(
+                                            width: 74,
+                                            height: 31,
+                                            decoration: BoxDecoration(
+                                                color: COLORLIST[index][1],
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(4))),
+                                            child: Text("Create\nContent",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 10,
+                                                    color: COLORLIST[index][0]),
+                                                textAlign: TextAlign.center)),
+                                      ],
+                                    ))
+                                  ]),
+                                  onPressed: () {},
+                                ));
+                          },
+                        )),
                   ])),
               actions: [
                 TextButton(

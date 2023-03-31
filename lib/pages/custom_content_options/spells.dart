@@ -510,11 +510,12 @@ class MainMakeASpell extends State<MakeASpell> {
                               .where((element) => element.name == name)
                               .toList()
                               .isEmpty) {
-                            updateGlobals();
+                            //get the current list of spells
                             final Map<String, dynamic> jsonData =
                                 jsonDecode(jsonString ?? "");
-                            //at some point actually check for dupes
                             final List<dynamic> characters = jsonData["Spells"];
+
+                            //add the new spell to the list of spells
                             characters.add(Spell(
                                 name: name,
                                 range:
@@ -535,8 +536,11 @@ class MainMakeASpell extends State<MakeASpell> {
                                 somatic: somatic,
                                 verbal: verbal,
                                 material: material));
+
+                            //write the modified spell list to the Json
                             writeJsonToFile(jsonData, "userContent");
-                            updateGlobals();
+
+                            //display the popup and return home
                             setState(() {
                               Navigator.pop(context);
                               Navigator.push(
@@ -546,6 +550,9 @@ class MainMakeASpell extends State<MakeASpell> {
                               );
                               showCreationDialog(context);
                             });
+
+                            //update globals to update the spell list with its new member
+                            updateGlobals();
                           }
                         }
                       },

@@ -6,8 +6,6 @@ import 'package:pdf/pdf.dart';
 import 'package:frankenstein/character_globals.dart';
 import 'package:frankenstein/SRD_globals.dart';
 
-
-
 //final font = Font.ttf(await rootBundle.load("assets/fonts/your_font.ttf"));
 //1038xidk
 //ARGB => 0x(AA)(RR)(GG)(BB)
@@ -464,6 +462,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                           .value] ??
                                                                       0)))
                                                         ])),
+
                                                 //dexterity
                                                 Container(
                                                     height: 63,

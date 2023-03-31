@@ -816,6 +816,7 @@ Future<String> getFile(String filename) async {
   final directory = await getApplicationDocumentsDirectory();
   final file = File('${directory.path}/$filename.json');
   final contents = await file.readAsString();
+
   return contents;
 }
 
