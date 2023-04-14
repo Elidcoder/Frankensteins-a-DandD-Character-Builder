@@ -7,118 +7,78 @@ import 'package:frankenstein/character_globals.dart';
 import 'package:frankenstein/PDFdocs/pdf_final_display.dart';
 import 'dart:math';
 import 'dart:convert';
-import 'dart:io';
 import "package:frankenstein/main.dart";
+
+/*ListView.builder(
+  itemCount: 3,
+  itemBuilder: (BuildContext context, int index) {
+    if (index < 2) {
+      return Column(
+        children: [
+          const SizedBox(
+              height: 30,
+              child: Text("Choose which score(s) to increase by 1",
+                  style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800))),
+          ToggleButtons(
+            selectedColor: const Color.fromARGB(255, 0, 79, 206),
+            color: Colors.blue,
+            fillColor: const Color.fromARGB(162, 0, 255, 8),
+            textStyle: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+            ),
+            borderColor: const Color.fromARGB(255, 7, 26, 239),
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
+            borderWidth: 1.5,
+            onPressed: (int index) {
+              setState(() {
+                if (optionalOnesStates![i][index]) {
+                  abilityScoreIncreases[index] -= 1;
+                } else {
+                  abilityScoreIncreases[index] += 1;
+                  for (int buttonIndex = 0;
+                      buttonIndex < optionalOnesStates![i].length;
+                      buttonIndex++) {
+                    if (optionalOnesStates![i][buttonIndex]) {
+                      optionalOnesStates![i][buttonIndex] = false;
+                      abilityScoreIncreases[buttonIndex] -= 1;
+                    }
+                  }
+                }
+                optionalOnesStates![i][index] = !optionalOnesStates![i][index];
+              });
+            },
+            isSelected: optionalOnesStates![i],
+            children: const <Widget>[
+              Text(" Strength "),
+              Text(" Dexterity "),
+              Text(" Constitution "),
+              Text(" Intelligence "),
+              Text(" Wisdom "),
+              Text(" Charisma ")
+            ],
+          ),
+        ],
+      );
+    } else {
+      return TextField(
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: 'Enter some text',
+        ),
+      );
+    }
+  },
+)*/ 
 
 int abilityScoreCost(int x) {
   if (x > 12) {
     return 2;
   }
   return 1;
-}
-
-//would love to pass in a character class here
-//Many parts remain unfinished but should be completed as their relevent tabs are
-//value, ACLIST, SPEEDMAP, INT, WIS, STR, DEX,CAR,CON,CURRENCY
-Widget? leveGainParser(
-    List<dynamic> x,
-    List<List<dynamic>> ACLIST,
-    Map<String, List<String>> SPEEDMAP,
-    AbilityScore INT,
-    AbilityScore WIS,
-    AbilityScore STR,
-    AbilityScore DEX,
-    AbilityScore CAR,
-    AbilityScore CON,
-    Map<String, int> CURRENCY,
-    Class SELECTEDCLASS,
-    List<String> FEATURESANDTRAITS) {
-  //Levelup(class?)
-  if (x[0] == "Level") {
-    // ("Level", "numb")
-    return Text(
-      "${SELECTEDCLASS.name} Level ${x[1]} choice(s):",
-      style: const TextStyle(
-          fontSize: 25,
-          fontWeight: FontWeight.w700,
-          color: Color.fromARGB(255, 0, 168, 252)),
-    );
-  } else if (x[0] == "Nothing") {
-    // ("Nothing", "numb")
-    return Text(
-      "No choices needed for ${SELECTEDCLASS.name} level ${x[1]}",
-      style: const TextStyle(
-          fontSize: 25,
-          fontWeight: FontWeight.w700,
-          color: Color.fromARGB(255, 0, 168, 252)),
-    );
-  } else if (x[0] == "Bonus") {
-    // ("Bonus","String description")
-    FEATURESANDTRAITS.add(x[1]);
-  } else if (x[0] == "AC") {
-    // ("AC","intelligence + 2", "RQUIREMENT")
-    ACLIST.add([x[1], x[2]]);
-  } /* else if (x[0] == "ACModifier") {
-    //("ACModifier", "2/intelligence", "armour"(requirement))
-    SPEEDLIST.append([x[1], x[2]]);
-  }*/
-  else if (x[0] == "Speed") {
-    //note base speed is given by race
-    //("speed", (w/s/c/f/h), numb/expression")
-    SPEEDMAP[x[1]]?.add(x[2]);
-  } else if (x[0] == "AttributeBoost") {
-    if (x[1] == "Intelligence") {
-      INT.value += int.parse(x[2]);
-    } else if (x[1] == "Strength") {
-      STR.value += int.parse(x[2]);
-    } else if (x[1] == "Constitution") {
-      CON.value += int.parse(x[2]);
-    } else if (x[1] == "Dexterity") {
-      DEX.value += int.parse(x[2]);
-    } else if (x[1] == "Wisdom") {
-      WIS.value += int.parse(x[2]);
-    } else if (x[1] == "charisma") {
-      CAR.value += int.parse(x[2]);
-    }
-    //do this later
-  } /*else if (x[0] == "Equipment") {
-    //note base speed is given by race
-    //("speed", "10", "(w/s/c/f)")
-    SPEEDLIST.append([x[1], x[2]]);
-  }*/
-  else if (x[0] == "Money") {
-    //("Money", "Copper Pieces", "10")
-    CURRENCY[x[1]] = CURRENCY[x[1]]! + int.parse(x[2]);
-  } //deal with these later
-  /*else if (x[0] == "Spell") {
-    ///
-  } else if (x[0] == "ASI") {
-    ("ASI")
-      ASINUMB ++;
-  } else if (x[0] == "Feat") {
-    ("Feat","Any/ featname")
-    if (x[1]== "Any"){
-      FEATNUMB ++;
-    }
-    else{
-      FEATLIST.add(correct feat)
-    }
-      
-  }*/
-  /*else if (x[0] == "Choice") {
-    List<Widget> temporaryWidgetList = [];
-    //("choice", [option].....)
-    /*for (List<dynamic> string in x.sublist(2)) {
-      temporaryWidgetList.add(OutlinedButton(
-        child: Text(string[1]),
-        onPressed: () {
-          // When the button is pressed, add the string to the outputStrings list
-          setState(() => outputStrings.add(string));
-        },
-      ));
-    }*/
-    return Row(children: temporaryWidgetList);
-  }*/
 }
 
 //fix this later
@@ -1523,31 +1483,54 @@ class MainCreateCharacter extends State<CreateACharacter>
     return DefaultTabController(
       length: 11,
       child: Scaffold(
+        backgroundColor: Homepage.backgroundColor,
         appBar: AppBar(
+          foregroundColor: Homepage.textColor,
+          backgroundColor: Homepage.backingColor,
           title: const Center(
             child: Text(
               textAlign: TextAlign.center,
               "Create a character",
-              style: TextStyle(
-                  fontSize: 45,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white),
+              style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700),
             ),
           ),
-          bottom: const TabBar(
+          bottom: TabBar(
             tabs: [
-              Tab(child: Text("Basics")),
-              Tab(child: Text("Race")),
-              Tab(child: Text("Class")),
-              Tab(child: Text("Backround")),
-              Tab(child: Text("Ability scores")),
-              Tab(child: Text("ASI's and Feats")),
-              Tab(child: Text("Spells")),
-              Tab(child: Text("Equipment")),
-              Tab(child: Text("Backstory")),
-              Tab(child: Text("Boons and magic items")),
-              Tab(child: Text("Finishing up")),
+              Tab(
+                  child: Text("Basics",
+                      style: TextStyle(color: Homepage.textColor))),
+              Tab(
+                  child: Text("Race",
+                      style: TextStyle(color: Homepage.textColor))),
+              Tab(
+                  child: Text("Class",
+                      style: TextStyle(color: Homepage.textColor))),
+              Tab(
+                  child: Text("Backround",
+                      style: TextStyle(color: Homepage.textColor))),
+              Tab(
+                  child: Text("Ability scores",
+                      style: TextStyle(color: Homepage.textColor))),
+              Tab(
+                  child: Text("ASI's and Feats",
+                      style: TextStyle(color: Homepage.textColor))),
+              Tab(
+                  child: Text("Spells",
+                      style: TextStyle(color: Homepage.textColor))),
+              Tab(
+                  child: Text("Equipment",
+                      style: TextStyle(color: Homepage.textColor))),
+              Tab(
+                  child: Text("Backstory",
+                      style: TextStyle(color: Homepage.textColor))),
+              Tab(
+                  child: Text("Boons and magic items",
+                      style: TextStyle(color: Homepage.textColor))),
+              Tab(
+                  child: Text("Finishing up",
+                      style: TextStyle(color: Homepage.textColor))),
             ],
+            indicatorColor: Homepage.textColor,
           ),
         ),
         body: TabBarView(children: [
@@ -1566,7 +1549,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                         width: 280,
                         height: 60,
                         decoration: BoxDecoration(
-                          color: Colors.blue,
+                          color: Homepage.backingColor,
                           border: Border.all(
                             color: const Color.fromARGB(255, 7, 26, 239),
                             width: 2,
@@ -1574,14 +1557,14 @@ class MainCreateCharacter extends State<CreateACharacter>
                           borderRadius:
                               const BorderRadius.all(Radius.circular(5)),
                         ),
-                        child: const Center(
+                        child: Center(
                             child: Text(
                           textAlign: TextAlign.center,
                           "Character info",
                           style: TextStyle(
                               fontSize: 35,
                               fontWeight: FontWeight.w700,
-                              color: Colors.white),
+                              color: Homepage.textColor),
                         )),
                       ),
                       const SizedBox(height: 30),
@@ -1591,16 +1574,18 @@ class MainCreateCharacter extends State<CreateACharacter>
                         height: 50,
                         child: TextField(
                             controller: nameEnterController,
-                            cursorColor: Colors.blue,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
+                            cursorColor: Homepage.textColor,
+                            style: TextStyle(
+                              color: Homepage.textColor,
+                            ),
+                            decoration: InputDecoration(
                                 hintText: "Enter character's name",
                                 hintStyle: TextStyle(
                                     fontWeight: FontWeight.w700,
-                                    color: Color.fromARGB(255, 212, 208, 224)),
+                                    color: Homepage.textColor),
                                 filled: true,
-                                fillColor: Color.fromARGB(211, 42, 63, 226),
-                                border: OutlineInputBorder(
+                                fillColor: Homepage.backingColor,
+                                border: const OutlineInputBorder(
                                     borderSide: BorderSide.none,
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(12)))),
@@ -1617,16 +1602,16 @@ class MainCreateCharacter extends State<CreateACharacter>
                           height: 50,
                           child: TextField(
                               controller: playerNameEnterController,
-                              cursorColor: Colors.blue,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
+                              cursorColor: Homepage.textColor,
+                              style: TextStyle(color: Homepage.textColor),
+                              decoration: InputDecoration(
                                   hintText: "Enter the player's name",
                                   hintStyle: TextStyle(
-                                      color:
-                                          Color.fromARGB(255, 212, 208, 224)),
+                                      fontWeight: FontWeight.w700,
+                                      color: Homepage.textColor),
                                   filled: true,
-                                  fillColor: Color.fromARGB(255, 124, 112, 112),
-                                  border: OutlineInputBorder(
+                                  fillColor: Homepage.backingColor,
+                                  border: const OutlineInputBorder(
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
@@ -1642,16 +1627,18 @@ class MainCreateCharacter extends State<CreateACharacter>
                           height: 50,
                           child: TextField(
                               controller: genderEnterController,
-                              cursorColor: Colors.blue,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
+                              cursorColor: Homepage.textColor,
+                              style: TextStyle(
+                                color: Homepage.textColor,
+                              ),
+                              decoration: InputDecoration(
                                   hintText: "Enter the character's gender",
                                   hintStyle: TextStyle(
-                                      color:
-                                          Color.fromARGB(255, 212, 208, 224)),
+                                      fontWeight: FontWeight.w700,
+                                      color: Homepage.textColor),
                                   filled: true,
-                                  fillColor: Color.fromARGB(255, 124, 112, 112),
-                                  border: OutlineInputBorder(
+                                  fillColor: Homepage.backingColor,
+                                  border: const OutlineInputBorder(
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
@@ -1669,6 +1656,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               children: [
                                 //use experience
                                 RadioListTile(
+                                  activeColor: Homepage.backingColor,
                                   title: const Text("Use experience"),
                                   value: "Experience",
                                   groupValue: levellingMethod,
@@ -1710,6 +1698,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                             BorderRadius
                                                                 .circular(12)))))
                                         : RadioListTile(
+                                            activeColor: Homepage.backingColor,
                                             title: const Text("Use levels"),
                                             value: "Levels",
                                             groupValue: levellingMethod,
@@ -1726,6 +1715,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 Container(
                                   child: levellingMethod == "Experience"
                                       ? RadioListTile(
+                                          activeColor: Homepage.backingColor,
                                           title: const Text("Use levels"),
                                           value: "Levels",
                                           groupValue: levellingMethod,
@@ -1736,67 +1726,81 @@ class MainCreateCharacter extends State<CreateACharacter>
                                             });
                                           },
                                         )
-                                      : SizedBox(
-                                          width: 50,
+                                      : Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(5)),
+                                            color: Homepage.backingColor,
+                                          ),
+                                          width: 66,
                                           height: 50,
                                           child: DropdownButton<String>(
-                                            value: characterLevel,
-                                            icon: const Icon(
-                                                Icons.arrow_drop_down,
-                                                color: Color.fromARGB(
-                                                    255, 7, 26, 239)),
-                                            elevation: 16,
-                                            style: const TextStyle(
-                                                color: Colors.blue,
-                                                fontWeight: FontWeight.w800,
-                                                fontSize: 20),
-                                            underline: Container(
-                                              height: 2,
-                                              color: const Color.fromARGB(
-                                                  255, 7, 26, 239),
-                                            ),
-                                            onChanged: (String? value) {
-                                              // This is called when the user selects an item.
-                                              setState(() {
-                                                characterLevel = value!;
-                                              });
-                                            },
-                                            items: [
-                                              "1",
-                                              "2",
-                                              "3",
-                                              "4",
-                                              "5",
-                                              "6",
-                                              "7",
-                                              "8",
-                                              "9",
-                                              "10",
-                                              "11",
-                                              "12",
-                                              "13",
-                                              "14",
-                                              "15",
-                                              "16",
-                                              "17",
-                                              "18",
-                                              "19",
-                                              "20"
-                                            ]
-                                                .where((element) =>
-                                                    int.parse(element) >=
-                                                    int.parse(
-                                                        characterLevel ?? "1"))
-                                                .toList()
-                                                .map<DropdownMenuItem<String>>(
-                                                    (String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child:
-                                                    Center(child: Text(value)),
-                                              );
-                                            }).toList(),
-                                          )),
+                                              value: characterLevel,
+                                              icon: Icon(Icons.arrow_drop_down,
+                                                  color: Homepage.textColor),
+                                              elevation: 16,
+                                              style: TextStyle(
+                                                  color: Homepage.textColor,
+                                                  fontWeight: FontWeight.w800,
+                                                  fontSize: 20),
+                                              underline: Container(
+                                                height: 2,
+                                                color: const Color.fromARGB(
+                                                    255, 7, 26, 239),
+                                              ),
+                                              onChanged: (String? value) {
+                                                // This is called when the user selects an item.
+                                                setState(() {
+                                                  characterLevel = value!;
+                                                });
+                                              },
+                                              items: [
+                                                "1",
+                                                "2",
+                                                "3",
+                                                "4",
+                                                "5",
+                                                "6",
+                                                "7",
+                                                "8",
+                                                "9",
+                                                "10",
+                                                "11",
+                                                "12",
+                                                "13",
+                                                "14",
+                                                "15",
+                                                "16",
+                                                "17",
+                                                "18",
+                                                "19",
+                                                "20"
+                                              ]
+                                                  .where((element) =>
+                                                      int.parse(element) >=
+                                                      int.parse(
+                                                          characterLevel ??
+                                                              "1"))
+                                                  .toList()
+                                                  .map<
+                                                          DropdownMenuItem<
+                                                              String>>(
+                                                      (String value) {
+                                                return DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Center(
+                                                      child: Text("  $value",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              color: Homepage
+                                                                  .textColor))),
+                                                );
+                                              }).toList(),
+                                              dropdownColor:
+                                                  Homepage.backingColor),
+                                        ),
                                 ),
                                 const SizedBox(height: 10),
                               ]))
@@ -1808,7 +1812,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                           width: 325,
                           height: 60,
                           decoration: BoxDecoration(
-                            color: Colors.blue,
+                            color: Homepage.backingColor,
                             border: Border.all(
                               color: const Color.fromARGB(255, 7, 26, 239),
                               width: 2,
@@ -1816,14 +1820,14 @@ class MainCreateCharacter extends State<CreateACharacter>
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(5)),
                           ),
-                          child: const Center(
+                          child: Center(
                               child: Text(
                             textAlign: TextAlign.center,
                             "Build Parameters",
                             style: TextStyle(
                                 fontSize: 35,
                                 fontWeight: FontWeight.w700,
-                                color: Colors.white),
+                                color: Homepage.textColor),
                           )),
                         ),
                         const SizedBox(height: 30),
@@ -1832,7 +1836,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                           child: Column(
                             children: [
                               CheckboxListTile(
-                                title: const Text('Feats in use'),
+                                title: Text("Feats in use",
+                                    style: TextStyle(
+                                        color: Homepage.backingColor)),
                                 value: featsAllowed,
                                 onChanged: (bool? value) {
                                   setState(() {
@@ -1841,63 +1847,84 @@ class MainCreateCharacter extends State<CreateACharacter>
                                     }
                                   });
                                 },
-                                secondary: const Icon(Icons.insert_photo),
+                                activeColor: Homepage.backingColor,
+                                secondary: Icon(Icons.insert_photo,
+                                    color: Homepage.backingColor),
                               ),
                               const SizedBox(height: 15),
                               CheckboxListTile(
-                                title: const Text('Use average for hit dice'),
+                                title: Text("Use average for hit dice",
+                                    style: TextStyle(
+                                        color: Homepage.backingColor)),
                                 value: averageHitPoints,
                                 onChanged: (bool? value) {
                                   setState(() {
                                     averageHitPoints = value;
                                   });
                                 },
-                                secondary: const Icon(Icons.insert_photo),
+                                activeColor: Homepage.backingColor,
+                                secondary: Icon(Icons.insert_photo,
+                                    color: Homepage.backingColor),
                               ),
                               const SizedBox(height: 15),
                               CheckboxListTile(
-                                title: const Text('Allow multiclassing'),
+                                title: Text("Allow multiclassing",
+                                    style: TextStyle(
+                                        color: Homepage.backingColor)),
                                 value: multiclassing,
                                 onChanged: (bool? value) {
                                   setState(() {
                                     multiclassing = value;
                                   });
                                 },
-                                secondary: const Icon(Icons.insert_photo),
+                                activeColor: Homepage.backingColor,
+                                secondary: Icon(Icons.insert_photo,
+                                    color: Homepage.backingColor),
                               ),
                               const SizedBox(height: 15),
                               CheckboxListTile(
-                                title: const Text('Use milestone levelling'),
+                                title: Text("Use milestone levelling",
+                                    style: TextStyle(
+                                        color: Homepage.backingColor)),
                                 value: milestoneLevelling,
                                 onChanged: (bool? value) {
                                   setState(() {
                                     milestoneLevelling = value;
                                   });
                                 },
-                                secondary: const Icon(Icons.insert_photo),
+                                activeColor: Homepage.backingColor,
+                                secondary: Icon(Icons.insert_photo,
+                                    color: Homepage.backingColor),
                               ),
                               const SizedBox(height: 15),
                               CheckboxListTile(
-                                title: const Text('Use created content'),
+                                title: Text("Use created content",
+                                    style: TextStyle(
+                                        color: Homepage.backingColor)),
                                 value: useCustomContent,
                                 onChanged: (bool? value) {
                                   setState(() {
                                     useCustomContent = value;
                                   });
                                 },
-                                secondary: const Icon(Icons.insert_photo),
+                                activeColor: Homepage.backingColor,
+                                secondary: Icon(Icons.insert_photo,
+                                    color: Homepage.backingColor),
                               ),
                               const SizedBox(height: 15),
                               CheckboxListTile(
-                                title:
-                                    const Text('Use optional class features'),
+                                title: Text("Use optional class features",
+                                    style: TextStyle(
+                                        color: Homepage.backingColor)),
                                 value: optionalClassFeatures,
                                 onChanged: (bool? value) {
                                   setState(() {
                                     optionalClassFeatures = value;
                                   });
                                 },
-                                secondary: const Icon(Icons.insert_photo),
+                                activeColor: Homepage.backingColor,
+                                secondary: Icon(Icons.insert_photo,
+                                    color: Homepage.backingColor),
                               ),
                               const SizedBox(height: 8),
                             ],
@@ -1912,7 +1939,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                           width: 325,
                           height: 60,
                           decoration: BoxDecoration(
-                            color: Colors.blue,
+                            color: Homepage.backingColor,
                             border: Border.all(
                               color: const Color.fromARGB(255, 7, 26, 239),
                               width: 2,
@@ -1920,14 +1947,14 @@ class MainCreateCharacter extends State<CreateACharacter>
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(5)),
                           ),
-                          child: const Center(
+                          child: Center(
                               child: Text(
                             textAlign: TextAlign.center,
                             "Rarer Parameters",
                             style: TextStyle(
                                 fontSize: 35,
                                 fontWeight: FontWeight.w700,
-                                color: Colors.white),
+                                color: Homepage.textColor),
                           )),
                         ),
                         const SizedBox(height: 30),
@@ -1936,63 +1963,84 @@ class MainCreateCharacter extends State<CreateACharacter>
                           child: Column(
                             children: [
                               CheckboxListTile(
-                                title: const Text('Use critical role content'),
+                                title: Text("Use critical role content",
+                                    style: TextStyle(
+                                        color: Homepage.backingColor)),
                                 value: criticalRoleContent,
                                 onChanged: (bool? value) {
                                   setState(() {
                                     criticalRoleContent = value;
                                   });
                                 },
-                                secondary: const Icon(Icons.insert_photo),
+                                activeColor: Homepage.backingColor,
+                                secondary: Icon(Icons.insert_photo,
+                                    color: Homepage.backingColor),
                               ),
                               const SizedBox(height: 15),
                               CheckboxListTile(
-                                title: const Text('Use encumberance rules'),
+                                title: Text("Use encumberance rules",
+                                    style: TextStyle(
+                                        color: Homepage.backingColor)),
                                 value: encumberanceRules,
                                 onChanged: (bool? value) {
                                   setState(() {
                                     encumberanceRules = value;
                                   });
                                 },
-                                secondary: const Icon(Icons.insert_photo),
+                                activeColor: Homepage.backingColor,
+                                secondary: Icon(Icons.insert_photo,
+                                    color: Homepage.backingColor),
                               ),
                               const SizedBox(height: 15),
                               CheckboxListTile(
-                                title: const Text("Incude coins' weights"),
+                                title: Text("Incude coins' weights",
+                                    style: TextStyle(
+                                        color: Homepage.backingColor)),
                                 value: includeCoinsForWeight,
                                 onChanged: (bool? value) {
                                   setState(() {
                                     includeCoinsForWeight = value;
                                   });
                                 },
-                                secondary: const Icon(Icons.insert_photo),
+                                activeColor: Homepage.backingColor,
+                                secondary: Icon(Icons.insert_photo,
+                                    color: Homepage.backingColor),
                               ),
                               const SizedBox(height: 15),
                               CheckboxListTile(
-                                title: const Text('Use UA content'),
+                                title: Text("Use UA content",
+                                    style: TextStyle(
+                                        color: Homepage.backingColor)),
                                 value: unearthedArcanaContent,
                                 onChanged: (bool? value) {
                                   setState(() {
                                     unearthedArcanaContent = value;
                                   });
                                 },
-                                secondary: const Icon(Icons.insert_photo),
+                                activeColor: Homepage.backingColor,
+                                secondary: Icon(Icons.insert_photo,
+                                    color: Homepage.backingColor),
                               ),
                               const SizedBox(height: 15),
                               CheckboxListTile(
-                                title: const Text('Allow firearms'),
+                                title: Text("Allow firearms",
+                                    style: TextStyle(
+                                        color: Homepage.backingColor)),
                                 value: firearmsUsable,
                                 onChanged: (bool? value) {
                                   setState(() {
                                     firearmsUsable = value;
                                   });
                                 },
-                                secondary: const Icon(Icons.insert_photo),
+                                activeColor: Homepage.backingColor,
+                                secondary: Icon(Icons.insert_photo,
+                                    color: Homepage.backingColor),
                               ),
                               const SizedBox(height: 15),
                               CheckboxListTile(
-                                title:
-                                    const Text('Give an extra feat at lvl 1'),
+                                title: Text("Give an extra feat at lvl 1",
+                                    style: TextStyle(
+                                        color: Homepage.backingColor)),
                                 value: extraFeatAtLevel1,
                                 onChanged: (bool? value) {
                                   setState(() {
@@ -2009,7 +2057,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                     }
                                   });
                                 },
-                                secondary: const Icon(Icons.insert_photo),
+                                activeColor: Homepage.backingColor,
+                                secondary: Icon(Icons.insert_photo,
+                                    color: Homepage.backingColor),
                               ),
                               const SizedBox(height: 8),
                             ],
@@ -2058,7 +2108,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                   });
                 },
                 value: initialRace.name,
-                icon: const Icon(Icons.arrow_downward),
+                icon: Icon(Icons.arrow_downward, color: Homepage.textColor),
                 items: RACELIST.map<DropdownMenuItem<String>>((Race value) {
                   return DropdownMenuItem<String>(
                     value: value.name,
@@ -2066,11 +2116,11 @@ class MainCreateCharacter extends State<CreateACharacter>
                   );
                 }).toList(),
                 elevation: 2,
-                style: const TextStyle(
-                    color: Colors.blue, fontWeight: FontWeight.w700),
+                style: TextStyle(
+                    color: Homepage.textColor, fontWeight: FontWeight.w700),
                 underline: Container(
                   height: 1,
-                  color: Colors.deepPurpleAccent,
+                  color: Homepage.backingColor,
                 ),
               ),
               if (initialRace.subRaces != null)
@@ -2109,16 +2159,18 @@ class MainCreateCharacter extends State<CreateACharacter>
                       ?.map<DropdownMenuItem<String>>((Subrace value) {
                     return DropdownMenuItem<String>(
                       value: value.name,
-                      child: Text(value.name),
+                      child: Text(value.name,
+                          style: TextStyle(color: Homepage.textColor)),
                     );
                   }).toList(),
                   elevation: 2,
-                  style: const TextStyle(
-                      color: Colors.blue, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                      color: Homepage.textColor, fontWeight: FontWeight.w700),
                   underline: Container(
                     height: 1,
-                    color: Colors.deepPurpleAccent,
+                    color: Homepage.backingColor,
                   ),
+                  dropdownColor: Homepage.backgroundColor,
                 ),
 
               //codebook
@@ -2158,6 +2210,7 @@ class MainCreateCharacter extends State<CreateACharacter>
           DefaultTabController(
             length: 2,
             child: Scaffold(
+              backgroundColor: Homepage.backgroundColor,
               floatingActionButton: FloatingActionButton(
                 tooltip: "Increase character level by 1",
                 foregroundColor: Homepage.textColor,
@@ -2172,6 +2225,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                 ),
               ),
               appBar: AppBar(
+                foregroundColor: Homepage.textColor,
+                backgroundColor: Homepage.backingColor,
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -2199,13 +2254,17 @@ class MainCreateCharacter extends State<CreateACharacter>
                             textAlign: TextAlign.center)
                   ],
                 ),
-                bottom: const TabBar(
+                bottom: TabBar(
                   tabs: [
-                    Tab(child: Text("Choose your classes")),
+                    Tab(
+                        child: Text("Choose your classes",
+                            style: TextStyle(color: Homepage.textColor))),
                     Tab(
                         child: Text(
-                            "Make your selections for each level in your class")),
+                            "Make your selections for each level in your class",
+                            style: TextStyle(color: Homepage.textColor))),
                   ],
+                  indicatorColor: Homepage.textColor,
                 ),
               ),
               body: TabBarView(children: [
@@ -2225,7 +2284,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               : 225,
                           height: 168,
                           decoration: BoxDecoration(
-                            color: Colors.blue,
+                            color: Homepage.backingColor,
                             border: Border.all(
                               color: const Color.fromARGB(255, 7, 26, 239),
                               width: 2,
@@ -2236,41 +2295,41 @@ class MainCreateCharacter extends State<CreateACharacter>
                           child: Column(
                             children: [
                               Text(CLASSLIST[index].name,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 30,
                                       fontWeight: FontWeight.w700,
-                                      color: Colors.white)),
+                                      color: Homepage.textColor)),
                               Text("Class type: ${CLASSLIST[index].classType}",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
-                                      color: Colors.white)),
+                                      color: Homepage.textColor)),
                               (["Martial", "Third Caster"]
                                       .contains(CLASSLIST[index].classType))
                                   ? Text(
                                       "Main ability: ${CLASSLIST[index].mainOrSpellcastingAbility}",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w600,
-                                          color: Colors.white))
+                                          color: Homepage.textColor))
                                   : Text(
                                       "Spellcasting ability: ${CLASSLIST[index].mainOrSpellcastingAbility}",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w600,
-                                          color: Colors.white)),
+                                          color: Homepage.textColor)),
                               Text(
                                   "Hit die: D${CLASSLIST[index].maxHitDiceRoll}",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
-                                      color: Colors.white)),
+                                      color: Homepage.textColor)),
                               Text(
                                   "Saves: ${CLASSLIST[index].savingThrowProficiencies.join(",")}",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
-                                      color: Colors.white)),
+                                      color: Homepage.textColor)),
                               const SizedBox(height: 7),
                               OutlinedButton(
                                   style: OutlinedButton.styleFrom(
@@ -2309,20 +2368,18 @@ class MainCreateCharacter extends State<CreateACharacter>
                                             .isEmpty) {
                                           widgetsInPlay.add(Text(
                                             "No choices needed for ${CLASSLIST[index].name} level ${CLASSLIST[index].gainAtEachLevel[levelsPerClass[index]][0][1]}",
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.w700,
-                                                color: Color.fromARGB(
-                                                    255, 0, 168, 252)),
+                                                color: Homepage.backingColor),
                                           ));
                                         } else {
                                           widgetsInPlay.add(Text(
                                             "${CLASSLIST[index].name} Level ${CLASSLIST[index].gainAtEachLevel[levelsPerClass[index]][0][1]} choice(s):",
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.w700,
-                                                color: Color.fromARGB(
-                                                    255, 0, 168, 252)),
+                                                color: Homepage.backingColor),
                                           ));
                                         }
                                         for (List<dynamic> x
@@ -2903,7 +2960,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               height: 110,
                               width: 116,
                               decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Homepage.backingColor,
                                 border: Border.all(
                                   color: const Color.fromARGB(255, 7, 26, 239),
                                   width: 2,
@@ -3048,7 +3105,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               width: 90,
                               height: 80,
                               decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Homepage.backingColor,
                                 border: Border.all(
                                   color: const Color.fromARGB(255, 7, 26, 239),
                                   width: 2,
@@ -3088,7 +3145,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               height: 110,
                               width: 116,
                               decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Homepage.backingColor,
                                 border: Border.all(
                                   color: const Color.fromARGB(255, 7, 26, 239),
                                   width: 2,
@@ -3234,7 +3291,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               width: 90,
                               height: 80,
                               decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Homepage.backingColor,
                                 border: Border.all(
                                   color: const Color.fromARGB(255, 7, 26, 239),
                                   width: 2,
@@ -3274,7 +3331,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               height: 110,
                               width: 116,
                               decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Homepage.backingColor,
                                 border: Border.all(
                                   color: const Color.fromARGB(255, 7, 26, 239),
                                   width: 2,
@@ -3420,7 +3477,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               width: 90,
                               height: 80,
                               decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Homepage.backingColor,
                                 border: Border.all(
                                   color: const Color.fromARGB(255, 7, 26, 239),
                                   width: 2,
@@ -3460,7 +3517,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               height: 110,
                               width: 116,
                               decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Homepage.backingColor,
                                 border: Border.all(
                                   color: const Color.fromARGB(255, 7, 26, 239),
                                   width: 2,
@@ -3606,7 +3663,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               width: 90,
                               height: 80,
                               decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Homepage.backingColor,
                                 border: Border.all(
                                   color: const Color.fromARGB(255, 7, 26, 239),
                                   width: 2,
@@ -3646,7 +3703,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               height: 110,
                               width: 116,
                               decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Homepage.backingColor,
                                 border: Border.all(
                                   color: const Color.fromARGB(255, 7, 26, 239),
                                   width: 2,
@@ -3791,7 +3848,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               width: 90,
                               height: 80,
                               decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Homepage.backingColor,
                                 border: Border.all(
                                   color: const Color.fromARGB(255, 7, 26, 239),
                                   width: 2,
@@ -3831,7 +3888,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               height: 110,
                               width: 116,
                               decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Homepage.backingColor,
                                 border: Border.all(
                                   color: const Color.fromARGB(255, 7, 26, 239),
                                   width: 2,
@@ -3976,7 +4033,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               width: 90,
                               height: 80,
                               decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Homepage.backingColor,
                                 border: Border.all(
                                   color: const Color.fromARGB(255, 7, 26, 239),
                                   width: 2,
@@ -4026,7 +4083,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         height: 132,
                                         width: 160,
                                         decoration: BoxDecoration(
-                                          color: Colors.blue,
+                                          color: Homepage.backingColor,
                                           border: Border.all(
                                             color: const Color.fromARGB(
                                                 255, 7, 26, 239),
@@ -4101,7 +4158,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         height: 132,
                                         width: 160,
                                         decoration: BoxDecoration(
-                                          color: Colors.blue,
+                                          color: Homepage.backingColor,
                                           border: Border.all(
                                             color: const Color.fromARGB(
                                                 255, 7, 26, 239),
@@ -4182,7 +4239,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         height: 132,
                                         width: 160,
                                         decoration: BoxDecoration(
-                                          color: Colors.blue,
+                                          color: Homepage.backingColor,
                                           border: Border.all(
                                             color: const Color.fromARGB(
                                                 255, 7, 26, 239),
@@ -4257,7 +4314,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         height: 132,
                                         width: 160,
                                         decoration: BoxDecoration(
-                                          color: Colors.blue,
+                                          color: Homepage.backingColor,
                                           border: Border.all(
                                             color: const Color.fromARGB(
                                                 255, 7, 26, 239),
@@ -4338,7 +4395,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         height: 132,
                                         width: 160,
                                         decoration: BoxDecoration(
-                                          color: Colors.blue,
+                                          color: Homepage.backingColor,
                                           border: Border.all(
                                             color: const Color.fromARGB(
                                                 255, 7, 26, 239),
@@ -4413,7 +4470,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         height: 132,
                                         width: 160,
                                         decoration: BoxDecoration(
-                                          color: Colors.blue,
+                                          color: Homepage.backingColor,
                                           border: Border.all(
                                             color: const Color.fromARGB(
                                                 255, 7, 26, 239),

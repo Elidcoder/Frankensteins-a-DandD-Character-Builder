@@ -90,14 +90,14 @@ class MainMakeASpell extends State<MakeASpell> {
         appBar: AppBar(
           foregroundColor: Homepage.textColor,
           backgroundColor: Homepage.backingColor,
-          title: const Center(
+          title: Center(
             child: Text(
               textAlign: TextAlign.center,
               "Create a Spell",
               style: TextStyle(
                   fontSize: 45,
                   fontWeight: FontWeight.w700,
-                  color: Colors.white),
+                  color: Homepage.textColor),
             ),
           ),
         ),
@@ -151,44 +151,53 @@ class MainMakeASpell extends State<MakeASpell> {
                                           ? Homepage.backingColor
                                           : Colors.red)),
                               DropdownButton<String>(
-                                value: spellSchool,
-                                icon: const Icon(Icons.arrow_drop_down,
-                                    color: Color.fromARGB(255, 7, 26, 239)),
-                                elevation: 16,
-                                style: TextStyle(
+                                  value: spellSchool,
+                                  icon: Icon(Icons.arrow_drop_down,
+                                      color: Homepage.backingColor),
+                                  elevation: 16,
+                                  style: TextStyle(
+                                      color: Homepage.textColor,
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 20),
+                                  underline: Container(
+                                    height: 2,
                                     color: Homepage.backingColor,
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 20),
-                                underline: Container(
-                                  height: 2,
-                                  color: const Color.fromARGB(255, 7, 26, 239),
-                                ),
-                                onChanged: (String? value) {
-                                  // This is called when the user selects an item.
-                                  setState(() {
-                                    spellSchool = value!;
-                                  });
-                                },
-                                items: [
-                                  "Abjuration",
-                                  "Conjuration",
-                                  "Divination",
-                                  "Enchantment",
-                                  "Evocation",
-                                  "Illusion",
-                                  "Necromancy",
-                                  "Transmutation"
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: SizedBox(
-                                        width: 100,
-                                        child: FittedBox(
-                                            fit: BoxFit.scaleDown,
-                                            child: Text(value))),
-                                  );
-                                }).toList(),
-                              )
+                                  ),
+                                  onChanged: (String? value) {
+                                    // This is called when the user selects an item.
+                                    setState(() {
+                                      spellSchool = value!;
+                                    });
+                                  },
+                                  items: [
+                                    "Abjuration",
+                                    "Conjuration",
+                                    "Divination",
+                                    "Enchantment",
+                                    "Evocation",
+                                    "Illusion",
+                                    "Necromancy",
+                                    "Transmutation"
+                                  ].map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(5)),
+                                            color: Homepage.backingColor,
+                                          ),
+                                          width: 100,
+                                          child: FittedBox(
+                                              child: Text(value,
+                                                  style: TextStyle(
+                                                      color: Homepage
+                                                          .textColor)))),
+                                    );
+                                  }).toList(),
+                                  dropdownColor: Homepage.backingColor)
                             ])),
                       ],
                     ),
@@ -218,6 +227,7 @@ class MainMakeASpell extends State<MakeASpell> {
                             });
                           }),
                     ),
+
                     SizedBox(
                         width: 620,
                         child: Row(
@@ -232,73 +242,86 @@ class MainMakeASpell extends State<MakeASpell> {
                                             ? Homepage.backingColor
                                             : Colors.red)),
                                 DropdownButton<String>(
-                                  value: (level == null) ? null : "$level",
-                                  icon: const Icon(Icons.arrow_drop_down,
-                                      color: Color.fromARGB(255, 7, 26, 239)),
-                                  elevation: 16,
-                                  style: TextStyle(
+                                    value: (level == null) ? null : "$level",
+                                    icon: Icon(Icons.arrow_drop_down,
+                                        color: Homepage.backingColor),
+                                    elevation: 16,
+                                    style: TextStyle(
+                                        color: Homepage.backingColor,
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 20),
+                                    underline: Container(
+                                      height: 2,
                                       color: Homepage.backingColor,
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 20),
-                                  underline: Container(
-                                    height: 2,
-                                    color:
-                                        const Color.fromARGB(255, 7, 26, 239),
-                                  ),
-                                  onChanged: (String? value) {
-                                    // This is called when the user selects an item.
-                                    setState(() {
-                                      level = int.parse(value!);
-                                    });
-                                  },
-                                  items: [
-                                    "0",
-                                    "1",
-                                    "2",
-                                    "3",
-                                    "4",
-                                    "5",
-                                    "6",
-                                    "7",
-                                    "8",
-                                    "9"
-                                  ].map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: SizedBox(
-                                          width: 100,
-                                          child: FittedBox(
-                                              fit: BoxFit.scaleDown,
-                                              child: Text(value))),
-                                    );
-                                  }).toList(),
-                                ),
+                                    ),
+                                    onChanged: (String? value) {
+                                      // This is called when the user selects an item.
+                                      setState(() {
+                                        level = int.parse(value!);
+                                      });
+                                    },
+                                    items: [
+                                      "0",
+                                      "1",
+                                      "2",
+                                      "3",
+                                      "4",
+                                      "5",
+                                      "6",
+                                      "7",
+                                      "8",
+                                      "9"
+                                    ].map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(5)),
+                                              color: Homepage.backingColor,
+                                            ),
+                                            width: 40,
+                                            height: 27,
+                                            child: FittedBox(
+                                                child: Text(value,
+                                                    style: TextStyle(
+                                                        color: Homepage
+                                                            .textColor)))),
+                                      );
+                                    }).toList(),
+                                    dropdownColor: Homepage.backingColor),
                               ]),
                             ),
                             Expanded(
                                 child: CheckboxListTile(
-                              title: const Text(" Somatic Component"),
-                              value: somatic,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  somatic = value;
-                                });
-                              },
-                              secondary: const Icon(Icons.waving_hand),
-                            )),
+                                    title: Text(" Somatic Component",
+                                        style: TextStyle(
+                                            color: Homepage.backingColor)),
+                                    value: somatic,
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        somatic = value;
+                                      });
+                                    },
+                                    activeColor: Homepage.backingColor,
+                                    secondary: Icon(Icons.auto_stories_outlined,
+                                        color: Homepage.backingColor))),
                             Expanded(
                               child: CheckboxListTile(
-                                title: const Text(" Verbal Component"),
+                                title: Text(" Verbal Component",
+                                    style: TextStyle(
+                                        color: Homepage.backingColor)),
                                 value: verbal,
                                 onChanged: (bool? value) {
                                   setState(() {
                                     verbal = value;
                                   });
                                 },
-                                secondary: const Icon(
-                                  Icons.record_voice_over,
-                                ),
+                                activeColor: Homepage.backingColor,
+                                secondary: Icon(Icons.auto_stories_outlined,
+                                    color: Homepage.backingColor),
                               ),
                             )
                           ],
@@ -477,16 +500,18 @@ class MainMakeASpell extends State<MakeASpell> {
                             ),
                             Expanded(
                                 child: CheckboxListTile(
-                              title: const Text(" Ritual "),
+                              title: Text(" Ritual ",
+                                  style:
+                                      TextStyle(color: Homepage.backingColor)),
                               value: ritual,
                               onChanged: (bool? value) {
                                 setState(() {
                                   ritual = value;
                                 });
                               },
-                              secondary: const Icon(
-                                Icons.auto_stories_outlined,
-                              ),
+                              activeColor: Homepage.backingColor,
+                              secondary: Icon(Icons.auto_stories_outlined,
+                                  color: Homepage.backingColor),
                             )),
                           ],
                         )),

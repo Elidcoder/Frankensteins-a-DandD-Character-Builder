@@ -193,7 +193,7 @@ class MainHomepage extends State<Homepage> {
                         width: 307,
                         child: ListView.separated(
                           separatorBuilder: (BuildContext context, int index) {
-                            return SizedBox(height: 15);
+                            return const SizedBox(height: 15);
                           },
                           itemCount: COLORLIST.reversed.toList().length,
                           itemBuilder: (BuildContext context, int index) {
@@ -376,36 +376,20 @@ class MainHomepage extends State<Homepage> {
                       final Map<String, dynamic> json =
                           jsonDecode(jsonString ?? "");
                       List<dynamic> colors = json["Colours"];
-                      List<Color> selectedColours = [
-                        Homepage.textColor,
-                        Homepage.backingColor,
-                        Homepage.backgroundColor
-                      ];
-                      if (!COLORLIST.any((list) =>
-                          list[0] == Homepage.textColor &&
-                          list[1] == Homepage.backingColor &&
-                          list[2] == Homepage.backgroundColor)) {
-                        colors.add([
-                          colorToJson(Homepage.textColor),
-                          colorToJson(Homepage.backingColor),
-                          colorToJson(Homepage.backgroundColor)
-                        ]);
-                      }
-                      //if the colour was chosen at some point in the past
-                      else {
-                        colors.removeWhere((list) =>
-                            list.toString() ==
-                            [
-                              colorToJson(Homepage.textColor),
-                              colorToJson(Homepage.backingColor),
-                              colorToJson(Homepage.backgroundColor)
-                            ].toString());
-                        colors.add([
-                          colorToJson(Homepage.textColor),
-                          colorToJson(Homepage.backingColor),
-                          colorToJson(Homepage.backgroundColor)
-                        ]);
-                      }
+
+                      colors.removeWhere((list) =>
+                          list.toString() ==
+                          [
+                            colorToJson(Homepage.textColor),
+                            colorToJson(Homepage.backingColor),
+                            colorToJson(Homepage.backgroundColor)
+                          ].toString());
+                      colors.add([
+                        colorToJson(Homepage.textColor),
+                        colorToJson(Homepage.backingColor),
+                        colorToJson(Homepage.backgroundColor)
+                      ]);
+
                       writeJsonToFile(json, "userContent");
                       updateGlobals();
                     });
