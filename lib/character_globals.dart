@@ -2,7 +2,6 @@ import "package:flutter/material.dart";
 import 'package:frankenstein/SRD_globals.dart';
 import "dart:collection";
 import "dart:convert";
-import "dart:io";
 
 class AbilityScore {
   int value;

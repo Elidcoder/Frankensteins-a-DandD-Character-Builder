@@ -72,7 +72,7 @@ import "package:frankenstein/main.dart";
       );
     }
   },
-)*/ 
+)*/
 
 int abilityScoreCost(int x) {
   if (x > 12) {
@@ -173,7 +173,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                     backgroundColor:
                         (spellSchoolsSelected.contains("Abjuration")
                             ? Colors.blue
-                            : Colors.grey)),
+                            : const Color.fromARGB(247, 56, 53, 52))),
                 onPressed: () {
                   setState(() {
                     if (spellSchoolsSelected.contains("Abjuration")) {
@@ -193,7 +193,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                     backgroundColor:
                         (spellSchoolsSelected.contains("Conjuration")
                             ? Colors.blue
-                            : Colors.grey)),
+                            : const Color.fromARGB(247, 56, 53, 52))),
                 onPressed: () {
                   setState(() {
                     if (spellSchoolsSelected.contains("Conjuration")) {
@@ -213,7 +213,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                     backgroundColor:
                         (spellSchoolsSelected.contains("Divination")
                             ? Colors.blue
-                            : Colors.grey)),
+                            : const Color.fromARGB(247, 56, 53, 52))),
                 onPressed: () {
                   setState(() {
                     if (spellSchoolsSelected.contains("Divination")) {
@@ -233,7 +233,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                     backgroundColor:
                         (spellSchoolsSelected.contains("Enchantment")
                             ? Colors.blue
-                            : Colors.grey)),
+                            : const Color.fromARGB(247, 56, 53, 52))),
                 onPressed: () {
                   setState(() {
                     if (spellSchoolsSelected.contains("Enchantment")) {
@@ -255,7 +255,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                 style: OutlinedButton.styleFrom(
                     backgroundColor: (spellSchoolsSelected.contains("Evocation")
                         ? Colors.blue
-                        : Colors.grey)),
+                        : const Color.fromARGB(247, 56, 53, 52))),
                 onPressed: () {
                   setState(() {
                     if (spellSchoolsSelected.contains("Evocation")) {
@@ -274,7 +274,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                 style: OutlinedButton.styleFrom(
                     backgroundColor: (spellSchoolsSelected.contains("Illusion")
                         ? Colors.blue
-                        : Colors.grey)),
+                        : const Color.fromARGB(247, 56, 53, 52))),
                 onPressed: () {
                   setState(() {
                     if (spellSchoolsSelected.contains("Illusion")) {
@@ -294,7 +294,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                     backgroundColor:
                         (spellSchoolsSelected.contains("Necromancy")
                             ? Colors.blue
-                            : Colors.grey)),
+                            : const Color.fromARGB(247, 56, 53, 52))),
                 onPressed: () {
                   setState(() {
                     if (spellSchoolsSelected.contains("Necromancy")) {
@@ -314,7 +314,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                     backgroundColor:
                         (spellSchoolsSelected.contains("Transmutation")
                             ? Colors.blue
-                            : Colors.grey)),
+                            : const Color.fromARGB(247, 56, 53, 52))),
                 onPressed: () {
                   setState(() {
                     if (spellSchoolsSelected.contains("Transmutation")) {
@@ -340,7 +340,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                     style: OutlinedButton.styleFrom(
                         backgroundColor: (spellLevelsSelected.contains(0)
                             ? Colors.blue
-                            : Colors.grey)),
+                            : const Color.fromARGB(247, 56, 53, 52))),
                     onPressed: () {
                       setState(() {
                         if (spellLevelsSelected.contains(0)) {
@@ -359,7 +359,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                     style: OutlinedButton.styleFrom(
                         backgroundColor: (spellLevelsSelected.contains(1)
                             ? Colors.blue
-                            : Colors.grey)),
+                            : const Color.fromARGB(247, 56, 53, 52))),
                     onPressed: () {
                       setState(() {
                         if (spellLevelsSelected.contains(1)) {
@@ -378,7 +378,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                     style: OutlinedButton.styleFrom(
                         backgroundColor: (spellLevelsSelected.contains(2)
                             ? Colors.blue
-                            : Colors.grey)),
+                            : const Color.fromARGB(247, 56, 53, 52))),
                     onPressed: () {
                       setState(() {
                         if (spellLevelsSelected.contains(2)) {
@@ -397,7 +397,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                     style: OutlinedButton.styleFrom(
                         backgroundColor: (spellLevelsSelected.contains(3)
                             ? Colors.blue
-                            : Colors.grey)),
+                            : const Color.fromARGB(247, 56, 53, 52))),
                     onPressed: () {
                       setState(() {
                         if (spellLevelsSelected.contains(3)) {
@@ -416,7 +416,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                     style: OutlinedButton.styleFrom(
                         backgroundColor: (spellLevelsSelected.contains(4)
                             ? Colors.blue
-                            : Colors.grey)),
+                            : const Color.fromARGB(247, 56, 53, 52))),
                     onPressed: () {
                       setState(() {
                         if (spellLevelsSelected.contains(4)) {
@@ -438,7 +438,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
               height: 140,
               width: 300,
               decoration: BoxDecoration(
-                color: Colors.grey,
+                color: const Color.fromARGB(247, 56, 53, 52),
                 border: Border.all(
                   color: Colors.black,
                   width: 3,
@@ -457,7 +457,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                             ? Colors.green
                             : (allSpellsSelected
                                     .contains(allAvailableSpells[index])
-                                ? Colors.grey
+                                ? const Color.fromARGB(247, 56, 53, 52)
                                 : Colors.white))),
                     onPressed: () {
                       setState(
@@ -496,7 +496,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                     style: OutlinedButton.styleFrom(
                         backgroundColor: (spellLevelsSelected.contains(5)
                             ? Colors.blue
-                            : Colors.grey)),
+                            : const Color.fromARGB(247, 56, 53, 52))),
                     onPressed: () {
                       setState(() {
                         if (spellLevelsSelected.contains(5)) {
@@ -515,7 +515,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                     style: OutlinedButton.styleFrom(
                         backgroundColor: (spellLevelsSelected.contains(6)
                             ? Colors.blue
-                            : Colors.grey)),
+                            : const Color.fromARGB(247, 56, 53, 52))),
                     onPressed: () {
                       setState(() {
                         if (spellLevelsSelected.contains(6)) {
@@ -534,7 +534,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                     style: OutlinedButton.styleFrom(
                         backgroundColor: (spellLevelsSelected.contains(7)
                             ? Colors.blue
-                            : Colors.grey)),
+                            : const Color.fromARGB(247, 56, 53, 52))),
                     onPressed: () {
                       setState(() {
                         if (spellLevelsSelected.contains(7)) {
@@ -553,7 +553,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                     style: OutlinedButton.styleFrom(
                         backgroundColor: (spellLevelsSelected.contains(8)
                             ? Colors.blue
-                            : Colors.grey)),
+                            : const Color.fromARGB(247, 56, 53, 52))),
                     onPressed: () {
                       setState(() {
                         if (spellLevelsSelected.contains(8)) {
@@ -572,7 +572,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                     style: OutlinedButton.styleFrom(
                         backgroundColor: (spellLevelsSelected.contains(9)
                             ? Colors.blue
-                            : Colors.grey)),
+                            : const Color.fromARGB(247, 56, 53, 52))),
                     onPressed: () {
                       setState(() {
                         if (spellLevelsSelected.contains(9)) {
@@ -621,7 +621,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                           backgroundColor:
                               (castingTimesSelected.contains("Action")
                                   ? Colors.blue
-                                  : Colors.grey)),
+                                  : const Color.fromARGB(247, 56, 53, 52))),
                       onPressed: () {
                         setState(() {
                           if (castingTimesSelected.contains("Action")) {
@@ -641,7 +641,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                           backgroundColor:
                               (castingTimesSelected.contains("Bonus Action")
                                   ? Colors.blue
-                                  : Colors.grey)),
+                                  : const Color.fromARGB(247, 56, 53, 52))),
                       onPressed: () {
                         setState(() {
                           if (castingTimesSelected.contains("Bonus Action")) {
@@ -661,7 +661,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                           backgroundColor:
                               (castingTimesSelected.contains("Reaction")
                                   ? Colors.blue
-                                  : Colors.grey)),
+                                  : const Color.fromARGB(247, 56, 53, 52))),
                       onPressed: () {
                         setState(() {
                           if (castingTimesSelected.contains("Reaction")) {
@@ -684,7 +684,7 @@ class _SpellSelectionsState extends State<SpellSelections> {
                           backgroundColor:
                               (castingTimesSelected.contains("Other")
                                   ? Colors.blue
-                                  : Colors.grey)),
+                                  : const Color.fromARGB(247, 56, 53, 52))),
                       onPressed: () {
                         setState(() {
                           if (castingTimesSelected.contains("Other")) {
@@ -701,8 +701,9 @@ class _SpellSelectionsState extends State<SpellSelections> {
                               fontWeight: FontWeight.w700))),
                   OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                          backgroundColor:
-                              (ritualsSelected ? Colors.blue : Colors.grey)),
+                          backgroundColor: (ritualsSelected
+                              ? Colors.blue
+                              : const Color.fromARGB(247, 56, 53, 52))),
                       onPressed: () {
                         setState(() {
                           ritualsSelected = !ritualsSelected;
@@ -1062,424 +1063,6 @@ class MainCreateCharacter extends State<CreateACharacter>
     BuildContext context,
   ) {
     super.build(context);
-    final mystery1slist = [
-      const SizedBox(
-          height: 30,
-          child: Text("Choose which score(s) to increase by 1",
-              style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w800))),
-      ToggleButtons(
-        selectedColor: const Color.fromARGB(255, 0, 79, 206),
-        color: Colors.blue,
-        fillColor: const Color.fromARGB(162, 0, 255, 8),
-        textStyle: const TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.w700,
-        ),
-        borderColor: const Color.fromARGB(255, 7, 26, 239),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        borderWidth: 1.5,
-        onPressed: (int index) {
-          setState(() {
-            if (optionalOnesStates![0][index]) {
-              abilityScoreIncreases[index] -= 1;
-            } else {
-              abilityScoreIncreases[index] += 1;
-              for (int buttonIndex = 0;
-                  buttonIndex < optionalOnesStates![0].length;
-                  buttonIndex++) {
-                if (optionalOnesStates![0][buttonIndex]) {
-                  optionalOnesStates![0][buttonIndex] = false;
-                  abilityScoreIncreases[buttonIndex] -= 1;
-                }
-              }
-            }
-            optionalOnesStates![0][index] = !optionalOnesStates![0][index];
-          });
-        },
-        isSelected: optionalOnesStates![0],
-        children: const <Widget>[
-          Text(" Strength "),
-          Text(" Dexterity "),
-          Text(" Constitution "),
-          Text(" Intelligence "),
-          Text(" Wisdom "),
-          Text(" Charisma ")
-        ],
-      ),
-      const SizedBox(height: 5),
-      ToggleButtons(
-        selectedColor: const Color.fromARGB(255, 0, 79, 206),
-        color: Colors.blue,
-        fillColor: const Color.fromARGB(162, 0, 255, 8),
-        textStyle: const TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.w700,
-        ),
-        borderColor: const Color.fromARGB(255, 7, 26, 239),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        borderWidth: 1.5,
-        onPressed: (int index) {
-          setState(() {
-            if (optionalOnesStates![1][index]) {
-              abilityScoreIncreases[index] -= 1;
-            } else {
-              abilityScoreIncreases[index] += 1;
-              for (int buttonIndex = 0;
-                  buttonIndex < optionalOnesStates![1].length;
-                  buttonIndex++) {
-                if (optionalOnesStates![1][buttonIndex]) {
-                  optionalOnesStates![1][buttonIndex] = false;
-                  abilityScoreIncreases[buttonIndex] -= 1;
-                }
-              }
-            }
-            optionalOnesStates![1][index] = !optionalOnesStates![1][index];
-          });
-        },
-        isSelected: optionalOnesStates![1],
-        children: const <Widget>[
-          Text(" Strength "),
-          Text(" Dexterity "),
-          Text(" Constitution "),
-          Text(" Intelligence "),
-          Text(" Wisdom "),
-          Text(" Charisma ")
-        ],
-      ),
-      const SizedBox(height: 5),
-      ToggleButtons(
-        selectedColor: const Color.fromARGB(255, 0, 79, 206),
-        color: Colors.blue,
-        fillColor: const Color.fromARGB(162, 0, 255, 8),
-        textStyle: const TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.w700,
-        ),
-        borderColor: const Color.fromARGB(255, 7, 26, 239),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        borderWidth: 1.5,
-        onPressed: (int index) {
-          setState(() {
-            if (optionalOnesStates![2][index]) {
-              abilityScoreIncreases[index] -= 1;
-            } else {
-              abilityScoreIncreases[index] += 1;
-              for (int buttonIndex = 0;
-                  buttonIndex < optionalOnesStates![2].length;
-                  buttonIndex++) {
-                if (optionalOnesStates![2][buttonIndex]) {
-                  optionalOnesStates![2][buttonIndex] = false;
-                  abilityScoreIncreases[buttonIndex] -= 1;
-                }
-              }
-            }
-            optionalOnesStates![2][index] = !optionalOnesStates![2][index];
-          });
-        },
-        isSelected: optionalOnesStates![2],
-        children: const <Widget>[
-          Text(" Strength "),
-          Text(" Dexterity "),
-          Text(" Constitution "),
-          Text(" Intelligence "),
-          Text(" Wisdom "),
-          Text(" Charisma ")
-        ],
-      ),
-      const SizedBox(height: 5),
-      ToggleButtons(
-        selectedColor: const Color.fromARGB(255, 0, 79, 206),
-        color: Colors.blue,
-        fillColor: const Color.fromARGB(162, 0, 255, 8),
-        textStyle: const TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.w700,
-        ),
-        borderColor: const Color.fromARGB(255, 7, 26, 239),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        borderWidth: 1.5,
-        onPressed: (int index) {
-          setState(() {
-            if (optionalOnesStates![3][index]) {
-              abilityScoreIncreases[index] -= 1;
-            } else {
-              abilityScoreIncreases[index] += 1;
-              for (int buttonIndex = 0;
-                  buttonIndex < optionalOnesStates![3].length;
-                  buttonIndex++) {
-                if (optionalOnesStates![3][buttonIndex]) {
-                  optionalOnesStates![3][buttonIndex] = false;
-                  abilityScoreIncreases[buttonIndex] -= 1;
-                }
-              }
-            }
-            optionalOnesStates![3][index] = !optionalOnesStates![3][index];
-          });
-        },
-        isSelected: optionalOnesStates![3],
-        children: const <Widget>[
-          Text(" Strength "),
-          Text(" Dexterity "),
-          Text(" Constitution "),
-          Text(" Intelligence "),
-          Text(" Wisdom "),
-          Text(" Charisma ")
-        ],
-      ),
-      const SizedBox(height: 5),
-      ToggleButtons(
-        selectedColor: const Color.fromARGB(255, 0, 79, 206),
-        color: Colors.blue,
-        fillColor: const Color.fromARGB(162, 0, 255, 8),
-        textStyle: const TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.w700,
-        ),
-        borderColor: const Color.fromARGB(255, 7, 26, 239),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        borderWidth: 1.5,
-        onPressed: (int index) {
-          setState(() {
-            if (optionalOnesStates![4][index]) {
-              abilityScoreIncreases[index] -= 1;
-            } else {
-              abilityScoreIncreases[index] += 1;
-              for (int buttonIndex = 0;
-                  buttonIndex < optionalOnesStates![4].length;
-                  buttonIndex++) {
-                if (optionalOnesStates![4][buttonIndex]) {
-                  optionalOnesStates![4][buttonIndex] = false;
-                  abilityScoreIncreases[buttonIndex] -= 1;
-                }
-              }
-            }
-            optionalOnesStates![4][index] = !optionalOnesStates![4][index];
-          });
-        },
-        isSelected: optionalOnesStates![4],
-        children: const <Widget>[
-          Text(" Strength "),
-          Text(" Dexterity "),
-          Text(" Constitution "),
-          Text(" Intelligence "),
-          Text(" Wisdom "),
-          Text(" Charisma ")
-        ],
-      ),
-      const SizedBox(height: 5),
-    ];
-    final mystery2slist = [
-      const SizedBox(
-          height: 30,
-          child: Text("Choose which score(s) to increase by 2",
-              style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w800))),
-      ToggleButtons(
-        selectedColor: const Color.fromARGB(255, 0, 79, 206),
-        color: Colors.blue,
-        fillColor: const Color.fromARGB(162, 0, 255, 8),
-        textStyle: const TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.w700,
-        ),
-        borderColor: const Color.fromARGB(255, 7, 26, 239),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        borderWidth: 1.5,
-        onPressed: (int index) {
-          setState(() {
-            if (optionalTwosStates![0][index]) {
-              abilityScoreIncreases[index] -= 2;
-            } else {
-              abilityScoreIncreases[index] += 2;
-              for (int buttonIndex = 0;
-                  buttonIndex < optionalTwosStates![0].length;
-                  buttonIndex++) {
-                if (optionalTwosStates![0][buttonIndex]) {
-                  optionalTwosStates![0][buttonIndex] = false;
-                  abilityScoreIncreases[buttonIndex] -= 2;
-                }
-              }
-            }
-            optionalTwosStates![0][index] = !optionalTwosStates![0][index];
-          });
-        },
-        isSelected: optionalTwosStates![0],
-        children: const <Widget>[
-          Text(" Strength "),
-          Text(" Dexterity "),
-          Text(" Constitution "),
-          Text(" Intelligence "),
-          Text(" Wisdom "),
-          Text(" Charisma ")
-        ],
-      ),
-      const SizedBox(height: 5),
-      ToggleButtons(
-        selectedColor: const Color.fromARGB(255, 0, 79, 206),
-        color: Colors.blue,
-        fillColor: const Color.fromARGB(162, 0, 255, 8),
-        textStyle: const TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.w700,
-        ),
-        borderColor: const Color.fromARGB(255, 7, 26, 239),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        borderWidth: 1.5,
-        onPressed: (int index) {
-          setState(() {
-            if (optionalTwosStates![1][index]) {
-              abilityScoreIncreases[index] -= 2;
-            } else {
-              abilityScoreIncreases[index] += 2;
-              for (int buttonIndex = 0;
-                  buttonIndex < optionalTwosStates![1].length;
-                  buttonIndex++) {
-                if (optionalTwosStates![1][buttonIndex]) {
-                  optionalTwosStates![1][buttonIndex] = false;
-                  abilityScoreIncreases[buttonIndex] -= 2;
-                }
-              }
-            }
-            optionalTwosStates![1][index] = !optionalTwosStates![1][index];
-          });
-        },
-        isSelected: optionalTwosStates![1],
-        children: const <Widget>[
-          Text(" Strength "),
-          Text(" Dexterity "),
-          Text(" Constitution "),
-          Text(" Intelligence "),
-          Text(" Wisdom "),
-          Text(" Charisma ")
-        ],
-      ),
-      const SizedBox(height: 5),
-      ToggleButtons(
-        selectedColor: const Color.fromARGB(255, 0, 79, 206),
-        color: Colors.blue,
-        fillColor: const Color.fromARGB(162, 0, 255, 8),
-        textStyle: const TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.w700,
-        ),
-        borderColor: const Color.fromARGB(255, 7, 26, 239),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        borderWidth: 1.5,
-        onPressed: (int index) {
-          setState(() {
-            if (optionalTwosStates![2][index]) {
-              abilityScoreIncreases[index] -= 2;
-            } else {
-              abilityScoreIncreases[index] += 2;
-              for (int buttonIndex = 0;
-                  buttonIndex < optionalTwosStates![2].length;
-                  buttonIndex++) {
-                if (optionalTwosStates![2][buttonIndex]) {
-                  optionalTwosStates![2][buttonIndex] = false;
-                  abilityScoreIncreases[buttonIndex] -= 2;
-                }
-              }
-            }
-            optionalTwosStates![2][index] = !optionalTwosStates![2][index];
-          });
-        },
-        isSelected: optionalTwosStates![2],
-        children: const <Widget>[
-          Text(" Strength "),
-          Text(" Dexterity "),
-          Text(" Constitution "),
-          Text(" Intelligence "),
-          Text(" Wisdom "),
-          Text(" Charisma ")
-        ],
-      ),
-      const SizedBox(height: 5),
-      ToggleButtons(
-        selectedColor: const Color.fromARGB(255, 0, 79, 206),
-        color: Colors.blue,
-        fillColor: const Color.fromARGB(162, 0, 255, 8),
-        textStyle: const TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.w700,
-        ),
-        borderColor: const Color.fromARGB(255, 7, 26, 239),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        borderWidth: 1.5,
-        onPressed: (int index) {
-          setState(() {
-            if (optionalTwosStates![3][index]) {
-              abilityScoreIncreases[index] -= 2;
-            } else {
-              abilityScoreIncreases[index] += 2;
-              for (int buttonIndex = 0;
-                  buttonIndex < optionalTwosStates![3].length;
-                  buttonIndex++) {
-                if (optionalTwosStates![3][buttonIndex]) {
-                  optionalTwosStates![3][buttonIndex] = false;
-                  abilityScoreIncreases[buttonIndex] -= 2;
-                }
-              }
-            }
-            optionalTwosStates![3][index] = !optionalTwosStates![3][index];
-          });
-        },
-        isSelected: optionalTwosStates![3],
-        children: const <Widget>[
-          Text(" Strength "),
-          Text(" Dexterity "),
-          Text(" Constitution "),
-          Text(" Intelligence "),
-          Text(" Wisdom "),
-          Text(" Charisma ")
-        ],
-      ),
-      const SizedBox(height: 5),
-      ToggleButtons(
-        selectedColor: const Color.fromARGB(255, 0, 79, 206),
-        color: Colors.blue,
-        fillColor: const Color.fromARGB(162, 0, 255, 8),
-        textStyle: const TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.w700,
-        ),
-        borderColor: const Color.fromARGB(255, 7, 26, 239),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        borderWidth: 1.5,
-        onPressed: (int index) {
-          setState(() {
-            if (optionalTwosStates![4][index]) {
-              abilityScoreIncreases[index] -= 2;
-            } else {
-              abilityScoreIncreases[index] += 2;
-              for (int buttonIndex = 0;
-                  buttonIndex < optionalTwosStates![4].length;
-                  buttonIndex++) {
-                if (optionalTwosStates![4][buttonIndex]) {
-                  optionalTwosStates![4][buttonIndex] = false;
-                  abilityScoreIncreases[buttonIndex] -= 2;
-                }
-              }
-            }
-            optionalTwosStates![4][index] = !optionalTwosStates![4][index];
-          });
-        },
-        isSelected: optionalTwosStates![4],
-        children: const <Widget>[
-          Text(" Strength "),
-          Text(" Dexterity "),
-          Text(" Constitution "),
-          Text(" Intelligence "),
-          Text(" Wisdom "),
-          Text(" Charisma ")
-        ],
-      )
-    ];
-
     return DefaultTabController(
       length: 11,
       child: Scaffold(
@@ -1657,7 +1240,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 //use experience
                                 RadioListTile(
                                   activeColor: Homepage.backingColor,
-                                  title: const Text("Use experience"),
+                                  title: Text("Use experience",
+                                      style: TextStyle(
+                                          color: Homepage.backingColor)),
                                   value: "Experience",
                                   groupValue: levellingMethod,
                                   onChanged: (value) {
@@ -1699,7 +1284,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                                 .circular(12)))))
                                         : RadioListTile(
                                             activeColor: Homepage.backingColor,
-                                            title: const Text("Use levels"),
+                                            title: Text("Use levels",
+                                                style: TextStyle(
+                                                    color:
+                                                        Homepage.backingColor)),
                                             value: "Levels",
                                             groupValue: levellingMethod,
                                             onChanged: (value) {
@@ -1716,7 +1304,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   child: levellingMethod == "Experience"
                                       ? RadioListTile(
                                           activeColor: Homepage.backingColor,
-                                          title: const Text("Use levels"),
+                                          title: Text("Use levels",
+                                              style: TextStyle(
+                                                  color:
+                                                      Homepage.backingColor)),
                                           value: "Levels",
                                           groupValue: levellingMethod,
                                           onChanged: (value) {
@@ -1733,9 +1324,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     Radius.circular(5)),
                                             color: Homepage.backingColor,
                                           ),
-                                          width: 66,
-                                          height: 50,
+                                          height: 45,
                                           child: DropdownButton<String>(
+                                              alignment: Alignment.center,
                                               value: characterLevel,
                                               icon: Icon(Icons.arrow_drop_down,
                                                   color: Homepage.textColor),
@@ -1744,11 +1335,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   color: Homepage.textColor,
                                                   fontWeight: FontWeight.w800,
                                                   fontSize: 20),
-                                              underline: Container(
-                                                height: 2,
-                                                color: const Color.fromARGB(
-                                                    255, 7, 26, 239),
-                                              ),
+                                              underline: const SizedBox(),
                                               onChanged: (String? value) {
                                                 // This is called when the user selects an item.
                                                 setState(() {
@@ -1789,13 +1376,17 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                       (String value) {
                                                 return DropdownMenuItem<String>(
                                                   value: value,
-                                                  child: Center(
-                                                      child: Text("  $value",
+                                                  child: Align(
+                                                      child: Text(value,
                                                           textAlign:
                                                               TextAlign.center,
                                                           style: TextStyle(
-                                                              color: Homepage
-                                                                  .textColor))),
+                                                            color: Homepage
+                                                                .textColor,
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .underline,
+                                                          ))),
                                                 );
                                               }).toList(),
                                               dropdownColor:
@@ -2054,6 +1645,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         extraFeatAtLevel1 = true;
                                         numberOfRemainingFeatOrASIs++;
                                       }
+                                    } else {
+                                      extraFeatAtLevel1 =
+                                          !(extraFeatAtLevel1 ?? false);
                                     }
                                   });
                                 },
@@ -2075,135 +1669,289 @@ class MainCreateCharacter extends State<CreateACharacter>
           //race
           Column(
             children: [
-              const SizedBox(height: 20),
-              DropdownButton<String>(
-                onChanged: (String? value) {
-                  // This is called when the user selects an item.
-                  setState(() {
-                    //efficient this up at some point so ASI[i] isn't accessed twice
-                    //can actually speed this up but only if asi isn't used elsewhere
-                    abilityScoreIncreases = [0, 0, 0, 0, 0, 0];
-                    initialRace = RACELIST.singleWhere((x) => x.name == value);
-                    subraceExample = initialRace.subRaces?.first;
-                    for (int i = 0; i < 6; i++) {
-                      abilityScoreIncreases[i] +=
-                          initialRace.raceScoreIncrease[i] +
-                              ((subraceExample?.subRaceScoreIncrease[i]) ?? 0);
-
-                      optionalOnesStates = [
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false]
-                      ];
-                      optionalTwosStates = [
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false]
-                      ];
-                    }
-                  });
-                },
-                value: initialRace.name,
-                icon: Icon(Icons.arrow_downward, color: Homepage.textColor),
-                items: RACELIST.map<DropdownMenuItem<String>>((Race value) {
-                  return DropdownMenuItem<String>(
-                    value: value.name,
-                    child: Text(value.name),
-                  );
-                }).toList(),
-                elevation: 2,
-                style: TextStyle(
-                    color: Homepage.textColor, fontWeight: FontWeight.w700),
-                underline: Container(
-                  height: 1,
-                  color: Homepage.backingColor,
-                ),
-              ),
-              if (initialRace.subRaces != null)
-                DropdownButton<String>(
-                  onChanged: (String? value) {
-                    // This is called when the user selects an item.
-                    setState(() {
-                      abilityScoreIncreases = [0, 0, 0, 0, 0, 0];
-
-                      subraceExample = initialRace.subRaces
-                          ?.singleWhere((x) => x.name == value);
-                      for (int i = 0; i < 6; i++) {
-                        abilityScoreIncreases[i] +=
-                            (subraceExample?.subRaceScoreIncrease[i] ?? 0) +
-                                initialRace.raceScoreIncrease[i];
-                      }
-                      optionalOnesStates = [
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false]
-                      ];
-                      optionalTwosStates = [
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false]
-                      ];
-                    });
-                  },
-                  value: subraceExample?.name,
-                  icon: const Icon(Icons.arrow_downward),
-                  items: initialRace.subRaces
-                      ?.map<DropdownMenuItem<String>>((Subrace value) {
-                    return DropdownMenuItem<String>(
-                      value: value.name,
-                      child: Text(value.name,
-                          style: TextStyle(color: Homepage.textColor)),
-                    );
-                  }).toList(),
-                  elevation: 2,
-                  style: TextStyle(
-                      color: Homepage.textColor, fontWeight: FontWeight.w700),
-                  underline: Container(
-                    height: 1,
+              const SizedBox(height: 34),
+              SizedBox(
+                  height: 35,
+                  child: Text("Select a race:",
+                      style: TextStyle(
+                          color: Homepage.backingColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800))),
+              Container(
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
                     color: Homepage.backingColor,
                   ),
-                  dropdownColor: Homepage.backgroundColor,
-                ),
+                  height: 45,
+                  child: DropdownButton<String>(
+                    alignment: Alignment.center,
+                    onChanged: (String? value) {
+                      // This is called when the user selects an item.
+                      setState(() {
+                        //efficient this up at some point so ASI[i] isn't accessed twice
+                        //can actually speed this up but only if asi isn't used elsewhere
+                        abilityScoreIncreases = [0, 0, 0, 0, 0, 0];
+                        initialRace =
+                            RACELIST.singleWhere((x) => x.name == value);
+                        subraceExample = initialRace.subRaces?.first;
+                        for (int i = 0; i < 6; i++) {
+                          abilityScoreIncreases[i] += initialRace
+                                  .raceScoreIncrease[i] +
+                              ((subraceExample?.subRaceScoreIncrease[i]) ?? 0);
 
-              //codebook
-              if (initialRace.mystery1S + (subraceExample?.mystery1S ?? 0) != 0)
-                Expanded(
-                  child: Column(
-                    children: mystery1slist.sublist(
-                        0,
-                        2 *
-                                (initialRace.mystery1S +
-                                    (subraceExample?.mystery1S ?? 0)) +
-                            1),
-                  ),
-                ),
-              initialRace.mystery2S + (subraceExample?.mystery2S ?? 0) == 0
-                  ? const SizedBox(height: 2)
-                  : Expanded(
-                      child: Column(
-                        children: mystery2slist.sublist(
-                            0,
-                            2 *
-                                    (initialRace.mystery2S +
-                                        (subraceExample?.mystery2S ?? 0)) +
-                                1),
-                      ),
+                          optionalOnesStates = [
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false]
+                          ];
+                          optionalTwosStates = [
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false]
+                          ];
+                        }
+                      });
+                    },
+                    value: initialRace.name,
+                    icon: Icon(Icons.arrow_downward, color: Homepage.textColor),
+                    items: RACELIST.map<DropdownMenuItem<String>>((Race value) {
+                      return DropdownMenuItem<String>(
+                        value: value.name,
+                        child: Align(
+                            child: Text(value.name,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Homepage.textColor,
+                                  decoration: TextDecoration.underline,
+                                ))),
+                      );
+                    }).toList(),
+                    dropdownColor: Homepage.backingColor,
+                    elevation: 2,
+                    style: TextStyle(
+                        color: Homepage.textColor, fontWeight: FontWeight.w700),
+                    underline: const SizedBox(),
+                  )),
+              const SizedBox(height: 10),
+              if (initialRace.subRaces != null)
+                SizedBox(
+                    height: 25,
+                    child: Text("Select a subrace:",
+                        style: TextStyle(
+                            color: Homepage.backingColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w800))),
+              if (initialRace.subRaces != null) const SizedBox(height: 10),
+              if (initialRace.subRaces != null)
+                Container(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: Homepage.backingColor,
                     ),
+                    child: DropdownButton<String>(
+                      alignment: Alignment.center,
+                      value: subraceExample?.name,
+                      icon: Icon(Icons.arrow_drop_down,
+                          color: Homepage.textColor),
+                      elevation: 16,
+                      style: TextStyle(
+                          color: Homepage.textColor,
+                          fontWeight: FontWeight.w700),
+                      underline: const SizedBox(),
+                      onChanged: (String? value) {
+                        // This is called when the user selects an item.
+                        setState(() {
+                          abilityScoreIncreases = [0, 0, 0, 0, 0, 0];
 
-              /*
-              Expanded(
-                child: Column(
-                  children: [Text("List: $optionalOnesStates")],
-                ),
-              ),*/
+                          subraceExample = initialRace.subRaces
+                              ?.singleWhere((x) => x.name == value);
+                          for (int i = 0; i < 6; i++) {
+                            abilityScoreIncreases[i] +=
+                                (subraceExample?.subRaceScoreIncrease[i] ?? 0) +
+                                    initialRace.raceScoreIncrease[i];
+                          }
+                          optionalOnesStates = [
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false]
+                          ];
+                          optionalTwosStates = [
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false],
+                            [false, false, false, false, false, false]
+                          ];
+                        });
+                      },
+                      items: initialRace.subRaces
+                          ?.map<DropdownMenuItem<String>>((Subrace value) {
+                        return DropdownMenuItem<String>(
+                          value: value.name,
+                          child: Align(
+                              child: Text(value.name,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Homepage.textColor,
+                                    decoration: TextDecoration.underline,
+                                  ))),
+                        );
+                      }).toList(),
+                      dropdownColor: Homepage.backingColor,
+                    )),
+              if (initialRace.subRaces != null) const SizedBox(height: 10),
+              if (initialRace.mystery1S + (subraceExample?.mystery1S ?? 0) != 0)
+                SizedBox(
+                    height: 40,
+                    child: Text("Choose which score(s) to increase by 1",
+                        style: TextStyle(
+                            color: Homepage.backingColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w800))),
+              if (initialRace.mystery1S + (subraceExample?.mystery1S ?? 0) != 0)
+                SizedBox(
+                    height: (initialRace.mystery1S +
+                                (subraceExample?.mystery1S ?? 0)) *
+                            62 -
+                        10,
+                    child: ListView.separated(
+                      itemCount: (initialRace.mystery1S +
+                          (subraceExample?.mystery1S ?? 0)),
+                      separatorBuilder: (BuildContext context, int index) =>
+                          Divider(
+                        height: 10.0, // amount of pixels
+                        color: Homepage.backgroundColor,
+                      ),
+                      itemBuilder: (BuildContext context, int choiceNumber) {
+                        return Align(
+                            alignment: Alignment.center,
+                            child: ToggleButtons(
+                              selectedColor: Homepage.textColor,
+                              color: Homepage.backingColor,
+                              fillColor: Homepage.backingColor,
+                              textStyle: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              borderColor: Homepage.backingColor,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(20)),
+                              borderWidth: 1.5,
+                              onPressed: (int index) {
+                                setState(() {
+                                  if (optionalOnesStates![choiceNumber]
+                                      [index]) {
+                                    abilityScoreIncreases[index] -= 1;
+                                  } else {
+                                    abilityScoreIncreases[index] += 1;
+                                    for (int buttonIndex = choiceNumber;
+                                        buttonIndex <
+                                            optionalOnesStates![choiceNumber]
+                                                .length;
+                                        buttonIndex++) {
+                                      if (optionalOnesStates![choiceNumber]
+                                          [buttonIndex]) {
+                                        optionalOnesStates![choiceNumber]
+                                            [buttonIndex] = false;
+                                        abilityScoreIncreases[buttonIndex] -= 1;
+                                      }
+                                    }
+                                  }
+                                  optionalOnesStates![choiceNumber][index] =
+                                      !optionalOnesStates![choiceNumber][index];
+                                });
+                              },
+                              isSelected: optionalOnesStates![choiceNumber],
+                              children: const <Widget>[
+                                Text(" Strength "),
+                                Text(" Dexterity "),
+                                Text(" Constitution "),
+                                Text(" Intelligence "),
+                                Text(" Wisdom "),
+                                Text(" Charisma ")
+                              ],
+                            ));
+                      },
+                    )),
+              if (initialRace.mystery2S + (subraceExample?.mystery2S ?? 0) != 0)
+                SizedBox(
+                    height: 40,
+                    child: Text("Choose which score(s) to increase by 2",
+                        style: TextStyle(
+                            color: Homepage.backingColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w800))),
+              if (initialRace.mystery2S + (subraceExample?.mystery2S ?? 0) != 0)
+                SizedBox(
+                    height: (initialRace.mystery2S +
+                                (subraceExample?.mystery2S ?? 0)) *
+                            62 -
+                        10,
+                    child: ListView.separated(
+                      itemCount: (initialRace.mystery2S +
+                          (subraceExample?.mystery2S ?? 0)),
+                      separatorBuilder: (BuildContext context, int index) =>
+                          Divider(
+                        height: 10.0, // amount of pixels
+                        color: Homepage.backgroundColor,
+                      ),
+                      itemBuilder: (BuildContext context, int choiceNumber) {
+                        return Align(
+                            alignment: Alignment.center,
+                            child: ToggleButtons(
+                              selectedColor: Homepage.textColor,
+                              color: Homepage.backingColor,
+                              fillColor: Homepage.backingColor,
+                              textStyle: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              borderColor: Homepage.backingColor,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(20)),
+                              borderWidth: 1.5,
+                              onPressed: (int index) {
+                                setState(() {
+                                  if (optionalTwosStates![choiceNumber]
+                                      [index]) {
+                                    abilityScoreIncreases[index] -= 1;
+                                  } else {
+                                    abilityScoreIncreases[index] += 1;
+                                    for (int buttonIndex = choiceNumber;
+                                        buttonIndex <
+                                            optionalTwosStates![choiceNumber]
+                                                .length;
+                                        buttonIndex++) {
+                                      if (optionalTwosStates![choiceNumber]
+                                          [buttonIndex]) {
+                                        optionalTwosStates![choiceNumber]
+                                            [buttonIndex] = false;
+                                        abilityScoreIncreases[buttonIndex] -= 1;
+                                      }
+                                    }
+                                  }
+                                  optionalTwosStates![choiceNumber][index] =
+                                      !optionalTwosStates![choiceNumber][index];
+                                });
+                              },
+                              isSelected: optionalTwosStates![choiceNumber],
+                              children: const <Widget>[
+                                Text(" Strength "),
+                                Text(" Dexterity "),
+                                Text(" Constitution "),
+                                Text(" Intelligence "),
+                                Text(" Wisdom "),
+                                Text(" Charisma ")
+                              ],
+                            ));
+                      },
+                    )),
             ],
           ),
           //class
@@ -2240,7 +1988,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                             textAlign: TextAlign.center)),
                     classList.isNotEmpty
                         ? Text(
-                            "Classes and your levels in them: ${CLASSLIST.asMap().entries.where((entry) => levelsPerClass[entry.key] != 0).map((entry) => "${entry.value.name}: ${levelsPerClass[entry.key]}").join(", ")}",
+                            "Classes and your levels in them: ${CLASSLIST.asMap().entries.where((entry) => levelsPerClass[entry.key] != 0).map((entry) => "${entry.value.name} - ${levelsPerClass[entry.key]}").join(", ")}",
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
@@ -2268,283 +2016,296 @@ class MainCreateCharacter extends State<CreateACharacter>
                 ),
               ),
               body: TabBarView(children: [
-                SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Wrap(
-                    spacing: 8.0,
-                    runSpacing: 8.0,
-                    alignment: WrapAlignment.center,
-                    children:
-                        // This is the list of buttons
-                        List.generate(CLASSLIST.length, (index) {
-                      return Container(
-                          width: (["Martial", "Third Caster"]
-                                  .contains(CLASSLIST[index].classType))
-                              ? 210
-                              : 225,
-                          height: 168,
-                          decoration: BoxDecoration(
-                            color: Homepage.backingColor,
-                            border: Border.all(
-                              color: const Color.fromARGB(255, 7, 26, 239),
-                              width: 2,
-                            ),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(5)),
-                          ),
-                          child: Column(
-                            children: [
-                              Text(CLASSLIST[index].name,
-                                  style: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.w700,
-                                      color: Homepage.textColor)),
-                              Text("Class type: ${CLASSLIST[index].classType}",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                      color: Homepage.textColor)),
-                              (["Martial", "Third Caster"]
+                Container(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Wrap(
+                        spacing: 8.0,
+                        runSpacing: 8.0,
+                        alignment: WrapAlignment.center,
+                        children:
+                            // This is the list of buttons
+                            List.generate(CLASSLIST.length, (index) {
+                          return Container(
+                              width: (["Martial", "Third Caster"]
                                       .contains(CLASSLIST[index].classType))
-                                  ? Text(
-                                      "Main ability: ${CLASSLIST[index].mainOrSpellcastingAbility}",
+                                  ? 210
+                                  : 225,
+                              height: 170,
+                              decoration: BoxDecoration(
+                                color: Homepage.backingColor,
+                                border: Border.all(
+                                  color: const Color.fromARGB(255, 7, 26, 239),
+                                  width: 2,
+                                ),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                              ),
+                              child: Column(
+                                children: [
+                                  Text(CLASSLIST[index].name,
                                       style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: Homepage.textColor))
-                                  : Text(
-                                      "Spellcasting ability: ${CLASSLIST[index].mainOrSpellcastingAbility}",
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.w700,
+                                          color: Homepage.textColor)),
+                                  Text(
+                                      "Class type: ${CLASSLIST[index].classType}",
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w600,
                                           color: Homepage.textColor)),
-                              Text(
-                                  "Hit die: D${CLASSLIST[index].maxHitDiceRoll}",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                      color: Homepage.textColor)),
-                              Text(
-                                  "Saves: ${CLASSLIST[index].savingThrowProficiencies.join(",")}",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                      color: Homepage.textColor)),
-                              const SizedBox(height: 7),
-                              OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                    backgroundColor: (int.parse(
-                                                    characterLevel ?? "1") <=
-                                                levelsPerClass.reduce(
-                                                    (value, element) =>
-                                                        value + element) ||
-                                            (!multiclassingPossible(
-                                                CLASSLIST[index])))
-                                        ? const Color.fromARGB(247, 56, 53, 52)
-                                        : const Color.fromARGB(
-                                            150, 61, 33, 243),
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(4))),
-                                    side: const BorderSide(
-                                        width: 3,
-                                        color:
-                                            Color.fromARGB(255, 10, 126, 54)),
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      if (int.parse(characterLevel ?? "1") >
-                                              classList.length &&
-                                          (multiclassingPossible(
-                                              CLASSLIST[index]))) {
-                                        classList.add(CLASSLIST[index].name);
+                                  (["Martial", "Third Caster"]
+                                          .contains(CLASSLIST[index].classType))
+                                      ? Text(
+                                          "Main ability: ${CLASSLIST[index].mainOrSpellcastingAbility}",
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                              color: Homepage.textColor))
+                                      : Text(
+                                          "Spellcasting ability: ${CLASSLIST[index].mainOrSpellcastingAbility}",
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                              color: Homepage.textColor)),
+                                  Text(
+                                      "Hit die: D${CLASSLIST[index].maxHitDiceRoll}",
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                          color: Homepage.textColor)),
+                                  Text(
+                                      "Saves: ${CLASSLIST[index].savingThrowProficiencies.join(",")}",
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                          color: Homepage.textColor)),
+                                  const SizedBox(height: 7),
+                                  ElevatedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        backgroundColor:
+                                            (int.parse(characterLevel ?? "1") <=
+                                                        levelsPerClass.reduce(
+                                                            (value, element) =>
+                                                                value +
+                                                                element) ||
+                                                    (!multiclassingPossible(
+                                                        CLASSLIST[index])))
+                                                ? const Color.fromARGB(
+                                                    247, 56, 53, 52)
+                                                : Homepage.backingColor,
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(4))),
+                                        side: const BorderSide(
+                                            width: 3,
+                                            color: Color.fromARGB(
+                                                255, 10, 126, 54)),
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          if (int.parse(characterLevel ?? "1") >
+                                                  classList.length &&
+                                              (multiclassingPossible(
+                                                  CLASSLIST[index]))) {
+                                            classList
+                                                .add(CLASSLIST[index].name);
 
-                                        if ((CLASSLIST[index]
-                                                .gainAtEachLevel[
-                                                    levelsPerClass[index]]
-                                                .where((element) =>
-                                                    element[0] == "Choice")
-                                                .toList())
-                                            .isEmpty) {
-                                          widgetsInPlay.add(Text(
-                                            "No choices needed for ${CLASSLIST[index].name} level ${CLASSLIST[index].gainAtEachLevel[levelsPerClass[index]][0][1]}",
-                                            style: TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w700,
-                                                color: Homepage.backingColor),
-                                          ));
-                                        } else {
-                                          widgetsInPlay.add(Text(
-                                            "${CLASSLIST[index].name} Level ${CLASSLIST[index].gainAtEachLevel[levelsPerClass[index]][0][1]} choice(s):",
-                                            style: TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w700,
-                                                color: Homepage.backingColor),
-                                          ));
-                                        }
-                                        for (List<dynamic> x
-                                            in CLASSLIST[index].gainAtEachLevel[
-                                                levelsPerClass[index]]) {
-                                          if (x[0] == "Choice") {
-                                            widgetsInPlay.add(SizedBox(
-                                                height: 80,
-                                                child: ChoiceRow(
-                                                  x: x.sublist(1),
-                                                  allSelected: allSelected,
-                                                )));
-                                          } else {
-                                            levelGainParser(
-                                                x, CLASSLIST[index]);
-                                          }
-                                        }
-
-                                        //level 1 bonuses
-                                        if (classList.length == 1) {
-                                          if (extraFeatAtLevel1 ?? false) {
-                                            numberOfRemainingFeatOrASIs++;
-                                          }
-                                          maxHealth +=
-                                              CLASSLIST[index].maxHitDiceRoll;
-                                          //gain saving throw proficiencies
-                                          savingThrowProficiencies =
-                                              CLASSLIST[index]
-                                                  .savingThrowProficiencies;
-
-                                          //equipmentSelectedFromChoices =
-                                          //CLASSLIST[index].equipmentOptions;
-                                          equipmentSelectedFromChoices.addAll(
-                                              CLASSLIST[index]
-                                                  .equipmentOptions);
-                                          classSkillChoices = List.filled(
-                                              CLASSLIST[index]
-                                                  .optionsForSkillProficiencies
-                                                  .length,
-                                              false);
-                                          widgetsInPlay.addAll([
-                                            Text(
-                                                "Pick ${(CLASSLIST[index].numberOfSkillChoices)} skill(s) to gain proficiency in",
-                                                style: const TextStyle(
-                                                    color: Colors.blue,
-                                                    fontSize: 18,
-                                                    fontWeight:
-                                                        FontWeight.w700)),
-                                            const SizedBox(
-                                              height: 7,
-                                            ),
-                                            ToggleButtons(
-                                                selectedColor:
-                                                    const Color.fromARGB(
-                                                        255, 0, 79, 206),
-                                                color: Colors.blue,
-                                                textStyle: const TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 18,
-                                                    color: Colors.white),
-                                                //color: Color.fromARGB(255, 15, 124, 174)
-                                                fillColor: const Color.fromARGB(
-                                                    162, 0, 255, 8),
-                                                borderColor:
-                                                    const Color.fromARGB(
-                                                        255, 7, 26, 239),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(20)),
-                                                borderWidth: 1.5,
-                                                onPressed: (int subIndex) {
-                                                  setState(() {
-                                                    //bsckgroundskillchoices
-                                                    if (classSkillChoices
-                                                            .where((b) => b)
-                                                            .length <
-                                                        CLASSLIST[index]
-                                                            .numberOfSkillChoices) {
-                                                      classSkillChoices[
-                                                              subIndex] =
-                                                          !classSkillChoices[
-                                                              subIndex];
-                                                    } else {
-                                                      if (classSkillChoices[
-                                                          subIndex]) {
-                                                        classSkillChoices[
-                                                            subIndex] = false;
-                                                      }
-                                                    }
-                                                  });
-                                                },
-                                                isSelected: classSkillChoices,
-                                                children: CLASSLIST[index]
-                                                    .optionsForSkillProficiencies
-                                                    .map((x) => Text(" $x "))
-                                                    .toList()),
-                                          ]);
-
-                                          //run first level functions := proficiencies, equipment health bonus
-                                        } else {
-                                          if (averageHitPoints ?? false) {
-                                            maxHealth += ((CLASSLIST[index]
-                                                        .maxHitDiceRoll) /
-                                                    2)
-                                                .ceil();
-                                          } else {
-                                            maxHealth += 1 +
-                                                (Random().nextDouble() *
-                                                        CLASSLIST[index]
-                                                            .maxHitDiceRoll)
-                                                    .floor();
-                                          }
-                                        }
-
-                                        //check if it's a spellcaster
-                                        if (CLASSLIST[index].classType !=
-                                            "Martial") {
-                                          if (classList
-                                                  .where((element) =>
-                                                      element ==
-                                                      CLASSLIST[index].name)
-                                                  .length ==
-                                              1) {
-                                            allSpellsSelectedAsListsOfThings
-                                                .add([
-                                              CLASSLIST[index].name,
-                                              [],
-                                              levelZeroGetSpellsKnown(index),
-                                              CLASSLIST[index]
-                                                      .spellsKnownFormula ??
-                                                  CLASSLIST[index]
-                                                      .spellsKnownPerLevel
-                                            ]);
-                                          } else {
-                                            var a = classSubclassMapper[
-                                                CLASSLIST[index].name];
-                                            for (var x = 0;
-                                                x <
-                                                    allSpellsSelectedAsListsOfThings
-                                                        .length;
-                                                x++) {
-                                              if (allSpellsSelectedAsListsOfThings[
-                                                      x][0] ==
-                                                  CLASSLIST[index].name) {
-                                                allSpellsSelectedAsListsOfThings[
-                                                        x][2] =
-                                                    getSpellsKnown(
-                                                        index,
-                                                        allSpellsSelectedAsListsOfThings[
-                                                            x]);
-                                              } else if (a != null) {
-                                                if (allSpellsSelectedAsListsOfThings[
-                                                        x][0] ==
-                                                    a) {
-                                                  allSpellsSelectedAsListsOfThings[
-                                                          x][2] =
-                                                      getSpellsKnown(
-                                                          index,
-                                                          allSpellsSelectedAsListsOfThings[
-                                                              x]);
-                                                }
+                                            if ((CLASSLIST[index]
+                                                    .gainAtEachLevel[
+                                                        levelsPerClass[index]]
+                                                    .where((element) =>
+                                                        element[0] == "Choice")
+                                                    .toList())
+                                                .isEmpty) {
+                                              widgetsInPlay.add(Text(
+                                                "No choices needed for ${CLASSLIST[index].name} level ${CLASSLIST[index].gainAtEachLevel[levelsPerClass[index]][0][1]}",
+                                                style: TextStyle(
+                                                    fontSize: 25,
+                                                    fontWeight: FontWeight.w700,
+                                                    color:
+                                                        Homepage.backingColor),
+                                              ));
+                                            } else {
+                                              widgetsInPlay.add(Text(
+                                                "${CLASSLIST[index].name} Level ${CLASSLIST[index].gainAtEachLevel[levelsPerClass[index]][0][1]} choice(s):",
+                                                style: TextStyle(
+                                                    fontSize: 25,
+                                                    fontWeight: FontWeight.w700,
+                                                    color:
+                                                        Homepage.backingColor),
+                                              ));
+                                            }
+                                            for (List<dynamic> x
+                                                in CLASSLIST[index]
+                                                        .gainAtEachLevel[
+                                                    levelsPerClass[index]]) {
+                                              if (x[0] == "Choice") {
+                                                widgetsInPlay.add(SizedBox(
+                                                    height: 80,
+                                                    child: ChoiceRow(
+                                                      x: x.sublist(1),
+                                                      allSelected: allSelected,
+                                                    )));
+                                              } else {
+                                                levelGainParser(
+                                                    x, CLASSLIST[index]);
                                               }
                                             }
 
-                                            /*allSpellsSelectedAsListsOfThings
+                                            //level 1 bonuses
+                                            if (classList.length == 1) {
+                                              if (extraFeatAtLevel1 ?? false) {
+                                                numberOfRemainingFeatOrASIs++;
+                                              }
+                                              maxHealth += CLASSLIST[index]
+                                                  .maxHitDiceRoll;
+                                              //gain saving throw proficiencies
+                                              savingThrowProficiencies =
+                                                  CLASSLIST[index]
+                                                      .savingThrowProficiencies;
+
+                                              //equipmentSelectedFromChoices =
+                                              //CLASSLIST[index].equipmentOptions;
+                                              equipmentSelectedFromChoices
+                                                  .addAll(CLASSLIST[index]
+                                                      .equipmentOptions);
+                                              classSkillChoices = List.filled(
+                                                  CLASSLIST[index]
+                                                      .optionsForSkillProficiencies
+                                                      .length,
+                                                  false);
+                                              widgetsInPlay.addAll([
+                                                Text(
+                                                    "Pick ${(CLASSLIST[index].numberOfSkillChoices)} skill(s) to gain proficiency in",
+                                                    style: const TextStyle(
+                                                        color: Colors.blue,
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w700)),
+                                                const SizedBox(
+                                                  height: 7,
+                                                ),
+                                                ToggleButtons(
+                                                    selectedColor:
+                                                        const Color.fromARGB(
+                                                            255, 0, 79, 206),
+                                                    color: Colors.blue,
+                                                    textStyle: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 18,
+                                                        color: Colors.white),
+                                                    //color: Color.fromARGB(255, 15, 124, 174)
+                                                    fillColor:
+                                                        const Color.fromARGB(
+                                                            162, 0, 255, 8),
+                                                    borderColor:
+                                                        const Color.fromARGB(
+                                                            255, 7, 26, 239),
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                            Radius.circular(
+                                                                20)),
+                                                    borderWidth: 1.5,
+                                                    onPressed: (int subIndex) {
+                                                      setState(() {
+                                                        //bsckgroundskillchoices
+                                                        if (classSkillChoices
+                                                                .where((b) => b)
+                                                                .length <
+                                                            CLASSLIST[index]
+                                                                .numberOfSkillChoices) {
+                                                          classSkillChoices[
+                                                                  subIndex] =
+                                                              !classSkillChoices[
+                                                                  subIndex];
+                                                        } else {
+                                                          if (classSkillChoices[
+                                                              subIndex]) {
+                                                            classSkillChoices[
+                                                                    subIndex] =
+                                                                false;
+                                                          }
+                                                        }
+                                                      });
+                                                    },
+                                                    isSelected:
+                                                        classSkillChoices,
+                                                    children: CLASSLIST[index]
+                                                        .optionsForSkillProficiencies
+                                                        .map((x) => Text(" $x "))
+                                                        .toList()),
+                                              ]);
+                                            } //run if not level 1
+                                            else {
+                                              if (averageHitPoints ?? false) {
+                                                maxHealth += ((CLASSLIST[index]
+                                                            .maxHitDiceRoll) /
+                                                        2)
+                                                    .ceil();
+                                              } else {
+                                                maxHealth += 1 +
+                                                    (Random().nextDouble() *
+                                                            CLASSLIST[index]
+                                                                .maxHitDiceRoll)
+                                                        .floor();
+                                              }
+                                            }
+
+                                            //check if it's a spellcaster
+                                            if (CLASSLIST[index].classType !=
+                                                "Martial") {
+                                              if (classList
+                                                      .where((element) =>
+                                                          element ==
+                                                          CLASSLIST[index].name)
+                                                      .length ==
+                                                  1) {
+                                                allSpellsSelectedAsListsOfThings
+                                                    .add([
+                                                  CLASSLIST[index].name,
+                                                  [],
+                                                  levelZeroGetSpellsKnown(
+                                                      index),
+                                                  CLASSLIST[index]
+                                                          .spellsKnownFormula ??
+                                                      CLASSLIST[index]
+                                                          .spellsKnownPerLevel
+                                                ]);
+                                              } else {
+                                                var a = classSubclassMapper[
+                                                    CLASSLIST[index].name];
+                                                for (var x = 0;
+                                                    x <
+                                                        allSpellsSelectedAsListsOfThings
+                                                            .length;
+                                                    x++) {
+                                                  if (allSpellsSelectedAsListsOfThings[
+                                                          x][0] ==
+                                                      CLASSLIST[index].name) {
+                                                    allSpellsSelectedAsListsOfThings[
+                                                            x][2] =
+                                                        getSpellsKnown(
+                                                            index,
+                                                            allSpellsSelectedAsListsOfThings[
+                                                                x]);
+                                                  } else if (a != null) {
+                                                    if (allSpellsSelectedAsListsOfThings[
+                                                            x][0] ==
+                                                        a) {
+                                                      allSpellsSelectedAsListsOfThings[
+                                                              x][2] =
+                                                          getSpellsKnown(
+                                                              index,
+                                                              allSpellsSelectedAsListsOfThings[
+                                                                  x]);
+                                                    }
+                                                  }
+                                                }
+
+                                                /*allSpellsSelectedAsListsOfThings
                                                 .add([
                                               CLASSLIST[index].name,
                                               [],
@@ -2554,20 +2315,20 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   CLASSLIST[index]
                                                       .spellsKnownPerLevel
                                             ]);*/
-                                          }
-                                        }
+                                              }
+                                            }
 
-                                        levelsPerClass[index]++;
-                                      }
-                                    });
-                                  },
-                                  child: const Icon(Icons.add,
-                                      color: Colors.white, size: 35))
-                            ],
-                          ));
-                    }),
-                  ),
-                ),
+                                            levelsPerClass[index]++;
+                                          }
+                                        });
+                                      },
+                                      child: Icon(Icons.add,
+                                          color: Homepage.textColor, size: 35))
+                                ],
+                              ));
+                        }),
+                      ),
+                    )),
                 Column(children: widgetsInPlay)
               ]),
             ),
@@ -2577,186 +2338,269 @@ class MainCreateCharacter extends State<CreateACharacter>
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
-                  const SizedBox(height: 20),
-                  DropdownButton<String>(
-                    onChanged: (String? value) {
-                      // This is called when the user selects an item.
-                      setState(() {
-                        currentBackground =
-                            BACKGROUNDLIST.singleWhere((x) => x.name == value);
-                        backgroundPersonalityTrait =
-                            currentBackground.personalityTrait.first;
-                        backgroundIdeal = currentBackground.ideal.first;
-                        backgroundBond = currentBackground.bond.first;
-                        backgroundFlaw = currentBackground.flaw.first;
-                        backgroundSkillChoices = List.filled(
-                                currentBackground.numberOfSkillChoices ?? 0,
-                                true) +
-                            List.filled(
-                                (currentBackground.optionalSkillProficiencies
-                                            ?.length ??
-                                        0) -
-                                    (currentBackground.numberOfSkillChoices ??
-                                        0),
-                                false);
-                        selectedSkillsQ = Queue<int>.from(Iterable.generate(
-                            currentBackground.numberOfSkillChoices ?? 0));
-                        //
-                      });
-                    },
-                    value: currentBackground.name,
-                    icon: const Icon(Icons.arrow_downward),
-                    items: BACKGROUNDLIST
-                        .map<DropdownMenuItem<String>>((Background value) {
-                      return DropdownMenuItem<String>(
-                        value: value.name,
-                        child: Text(value.name),
-                      );
-                    }).toList(),
-                    elevation: 2,
-                    style: const TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.w700),
-                    underline: Container(
-                      height: 1,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                  ),
+                  const SizedBox(height: 34),
+                  Text("Select your character's race",
+                      style: TextStyle(
+                          color: Homepage.backingColor,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w800)),
+                  const SizedBox(height: 8),
+                  Container(
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        color: Homepage.backingColor,
+                      ),
+                      height: 45,
+                      child: DropdownButton<String>(
+                          hint: const Center(
+                            child: Text("Select an option"),
+                          ),
+                          alignment: Alignment.center,
+                          onChanged: (String? value) {
+                            // This is called when the user selects an item.
+                            setState(() {
+                              currentBackground = BACKGROUNDLIST
+                                  .singleWhere((x) => x.name == value);
+                              backgroundPersonalityTrait =
+                                  currentBackground.personalityTrait.first;
+                              backgroundIdeal = currentBackground.ideal.first;
+                              backgroundBond = currentBackground.bond.first;
+                              backgroundFlaw = currentBackground.flaw.first;
+                              backgroundSkillChoices = List.filled(
+                                      currentBackground.numberOfSkillChoices ??
+                                          0,
+                                      true) +
+                                  List.filled(
+                                      (currentBackground
+                                                  .optionalSkillProficiencies
+                                                  ?.length ??
+                                              0) -
+                                          (currentBackground
+                                                  .numberOfSkillChoices ??
+                                              0),
+                                      false);
+                              selectedSkillsQ = Queue<int>.from(
+                                  Iterable.generate(
+                                      currentBackground.numberOfSkillChoices ??
+                                          0));
+                              //
+                            });
+                          },
+                          value: currentBackground.name,
+                          icon: Icon(Icons.arrow_downward,
+                              color: Homepage.textColor),
+                          items: BACKGROUNDLIST.map<DropdownMenuItem<String>>(
+                              (Background value) {
+                            return DropdownMenuItem<String>(
+                              value: value.name,
+                              child: Align(
+                                  child: Text(value.name,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Homepage.textColor,
+                                        decoration: TextDecoration.underline,
+                                      ))),
+                            );
+                          }).toList(),
+                          dropdownColor: Homepage.backingColor,
+                          elevation: 2,
+                          underline: const SizedBox(),
+                          style: TextStyle(
+                              color: Homepage.textColor,
+                              fontWeight: FontWeight.w700))),
                   //Personality Trait
                   const SizedBox(height: 10),
-                  const Text("Select your character's personality trait",
+                  Text("Select your character's personality trait",
                       style: TextStyle(
-                          color: Colors.blue,
+                          color: Homepage.backingColor,
                           fontSize: 20,
                           fontWeight: FontWeight.w800)),
-                  DropdownButton<String>(
-                    onChanged: (String? value) {
-                      // This is called when the user selects an item.
-                      setState(() {
-                        backgroundPersonalityTrait = currentBackground
-                            .personalityTrait
-                            .singleWhere((x) => x == value);
-                      });
-                    },
-                    value: backgroundPersonalityTrait,
-                    icon: const Icon(Icons.arrow_downward),
-                    items: currentBackground.personalityTrait
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    elevation: 2,
-                    style: const TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.w700),
-                    underline: Container(
-                      height: 1,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        color: Homepage.backingColor,
+                      ),
+                      height: 45,
+                      child: DropdownButton<String>(
+                        alignment: Alignment.center,
+                        onChanged: (String? value) {
+                          // This is called when the user selects an item.
+                          setState(() {
+                            backgroundPersonalityTrait = currentBackground
+                                .personalityTrait
+                                .singleWhere((x) => x == value);
+                          });
+                        },
+                        value: backgroundPersonalityTrait,
+                        icon: Icon(Icons.arrow_downward,
+                            color: Homepage.textColor),
+                        items: currentBackground.personalityTrait
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Align(
+                                child: Text(value,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Homepage.textColor,
+                                        decoration: TextDecoration.underline))),
+                          );
+                        }).toList(),
+                        dropdownColor: Homepage.backingColor,
+                        elevation: 2,
+                        underline: const SizedBox(),
+                        style: TextStyle(
+                            color: Homepage.textColor,
+                            fontWeight: FontWeight.w700),
+                      )),
 
                   //Ideal
                   const SizedBox(height: 10),
-                  const Text("Select your character's ideal",
+                  Text("Select your character's ideal",
                       style: TextStyle(
-                          color: Colors.blue,
+                          color: Homepage.backingColor,
                           fontSize: 20,
                           fontWeight: FontWeight.w800)),
-                  DropdownButton<String>(
-                    onChanged: (String? value) {
-                      // This is called when the user selects an item.
-                      setState(() {
-                        backgroundIdeal = currentBackground.ideal
-                            .singleWhere((x) => x == value);
-                      });
-                    },
-                    value: backgroundIdeal,
-                    icon: const Icon(Icons.arrow_downward),
-                    items: currentBackground.ideal
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    elevation: 2,
-                    style: const TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.w700),
-                    underline: Container(
-                      height: 1,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        color: Homepage.backingColor,
+                      ),
+                      height: 45,
+                      child: DropdownButton<String>(
+                        alignment: Alignment.center,
+                        onChanged: (String? value) {
+                          // This is called when the user selects an item.
+                          setState(() {
+                            backgroundIdeal = currentBackground.ideal
+                                .singleWhere((x) => x == value);
+                          });
+                        },
+                        value: backgroundIdeal,
+                        icon: Icon(Icons.arrow_downward,
+                            color: Homepage.textColor),
+                        items: currentBackground.ideal
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Center(
+                                child: Text(" $value",
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        TextStyle(color: Homepage.textColor))),
+                          );
+                        }).toList(),
+                        dropdownColor: Homepage.backingColor,
+                        elevation: 2,
+                        underline: const SizedBox(),
+                        style: TextStyle(
+                            color: Homepage.textColor,
+                            decoration: TextDecoration.underline,
+                            fontWeight: FontWeight.w700),
+                      )),
                   //Bond
                   const SizedBox(height: 10),
-                  const Text("Select your character's bond",
+                  Text("Select your character's bond",
                       style: TextStyle(
-                          color: Colors.blue,
+                          color: Homepage.backingColor,
                           fontSize: 20,
                           fontWeight: FontWeight.w800)),
-                  DropdownButton<String>(
-                    onChanged: (String? value) {
-                      // This is called when the user selects an item.
-                      setState(() {
-                        backgroundBond = currentBackground.bond
-                            .singleWhere((x) => x == value);
-                      });
-                    },
-                    value: backgroundBond,
-                    icon: const Icon(Icons.arrow_downward),
-                    items: currentBackground.bond
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    elevation: 2,
-                    style: const TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.w700),
-                    underline: Container(
-                      height: 1,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        color: Homepage.backingColor,
+                      ),
+                      height: 45,
+                      child: DropdownButton<String>(
+                          alignment: Alignment.center,
+                          onChanged: (String? value) {
+                            // This is called when the user selects an item.
+                            setState(() {
+                              backgroundBond = currentBackground.bond
+                                  .singleWhere((x) => x == value);
+                            });
+                          },
+                          value: backgroundBond,
+                          icon: Icon(Icons.arrow_downward,
+                              color: Homepage.textColor),
+                          items: currentBackground.bond
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Center(
+                                  child: Text(" $value",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Homepage.textColor))),
+                            );
+                          }).toList(),
+                          dropdownColor: Homepage.backingColor,
+                          elevation: 2,
+                          underline: const SizedBox(),
+                          style: TextStyle(
+                            color: Homepage.textColor,
+                            decoration: TextDecoration.underline,
+                            fontWeight: FontWeight.w700,
+                          ))),
                   //Flaw
                   const SizedBox(height: 10),
-                  const Text("Select your character's flaw",
+                  Text("Select your character's flaw",
                       style: TextStyle(
-                          color: Colors.blue,
+                          color: Homepage.backingColor,
                           fontSize: 20,
                           fontWeight: FontWeight.w800)),
-                  DropdownButton<String>(
-                    onChanged: (String? value) {
-                      // This is called when the user selects an item.
-                      setState(() {
-                        backgroundFlaw = currentBackground.flaw
-                            .singleWhere((x) => x == value);
-                      });
-                    },
-                    value: backgroundFlaw,
-                    icon: const Icon(Icons.arrow_downward),
-                    items: currentBackground.flaw
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    elevation: 2,
-                    style: const TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.w700),
-                    underline: Container(
-                      height: 1,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        color: Homepage.backingColor,
+                      ),
+                      height: 45,
+                      child: DropdownButton<String>(
+                          alignment: Alignment.center,
+                          onChanged: (String? value) {
+                            // This is called when the user selects an item.
+                            setState(() {
+                              backgroundFlaw = currentBackground.flaw
+                                  .singleWhere((x) => x == value);
+                            });
+                          },
+                          value: backgroundFlaw,
+                          icon: Icon(Icons.arrow_downward,
+                              color: Homepage.textColor),
+                          items: currentBackground.flaw
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Center(
+                                  child: Text(" $value",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Homepage.textColor))),
+                            );
+                          }).toList(),
+                          dropdownColor: Homepage.backingColor,
+                          elevation: 2,
+                          underline: const SizedBox(),
+                          style: TextStyle(
+                            color: Homepage.textColor,
+                            decoration: TextDecoration.underline,
+                            fontWeight: FontWeight.w700,
+                          ))),
                   //really poor programming in general with the over use of ! - try fix although it isn't an issue this way
                   if (currentBackground.numberOfSkillChoices != null)
                     Text(
                         "Pick ${(currentBackground.numberOfSkillChoices)} skill(s) to gain proficiency in",
-                        style: const TextStyle(
-                            color: Colors.blue,
+                        style: TextStyle(
+                            color: Homepage.backingColor,
                             fontSize: 20,
                             fontWeight: FontWeight.w800)),
                   const SizedBox(
@@ -2856,8 +2700,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                   if (currentBackground.numberOfLanguageChoices != null)
                     Text(
                         "Pick ${(currentBackground.numberOfLanguageChoices)} language(s) to learn",
-                        style: const TextStyle(
-                            color: Colors.blue,
+                        style: TextStyle(
+                            color: Homepage.backingColor,
                             fontSize: 20,
                             fontWeight: FontWeight.w800)),
                   const SizedBox(
@@ -2929,16 +2773,16 @@ class MainCreateCharacter extends State<CreateACharacter>
           SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(children: [
-                const SizedBox(height: 40),
+                const SizedBox(height: 34),
                 Text(
                   textAlign: TextAlign.center,
                   "Points remaining: $pointsRemaining",
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 45,
                       fontWeight: FontWeight.w700,
-                      color: Color.fromARGB(255, 0, 168, 252)),
+                      color: Homepage.backingColor),
                 ),
-                const SizedBox(height: 60),
+                const SizedBox(height: 50),
                 Row(
                   children: [
                     const Expanded(flex: 12, child: SizedBox()),
@@ -2950,10 +2794,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                             Text(
                               textAlign: TextAlign.center,
                               strength.name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 35,
                                   fontWeight: FontWeight.w800,
-                                  color: Color.fromARGB(255, 0, 168, 252)),
+                                  color: Homepage.backingColor),
                             ),
                             const SizedBox(height: 25),
                             Container(
@@ -2972,10 +2816,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 Text(
                                   textAlign: TextAlign.center,
                                   strength.value.toString(),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 55,
                                       fontWeight: FontWeight.w700,
-                                      color: Colors.white),
+                                      color: Homepage.textColor),
                                 ),
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -2984,8 +2828,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         ? OutlinedButton(
                                             style: OutlinedButton.styleFrom(
                                               backgroundColor:
-                                                  const Color.fromARGB(
-                                                      150, 61, 33, 243),
+                                                  Homepage.backingColor,
                                               shape:
                                                   const RoundedRectangleBorder(
                                                       borderRadius:
@@ -3021,8 +2864,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                           pointsRemaining)
                                                       ? const Color.fromARGB(
                                                           247, 56, 53, 52)
-                                                      : const Color.fromARGB(
-                                                          150, 61, 33, 243),
+                                                      : Homepage.backingColor,
                                               shape:
                                                   const RoundedRectangleBorder(
                                                       borderRadius:
@@ -3053,8 +2895,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         : OutlinedButton(
                                             style: OutlinedButton.styleFrom(
                                               backgroundColor:
-                                                  const Color.fromARGB(
-                                                      150, 61, 33, 243),
+                                                  Homepage.backingColor,
                                               shape:
                                                   const RoundedRectangleBorder(
                                                       borderRadius:
@@ -3084,20 +2925,20 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 children: [
                                   const SizedBox(width: 19),
                                   Text(
-                                    textAlign: TextAlign.center,
-                                    " (+${abilityScoreIncreases[0]}) ",
-                                    style: const TextStyle(
+                                      textAlign: TextAlign.center,
+                                      " (+${abilityScoreIncreases[0]}) ",
+                                      style: const TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.w700,
-                                        color: Color.fromARGB(255, 7, 26, 239)),
-                                  ),
+                                        color: Colors.black,
+                                      )),
                                   Text(
                                     textAlign: TextAlign.center,
                                     " (+${ASIBonuses[0]}) ",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.w700,
-                                        color: Colors.yellow),
+                                        color: Homepage.backingColor),
                                   ),
                                 ]),
                             const SizedBox(height: 10),
@@ -3107,7 +2948,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: const Color.fromARGB(255, 7, 26, 239),
+                                  color: Homepage.backingColor,
                                   width: 2,
                                 ),
                                 borderRadius:
@@ -3119,10 +2960,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         abilityScoreIncreases[0] +
                                         ASIBonuses[0])
                                     .toString(),
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 50,
                                     fontWeight: FontWeight.w700,
-                                    color: Colors.white),
+                                    color: Homepage.textColor),
                               ),
                             ),
                           ],
@@ -3135,10 +2976,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                             Text(
                               textAlign: TextAlign.center,
                               dexterity.name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 35,
                                   fontWeight: FontWeight.w800,
-                                  color: Color.fromARGB(255, 0, 168, 252)),
+                                  color: Homepage.backingColor),
                             ),
                             const SizedBox(height: 25),
                             Container(
@@ -3147,7 +2988,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: const Color.fromARGB(255, 7, 26, 239),
+                                  color: Homepage.backingColor,
                                   width: 2,
                                 ),
                                 borderRadius:
@@ -3157,10 +2998,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 Text(
                                   textAlign: TextAlign.center,
                                   dexterity.value.toString(),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 55,
                                       fontWeight: FontWeight.w700,
-                                      color: Colors.white),
+                                      color: Homepage.textColor),
                                 ),
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -3170,8 +3011,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         ? OutlinedButton(
                                             style: OutlinedButton.styleFrom(
                                               backgroundColor:
-                                                  const Color.fromARGB(
-                                                      150, 61, 33, 243),
+                                                  Homepage.backingColor,
                                               shape:
                                                   const RoundedRectangleBorder(
                                                       borderRadius:
@@ -3207,8 +3047,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                           pointsRemaining)
                                                       ? const Color.fromARGB(
                                                           247, 56, 53, 52)
-                                                      : const Color.fromARGB(
-                                                          150, 61, 33, 243),
+                                                      : Homepage.backingColor,
                                               shape:
                                                   const RoundedRectangleBorder(
                                                       borderRadius:
@@ -3239,8 +3078,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         : OutlinedButton(
                                             style: OutlinedButton.styleFrom(
                                               backgroundColor:
-                                                  const Color.fromARGB(
-                                                      150, 61, 33, 243),
+                                                  Homepage.backingColor,
                                               shape:
                                                   const RoundedRectangleBorder(
                                                       borderRadius:
@@ -3275,15 +3113,15 @@ class MainCreateCharacter extends State<CreateACharacter>
                                     style: const TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.w700,
-                                        color: Color.fromARGB(255, 7, 26, 239)),
+                                        color: Colors.black),
                                   ),
                                   Text(
                                     textAlign: TextAlign.center,
                                     " (+${ASIBonuses[1]}) ",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.w700,
-                                        color: Colors.yellow),
+                                        color: Homepage.backingColor),
                                   ),
                                 ]),
                             const SizedBox(height: 10),
@@ -3293,7 +3131,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: const Color.fromARGB(255, 7, 26, 239),
+                                  color: Homepage.backingColor,
                                   width: 2,
                                 ),
                                 borderRadius:
@@ -3305,10 +3143,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         abilityScoreIncreases[1] +
                                         ASIBonuses[1])
                                     .toString(),
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 50,
                                     fontWeight: FontWeight.w700,
-                                    color: Colors.white),
+                                    color: Homepage.textColor),
                               ),
                             ),
                           ],
@@ -3321,10 +3159,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                             Text(
                               textAlign: TextAlign.center,
                               constitution.name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 35,
                                   fontWeight: FontWeight.w800,
-                                  color: Color.fromARGB(255, 0, 168, 252)),
+                                  color: Homepage.backingColor),
                             ),
                             const SizedBox(height: 25),
                             Container(
@@ -3333,7 +3171,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: const Color.fromARGB(255, 7, 26, 239),
+                                  color: Homepage.backingColor,
                                   width: 2,
                                 ),
                                 borderRadius:
@@ -3343,10 +3181,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 Text(
                                   textAlign: TextAlign.center,
                                   constitution.value.toString(),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 55,
                                       fontWeight: FontWeight.w700,
-                                      color: Colors.white),
+                                      color: Homepage.textColor),
                                 ),
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -3356,8 +3194,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         ? OutlinedButton(
                                             style: OutlinedButton.styleFrom(
                                               backgroundColor:
-                                                  const Color.fromARGB(
-                                                      150, 61, 33, 243),
+                                                  Homepage.backingColor,
                                               shape:
                                                   const RoundedRectangleBorder(
                                                       borderRadius:
@@ -3393,8 +3230,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                           pointsRemaining)
                                                       ? const Color.fromARGB(
                                                           247, 56, 53, 52)
-                                                      : const Color.fromARGB(
-                                                          150, 61, 33, 243),
+                                                      : Homepage.backingColor,
                                               shape:
                                                   const RoundedRectangleBorder(
                                                       borderRadius:
@@ -3425,8 +3261,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         : OutlinedButton(
                                             style: OutlinedButton.styleFrom(
                                               backgroundColor:
-                                                  const Color.fromARGB(
-                                                      150, 61, 33, 243),
+                                                  Homepage.backingColor,
                                               shape:
                                                   const RoundedRectangleBorder(
                                                       borderRadius:
@@ -3461,15 +3296,15 @@ class MainCreateCharacter extends State<CreateACharacter>
                                     style: const TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.w700,
-                                        color: Color.fromARGB(255, 7, 26, 239)),
+                                        color: Colors.black),
                                   ),
                                   Text(
                                     textAlign: TextAlign.center,
                                     " (+${ASIBonuses[2]}) ",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.w700,
-                                        color: Colors.yellow),
+                                        color: Homepage.backingColor),
                                   ),
                                 ]),
                             const SizedBox(height: 10),
@@ -3479,7 +3314,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: const Color.fromARGB(255, 7, 26, 239),
+                                  color: Homepage.backingColor,
                                   width: 2,
                                 ),
                                 borderRadius:
@@ -3491,10 +3326,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         abilityScoreIncreases[2] +
                                         ASIBonuses[2])
                                     .toString(),
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 50,
                                     fontWeight: FontWeight.w700,
-                                    color: Colors.white),
+                                    color: Homepage.textColor),
                               ),
                             ),
                           ],
@@ -3507,10 +3342,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                             Text(
                               textAlign: TextAlign.center,
                               intelligence.name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 35,
                                   fontWeight: FontWeight.w800,
-                                  color: Color.fromARGB(255, 0, 168, 252)),
+                                  color: Homepage.backingColor),
                             ),
                             const SizedBox(height: 22),
                             Container(
@@ -3519,7 +3354,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: const Color.fromARGB(255, 7, 26, 239),
+                                  color: Homepage.backingColor,
                                   width: 2,
                                 ),
                                 borderRadius:
@@ -3529,10 +3364,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 Text(
                                   textAlign: TextAlign.center,
                                   intelligence.value.toString(),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 55,
                                       fontWeight: FontWeight.w700,
-                                      color: Colors.white),
+                                      color: Homepage.textColor),
                                 ),
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -3542,8 +3377,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         ? OutlinedButton(
                                             style: OutlinedButton.styleFrom(
                                               backgroundColor:
-                                                  const Color.fromARGB(
-                                                      150, 61, 33, 243),
+                                                  Homepage.backingColor,
                                               shape:
                                                   const RoundedRectangleBorder(
                                                       borderRadius:
@@ -3579,8 +3413,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                           pointsRemaining)
                                                       ? const Color.fromARGB(
                                                           247, 56, 53, 52)
-                                                      : const Color.fromARGB(
-                                                          150, 61, 33, 243),
+                                                      : Homepage.backingColor,
                                               shape:
                                                   const RoundedRectangleBorder(
                                                       borderRadius:
@@ -3611,8 +3444,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         : OutlinedButton(
                                             style: OutlinedButton.styleFrom(
                                               backgroundColor:
-                                                  const Color.fromARGB(
-                                                      150, 61, 33, 243),
+                                                  Homepage.backingColor,
                                               shape:
                                                   const RoundedRectangleBorder(
                                                       borderRadius:
@@ -3647,15 +3479,15 @@ class MainCreateCharacter extends State<CreateACharacter>
                                     style: const TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.w700,
-                                        color: Color.fromARGB(255, 7, 26, 239)),
+                                        color: Colors.black),
                                   ),
                                   Text(
                                     textAlign: TextAlign.center,
                                     " (+${ASIBonuses[3]}) ",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.w700,
-                                        color: Colors.yellow),
+                                        color: Homepage.backingColor),
                                   ),
                                 ]),
                             const SizedBox(height: 10),
@@ -3677,10 +3509,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         abilityScoreIncreases[3] +
                                         ASIBonuses[3])
                                     .toString(),
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 50,
                                     fontWeight: FontWeight.w700,
-                                    color: Colors.white),
+                                    color: Homepage.textColor),
                               ),
                             ),
                           ],
@@ -3693,10 +3525,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                             Text(
                               textAlign: TextAlign.center,
                               wisdom.name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 35,
                                   fontWeight: FontWeight.w800,
-                                  color: Color.fromARGB(255, 0, 168, 252)),
+                                  color: Homepage.backingColor),
                             ),
                             const SizedBox(height: 25),
                             Container(
@@ -3715,10 +3547,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 Text(
                                   textAlign: TextAlign.center,
                                   wisdom.value.toString(),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 55,
                                       fontWeight: FontWeight.w700,
-                                      color: Colors.white),
+                                      color: Homepage.textColor),
                                 ),
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -3727,8 +3559,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         ? OutlinedButton(
                                             style: OutlinedButton.styleFrom(
                                               backgroundColor:
-                                                  const Color.fromARGB(
-                                                      150, 61, 33, 243),
+                                                  Homepage.backingColor,
                                               shape:
                                                   const RoundedRectangleBorder(
                                                       borderRadius:
@@ -3764,8 +3595,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                           pointsRemaining)
                                                       ? const Color.fromARGB(
                                                           247, 56, 53, 52)
-                                                      : const Color.fromARGB(
-                                                          150, 61, 33, 243),
+                                                      : Homepage.backingColor,
                                               shape:
                                                   const RoundedRectangleBorder(
                                                       borderRadius:
@@ -3796,8 +3626,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         : OutlinedButton(
                                             style: OutlinedButton.styleFrom(
                                               backgroundColor:
-                                                  const Color.fromARGB(
-                                                      150, 61, 33, 243),
+                                                  Homepage.backingColor,
                                               shape:
                                                   const RoundedRectangleBorder(
                                                       borderRadius:
@@ -3832,15 +3661,15 @@ class MainCreateCharacter extends State<CreateACharacter>
                                     style: const TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.w700,
-                                        color: Color.fromARGB(255, 7, 26, 239)),
+                                        color: Colors.black),
                                   ),
                                   Text(
                                     textAlign: TextAlign.center,
                                     " (+${ASIBonuses[4]}) ",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.w700,
-                                        color: Colors.yellow),
+                                        color: Homepage.backingColor),
                                   ),
                                 ]),
                             const SizedBox(height: 10),
@@ -3862,10 +3691,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         abilityScoreIncreases[4] +
                                         ASIBonuses[4])
                                     .toString(),
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 50,
                                     fontWeight: FontWeight.w700,
-                                    color: Colors.white),
+                                    color: Homepage.textColor),
                               ),
                             ),
                           ],
@@ -3878,10 +3707,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                             Text(
                               textAlign: TextAlign.center,
                               charisma.name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 35,
                                   fontWeight: FontWeight.w800,
-                                  color: Color.fromARGB(255, 0, 168, 252)),
+                                  color: Homepage.backingColor),
                             ),
                             const SizedBox(height: 25),
                             Container(
@@ -3900,10 +3729,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 Text(
                                   textAlign: TextAlign.center,
                                   charisma.value.toString(),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 55,
                                       fontWeight: FontWeight.w700,
-                                      color: Colors.white),
+                                      color: Homepage.textColor),
                                 ),
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -3912,8 +3741,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         ? OutlinedButton(
                                             style: OutlinedButton.styleFrom(
                                               backgroundColor:
-                                                  const Color.fromARGB(
-                                                      150, 61, 33, 243),
+                                                  Homepage.backingColor,
                                               shape:
                                                   const RoundedRectangleBorder(
                                                       borderRadius:
@@ -3949,8 +3777,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                           pointsRemaining)
                                                       ? const Color.fromARGB(
                                                           247, 56, 53, 52)
-                                                      : const Color.fromARGB(
-                                                          150, 61, 33, 243),
+                                                      : Homepage.backingColor,
                                               shape:
                                                   const RoundedRectangleBorder(
                                                       borderRadius:
@@ -3981,8 +3808,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         : OutlinedButton(
                                             style: OutlinedButton.styleFrom(
                                               backgroundColor:
-                                                  const Color.fromARGB(
-                                                      150, 61, 33, 243),
+                                                  Homepage.backingColor,
                                               shape:
                                                   const RoundedRectangleBorder(
                                                       borderRadius:
@@ -4017,15 +3843,15 @@ class MainCreateCharacter extends State<CreateACharacter>
                                     style: const TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.w700,
-                                        color: Color.fromARGB(255, 7, 26, 239)),
+                                        color: Colors.black),
                                   ),
                                   Text(
                                     textAlign: TextAlign.center,
                                     " (+${ASIBonuses[5]}) ",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.w700,
-                                        color: Colors.yellow),
+                                        color: Homepage.backingColor),
                                   ),
                                 ]),
                             const SizedBox(height: 10),
@@ -4047,10 +3873,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         abilityScoreIncreases[5] +
                                         ASIBonuses[5])
                                     .toString(),
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 50,
                                     fontWeight: FontWeight.w700,
-                                    color: Colors.white),
+                                    color: Homepage.textColor),
                               ),
                             ),
                           ],
@@ -4064,17 +3890,32 @@ class MainCreateCharacter extends State<CreateACharacter>
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
-                  Text("$numberOfRemainingFeatOrASIs options remaining"),
+                  const SizedBox(height: 34),
+                  Text("$numberOfRemainingFeatOrASIs options remaining",
+                      style: TextStyle(
+                          color: Homepage.backingColor,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w900)),
+                  const SizedBox(height: 12),
                   Row(
                     children: [
                       Expanded(
                           child: SizedBox(
-                              height: 454,
+                              height: 550,
                               child: Column(
                                 children: [
-                                  const Text("ASI's"),
+                                  Text("ASI's",
+                                      style: TextStyle(
+                                          color: Homepage.backingColor,
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w800)),
+                                  const SizedBox(height: 8),
                                   if (ASIRemaining)
-                                    const Text("You have an unspent ASI"),
+                                    Text("You have an unspent ASI",
+                                        style: TextStyle(
+                                            color: Homepage.backingColor,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w800)),
                                   SizedBox(
                                       child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -4093,21 +3934,21 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               Radius.circular(5)),
                                         ),
                                         child: Column(children: [
-                                          const Text(
+                                          Text(
                                             textAlign: TextAlign.center,
                                             "Strength",
                                             style: TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.w800,
-                                                color: Colors.white),
+                                                color: Homepage.textColor),
                                           ),
                                           Text(
                                             textAlign: TextAlign.center,
                                             "+${ASIBonuses[0]}",
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 fontSize: 45,
                                                 fontWeight: FontWeight.w700,
-                                                color: Colors.white),
+                                                color: Homepage.textColor),
                                           ),
                                           OutlinedButton(
                                               style: OutlinedButton.styleFrom(
@@ -4117,9 +3958,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                         !(strength.value +
                                                                 ASIBonuses[0] <
                                                             20))
-                                                    ? Colors.grey
-                                                    : const Color.fromARGB(
-                                                        150, 61, 33, 243),
+                                                    ? const Color.fromARGB(
+                                                        247, 56, 53, 52)
+                                                    : Homepage.backingColor,
                                                 shape:
                                                     const RoundedRectangleBorder(
                                                         borderRadius:
@@ -4168,21 +4009,21 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               Radius.circular(5)),
                                         ),
                                         child: Column(children: [
-                                          const Text(
+                                          Text(
                                             textAlign: TextAlign.center,
                                             "Intelligence",
                                             style: TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.w800,
-                                                color: Colors.white),
+                                                color: Homepage.textColor),
                                           ),
                                           Text(
                                             textAlign: TextAlign.center,
                                             "+${ASIBonuses[3]}",
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 fontSize: 45,
                                                 fontWeight: FontWeight.w700,
-                                                color: Colors.white),
+                                                color: Homepage.textColor),
                                           ),
                                           OutlinedButton(
                                               style: OutlinedButton.styleFrom(
@@ -4192,9 +4033,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                         !(intelligence.value +
                                                                 ASIBonuses[3] <
                                                             20))
-                                                    ? Colors.grey
-                                                    : const Color.fromARGB(
-                                                        150, 61, 33, 243),
+                                                    ? const Color.fromARGB(
+                                                        247, 56, 53, 52)
+                                                    : Homepage.backingColor,
                                                 shape:
                                                     const RoundedRectangleBorder(
                                                         borderRadius:
@@ -4249,21 +4090,21 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               Radius.circular(5)),
                                         ),
                                         child: Column(children: [
-                                          const Text(
+                                          Text(
                                             textAlign: TextAlign.center,
                                             "Dexterity",
                                             style: TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.w800,
-                                                color: Colors.white),
+                                                color: Homepage.textColor),
                                           ),
                                           Text(
                                             textAlign: TextAlign.center,
                                             "+${ASIBonuses[1]}",
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 fontSize: 45,
                                                 fontWeight: FontWeight.w700,
-                                                color: Colors.white),
+                                                color: Homepage.textColor),
                                           ),
                                           OutlinedButton(
                                               style: OutlinedButton.styleFrom(
@@ -4273,9 +4114,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                         !(dexterity.value +
                                                                 ASIBonuses[1] <
                                                             20))
-                                                    ? Colors.grey
-                                                    : const Color.fromARGB(
-                                                        150, 61, 33, 243),
+                                                    ? const Color.fromARGB(
+                                                        247, 56, 53, 52)
+                                                    : Homepage.backingColor,
                                                 shape:
                                                     const RoundedRectangleBorder(
                                                         borderRadius:
@@ -4324,21 +4165,21 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               Radius.circular(5)),
                                         ),
                                         child: Column(children: [
-                                          const Text(
+                                          Text(
                                             textAlign: TextAlign.center,
                                             "Wisdom",
                                             style: TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.w800,
-                                                color: Colors.white),
+                                                color: Homepage.textColor),
                                           ),
                                           Text(
                                             textAlign: TextAlign.center,
                                             "+${ASIBonuses[4]}",
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 fontSize: 45,
                                                 fontWeight: FontWeight.w700,
-                                                color: Colors.white),
+                                                color: Homepage.textColor),
                                           ),
                                           OutlinedButton(
                                               style: OutlinedButton.styleFrom(
@@ -4348,9 +4189,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                         !(wisdom.value +
                                                                 ASIBonuses[4] <
                                                             20))
-                                                    ? Colors.grey
-                                                    : const Color.fromARGB(
-                                                        150, 61, 33, 243),
+                                                    ? const Color.fromARGB(
+                                                        247, 56, 53, 52)
+                                                    : Homepage.backingColor,
                                                 shape:
                                                     const RoundedRectangleBorder(
                                                         borderRadius:
@@ -4405,21 +4246,21 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               Radius.circular(5)),
                                         ),
                                         child: Column(children: [
-                                          const Text(
+                                          Text(
                                             textAlign: TextAlign.center,
                                             "Constitution",
                                             style: TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.w800,
-                                                color: Colors.white),
+                                                color: Homepage.textColor),
                                           ),
                                           Text(
                                             textAlign: TextAlign.center,
                                             "+${ASIBonuses[2]}",
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 fontSize: 45,
                                                 fontWeight: FontWeight.w700,
-                                                color: Colors.white),
+                                                color: Homepage.textColor),
                                           ),
                                           OutlinedButton(
                                               style: OutlinedButton.styleFrom(
@@ -4429,9 +4270,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                         !(constitution.value +
                                                                 ASIBonuses[2] <
                                                             20))
-                                                    ? Colors.grey
-                                                    : const Color.fromARGB(
-                                                        150, 61, 33, 243),
+                                                    ? const Color.fromARGB(
+                                                        247, 56, 53, 52)
+                                                    : Homepage.backingColor,
                                                 shape:
                                                     const RoundedRectangleBorder(
                                                         borderRadius:
@@ -4480,21 +4321,21 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               Radius.circular(5)),
                                         ),
                                         child: Column(children: [
-                                          const Text(
+                                          Text(
                                             textAlign: TextAlign.center,
                                             "Charisma",
                                             style: TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.w800,
-                                                color: Colors.white),
+                                                color: Homepage.textColor),
                                           ),
                                           Text(
                                             textAlign: TextAlign.center,
                                             "+${ASIBonuses[5]}",
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 fontSize: 45,
                                                 fontWeight: FontWeight.w700,
-                                                color: Colors.white),
+                                                color: Homepage.textColor),
                                           ),
                                           OutlinedButton(
                                               style: OutlinedButton.styleFrom(
@@ -4504,9 +4345,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                         !(charisma.value +
                                                                 ASIBonuses[5] <
                                                             20))
-                                                    ? Colors.grey
-                                                    : const Color.fromARGB(
-                                                        150, 61, 33, 243),
+                                                    ? const Color.fromARGB(
+                                                        247, 56, 53, 52)
+                                                    : Homepage.backingColor,
                                                 shape:
                                                     const RoundedRectangleBorder(
                                                         borderRadius:
@@ -4549,11 +4390,20 @@ class MainCreateCharacter extends State<CreateACharacter>
                             child: SizedBox(
                                 height: 435,
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    const Text("Feats"),
+                                    Text("Feats",
+                                        style: TextStyle(
+                                            color: Homepage.backingColor,
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w800)),
                                     if (featsSelected.isNotEmpty)
                                       Text(
-                                          "${featsSelected.length} Feats selected:"),
+                                          "${featsSelected.length} Feats selected:",
+                                          style: TextStyle(
+                                              color: Homepage.backingColor,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w800)),
                                     if (featsSelected.isNotEmpty)
                                       SizedBox(
                                           height: 50,
@@ -4573,43 +4423,50 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               );
                                             },
                                           )),
-                                    const Text("Select Feats:"),
+                                    Text("Select Feats:",
+                                        style: TextStyle(
+                                            color: Homepage.backingColor,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w800)),
                                     Row(children: [
                                       OutlinedButton(
                                         style: OutlinedButton.styleFrom(
                                             backgroundColor: (fullFeats)
-                                                ? Colors.blue
-                                                : Colors.grey),
+                                                ? Homepage.backingColor
+                                                : const Color.fromARGB(
+                                                    247, 56, 53, 52)),
                                         onPressed: () {
                                           setState(() {
                                             fullFeats = !fullFeats;
                                           });
                                         },
-                                        child: const Text("Full Feats",
-                                            style:
-                                                TextStyle(color: Colors.white)),
+                                        child: Text("Full Feats",
+                                            style: TextStyle(
+                                                color: Homepage.textColor)),
                                       ),
                                       //text for search
                                       OutlinedButton(
                                         style: OutlinedButton.styleFrom(
                                             backgroundColor: (halfFeats)
-                                                ? Colors.blue
-                                                : Colors.grey),
+                                                ? Homepage.backingColor
+                                                : const Color.fromARGB(
+                                                    247, 56, 53, 52)),
                                         onPressed: () {
                                           setState(() {
                                             halfFeats = !halfFeats;
                                           });
                                         },
-                                        child: const Text("Half Feats",
-                                            style:
-                                                TextStyle(color: Colors.white)),
+                                        child: Text("Half Feats",
+                                            style: TextStyle(
+                                                color: Homepage.textColor)),
                                       ),
                                     ]),
                                     Container(
                                       height: 140,
                                       width: 300,
                                       decoration: BoxDecoration(
-                                        color: Colors.grey,
+                                        color: const Color.fromARGB(
+                                            247, 56, 53, 52),
                                         border: Border.all(
                                           color: Colors.black,
                                           width: 3,
@@ -5052,7 +4909,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 style: OutlinedButton.styleFrom(
                                     backgroundColor: (armourList.length == 4)
                                         ? Colors.blue
-                                        : Colors.grey),
+                                        : const Color.fromARGB(
+                                            247, 56, 53, 52)),
                                 onPressed: () {
                                   setState(() {
                                     if (armourList.length == 4) {
@@ -5084,7 +4942,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   backgroundColor: (armourList
                                                           .contains("Light"))
                                                       ? Colors.blue
-                                                      : Colors.grey),
+                                                      : const Color.fromARGB(
+                                                          247, 56, 53, 52)),
                                               onPressed: () {
                                                 setState(() {
                                                   if (armourList
@@ -5105,7 +4964,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     backgroundColor: (armourList
                                                             .contains("Medium"))
                                                         ? Colors.blue
-                                                        : Colors.grey),
+                                                        : const Color.fromARGB(
+                                                            247, 56, 53, 52)),
                                                 onPressed: () {
                                                   setState(() {
                                                     if (armourList
@@ -5126,7 +4986,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   backgroundColor: (armourList
                                                           .contains("Heavy"))
                                                       ? Colors.blue
-                                                      : Colors.grey),
+                                                      : const Color.fromARGB(
+                                                          247, 56, 53, 52)),
                                               onPressed: () {
                                                 setState(() {
                                                   if (armourList
@@ -5147,7 +5008,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     backgroundColor: (armourList
                                                             .contains("Shield"))
                                                         ? Colors.blue
-                                                        : Colors.grey),
+                                                        : const Color.fromARGB(
+                                                            247, 56, 53, 52)),
                                                 onPressed: () {
                                                   setState(() {
                                                     if (armourList
@@ -5173,7 +5035,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 style: OutlinedButton.styleFrom(
                                     backgroundColor: (weaponList.length == 2)
                                         ? Colors.blue
-                                        : Colors.grey),
+                                        : const Color.fromARGB(
+                                            247, 56, 53, 52)),
                                 onPressed: () {
                                   setState(() {
                                     if (weaponList.length == 2) {
@@ -5199,7 +5062,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   backgroundColor: (weaponList
                                                           .contains("Ranged"))
                                                       ? Colors.blue
-                                                      : Colors.grey),
+                                                      : const Color.fromARGB(
+                                                          247, 56, 53, 52)),
                                               onPressed: () {
                                                 setState(() {
                                                   if (weaponList
@@ -5220,7 +5084,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     backgroundColor: (weaponList
                                                             .contains("Melee"))
                                                         ? Colors.blue
-                                                        : Colors.grey),
+                                                        : const Color.fromARGB(
+                                                            247, 56, 53, 52)),
                                                 onPressed: () {
                                                   setState(() {
                                                     if (weaponList
@@ -5246,7 +5111,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 style: OutlinedButton.styleFrom(
                                     backgroundColor: (itemList.length == 2)
                                         ? Colors.blue
-                                        : Colors.grey),
+                                        : const Color.fromARGB(
+                                            247, 56, 53, 52)),
                                 onPressed: () {
                                   setState(() {
                                     if (itemList.length == 2) {
@@ -5269,11 +5135,12 @@ class MainCreateCharacter extends State<CreateACharacter>
                                           children: [
                                             OutlinedButton(
                                               style: OutlinedButton.styleFrom(
-                                                  backgroundColor:
-                                                      (itemList.contains(
+                                                  backgroundColor: (itemList
+                                                          .contains(
                                                               "Stackable"))
-                                                          ? Colors.blue
-                                                          : Colors.grey),
+                                                      ? Colors.blue
+                                                      : const Color.fromARGB(
+                                                          247, 56, 53, 52)),
                                               onPressed: () {
                                                 setState(() {
                                                   if (itemList
@@ -5292,11 +5159,12 @@ class MainCreateCharacter extends State<CreateACharacter>
                                             ),
                                             OutlinedButton(
                                                 style: OutlinedButton.styleFrom(
-                                                    backgroundColor:
-                                                        (itemList.contains(
+                                                    backgroundColor: (itemList
+                                                            .contains(
                                                                 "Unstackable"))
-                                                            ? Colors.blue
-                                                            : Colors.grey),
+                                                        ? Colors.blue
+                                                        : const Color.fromARGB(
+                                                            247, 56, 53, 52)),
                                                 onPressed: () {
                                                   setState(() {
                                                     if (itemList.contains(
@@ -5326,7 +5194,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     border: Border.all(
-                                      color: Colors.grey,
+                                      color:
+                                          const Color.fromARGB(247, 56, 53, 52),
                                       width: 2,
                                     ),
                                     borderRadius: const BorderRadius.all(
@@ -5350,7 +5219,12 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                         (coinTypeSelected ==
                                                                 "Platinum")
                                                             ? Colors.blue
-                                                            : Colors.grey),
+                                                            : const Color
+                                                                    .fromARGB(
+                                                                247,
+                                                                56,
+                                                                53,
+                                                                52)),
                                                 onPressed: () {
                                                   setState(() {
                                                     if (coinTypeSelected ==
@@ -5373,7 +5247,12 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                         (coinTypeSelected ==
                                                                 "Gold")
                                                             ? Colors.blue
-                                                            : Colors.grey),
+                                                            : const Color
+                                                                    .fromARGB(
+                                                                247,
+                                                                56,
+                                                                53,
+                                                                52)),
                                                 onPressed: () {
                                                   setState(() {
                                                     if (coinTypeSelected ==
@@ -5395,7 +5274,12 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                         (coinTypeSelected ==
                                                                 "Electrum")
                                                             ? Colors.blue
-                                                            : Colors.grey),
+                                                            : const Color
+                                                                    .fromARGB(
+                                                                247,
+                                                                56,
+                                                                53,
+                                                                52)),
                                                 onPressed: () {
                                                   setState(() {
                                                     if (coinTypeSelected ==
@@ -5418,7 +5302,12 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                         (coinTypeSelected ==
                                                                 "Silver")
                                                             ? Colors.blue
-                                                            : Colors.grey),
+                                                            : const Color
+                                                                    .fromARGB(
+                                                                247,
+                                                                56,
+                                                                53,
+                                                                52)),
                                                 onPressed: () {
                                                   setState(() {
                                                     if (coinTypeSelected ==
@@ -5441,7 +5330,12 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                         (coinTypeSelected ==
                                                                 "Copper")
                                                             ? Colors.blue
-                                                            : Colors.grey),
+                                                            : const Color
+                                                                    .fromARGB(
+                                                                247,
+                                                                56,
+                                                                53,
+                                                                52)),
                                                 onPressed: () {
                                                   setState(() {
                                                     if (coinTypeSelected ==
@@ -5753,13 +5647,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                   height: 20,
                   width: 10,
                 ),
-                const Text(
+                Text(
                   textAlign: TextAlign.center,
                   "Character Information:",
                   style: TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.w700,
-                      color: Color.fromARGB(255, 0, 168, 252)),
+                      color: Homepage.backingColor),
                 ),
                 const SizedBox(
                   height: 10,
@@ -5771,13 +5665,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                     Column(
                       children: [
                         //age text
-                        const Text(
+                        Text(
                           textAlign: TextAlign.center,
                           "Age:",
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.w700,
-                              color: Color.fromARGB(255, 0, 168, 252)),
+                              color: Homepage.backingColor),
                         ),
                         const SizedBox(height: 10),
                         //age input
@@ -5786,17 +5680,16 @@ class MainCreateCharacter extends State<CreateACharacter>
                           height: 50,
                           child: TextField(
                               controller: ageEnterController,
-                              cursorColor: Colors.blue,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
+                              cursorColor: Homepage.textColor,
+                              style: TextStyle(color: Homepage.textColor),
+                              decoration: InputDecoration(
                                   hintText: "Enter character's age",
                                   hintStyle: TextStyle(
                                       fontWeight: FontWeight.w700,
-                                      color:
-                                          Color.fromARGB(255, 212, 208, 224)),
+                                      color: Homepage.textColor),
                                   filled: true,
-                                  fillColor: Color.fromARGB(211, 42, 63, 226),
-                                  border: OutlineInputBorder(
+                                  fillColor: Homepage.backingColor,
+                                  border: const OutlineInputBorder(
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
@@ -5808,13 +5701,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                         ),
                         const SizedBox(height: 10),
                         //eye text
-                        const Text(
+                        Text(
                           textAlign: TextAlign.center,
                           "Eyes:",
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.w700,
-                              color: Color.fromARGB(255, 0, 168, 252)),
+                              color: Homepage.backingColor),
                         ),
                         const SizedBox(height: 10),
                         //eye input
@@ -5823,17 +5716,16 @@ class MainCreateCharacter extends State<CreateACharacter>
                           height: 50,
                           child: TextField(
                               controller: eyeColourController,
-                              cursorColor: Colors.blue,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
+                              cursorColor: Homepage.textColor,
+                              style: TextStyle(color: Homepage.textColor),
+                              decoration: InputDecoration(
                                   hintText: "Describe your character's eyes",
                                   hintStyle: TextStyle(
                                       fontWeight: FontWeight.w700,
-                                      color:
-                                          Color.fromARGB(255, 212, 208, 224)),
+                                      color: Homepage.textColor),
                                   filled: true,
-                                  fillColor: Color.fromARGB(211, 42, 63, 226),
-                                  border: OutlineInputBorder(
+                                  fillColor: Homepage.backingColor,
+                                  border: const OutlineInputBorder(
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
@@ -5848,13 +5740,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                     const SizedBox(width: 10, height: 100),
                     Column(
                       children: [
-                        const Text(
+                        Text(
                           textAlign: TextAlign.center,
                           "Height:",
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.w700,
-                              color: Color.fromARGB(255, 0, 168, 252)),
+                              color: Homepage.backingColor),
                         ),
                         const SizedBox(height: 10),
                         SizedBox(
@@ -5862,17 +5754,16 @@ class MainCreateCharacter extends State<CreateACharacter>
                           height: 50,
                           child: TextField(
                               controller: heightEnterController,
-                              cursorColor: Colors.blue,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
+                              cursorColor: Homepage.textColor,
+                              style: TextStyle(color: Homepage.textColor),
+                              decoration: InputDecoration(
                                   hintText: "Enter character's height",
                                   hintStyle: TextStyle(
                                       fontWeight: FontWeight.w700,
-                                      color:
-                                          Color.fromARGB(255, 212, 208, 224)),
+                                      color: Homepage.textColor),
                                   filled: true,
-                                  fillColor: Color.fromARGB(211, 42, 63, 226),
-                                  border: OutlineInputBorder(
+                                  fillColor: Homepage.backingColor,
+                                  border: const OutlineInputBorder(
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
@@ -5883,13 +5774,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                               }),
                         ),
                         const SizedBox(height: 10),
-                        const Text(
+                        Text(
                           textAlign: TextAlign.center,
                           "Skin:",
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.w700,
-                              color: Color.fromARGB(255, 0, 168, 252)),
+                              color: Homepage.backingColor),
                         ),
                         const SizedBox(height: 10),
                         SizedBox(
@@ -5897,17 +5788,16 @@ class MainCreateCharacter extends State<CreateACharacter>
                           height: 50,
                           child: TextField(
                               controller: skinEnterController,
-                              cursorColor: Colors.blue,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
+                              cursorColor: Homepage.textColor,
+                              style: TextStyle(color: Homepage.textColor),
+                              decoration: InputDecoration(
                                   hintText: "Describe your character's skin",
                                   hintStyle: TextStyle(
                                       fontWeight: FontWeight.w700,
-                                      color:
-                                          Color.fromARGB(255, 212, 208, 224)),
+                                      color: Homepage.textColor),
                                   filled: true,
-                                  fillColor: Color.fromARGB(211, 42, 63, 226),
-                                  border: OutlineInputBorder(
+                                  fillColor: Homepage.backingColor,
+                                  border: const OutlineInputBorder(
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
@@ -5922,13 +5812,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                     const SizedBox(width: 10, height: 100),
                     Column(
                       children: [
-                        const Text(
+                        Text(
                           textAlign: TextAlign.center,
                           "Weight:",
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.w700,
-                              color: Color.fromARGB(255, 0, 168, 252)),
+                              color: Homepage.backingColor),
                         ),
                         const SizedBox(height: 10),
                         SizedBox(
@@ -5936,17 +5826,16 @@ class MainCreateCharacter extends State<CreateACharacter>
                           height: 50,
                           child: TextField(
                               controller: weightEnterController,
-                              cursorColor: Colors.blue,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
+                              cursorColor: Homepage.textColor,
+                              style: TextStyle(color: Homepage.textColor),
+                              decoration: InputDecoration(
                                   hintText: "Enter character's weight",
                                   hintStyle: TextStyle(
                                       fontWeight: FontWeight.w700,
-                                      color:
-                                          Color.fromARGB(255, 212, 208, 224)),
+                                      color: Homepage.textColor),
                                   filled: true,
-                                  fillColor: Color.fromARGB(211, 42, 63, 226),
-                                  border: OutlineInputBorder(
+                                  fillColor: Homepage.backingColor,
+                                  border: const OutlineInputBorder(
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
@@ -5957,13 +5846,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                               }),
                         ),
                         const SizedBox(height: 10),
-                        const Text(
+                        Text(
                           textAlign: TextAlign.center,
                           "Hair:",
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.w700,
-                              color: Color.fromARGB(255, 0, 168, 252)),
+                              color: Homepage.backingColor),
                         ),
                         const SizedBox(height: 10),
                         SizedBox(
@@ -5971,17 +5860,16 @@ class MainCreateCharacter extends State<CreateACharacter>
                           height: 50,
                           child: TextField(
                               controller: hairEnterController,
-                              cursorColor: Colors.blue,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
+                              cursorColor: Homepage.textColor,
+                              style: TextStyle(color: Homepage.textColor),
+                              decoration: InputDecoration(
                                   hintText: "Describe your character's Hair",
                                   hintStyle: TextStyle(
                                       fontWeight: FontWeight.w700,
-                                      color:
-                                          Color.fromARGB(255, 212, 208, 224)),
+                                      color: Homepage.textColor),
                                   filled: true,
-                                  fillColor: Color.fromARGB(211, 42, 63, 226),
-                                  border: OutlineInputBorder(
+                                  fillColor: Homepage.backingColor,
+                                  border: const OutlineInputBorder(
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12)))),
@@ -5995,13 +5883,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                     )
                   ],
                 ),
-                const Text(
+                Text(
                   textAlign: TextAlign.center,
                   "Backstory:",
                   style: TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.w700,
-                      color: Color.fromARGB(255, 0, 168, 252)),
+                      color: Homepage.backingColor),
                 ),
                 const SizedBox(height: 5),
                 SizedBox(
@@ -6011,36 +5899,36 @@ class MainCreateCharacter extends State<CreateACharacter>
                       controller: backstoryEnterController,
                       maxLines: 10000,
                       minLines: 4,
-                      cursorColor: Colors.blue,
-                      style: const TextStyle(
+                      cursorColor: Homepage.textColor,
+                      style: TextStyle(
                           fontWeight: FontWeight.w700,
-                          color: Color.fromARGB(255, 126, 122, 122)),
-                      decoration: const InputDecoration(
+                          color: Homepage.backingColor),
+                      decoration: InputDecoration(
                           hintText:
                               "Write out your character's backstory. This should be a description of their past, including but not limited to: Who raised them/ how were they raised, any serious traumas or achievements in their life and then linking to justify your/ having another, reason for being in the campaign.",
                           hintStyle: TextStyle(
                               fontWeight: FontWeight.w700,
-                              color: Color.fromARGB(255, 126, 122, 122)),
+                              color: Homepage.backingColor),
                           filled: false,
                           //fillColor: Color.fromARGB(211, 42, 63, 226),
                           border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color.fromARGB(255, 126, 122, 122)),
+                              borderSide:
+                                  BorderSide(color: Homepage.backingColor),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(12)))),
+                                  const BorderRadius.all(Radius.circular(12)))),
                       onChanged: (backstoryEnteredValue) {
                         setState(() {
                           backstory = backstoryEnteredValue;
                         });
                       }),
                 ),
-                const Text(
+                Text(
                   textAlign: TextAlign.center,
                   "Additional Features:",
                   style: TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.w700,
-                      color: Color.fromARGB(255, 0, 168, 252)),
+                      color: Homepage.backingColor),
                 ),
                 const SizedBox(height: 5),
                 SizedBox(
@@ -6050,23 +5938,23 @@ class MainCreateCharacter extends State<CreateACharacter>
                       controller: additionalFeaturesEnterController,
                       maxLines: 10000,
                       minLines: 4,
-                      cursorColor: Colors.blue,
-                      style: const TextStyle(
+                      cursorColor: Homepage.textColor,
+                      style: TextStyle(
                           fontWeight: FontWeight.w700,
-                          color: Color.fromARGB(255, 126, 122, 122)),
-                      decoration: const InputDecoration(
+                          color: Homepage.backingColor),
+                      decoration: InputDecoration(
                           hintText:
                               "Write any additional features, skills or abilites which are not a part of the character's race/class/background etc. These should have been agreed apon by your DM or whoever is running the game.",
                           hintStyle: TextStyle(
                               fontWeight: FontWeight.w700,
-                              color: Color.fromARGB(255, 126, 122, 122)),
+                              color: Homepage.backingColor),
                           filled: false,
                           //fillColor: Color.fromARGB(211, 42, 63, 226),
                           border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color.fromARGB(255, 126, 122, 122)),
+                              borderSide:
+                                  BorderSide(color: Homepage.backingColor),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(12)))),
+                                  const BorderRadius.all(Radius.circular(12)))),
                       onChanged: (extraFeaturesEnteredValue) {
                         setState(() {
                           extraFeatures = extraFeaturesEnteredValue;
@@ -6211,10 +6099,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                                     color: Colors.blue,
                                     fontWeight: FontWeight.w800,
                                     fontSize: 20),
-                                underline: Container(
-                                  height: 2,
-                                  color: const Color.fromARGB(255, 7, 26, 239),
-                                ),
                                 onChanged: (String? value) {
                                   // This is called when the user selects an item.
                                   setState(() {
@@ -6288,7 +6172,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   (element) => element[2] != 0)
                                               .isEmpty))
                                       ? Colors.blue
-                                      : Colors.grey,
+                                      : const Color.fromARGB(247, 56, 53, 52),
                                   padding:
                                       const EdgeInsets.fromLTRB(45, 20, 45, 20),
                                   shape: const RoundedRectangleBorder(
