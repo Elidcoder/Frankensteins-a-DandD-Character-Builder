@@ -3890,11 +3890,11 @@ class MainCreateCharacter extends State<CreateACharacter>
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
-                  const SizedBox(height: 34),
+                  const SizedBox(height: 30),
                   Text("$numberOfRemainingFeatOrASIs options remaining",
                       style: TextStyle(
                           color: Homepage.backingColor,
-                          fontSize: 30,
+                          fontSize: 35,
                           fontWeight: FontWeight.w900)),
                   const SizedBox(height: 12),
                   Row(
@@ -3907,14 +3907,14 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   Text("ASI's",
                                       style: TextStyle(
                                           color: Homepage.backingColor,
-                                          fontSize: 24,
+                                          fontSize: 33,
                                           fontWeight: FontWeight.w800)),
                                   const SizedBox(height: 8),
                                   if (ASIRemaining)
                                     Text("You have an unspent ASI",
                                         style: TextStyle(
                                             color: Homepage.backingColor,
-                                            fontSize: 18,
+                                            fontSize: 27,
                                             fontWeight: FontWeight.w800)),
                                   SizedBox(
                                       child: Row(
@@ -4395,14 +4395,14 @@ class MainCreateCharacter extends State<CreateACharacter>
                                     Text("Feats",
                                         style: TextStyle(
                                             color: Homepage.backingColor,
-                                            fontSize: 24,
+                                            fontSize: 33,
                                             fontWeight: FontWeight.w800)),
                                     if (featsSelected.isNotEmpty)
                                       Text(
                                           "${featsSelected.length} Feats selected:",
                                           style: TextStyle(
                                               color: Homepage.backingColor,
-                                              fontSize: 20,
+                                              fontSize: 29,
                                               fontWeight: FontWeight.w800)),
                                     if (featsSelected.isNotEmpty)
                                       SizedBox(
@@ -4426,7 +4426,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                     Text("Select Feats:",
                                         style: TextStyle(
                                             color: Homepage.backingColor,
-                                            fontSize: 20,
+                                            fontSize: 29,
                                             fontWeight: FontWeight.w800)),
                                     Row(children: [
                                       OutlinedButton(
@@ -4896,19 +4896,26 @@ class MainCreateCharacter extends State<CreateACharacter>
                       child: SizedBox(
                           height: 435,
                           child: Column(children: [
-                            const Text("Purchase Equipment",
+                            const SizedBox(height: 9),
+                            Text("Purchase Equipment",
                                 style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w700)),
+                                    fontSize: 23,
+                                    fontWeight: FontWeight.w700,
+                                    color: Homepage.backingColor)),
+                            const SizedBox(height: 6),
                             Text(
-                                "You have ${currencyStored["Platinum Pieces"]} platinum, ${currencyStored["Gold Pieces"]} gold, ${currencyStored["Electrum Pieces"]} electrum, ${currencyStored["Silver Pieces"]} silver and ${currencyStored["Copper Pieces"]} copper pieces to spend with",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w700)),
+                                "You have ${currencyStored["Platinum Pieces"]} platinum, ${currencyStored["Gold Pieces"]} gold, ${currencyStored["Electrum Pieces"]} electrum, ${currencyStored["Silver Pieces"]} silver and ${currencyStored["Copper Pieces"]} copper pieces to spend",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    color: Homepage.backingColor)),
+                            const SizedBox(height: 6),
                             Row(children: [
                               //armour big button
                               OutlinedButton(
                                 style: OutlinedButton.styleFrom(
                                     backgroundColor: (armourList.length == 4)
-                                        ? Colors.blue
+                                        ? Homepage.backingColor
                                         : const Color.fromARGB(
                                             247, 56, 53, 52)),
                                 onPressed: () {
@@ -4930,18 +4937,18 @@ class MainCreateCharacter extends State<CreateACharacter>
                                     height: 57,
                                     child: Column(
                                       children: [
-                                        const Text("Armour",
+                                        Text("Armour",
                                             style: TextStyle(
-                                                color: Colors.white,
+                                                color: Homepage.textColor,
                                                 fontSize: 22)),
                                         Row(
                                           children: [
                                             //suboptions for armour
-                                            OutlinedButton(
+                                            ElevatedButton(
                                               style: OutlinedButton.styleFrom(
                                                   backgroundColor: (armourList
                                                           .contains("Light"))
-                                                      ? Colors.blue
+                                                      ? Homepage.backingColor
                                                       : const Color.fromARGB(
                                                           247, 56, 53, 52)),
                                               onPressed: () {
@@ -4954,16 +4961,16 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   }
                                                 });
                                               },
-                                              child: const Text("Light",
+                                              child: Text("Light",
                                                   style: TextStyle(
-                                                      color: Colors.white,
+                                                      color: Homepage.textColor,
                                                       fontSize: 15)),
                                             ),
-                                            OutlinedButton(
+                                            ElevatedButton(
                                                 style: OutlinedButton.styleFrom(
                                                     backgroundColor: (armourList
                                                             .contains("Medium"))
-                                                        ? Colors.blue
+                                                        ? Homepage.backingColor
                                                         : const Color.fromARGB(
                                                             247, 56, 53, 52)),
                                                 onPressed: () {
@@ -4977,15 +4984,16 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     }
                                                   });
                                                 },
-                                                child: const Text("Medium",
+                                                child: Text("Medium",
                                                     style: TextStyle(
-                                                        color: Colors.white,
+                                                        color:
+                                                            Homepage.textColor,
                                                         fontSize: 15))),
-                                            OutlinedButton(
+                                            ElevatedButton(
                                               style: OutlinedButton.styleFrom(
                                                   backgroundColor: (armourList
                                                           .contains("Heavy"))
-                                                      ? Colors.blue
+                                                      ? Homepage.backingColor
                                                       : const Color.fromARGB(
                                                           247, 56, 53, 52)),
                                               onPressed: () {
@@ -4998,16 +5006,16 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   }
                                                 });
                                               },
-                                              child: const Text("Heavy",
+                                              child: Text("Heavy",
                                                   style: TextStyle(
-                                                      color: Colors.white,
+                                                      color: Homepage.textColor,
                                                       fontSize: 15)),
                                             ),
-                                            OutlinedButton(
+                                            ElevatedButton(
                                                 style: OutlinedButton.styleFrom(
                                                     backgroundColor: (armourList
                                                             .contains("Shield"))
-                                                        ? Colors.blue
+                                                        ? Homepage.backingColor
                                                         : const Color.fromARGB(
                                                             247, 56, 53, 52)),
                                                 onPressed: () {
@@ -5021,9 +5029,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     }
                                                   });
                                                 },
-                                                child: const Text("Shield",
+                                                child: Text("Shield",
                                                     style: TextStyle(
-                                                        color: Colors.white,
+                                                        color:
+                                                            Homepage.textColor,
                                                         fontSize: 15)))
                                           ],
                                         )
@@ -5034,7 +5043,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               OutlinedButton(
                                 style: OutlinedButton.styleFrom(
                                     backgroundColor: (weaponList.length == 2)
-                                        ? Colors.blue
+                                        ? Homepage.backingColor
                                         : const Color.fromARGB(
                                             247, 56, 53, 52)),
                                 onPressed: () {
@@ -5051,17 +5060,17 @@ class MainCreateCharacter extends State<CreateACharacter>
                                     height: 57,
                                     child: Column(
                                       children: [
-                                        const Text("Weapon",
+                                        Text("Weapon",
                                             style: TextStyle(
-                                                color: Colors.white,
+                                                color: Homepage.textColor,
                                                 fontSize: 22)),
                                         Row(
                                           children: [
-                                            OutlinedButton(
+                                            ElevatedButton(
                                               style: OutlinedButton.styleFrom(
                                                   backgroundColor: (weaponList
                                                           .contains("Ranged"))
-                                                      ? Colors.blue
+                                                      ? Homepage.backingColor
                                                       : const Color.fromARGB(
                                                           247, 56, 53, 52)),
                                               onPressed: () {
@@ -5074,16 +5083,16 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   }
                                                 });
                                               },
-                                              child: const Text("Ranged",
+                                              child: Text("Ranged",
                                                   style: TextStyle(
-                                                      color: Colors.white,
+                                                      color: Homepage.textColor,
                                                       fontSize: 15)),
                                             ),
-                                            OutlinedButton(
+                                            ElevatedButton(
                                                 style: OutlinedButton.styleFrom(
                                                     backgroundColor: (weaponList
                                                             .contains("Melee"))
-                                                        ? Colors.blue
+                                                        ? Homepage.backingColor
                                                         : const Color.fromARGB(
                                                             247, 56, 53, 52)),
                                                 onPressed: () {
@@ -5097,9 +5106,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     }
                                                   });
                                                 },
-                                                child: const Text("Melee",
+                                                child: Text("Melee",
                                                     style: TextStyle(
-                                                        color: Colors.white,
+                                                        color:
+                                                            Homepage.textColor,
                                                         fontSize: 15))),
                                           ],
                                         )
@@ -5110,7 +5120,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               OutlinedButton(
                                 style: OutlinedButton.styleFrom(
                                     backgroundColor: (itemList.length == 2)
-                                        ? Colors.blue
+                                        ? Homepage.backingColor
                                         : const Color.fromARGB(
                                             247, 56, 53, 52)),
                                 onPressed: () {
@@ -5127,18 +5137,18 @@ class MainCreateCharacter extends State<CreateACharacter>
                                     height: 57,
                                     child: Column(
                                       children: [
-                                        const Text("Items",
+                                        Text("Items",
                                             style: TextStyle(
-                                                color: Colors.white,
+                                                color: Homepage.textColor,
                                                 fontSize: 22)),
                                         Row(
                                           children: [
-                                            OutlinedButton(
+                                            ElevatedButton(
                                               style: OutlinedButton.styleFrom(
                                                   backgroundColor: (itemList
                                                           .contains(
                                                               "Stackable"))
-                                                      ? Colors.blue
+                                                      ? Homepage.backingColor
                                                       : const Color.fromARGB(
                                                           247, 56, 53, 52)),
                                               onPressed: () {
@@ -5152,17 +5162,17 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   }
                                                 });
                                               },
-                                              child: const Text("Stackable",
+                                              child: Text("Stackable",
                                                   style: TextStyle(
-                                                      color: Colors.white,
+                                                      color: Homepage.textColor,
                                                       fontSize: 15)),
                                             ),
-                                            OutlinedButton(
+                                            ElevatedButton(
                                                 style: OutlinedButton.styleFrom(
                                                     backgroundColor: (itemList
                                                             .contains(
                                                                 "Unstackable"))
-                                                        ? Colors.blue
+                                                        ? Homepage.backingColor
                                                         : const Color.fromARGB(
                                                             247, 56, 53, 52)),
                                                 onPressed: () {
@@ -5177,9 +5187,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     }
                                                   });
                                                 },
-                                                child: const Text("Unstackable",
+                                                child: Text("Unstackable",
                                                     style: TextStyle(
-                                                        color: Colors.white,
+                                                        color:
+                                                            Homepage.textColor,
                                                         fontSize: 15))),
                                           ],
                                         )
@@ -5192,7 +5203,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 //costs
                                 Container(
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: Homepage.backgroundColor,
                                     border: Border.all(
                                       color:
                                           const Color.fromARGB(247, 56, 53, 52),
@@ -5206,19 +5217,20 @@ class MainCreateCharacter extends State<CreateACharacter>
                                       height: 57,
                                       child: Column(
                                         children: [
-                                          const Text("Cost range:",
+                                          Text("Cost range:",
                                               style: TextStyle(
-                                                  color: Colors.blue,
+                                                  color: Homepage.textColor,
                                                   fontSize: 22)),
                                           //box<X<box2
                                           Row(
                                             children: [
-                                              OutlinedButton(
+                                              ElevatedButton(
                                                 style: OutlinedButton.styleFrom(
                                                     backgroundColor:
                                                         (coinTypeSelected ==
                                                                 "Platinum")
-                                                            ? Colors.blue
+                                                            ? Homepage
+                                                                .backingColor
                                                             : const Color
                                                                     .fromARGB(
                                                                 247,
@@ -5236,17 +5248,19 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     }
                                                   });
                                                 },
-                                                child: const Text("Platinum",
+                                                child: Text("Platinum",
                                                     style: TextStyle(
-                                                        color: Colors.white,
+                                                        color:
+                                                            Homepage.textColor,
                                                         fontSize: 15)),
                                               ),
-                                              OutlinedButton(
+                                              ElevatedButton(
                                                 style: OutlinedButton.styleFrom(
                                                     backgroundColor:
                                                         (coinTypeSelected ==
                                                                 "Gold")
-                                                            ? Colors.blue
+                                                            ? Homepage
+                                                                .backingColor
                                                             : const Color
                                                                     .fromARGB(
                                                                 247,
@@ -5263,17 +5277,19 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     }
                                                   });
                                                 },
-                                                child: const Text("Gold",
+                                                child: Text("Gold",
                                                     style: TextStyle(
-                                                        color: Colors.white,
+                                                        color:
+                                                            Homepage.textColor,
                                                         fontSize: 15)),
                                               ),
-                                              OutlinedButton(
+                                              ElevatedButton(
                                                 style: OutlinedButton.styleFrom(
                                                     backgroundColor:
                                                         (coinTypeSelected ==
                                                                 "Electrum")
-                                                            ? Colors.blue
+                                                            ? Homepage
+                                                                .backingColor
                                                             : const Color
                                                                     .fromARGB(
                                                                 247,
@@ -5291,17 +5307,19 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     }
                                                   });
                                                 },
-                                                child: const Text("Electrum",
+                                                child: Text("Electrum",
                                                     style: TextStyle(
-                                                        color: Colors.white,
+                                                        color:
+                                                            Homepage.textColor,
                                                         fontSize: 15)),
                                               ),
-                                              OutlinedButton(
+                                              ElevatedButton(
                                                 style: OutlinedButton.styleFrom(
                                                     backgroundColor:
                                                         (coinTypeSelected ==
                                                                 "Silver")
-                                                            ? Colors.blue
+                                                            ? Homepage
+                                                                .backingColor
                                                             : const Color
                                                                     .fromARGB(
                                                                 247,
@@ -5319,17 +5337,19 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     }
                                                   });
                                                 },
-                                                child: const Text("Silver",
+                                                child: Text("Silver",
                                                     style: TextStyle(
-                                                        color: Colors.white,
+                                                        color:
+                                                            Homepage.textColor,
                                                         fontSize: 15)),
                                               ),
-                                              OutlinedButton(
+                                              ElevatedButton(
                                                 style: OutlinedButton.styleFrom(
                                                     backgroundColor:
                                                         (coinTypeSelected ==
                                                                 "Copper")
-                                                            ? Colors.blue
+                                                            ? Homepage
+                                                                .backingColor
                                                             : const Color
                                                                     .fromARGB(
                                                                 247,
@@ -5347,9 +5367,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     }
                                                   });
                                                 },
-                                                child: const Text("Copper",
+                                                child: Text("Copper",
                                                     style: TextStyle(
-                                                        color: Colors.white,
+                                                        color:
+                                                            Homepage.textColor,
                                                         fontSize: 15)),
                                               ),
                                             ],
@@ -5360,8 +5381,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                               ],
                             ),
                             Container(
+                                padding: const EdgeInsets.only(top: 10),
                                 decoration: BoxDecoration(
-                                  color: Colors.blue,
+                                  color: Homepage.backgroundColor,
                                   border: Border.all(
                                     color:
                                         const Color.fromARGB(255, 7, 26, 239),
@@ -5399,7 +5421,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               .length, (index) {
                                         return OutlinedButton(
                                           style: OutlinedButton.styleFrom(
-                                              backgroundColor: Colors.white),
+                                              backgroundColor:
+                                                  Homepage.backingColor),
                                           onPressed: () {
                                             setState(() {
                                               if (ITEMLIST
@@ -5540,11 +5563,11 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                 }
                                               }
                                             });
-
-                                            //subtract cost
                                           },
                                           child: Text(
-                                              "${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].name}: ${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[0]}x${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[1]}"),
+                                              "${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].name}: ${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[0]}x${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[1]}",
+                                              style: TextStyle(
+                                                  color: Homepage.textColor)),
                                         );
                                       }),
                                     )))
@@ -5554,11 +5577,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                           height: 435,
                           child: Column(
                             children: [
-                              const Text(
-                                  "Pick your equipment from options gained:",
+                              const SizedBox(height: 9),
+                              Text("Pick your equipment from options gained:",
                                   style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700)),
+                                      fontSize: 23,
+                                      fontWeight: FontWeight.w700,
+                                      color: Homepage.backingColor)),
+                              const SizedBox(height: 6),
                               if (equipmentSelectedFromChoices != [])
                                 SizedBox(
                                   height: 300,
@@ -5580,7 +5605,19 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                       Axis.horizontal,
                                                   child: Row(
                                                     children: [
-                                                      OutlinedButton(
+                                                      ElevatedButton(
+                                                        style: OutlinedButton.styleFrom(
+                                                            backgroundColor: (itemList
+                                                                        .length ==
+                                                                    2)
+                                                                ? Homepage
+                                                                    .backingColor
+                                                                : const Color
+                                                                        .fromARGB(
+                                                                    247,
+                                                                    56,
+                                                                    53,
+                                                                    52)),
                                                         onPressed: () {
                                                           setState(() {
                                                             equipmentSelectedFromChoices[
@@ -5594,13 +5631,25 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                           produceEquipmentOptionDescription(
                                                               equipmentSelectedFromChoices[
                                                                   i][0]),
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.blue,
+                                                          style: TextStyle(
+                                                            color: Homepage
+                                                                .textColor,
                                                           ),
                                                         ),
                                                       ),
-                                                      OutlinedButton(
+                                                      ElevatedButton(
+                                                        style: OutlinedButton.styleFrom(
+                                                            backgroundColor: (itemList
+                                                                        .length ==
+                                                                    2)
+                                                                ? Homepage
+                                                                    .backingColor
+                                                                : const Color
+                                                                        .fromARGB(
+                                                                    247,
+                                                                    56,
+                                                                    53,
+                                                                    52)),
                                                         onPressed: () {
                                                           setState(() {
                                                             equipmentSelectedFromChoices[
@@ -5610,14 +5659,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                             ];
                                                           });
                                                         },
-                                                        //String produceEquipmentOptionDescription(List<dynamic> optionDescription)
                                                         child: Text(
                                                           produceEquipmentOptionDescription(
                                                               equipmentSelectedFromChoices[
                                                                   i][1]),
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.blue,
+                                                          style: TextStyle(
+                                                            color: Homepage
+                                                                .textColor,
                                                           ),
                                                         ),
                                                       )
@@ -5628,7 +5676,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   produceEquipmentOptionDescription(
                                                       equipmentSelectedFromChoices[
                                                           i][0]),
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
+                                                      color: Homepage.textColor,
                                                       fontWeight:
                                                           FontWeight.w700))
                                       ],

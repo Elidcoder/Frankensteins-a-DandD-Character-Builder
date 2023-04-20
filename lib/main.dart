@@ -1,19 +1,12 @@
 ///Imports
-//import 'dart:ffi';
 import "package:flutter/material.dart";
-//import 'dart:convert';
-//add this back if there are errors:
-//import 'package:flutter/services.dart';
-//import 'dart:io';
 import "pages/custom_content.dart";
 import "pages/create_a_character.dart";
 import "pages/my_characters.dart";
-//import "pages/roll_dice.dart";
 import "pages/search_for_content.dart";
 import "pages/custom_content_options/spells.dart";
 import "pages/custom_content_options/items.dart";
 import "pages/custom_content_options/weapons.dart";
-//import "package:frankenstein/globals.dart";
 import "package:frankenstein/SRD_globals.dart";
 import "package:frankenstein/character_globals.dart";
 import "dart:convert";
@@ -27,14 +20,11 @@ final Map<String, Widget> PAGELINKER = {
   "Create a Character": CreateACharacter(),
   "Search for Content": const SearchForContent(),
   "My Characters": MyCharacters(),
-  //"Roll Dice": RollDice(),
   "Custom Content": const CustomContent(),
   "Create spells": MakeASpell(),
   "Create Items": MakeAnItem(),
   "Create weapons": MakeAWeapon(),
 };
-
-//get rid of this later{
 
 void main() {
   runApp(MaterialApp(
