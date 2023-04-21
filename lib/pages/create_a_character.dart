@@ -30,7 +30,7 @@ import "package:frankenstein/main.dart";
               fontSize: 22,
               fontWeight: FontWeight.w700,
             ),
-            borderColor: const Color.fromARGB(255, 7, 26, 239),
+            borderColor: Colors.black,
             borderRadius: const BorderRadius.all(Radius.circular(20)),
             borderWidth: 1.5,
             onPressed: (int index) {
@@ -839,7 +839,7 @@ class _ChoiceRowState extends State<ChoiceRow> {
             decoration: BoxDecoration(
               //color: Colors.pink,
               border: Border.all(
-                color: const Color.fromARGB(255, 7, 26, 239),
+                color: Colors.black,
                 width: 1,
               ),
               borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -1122,20 +1122,20 @@ class MainCreateCharacter extends State<CreateACharacter>
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
-                const SizedBox(height: 60),
+                const SizedBox(height: 40),
                 Row(
                   children: [
                     Expanded(
                         child: Column(children: [
                       //title
                       Container(
-                        width: 280,
-                        height: 60,
+                        width: 330,
+                        height: 65,
                         decoration: BoxDecoration(
                           color: Homepage.backingColor,
                           border: Border.all(
-                            color: const Color.fromARGB(255, 7, 26, 239),
-                            width: 2,
+                            color: Colors.black,
+                            width: 2.1,
                           ),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(5)),
@@ -1150,7 +1150,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               color: Homepage.textColor),
                         )),
                       ),
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 25),
                       //Character name input
                       SizedBox(
                         width: 250,
@@ -1400,13 +1400,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                         child: Column(
                       children: [
                         Container(
-                          width: 325,
-                          height: 60,
+                          width: 335,
+                          height: 65,
                           decoration: BoxDecoration(
                             color: Homepage.backingColor,
                             border: Border.all(
-                              color: const Color.fromARGB(255, 7, 26, 239),
-                              width: 2,
+                              color: Colors.black,
+                              width: 2.1,
                             ),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(5)),
@@ -1421,7 +1421,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 color: Homepage.textColor),
                           )),
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 25),
                         SizedBox(
                           width: 325,
                           child: Column(
@@ -1527,13 +1527,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                         child: Column(
                       children: [
                         Container(
-                          width: 325,
-                          height: 60,
+                          width: 335,
+                          height: 65,
                           decoration: BoxDecoration(
                             color: Homepage.backingColor,
                             border: Border.all(
-                              color: const Color.fromARGB(255, 7, 26, 239),
-                              width: 2,
+                              color: Colors.black,
+                              width: 2.1,
                             ),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(5)),
@@ -1548,7 +1548,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 color: Homepage.textColor),
                           )),
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 25),
                         SizedBox(
                           width: 325,
                           child: Column(
@@ -2036,8 +2036,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: const Color.fromARGB(255, 7, 26, 239),
-                                  width: 2,
+                                  color: Colors.black,
+                                  width: 1.8,
                                 ),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(5)),
@@ -2304,17 +2304,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     }
                                                   }
                                                 }
-
-                                                /*allSpellsSelectedAsListsOfThings
-                                                .add([
-                                              CLASSLIST[index].name,
-                                              [],
-                                              levelZeroGetSpellsKnown(index),
-                                              CLASSLIST[index]
-                                                      .spellsKnownFormula ??
-                                                  CLASSLIST[index]
-                                                      .spellsKnownPerLevel
-                                            ]);*/
                                               }
                                             }
 
@@ -2616,7 +2605,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                             color: Colors.white),
                         //color: Color.fromARGB(255, 15, 124, 174)
                         fillColor: const Color.fromARGB(162, 0, 255, 8),
-                        borderColor: const Color.fromARGB(255, 7, 26, 239),
+                        borderColor: Colors.black,
                         borderRadius:
                             const BorderRadius.all(Radius.circular(20)),
                         borderWidth: 1.5,
@@ -2806,8 +2795,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: const Color.fromARGB(255, 7, 26, 239),
-                                  width: 2,
+                                  color: Colors.black,
+                                  width: 1.6,
                                 ),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(5)),
@@ -2948,8 +2937,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: Homepage.backingColor,
-                                  width: 2,
+                                  color: Colors.black,
+                                  width: 1.6,
                                 ),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(5)),
@@ -2988,8 +2977,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: Homepage.backingColor,
-                                  width: 2,
+                                  color: Colors.black,
+                                  width: 1.6,
                                 ),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(5)),
@@ -3131,8 +3120,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: Homepage.backingColor,
-                                  width: 2,
+                                  color: Colors.black,
+                                  width: 1.6,
                                 ),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(5)),
@@ -3171,8 +3160,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: Homepage.backingColor,
-                                  width: 2,
+                                  color: Colors.black,
+                                  width: 1.6,
                                 ),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(5)),
@@ -3314,8 +3303,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: Homepage.backingColor,
-                                  width: 2,
+                                  color: Colors.black,
+                                  width: 1.6,
                                 ),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(5)),
@@ -3354,8 +3343,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: Homepage.backingColor,
-                                  width: 2,
+                                  color: Colors.black,
+                                  width: 1.6,
                                 ),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(5)),
@@ -3497,8 +3486,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: const Color.fromARGB(255, 7, 26, 239),
-                                  width: 2,
+                                  color: Colors.black,
+                                  width: 1.6,
                                 ),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(5)),
@@ -3537,8 +3526,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: const Color.fromARGB(255, 7, 26, 239),
-                                  width: 2,
+                                  color: Colors.black,
+                                  width: 1.6,
                                 ),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(5)),
@@ -3679,8 +3668,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: const Color.fromARGB(255, 7, 26, 239),
-                                  width: 2,
+                                  color: Colors.black,
+                                  width: 1.6,
                                 ),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(5)),
@@ -3719,8 +3708,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: const Color.fromARGB(255, 7, 26, 239),
-                                  width: 2,
+                                  color: Colors.black,
+                                  width: 1.6,
                                 ),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(5)),
@@ -3861,8 +3850,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 color: Homepage.backingColor,
                                 border: Border.all(
-                                  color: const Color.fromARGB(255, 7, 26, 239),
-                                  width: 2,
+                                  color: Colors.black,
+                                  width: 1.6,
                                 ),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(5)),
@@ -3890,7 +3879,7 @@ class MainCreateCharacter extends State<CreateACharacter>
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 34),
                   Text("$numberOfRemainingFeatOrASIs options remaining",
                       style: TextStyle(
                           color: Homepage.backingColor,
@@ -3926,9 +3915,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         decoration: BoxDecoration(
                                           color: Homepage.backingColor,
                                           border: Border.all(
-                                            color: const Color.fromARGB(
-                                                255, 7, 26, 239),
-                                            width: 2,
+                                            color: Colors.black,
+                                            width: 1.6,
                                           ),
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(5)),
@@ -4001,9 +3989,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         decoration: BoxDecoration(
                                           color: Homepage.backingColor,
                                           border: Border.all(
-                                            color: const Color.fromARGB(
-                                                255, 7, 26, 239),
-                                            width: 2,
+                                            color: Colors.black,
+                                            width: 1.6,
                                           ),
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(5)),
@@ -4082,9 +4069,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         decoration: BoxDecoration(
                                           color: Homepage.backingColor,
                                           border: Border.all(
-                                            color: const Color.fromARGB(
-                                                255, 7, 26, 239),
-                                            width: 2,
+                                            color: Colors.black,
+                                            width: 1.6,
                                           ),
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(5)),
@@ -4157,9 +4143,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         decoration: BoxDecoration(
                                           color: Homepage.backingColor,
                                           border: Border.all(
-                                            color: const Color.fromARGB(
-                                                255, 7, 26, 239),
-                                            width: 2,
+                                            color: Colors.black,
+                                            width: 1.6,
                                           ),
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(5)),
@@ -4238,9 +4223,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         decoration: BoxDecoration(
                                           color: Homepage.backingColor,
                                           border: Border.all(
-                                            color: const Color.fromARGB(
-                                                255, 7, 26, 239),
-                                            width: 2,
+                                            color: Colors.black,
+                                            width: 1.6,
                                           ),
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(5)),
@@ -4313,9 +4297,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         decoration: BoxDecoration(
                                           color: Homepage.backingColor,
                                           border: Border.all(
-                                            color: const Color.fromARGB(
-                                                255, 7, 26, 239),
-                                            width: 2,
+                                            color: Colors.black,
+                                            width: 1.6,
                                           ),
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(5)),
@@ -4566,11 +4549,11 @@ class MainCreateCharacter extends State<CreateACharacter>
               )),
           //spells
           Column(children: [
-            const Text("Choose your spells from regular progression",
+            Text("Choose your spells from regular progression",
                 style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w700,
-                )),
+                    fontSize: 28,
+                    fontWeight: FontWeight.w700,
+                    color: Homepage.backingColor)),
             Row(children: [
               Expanded(
                   child: Column(children: [
@@ -4885,7 +4868,6 @@ class MainCreateCharacter extends State<CreateACharacter>
               )
             ]),
           ]),
-
           //Equipment
           SingleChildScrollView(
               scrollDirection: Axis.vertical,
@@ -5207,7 +5189,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                     border: Border.all(
                                       color:
                                           const Color.fromARGB(247, 56, 53, 52),
-                                      width: 2,
+                                      width: 1.6,
                                     ),
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(10)),
@@ -5385,9 +5367,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 decoration: BoxDecoration(
                                   color: Homepage.backgroundColor,
                                   border: Border.all(
-                                    color:
-                                        const Color.fromARGB(255, 7, 26, 239),
-                                    width: 2,
+                                    color: Colors.black,
+                                    width: 1.6,
                                   ),
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(5)),
@@ -6015,6 +5996,7 @@ class MainCreateCharacter extends State<CreateACharacter>
           const Icon(Icons.directions_bike),
           //Finishing up
           Scaffold(
+              backgroundColor: Homepage.backgroundColor,
               floatingActionButton: FloatingActionButton(
                 onPressed: () {
                   Navigator.of(context).push(
@@ -6124,72 +6106,86 @@ class MainCreateCharacter extends State<CreateACharacter>
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const SizedBox(height: 40),
-                          const Text("Add your character to a group:",
+                          Text("Add your character to a group:",
                               style: TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.w800,
-                              )),
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w800,
+                                  color: Homepage.backingColor)),
                           const SizedBox(height: 20),
-                          const Text("Select an existing group:",
+                          Text("Select an existing group:",
                               style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w800,
-                              )),
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w800,
+                                  color: Homepage.backingColor)),
                           const SizedBox(height: 20),
-                          SizedBox(
-                              width: 128,
-                              height: 50,
+                          Container(
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                color: Homepage.backingColor,
+                              ),
+                              height: 45,
                               child: DropdownButton<String>(
-                                value: GROUPLIST.contains(group) ? group : null,
-                                icon: const Icon(Icons.arrow_drop_down,
-                                    color: Color.fromARGB(255, 7, 26, 239)),
-                                elevation: 16,
-                                style: const TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 20),
+                                hint: Text(" No groups available ",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Homepage.textColor,
+                                      decoration: TextDecoration.underline,
+                                    )),
+                                alignment: Alignment.center,
                                 onChanged: (String? value) {
                                   // This is called when the user selects an item.
                                   setState(() {
                                     group = value!;
                                   });
                                 },
+                                value: GROUPLIST.contains(group) ? group : null,
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color: Homepage.textColor),
                                 items: (GROUPLIST != [])
                                     ? GROUPLIST.map<DropdownMenuItem<String>>(
                                         (String value) {
                                         return DropdownMenuItem<String>(
                                           value: value,
-                                          child: SizedBox(
-                                              width: 100,
-                                              child: FittedBox(
-                                                  fit: BoxFit.scaleDown,
-                                                  child: Text(value))),
+                                          child: Align(
+                                              child: Text(value,
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    color: Homepage.textColor,
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                  ))),
                                         );
                                       }).toList()
                                     : null,
+                                dropdownColor: Homepage.backingColor,
+                                elevation: 2,
+                                style: TextStyle(
+                                    color: Homepage.textColor,
+                                    fontWeight: FontWeight.w700),
+                                underline: const SizedBox(),
                               )),
                           const SizedBox(height: 20),
-                          const Text("Or create a new one:",
+                          Text("Or create a new one:",
                               style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w800,
-                              )),
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w800,
+                                  color: Homepage.backingColor)),
                           const SizedBox(height: 20),
                           SizedBox(
                             width: 300,
                             child: TextField(
                                 controller: groupEnterController,
-                                cursorColor: Colors.blue,
-                                style: const TextStyle(color: Colors.white),
-                                decoration: const InputDecoration(
+                                cursorColor: Homepage.textColor,
+                                style: TextStyle(color: Homepage.textColor),
+                                decoration: InputDecoration(
                                     hintText: "Enter a group",
                                     hintStyle: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        color:
-                                            Color.fromARGB(255, 212, 208, 224)),
+                                        color: Homepage.textColor),
                                     filled: true,
-                                    fillColor: Color.fromARGB(211, 42, 63, 226),
-                                    border: OutlineInputBorder(
+                                    fillColor: Homepage.backingColor,
+                                    border: const OutlineInputBorder(
                                         borderSide: BorderSide.none,
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(12)))),
@@ -6203,7 +6199,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                           Tooltip(
                               message:
                                   "This button will save your character putting it into the Json and then send you back to the main menu.",
-                              child: OutlinedButton(
+                              child: ElevatedButton(
                                 style: OutlinedButton.styleFrom(
                                   backgroundColor: (pointsRemaining == 0 &&
                                           numberOfRemainingFeatOrASIs == 0 &&
@@ -6220,7 +6216,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               .where(
                                                   (element) => element[2] != 0)
                                               .isEmpty))
-                                      ? Colors.blue
+                                      ? Homepage.backingColor
                                       : const Color.fromARGB(247, 56, 53, 52),
                                   padding:
                                       const EdgeInsets.fromLTRB(45, 20, 45, 20),
@@ -6228,14 +6224,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
                                   side: const BorderSide(
-                                      width: 3.5,
-                                      color: Color.fromARGB(255, 7, 26, 239)),
+                                      width: 3, color: Colors.black),
                                 ),
-                                child: const Text("Save Character",
+                                child: Text("Save Character",
                                     style: TextStyle(
                                       fontSize: 32,
                                       fontWeight: FontWeight.w800,
-                                      color: Colors.white,
+                                      color: Homepage.textColor,
                                     )),
                                 onPressed: () {
                                   if (pointsRemaining == 0 &&
@@ -6408,11 +6403,11 @@ class MainCreateCharacter extends State<CreateACharacter>
                       //Basics
 
                       const SizedBox(height: 40),
-                      const Text("Build checklist:",
+                      Text("Build checklist:",
                           style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.w800,
-                          )),
+                              fontSize: 32,
+                              fontWeight: FontWeight.w800,
+                              color: Homepage.backingColor)),
                       const SizedBox(height: 20),
                       (characterName.replaceAll(" ", "") != "" &&
                               characterGender.replaceAll(" ", "") != "" &&
@@ -6444,16 +6439,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   color: Colors.red,
                                   fontSize: 22,
                                   fontWeight: FontWeight.w700)),
-                      /*Text("Made all race selections",
-                          style: TextStyle(
-                              color: (pointsRemaining == 0)
-                                  ? Colors.green
-                                  : Colors.red)),
-                      Text("Made all backround selections",
-                          style: TextStyle(
-                              color: (pointsRemaining == 0)
-                                  ? Colors.green
-                                  : Colors.red)),*/
                       //ASI+feats
                       const SizedBox(height: 20),
                       (numberOfRemainingFeatOrASIs == 0)
@@ -6488,14 +6473,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   color: Colors.red,
                                   fontSize: 22,
                                   fontWeight: FontWeight.w700)),
-                      /*const SizedBox(height: 20),
-                      Text("Made all selections for classes",
-                          style: TextStyle(
-                              color: (pointsRemaining == 0)
-                                  ? Colors.green
-                                  : Colors.red,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700)),*/
                       const SizedBox(height: 20),
                       //Equipment
                       (equipmentSelectedFromChoices == [] ||

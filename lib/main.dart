@@ -502,8 +502,7 @@ class MainMenupage extends State<MainMenu> {
                     padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
-                    side: const BorderSide(
-                        width: 5, color: Color.fromARGB(255, 7, 26, 239)),
+                    side: const BorderSide(width: 3.3, color: Colors.black),
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -529,8 +528,7 @@ class MainMenupage extends State<MainMenu> {
                     padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
-                    side: const BorderSide(
-                        width: 5, color: Color.fromARGB(255, 7, 26, 239)),
+                    side: const BorderSide(width: 3.3, color: Colors.black),
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -556,8 +554,7 @@ class MainMenupage extends State<MainMenu> {
                     padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
-                    side: const BorderSide(
-                        width: 5, color: Color.fromARGB(255, 7, 26, 239)),
+                    side: const BorderSide(width: 3.3, color: Colors.black),
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -588,8 +585,7 @@ class MainMenupage extends State<MainMenu> {
                     padding: const EdgeInsets.fromLTRB(45, 25, 45, 25),
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
-                    side: const BorderSide(
-                        width: 5, color: Color.fromARGB(255, 7, 26, 239)),
+                    side: const BorderSide(width: 3.3, color: Colors.black),
                   ),
                   onPressed: () async {
                     final result = await FilePicker.platform.pickFiles(
@@ -666,8 +662,7 @@ class MainMenupage extends State<MainMenu> {
                     padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
-                    side: const BorderSide(
-                        width: 5, color: Color.fromARGB(255, 7, 26, 239)),
+                    side: const BorderSide(width: 3.3, color: Colors.black),
                   ),
                   onPressed: () {
                     //()
