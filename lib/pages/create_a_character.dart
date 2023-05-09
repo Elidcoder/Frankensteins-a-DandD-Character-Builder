@@ -1669,7 +1669,7 @@ class MainCreateCharacter extends State<CreateACharacter>
           //race
           Column(
             children: [
-              const SizedBox(height: 34),
+              const SizedBox(height: 24),
               SizedBox(
                   height: 35,
                   child: Text("Select a race:",
@@ -2017,7 +2017,7 @@ class MainCreateCharacter extends State<CreateACharacter>
               ),
               body: TabBarView(children: [
                 Container(
-                    padding: const EdgeInsets.only(top: 30),
+                    padding: const EdgeInsets.only(top: 17),
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: Wrap(
@@ -2327,7 +2327,7 @@ class MainCreateCharacter extends State<CreateACharacter>
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
-                  const SizedBox(height: 34),
+                  const SizedBox(height: 24),
                   Text("Select your character's race",
                       style: TextStyle(
                           color: Homepage.backingColor,
@@ -2762,7 +2762,7 @@ class MainCreateCharacter extends State<CreateACharacter>
           SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(children: [
-                const SizedBox(height: 34),
+                const SizedBox(height: 29),
                 Text(
                   textAlign: TextAlign.center,
                   "Points remaining: $pointsRemaining",
@@ -3879,13 +3879,13 @@ class MainCreateCharacter extends State<CreateACharacter>
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
-                  const SizedBox(height: 34),
+                  const SizedBox(height: 24),
                   Text("$numberOfRemainingFeatOrASIs options remaining",
                       style: TextStyle(
                           color: Homepage.backingColor,
                           fontSize: 35,
                           fontWeight: FontWeight.w900)),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 6),
                   Row(
                     children: [
                       Expanded(
@@ -4371,9 +4371,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                       if (featsAllowed ?? false)
                         Expanded(
                             child: SizedBox(
-                                height: 435,
+                                height: 550,
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text("Feats",
                                         style: TextStyle(
@@ -4400,9 +4399,12 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     backgroundColor:
                                                         Colors.white),
                                                 onPressed: () {},
-                                                child: Text(featsSelected[index]
-                                                        [0]
-                                                    .name),
+                                                child: Text(
+                                                    featsSelected[index][0]
+                                                        .name,
+                                                    style: TextStyle(
+                                                        color: Homepage
+                                                            .backingColor)),
                                               );
                                             },
                                           )),
@@ -4411,39 +4413,45 @@ class MainCreateCharacter extends State<CreateACharacter>
                                             color: Homepage.backingColor,
                                             fontSize: 29,
                                             fontWeight: FontWeight.w800)),
-                                    Row(children: [
-                                      OutlinedButton(
-                                        style: OutlinedButton.styleFrom(
-                                            backgroundColor: (fullFeats)
-                                                ? Homepage.backingColor
-                                                : const Color.fromARGB(
-                                                    247, 56, 53, 52)),
-                                        onPressed: () {
-                                          setState(() {
-                                            fullFeats = !fullFeats;
-                                          });
-                                        },
-                                        child: Text("Full Feats",
-                                            style: TextStyle(
-                                                color: Homepage.textColor)),
-                                      ),
-                                      //text for search
-                                      OutlinedButton(
-                                        style: OutlinedButton.styleFrom(
-                                            backgroundColor: (halfFeats)
-                                                ? Homepage.backingColor
-                                                : const Color.fromARGB(
-                                                    247, 56, 53, 52)),
-                                        onPressed: () {
-                                          setState(() {
-                                            halfFeats = !halfFeats;
-                                          });
-                                        },
-                                        child: Text("Half Feats",
-                                            style: TextStyle(
-                                                color: Homepage.textColor)),
-                                      ),
-                                    ]),
+                                    const SizedBox(height: 8),
+                                    SizedBox(
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                          OutlinedButton(
+                                            style: OutlinedButton.styleFrom(
+                                                backgroundColor: (fullFeats)
+                                                    ? Homepage.backingColor
+                                                    : const Color.fromARGB(
+                                                        247, 56, 53, 52)),
+                                            onPressed: () {
+                                              setState(() {
+                                                fullFeats = !fullFeats;
+                                              });
+                                            },
+                                            child: Text("Full Feats",
+                                                style: TextStyle(
+                                                    color: Homepage.textColor)),
+                                          ),
+                                          //text for search
+                                          OutlinedButton(
+                                            style: OutlinedButton.styleFrom(
+                                                backgroundColor: (halfFeats)
+                                                    ? Homepage.backingColor
+                                                    : const Color.fromARGB(
+                                                        247, 56, 53, 52)),
+                                            onPressed: () {
+                                              setState(() {
+                                                halfFeats = !halfFeats;
+                                              });
+                                            },
+                                            child: Text("Half Feats",
+                                                style: TextStyle(
+                                                    color: Homepage.textColor)),
+                                          ),
+                                        ])),
+                                    const SizedBox(height: 10),
                                     Container(
                                       height: 140,
                                       width: 300,
@@ -4455,7 +4463,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                           width: 3,
                                         ),
                                         borderRadius: const BorderRadius.all(
-                                            Radius.circular(10)),
+                                            Radius.circular(8)),
                                       ),
                                       child: ListView.builder(
                                         scrollDirection: Axis.vertical,
@@ -4469,15 +4477,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   style: OutlinedButton.styleFrom(
                                                       backgroundColor: (featsSelected
                                                               .where((element) =>
-                                                                  element[0]
-                                                                      .name ==
+                                                                  element[0].name ==
                                                                   FEATLIST[index]
                                                                       .name)
                                                               .isNotEmpty)
                                                           ? Color.fromARGB(
                                                               100 +
-                                                                  (((featsSelected.where((element) => element[0].name == FEATLIST[index].name).length) / FEATLIST[index].numberOfTimesTakeable) *
-                                                                          155)
+                                                                  (((featsSelected.where((element) => element[0].name == FEATLIST[index].name).length) / FEATLIST[index].numberOfTimesTakeable) * 155)
                                                                       .ceil(),
                                                               0,
                                                               50 +
@@ -4536,8 +4542,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     );
                                                     // Code to handle button press
                                                   },
-                                                  child: Text(
-                                                      FEATLIST[index].name)));
+                                                  child: Text(FEATLIST[index].name,
+                                                      style: TextStyle(
+                                                          color: Homepage.backingColor,
+                                                          fontWeight: FontWeight.w900))));
                                         },
                                       ),
                                     ),
@@ -4877,311 +4885,388 @@ class MainCreateCharacter extends State<CreateACharacter>
                       flex: 2,
                       child: SizedBox(
                           height: 435,
-                          child: Column(children: [
-                            const SizedBox(height: 9),
-                            Text("Purchase Equipment",
-                                style: TextStyle(
-                                    fontSize: 23,
-                                    fontWeight: FontWeight.w700,
-                                    color: Homepage.backingColor)),
-                            const SizedBox(height: 6),
-                            Text(
-                                "You have ${currencyStored["Platinum Pieces"]} platinum, ${currencyStored["Gold Pieces"]} gold, ${currencyStored["Electrum Pieces"]} electrum, ${currencyStored["Silver Pieces"]} silver and ${currencyStored["Copper Pieces"]} copper pieces to spend",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    color: Homepage.backingColor)),
-                            const SizedBox(height: 6),
-                            Row(children: [
-                              //armour big button
-                              OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    backgroundColor: (armourList.length == 4)
-                                        ? Homepage.backingColor
-                                        : const Color.fromARGB(
-                                            247, 56, 53, 52)),
-                                onPressed: () {
-                                  setState(() {
-                                    if (armourList.length == 4) {
-                                      armourList.clear();
-                                    } else {
-                                      armourList = [
-                                        "Heavy",
-                                        "Light",
-                                        "Medium",
-                                        "Shield"
-                                      ];
-                                    }
-                                  });
-                                },
-                                child: SizedBox(
-                                    width: 305,
-                                    height: 57,
-                                    child: Column(
-                                      children: [
-                                        Text("Armour",
-                                            style: TextStyle(
-                                                color: Homepage.textColor,
-                                                fontSize: 22)),
-                                        Row(
-                                          children: [
-                                            //suboptions for armour
-                                            ElevatedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                  backgroundColor: (armourList
-                                                          .contains("Light"))
-                                                      ? Homepage.backingColor
-                                                      : const Color.fromARGB(
-                                                          247, 56, 53, 52)),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (armourList
-                                                      .contains("Light")) {
-                                                    armourList.remove("Light");
-                                                  } else {
-                                                    armourList.add("Light");
-                                                  }
-                                                });
-                                              },
-                                              child: Text("Light",
-                                                  style: TextStyle(
-                                                      color: Homepage.textColor,
-                                                      fontSize: 15)),
-                                            ),
-                                            ElevatedButton(
-                                                style: OutlinedButton.styleFrom(
-                                                    backgroundColor: (armourList
-                                                            .contains("Medium"))
-                                                        ? Homepage.backingColor
-                                                        : const Color.fromARGB(
-                                                            247, 56, 53, 52)),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    if (armourList
-                                                        .contains("Medium")) {
-                                                      armourList
-                                                          .remove("Medium");
-                                                    } else {
-                                                      armourList.add("Medium");
-                                                    }
-                                                  });
-                                                },
-                                                child: Text("Medium",
-                                                    style: TextStyle(
-                                                        color:
-                                                            Homepage.textColor,
-                                                        fontSize: 15))),
-                                            ElevatedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                  backgroundColor: (armourList
-                                                          .contains("Heavy"))
-                                                      ? Homepage.backingColor
-                                                      : const Color.fromARGB(
-                                                          247, 56, 53, 52)),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (armourList
-                                                      .contains("Heavy")) {
-                                                    armourList.remove("Heavy");
-                                                  } else {
-                                                    armourList.add("Heavy");
-                                                  }
-                                                });
-                                              },
-                                              child: Text("Heavy",
-                                                  style: TextStyle(
-                                                      color: Homepage.textColor,
-                                                      fontSize: 15)),
-                                            ),
-                                            ElevatedButton(
-                                                style: OutlinedButton.styleFrom(
-                                                    backgroundColor: (armourList
-                                                            .contains("Shield"))
-                                                        ? Homepage.backingColor
-                                                        : const Color.fromARGB(
-                                                            247, 56, 53, 52)),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    if (armourList
-                                                        .contains("Shield")) {
-                                                      armourList
-                                                          .remove("Shield");
-                                                    } else {
-                                                      armourList.add("Shield");
-                                                    }
-                                                  });
-                                                },
-                                                child: Text("Shield",
-                                                    style: TextStyle(
-                                                        color:
-                                                            Homepage.textColor,
-                                                        fontSize: 15)))
-                                          ],
-                                        )
-                                      ],
-                                    )),
-                              ),
-                              //weapons
-                              OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    backgroundColor: (weaponList.length == 2)
-                                        ? Homepage.backingColor
-                                        : const Color.fromARGB(
-                                            247, 56, 53, 52)),
-                                onPressed: () {
-                                  setState(() {
-                                    if (weaponList.length == 2) {
-                                      weaponList.clear();
-                                    } else {
-                                      weaponList = ["Ranged", "Melee"];
-                                    }
-                                  });
-                                },
-                                child: SizedBox(
-                                    width: 158,
-                                    height: 57,
-                                    child: Column(
-                                      children: [
-                                        Text("Weapon",
-                                            style: TextStyle(
-                                                color: Homepage.textColor,
-                                                fontSize: 22)),
-                                        Row(
-                                          children: [
-                                            ElevatedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                  backgroundColor: (weaponList
-                                                          .contains("Ranged"))
-                                                      ? Homepage.backingColor
-                                                      : const Color.fromARGB(
-                                                          247, 56, 53, 52)),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (weaponList
-                                                      .contains("Ranged")) {
-                                                    weaponList.remove("Ranged");
-                                                  } else {
-                                                    weaponList.add("Ranged");
-                                                  }
-                                                });
-                                              },
-                                              child: Text("Ranged",
-                                                  style: TextStyle(
-                                                      color: Homepage.textColor,
-                                                      fontSize: 15)),
-                                            ),
-                                            ElevatedButton(
-                                                style: OutlinedButton.styleFrom(
-                                                    backgroundColor: (weaponList
-                                                            .contains("Melee"))
-                                                        ? Homepage.backingColor
-                                                        : const Color.fromARGB(
-                                                            247, 56, 53, 52)),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    if (weaponList
-                                                        .contains("Melee")) {
-                                                      weaponList
-                                                          .remove("Melee");
-                                                    } else {
-                                                      weaponList.add("Melee");
-                                                    }
-                                                  });
-                                                },
-                                                child: Text("Melee",
-                                                    style: TextStyle(
-                                                        color:
-                                                            Homepage.textColor,
-                                                        fontSize: 15))),
-                                          ],
-                                        )
-                                      ],
-                                    )),
-                              ),
-                              //Items
-                              OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    backgroundColor: (itemList.length == 2)
-                                        ? Homepage.backingColor
-                                        : const Color.fromARGB(
-                                            247, 56, 53, 52)),
-                                onPressed: () {
-                                  setState(() {
-                                    if (itemList.length == 2) {
-                                      itemList.clear();
-                                    } else {
-                                      itemList = ["Stackable", "Unstackable"];
-                                    }
-                                  });
-                                },
-                                child: SizedBox(
-                                    width: 212,
-                                    height: 57,
-                                    child: Column(
-                                      children: [
-                                        Text("Items",
-                                            style: TextStyle(
-                                                color: Homepage.textColor,
-                                                fontSize: 22)),
-                                        Row(
-                                          children: [
-                                            ElevatedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                  backgroundColor: (itemList
-                                                          .contains(
-                                                              "Stackable"))
-                                                      ? Homepage.backingColor
-                                                      : const Color.fromARGB(
-                                                          247, 56, 53, 52)),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (itemList
-                                                      .contains("Stackable")) {
-                                                    itemList
-                                                        .remove("Stackable");
-                                                  } else {
-                                                    itemList.add("Stackable");
-                                                  }
-                                                });
-                                              },
-                                              child: Text("Stackable",
-                                                  style: TextStyle(
-                                                      color: Homepage.textColor,
-                                                      fontSize: 15)),
-                                            ),
-                                            ElevatedButton(
-                                                style: OutlinedButton.styleFrom(
-                                                    backgroundColor: (itemList
-                                                            .contains(
-                                                                "Unstackable"))
-                                                        ? Homepage.backingColor
-                                                        : const Color.fromARGB(
-                                                            247, 56, 53, 52)),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    if (itemList.contains(
-                                                        "Unstackable")) {
-                                                      itemList.remove(
-                                                          "Unstackable");
-                                                    } else {
-                                                      itemList
-                                                          .add("Unstackable");
-                                                    }
-                                                  });
-                                                },
-                                                child: Text("Unstackable",
-                                                    style: TextStyle(
-                                                        color:
-                                                            Homepage.textColor,
-                                                        fontSize: 15))),
-                                          ],
-                                        )
-                                      ],
-                                    )),
-                              ),
-                            ]),
-                            Row(
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                const SizedBox(height: 9),
+                                Text("Purchase Equipment",
+                                    style: TextStyle(
+                                        fontSize: 23,
+                                        fontWeight: FontWeight.w700,
+                                        color: Homepage.backingColor)),
+                                const SizedBox(height: 6),
+                                Text(
+                                    "You have ${currencyStored["Platinum Pieces"]} platinum, ${currencyStored["Gold Pieces"]} gold, ${currencyStored["Electrum Pieces"]} electrum, ${currencyStored["Silver Pieces"]} silver and ${currencyStored["Copper Pieces"]} copper pieces to spend",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                        color: Homepage.backingColor)),
+                                const SizedBox(height: 6),
+                                SizedBox(
+                                  width: 775,
+                                  child: Row(children: [
+                                    //armour big button
+                                    OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                          backgroundColor:
+                                              (armourList.length == 4)
+                                                  ? Homepage.backingColor
+                                                  : const Color.fromARGB(
+                                                      247, 56, 53, 52)),
+                                      onPressed: () {
+                                        setState(() {
+                                          if (armourList.length == 4) {
+                                            armourList.clear();
+                                          } else {
+                                            armourList = [
+                                              "Heavy",
+                                              "Light",
+                                              "Medium",
+                                              "Shield"
+                                            ];
+                                          }
+                                        });
+                                      },
+                                      child: SizedBox(
+                                          width: 305,
+                                          height: 57,
+                                          child: Column(
+                                            children: [
+                                              Text("Armour",
+                                                  style: TextStyle(
+                                                      color: Homepage.textColor,
+                                                      fontSize: 22)),
+                                              Row(
+                                                children: [
+                                                  //suboptions for armour
+                                                  ElevatedButton(
+                                                    style: OutlinedButton.styleFrom(
+                                                        backgroundColor:
+                                                            (armourList.contains(
+                                                                    "Light"))
+                                                                ? Homepage
+                                                                    .backingColor
+                                                                : const Color
+                                                                        .fromARGB(
+                                                                    247,
+                                                                    56,
+                                                                    53,
+                                                                    52)),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        if (armourList.contains(
+                                                            "Light")) {
+                                                          armourList
+                                                              .remove("Light");
+                                                        } else {
+                                                          armourList
+                                                              .add("Light");
+                                                        }
+                                                      });
+                                                    },
+                                                    child: Text("Light",
+                                                        style: TextStyle(
+                                                            color: Homepage
+                                                                .textColor,
+                                                            fontSize: 15)),
+                                                  ),
+                                                  ElevatedButton(
+                                                      style: OutlinedButton.styleFrom(
+                                                          backgroundColor: (armourList
+                                                                  .contains(
+                                                                      "Medium"))
+                                                              ? Homepage
+                                                                  .backingColor
+                                                              : const Color
+                                                                      .fromARGB(
+                                                                  247,
+                                                                  56,
+                                                                  53,
+                                                                  52)),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          if (armourList
+                                                              .contains(
+                                                                  "Medium")) {
+                                                            armourList.remove(
+                                                                "Medium");
+                                                          } else {
+                                                            armourList
+                                                                .add("Medium");
+                                                          }
+                                                        });
+                                                      },
+                                                      child: Text("Medium",
+                                                          style: TextStyle(
+                                                              color: Homepage
+                                                                  .textColor,
+                                                              fontSize: 15))),
+                                                  ElevatedButton(
+                                                    style: OutlinedButton.styleFrom(
+                                                        backgroundColor:
+                                                            (armourList.contains(
+                                                                    "Heavy"))
+                                                                ? Homepage
+                                                                    .backingColor
+                                                                : const Color
+                                                                        .fromARGB(
+                                                                    247,
+                                                                    56,
+                                                                    53,
+                                                                    52)),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        if (armourList.contains(
+                                                            "Heavy")) {
+                                                          armourList
+                                                              .remove("Heavy");
+                                                        } else {
+                                                          armourList
+                                                              .add("Heavy");
+                                                        }
+                                                      });
+                                                    },
+                                                    child: Text("Heavy",
+                                                        style: TextStyle(
+                                                            color: Homepage
+                                                                .textColor,
+                                                            fontSize: 15)),
+                                                  ),
+                                                  ElevatedButton(
+                                                      style: OutlinedButton.styleFrom(
+                                                          backgroundColor: (armourList
+                                                                  .contains(
+                                                                      "Shield"))
+                                                              ? Homepage
+                                                                  .backingColor
+                                                              : const Color
+                                                                      .fromARGB(
+                                                                  247,
+                                                                  56,
+                                                                  53,
+                                                                  52)),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          if (armourList
+                                                              .contains(
+                                                                  "Shield")) {
+                                                            armourList.remove(
+                                                                "Shield");
+                                                          } else {
+                                                            armourList
+                                                                .add("Shield");
+                                                          }
+                                                        });
+                                                      },
+                                                      child: Text("Shield",
+                                                          style: TextStyle(
+                                                              color: Homepage
+                                                                  .textColor,
+                                                              fontSize: 15)))
+                                                ],
+                                              )
+                                            ],
+                                          )),
+                                    ),
+                                    const SizedBox(width: 2),
+                                    //weapons
+                                    OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                          backgroundColor:
+                                              (weaponList.length == 2)
+                                                  ? Homepage.backingColor
+                                                  : const Color.fromARGB(
+                                                      247, 56, 53, 52)),
+                                      onPressed: () {
+                                        setState(() {
+                                          if (weaponList.length == 2) {
+                                            weaponList.clear();
+                                          } else {
+                                            weaponList = ["Ranged", "Melee"];
+                                          }
+                                        });
+                                      },
+                                      child: SizedBox(
+                                          width: 158,
+                                          height: 57,
+                                          child: Column(
+                                            children: [
+                                              Text("Weapon",
+                                                  style: TextStyle(
+                                                      color: Homepage.textColor,
+                                                      fontSize: 22)),
+                                              Row(
+                                                children: [
+                                                  ElevatedButton(
+                                                    style: OutlinedButton.styleFrom(
+                                                        backgroundColor:
+                                                            (weaponList.contains(
+                                                                    "Ranged"))
+                                                                ? Homepage
+                                                                    .backingColor
+                                                                : const Color
+                                                                        .fromARGB(
+                                                                    247,
+                                                                    56,
+                                                                    53,
+                                                                    52)),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        if (weaponList.contains(
+                                                            "Ranged")) {
+                                                          weaponList
+                                                              .remove("Ranged");
+                                                        } else {
+                                                          weaponList
+                                                              .add("Ranged");
+                                                        }
+                                                      });
+                                                    },
+                                                    child: Text("Ranged",
+                                                        style: TextStyle(
+                                                            color: Homepage
+                                                                .textColor,
+                                                            fontSize: 15)),
+                                                  ),
+                                                  ElevatedButton(
+                                                      style: OutlinedButton.styleFrom(
+                                                          backgroundColor: (weaponList
+                                                                  .contains(
+                                                                      "Melee"))
+                                                              ? Homepage
+                                                                  .backingColor
+                                                              : const Color
+                                                                      .fromARGB(
+                                                                  247,
+                                                                  56,
+                                                                  53,
+                                                                  52)),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          if (weaponList
+                                                              .contains(
+                                                                  "Melee")) {
+                                                            weaponList.remove(
+                                                                "Melee");
+                                                          } else {
+                                                            weaponList
+                                                                .add("Melee");
+                                                          }
+                                                        });
+                                                      },
+                                                      child: Text("Melee",
+                                                          style: TextStyle(
+                                                              color: Homepage
+                                                                  .textColor,
+                                                              fontSize: 15))),
+                                                ],
+                                              )
+                                            ],
+                                          )),
+                                    ),
+                                    const SizedBox(width: 2),
+                                    //Items
+                                    OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                          backgroundColor:
+                                              (itemList.length == 2)
+                                                  ? Homepage.backingColor
+                                                  : const Color.fromARGB(
+                                                      247, 56, 53, 52)),
+                                      onPressed: () {
+                                        setState(() {
+                                          if (itemList.length == 2) {
+                                            itemList.clear();
+                                          } else {
+                                            itemList = [
+                                              "Stackable",
+                                              "Unstackable"
+                                            ];
+                                          }
+                                        });
+                                      },
+                                      child: SizedBox(
+                                          width: 212,
+                                          height: 57,
+                                          child: Column(
+                                            children: [
+                                              Text("Items",
+                                                  style: TextStyle(
+                                                      color: Homepage.textColor,
+                                                      fontSize: 22)),
+                                              Row(
+                                                children: [
+                                                  ElevatedButton(
+                                                    style: OutlinedButton.styleFrom(
+                                                        backgroundColor: (itemList
+                                                                .contains(
+                                                                    "Stackable"))
+                                                            ? Homepage
+                                                                .backingColor
+                                                            : const Color
+                                                                    .fromARGB(
+                                                                247,
+                                                                56,
+                                                                53,
+                                                                52)),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        if (itemList.contains(
+                                                            "Stackable")) {
+                                                          itemList.remove(
+                                                              "Stackable");
+                                                        } else {
+                                                          itemList
+                                                              .add("Stackable");
+                                                        }
+                                                      });
+                                                    },
+                                                    child: Text("Stackable",
+                                                        style: TextStyle(
+                                                            color: Homepage
+                                                                .textColor,
+                                                            fontSize: 15)),
+                                                  ),
+                                                  ElevatedButton(
+                                                      style: OutlinedButton.styleFrom(
+                                                          backgroundColor: (itemList
+                                                                  .contains(
+                                                                      "Unstackable"))
+                                                              ? Homepage
+                                                                  .backingColor
+                                                              : const Color
+                                                                      .fromARGB(
+                                                                  247,
+                                                                  56,
+                                                                  53,
+                                                                  52)),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          if (itemList.contains(
+                                                              "Unstackable")) {
+                                                            itemList.remove(
+                                                                "Unstackable");
+                                                          } else {
+                                                            itemList.add(
+                                                                "Unstackable");
+                                                          }
+                                                        });
+                                                      },
+                                                      child: Text("Unstackable",
+                                                          style: TextStyle(
+                                                              color: Homepage
+                                                                  .textColor,
+                                                              fontSize: 15))),
+                                                ],
+                                              )
+                                            ],
+                                          )),
+                                    ),
+                                  ]),
+                                ), //Row(
+                                //crossAxisAlignment: CrossAxisAlignment.center,
+                                //children: [
+                                const SizedBox(height: 4),
                                 //costs
                                 Container(
                                   decoration: BoxDecoration(
@@ -5360,160 +5445,106 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         ],
                                       )),
                                 ),
-                              ],
-                            ),
-                            Container(
-                                padding: const EdgeInsets.only(top: 10),
-                                decoration: BoxDecoration(
-                                  color: Homepage.backgroundColor,
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 1.6,
-                                  ),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(5)),
-                                ),
-                                height: 200,
-                                width: 600,
-                                child: SingleChildScrollView(
-                                    scrollDirection: Axis.vertical,
-                                    child: Wrap(
-                                      spacing: 8.0,
-                                      runSpacing: 8.0,
-                                      alignment: WrapAlignment.center,
-                                      children: List.generate(
-                                          ITEMLIST
-                                              .where((element) =>
-                                                  ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
-                                                      (element.equipmentType.contains(
-                                                              "Weapon") &&
-                                                          element.equipmentType
-                                                              .any((item) =>
-                                                                  weaponList.contains(
-                                                                      item))) ||
-                                                      (element.equipmentType.contains("Item") &&
-                                                          ((itemList.contains("Stackable") &&
-                                                                  element
-                                                                      .stackable) ||
-                                                              (itemList.contains("Unstackable") &&
-                                                                  !element.stackable)))) &&
-                                                  element.cost[1] == coinTypeSelected)
-                                              .toList()
-                                              .length, (index) {
-                                        return OutlinedButton(
-                                          style: OutlinedButton.styleFrom(
-                                              backgroundColor:
-                                                  Homepage.backingColor),
-                                          onPressed: () {
-                                            setState(() {
-                                              if (ITEMLIST
-                                                      .where((element) =>
-                                                          ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
-                                                              (element.equipmentType
-                                                                      .contains(
-                                                                          "Weapon") &&
-                                                                  element.equipmentType
-                                                                      .any((item) =>
-                                                                          weaponList.contains(
-                                                                              item))) ||
-                                                              (element.equipmentType
-                                                                      .contains(
-                                                                          "Item") &&
-                                                                  ((itemList.contains("Stackable") && element.stackable) ||
-                                                                      (itemList.contains("Unstackable") &&
-                                                                          !element
-                                                                              .stackable)))) &&
-                                                          element.cost[1] ==
-                                                              coinTypeSelected)
-                                                      .toList()[index]
-                                                      .cost[0] <=
-                                                  currencyStored["${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[1]} Pieces"]) {
-                                                currencyStored["${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[1]} Pieces"] = currencyStored[
-                                                        "${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[1]} Pieces"]! -
-                                                    (ITEMLIST
-                                                        .where((element) =>
-                                                            ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
-                                                                (element.equipmentType.contains("Weapon") &&
-                                                                    element.equipmentType.any((item) =>
-                                                                        weaponList.contains(
-                                                                            item))) ||
-                                                                (element.equipmentType.contains("Item") &&
-                                                                    ((itemList.contains("Stackable") && element.stackable) ||
-                                                                        (itemList.contains("Unstackable") &&
-                                                                            !element
-                                                                                .stackable)))) &&
-                                                            element.cost[1] ==
-                                                                coinTypeSelected)
-                                                        .toList()[index]
-                                                        .cost[0] as int);
-                                                if (ITEMLIST
-                                                    .where((element) =>
-                                                        ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
-                                                            (element.equipmentType
-                                                                    .contains(
-                                                                        "Weapon") &&
-                                                                element.equipmentType
-                                                                    .any((item) =>
-                                                                        weaponList.contains(
-                                                                            item))) ||
-                                                            (element.equipmentType
-                                                                    .contains(
-                                                                        "Item") &&
-                                                                ((itemList.contains("Stackable") && element.stackable) ||
-                                                                    (itemList.contains("Unstackable") &&
-                                                                        !element
-                                                                            .stackable)))) &&
-                                                        element.cost[1] ==
-                                                            coinTypeSelected)
-                                                    .toList()[index]
-                                                    .stackable) {
-                                                  if (stackableEquipmentSelected.containsKey(ITEMLIST
-                                                      .where((element) =>
-                                                          ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
-                                                              (element.equipmentType.contains("Weapon") &&
-                                                                  element.equipmentType.any((item) =>
+                                //],
+                                //),
+                                const SizedBox(height: 4),
+                                Container(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    decoration: BoxDecoration(
+                                      color: Homepage.backgroundColor,
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 1.6,
+                                      ),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(5)),
+                                    ),
+                                    height: 200,
+                                    width: 600,
+                                    child: SingleChildScrollView(
+                                        scrollDirection: Axis.vertical,
+                                        child: Wrap(
+                                          spacing: 8.0,
+                                          runSpacing: 8.0,
+                                          alignment: WrapAlignment.center,
+                                          children: List.generate(
+                                              ITEMLIST
+                                                  .where((element) =>
+                                                      ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
+                                                          (element.equipmentType.contains("Weapon") &&
+                                                              element.equipmentType
+                                                                  .any((item) =>
                                                                       weaponList.contains(
                                                                           item))) ||
-                                                              (element.equipmentType.contains(
+                                                          (element.equipmentType
+                                                                  .contains(
                                                                       "Item") &&
-                                                                  ((itemList.contains("Stackable") && element.stackable) ||
-                                                                      (itemList.contains("Unstackable") &&
-                                                                          !element
-                                                                              .stackable)))) &&
-                                                          element.cost[1] ==
-                                                              coinTypeSelected)
-                                                      .toList()[index]
-                                                      .name)) {
-                                                    stackableEquipmentSelected[ITEMLIST
-                                                        .where((element) =>
-                                                            ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) &&
-                                                            element.cost[1] ==
-                                                                coinTypeSelected)
-                                                        .toList()[index]
-                                                        .name] = stackableEquipmentSelected[ITEMLIST
+                                                              ((itemList.contains("Stackable") && element.stackable) ||
+                                                                  (itemList.contains("Unstackable") &&
+                                                                      !element
+                                                                          .stackable)))) &&
+                                                      element.cost[1] ==
+                                                          coinTypeSelected)
+                                                  .toList()
+                                                  .length, (index) {
+                                            return OutlinedButton(
+                                              style: OutlinedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Homepage.backingColor),
+                                              onPressed: () {
+                                                setState(() {
+                                                  if (ITEMLIST
+                                                          .where((element) =>
+                                                              ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
+                                                                  (element.equipmentType.contains("Weapon") &&
+                                                                      element
+                                                                          .equipmentType
+                                                                          .any((item) => weaponList.contains(
+                                                                              item))) ||
+                                                                  (element.equipmentType
+                                                                          .contains(
+                                                                              "Item") &&
+                                                                      ((itemList.contains("Stackable") && element.stackable) ||
+                                                                          (itemList.contains("Unstackable") &&
+                                                                              !element
+                                                                                  .stackable)))) &&
+                                                              element.cost[1] ==
+                                                                  coinTypeSelected)
+                                                          .toList()[index]
+                                                          .cost[0] <=
+                                                      currencyStored[
+                                                          "${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[1]} Pieces"]) {
+                                                    currencyStored[
+                                                        "${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[1]} Pieces"] = currencyStored[
+                                                            "${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[1]} Pieces"]! -
+                                                        (ITEMLIST
                                                             .where((element) =>
                                                                 ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
                                                                     (element.equipmentType.contains("Weapon") &&
                                                                         element
                                                                             .equipmentType
-                                                                            .any((item) => weaponList.contains(item))) ||
-                                                                    (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) &&
+                                                                            .any((item) => weaponList.contains(
+                                                                                item))) ||
+                                                                    (element.equipmentType.contains("Item") &&
+                                                                        ((itemList.contains("Stackable") && element.stackable) ||
+                                                                            (itemList.contains("Unstackable") && !element.stackable)))) &&
                                                                 element.cost[1] == coinTypeSelected)
                                                             .toList()[index]
-                                                            .name]! +
-                                                        1;
-                                                    //add it in
-                                                  } else {
-                                                    stackableEquipmentSelected[ITEMLIST
+                                                            .cost[0] as int);
+                                                    if (ITEMLIST
                                                         .where((element) =>
                                                             ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
-                                                                (element.equipmentType.contains(
-                                                                        "Weapon") &&
-                                                                    element.equipmentType.any((item) =>
-                                                                        weaponList.contains(
-                                                                            item))) ||
-                                                                (element.equipmentType.contains(
-                                                                        "Item") &&
+                                                                (element.equipmentType
+                                                                        .contains(
+                                                                            "Weapon") &&
+                                                                    element
+                                                                        .equipmentType
+                                                                        .any((item) =>
+                                                                            weaponList.contains(
+                                                                                item))) ||
+                                                                (element.equipmentType
+                                                                        .contains(
+                                                                            "Item") &&
                                                                     ((itemList.contains("Stackable") && element.stackable) ||
                                                                         (itemList.contains("Unstackable") &&
                                                                             !element
@@ -5521,38 +5552,91 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                             element.cost[1] ==
                                                                 coinTypeSelected)
                                                         .toList()[index]
-                                                        .name] = 1;
-                                                  }
-                                                } else {
-                                                  unstackableEquipmentSelected.add(ITEMLIST
-                                                      .where((element) =>
-                                                          ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
-                                                              (element.equipmentType.contains("Weapon") &&
-                                                                  element.equipmentType.any((item) =>
-                                                                      weaponList.contains(
-                                                                          item))) ||
-                                                              (element.equipmentType
-                                                                      .contains(
+                                                        .stackable) {
+                                                      if (stackableEquipmentSelected.containsKey(ITEMLIST
+                                                          .where((element) =>
+                                                              ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
+                                                                  (element.equipmentType.contains("Weapon") &&
+                                                                      element.equipmentType.any((item) =>
+                                                                          weaponList.contains(
+                                                                              item))) ||
+                                                                  (element.equipmentType.contains(
                                                                           "Item") &&
-                                                                  ((itemList.contains("Stackable") && element.stackable) ||
-                                                                      (itemList.contains("Unstackable") &&
-                                                                          !element
-                                                                              .stackable)))) &&
-                                                          element.cost[1] ==
-                                                              coinTypeSelected)
-                                                      .toList()[index]);
-                                                }
-                                              }
-                                            });
-                                          },
-                                          child: Text(
-                                              "${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].name}: ${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[0]}x${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[1]}",
-                                              style: TextStyle(
-                                                  color: Homepage.textColor)),
-                                        );
-                                      }),
-                                    )))
-                          ]))),
+                                                                      ((itemList.contains("Stackable") && element.stackable) ||
+                                                                          (itemList.contains("Unstackable") &&
+                                                                              !element
+                                                                                  .stackable)))) &&
+                                                              element.cost[1] ==
+                                                                  coinTypeSelected)
+                                                          .toList()[index]
+                                                          .name)) {
+                                                        stackableEquipmentSelected[ITEMLIST
+                                                            .where((element) =>
+                                                                ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) &&
+                                                                element.cost[1] ==
+                                                                    coinTypeSelected)
+                                                            .toList()[index]
+                                                            .name] = stackableEquipmentSelected[ITEMLIST
+                                                                .where((element) =>
+                                                                    ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
+                                                                        (element.equipmentType.contains("Weapon") &&
+                                                                            element.equipmentType.any((item) => weaponList.contains(item))) ||
+                                                                        (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) &&
+                                                                    element.cost[1] == coinTypeSelected)
+                                                                .toList()[index]
+                                                                .name]! +
+                                                            1;
+                                                        //add it in
+                                                      } else {
+                                                        stackableEquipmentSelected[ITEMLIST
+                                                            .where((element) =>
+                                                                ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
+                                                                    (element.equipmentType.contains(
+                                                                            "Weapon") &&
+                                                                        element.equipmentType.any((item) =>
+                                                                            weaponList.contains(
+                                                                                item))) ||
+                                                                    (element.equipmentType.contains(
+                                                                            "Item") &&
+                                                                        ((itemList.contains("Stackable") && element.stackable) ||
+                                                                            (itemList.contains("Unstackable") &&
+                                                                                !element
+                                                                                    .stackable)))) &&
+                                                                element.cost[1] ==
+                                                                    coinTypeSelected)
+                                                            .toList()[index]
+                                                            .name] = 1;
+                                                      }
+                                                    } else {
+                                                      unstackableEquipmentSelected.add(ITEMLIST
+                                                          .where((element) =>
+                                                              ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) ||
+                                                                  (element.equipmentType.contains("Weapon") &&
+                                                                      element.equipmentType.any((item) =>
+                                                                          weaponList.contains(
+                                                                              item))) ||
+                                                                  (element.equipmentType.contains(
+                                                                          "Item") &&
+                                                                      ((itemList.contains("Stackable") && element.stackable) ||
+                                                                          (itemList.contains("Unstackable") &&
+                                                                              !element
+                                                                                  .stackable)))) &&
+                                                              element.cost[1] ==
+                                                                  coinTypeSelected)
+                                                          .toList()[index]);
+                                                    }
+                                                  }
+                                                });
+                                              },
+                                              child: Text(
+                                                  "${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].name}: ${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[0]}x${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[1]}",
+                                                  style: TextStyle(
+                                                      color:
+                                                          Homepage.textColor)),
+                                            );
+                                          }),
+                                        )))
+                              ]))),
                   Expanded(
                       child: SizedBox(
                           height: 435,
@@ -5587,18 +5671,11 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   child: Row(
                                                     children: [
                                                       ElevatedButton(
-                                                        style: OutlinedButton.styleFrom(
-                                                            backgroundColor: (itemList
-                                                                        .length ==
-                                                                    2)
-                                                                ? Homepage
-                                                                    .backingColor
-                                                                : const Color
-                                                                        .fromARGB(
-                                                                    247,
-                                                                    56,
-                                                                    53,
-                                                                    52)),
+                                                        style: OutlinedButton
+                                                            .styleFrom(
+                                                                backgroundColor:
+                                                                    Homepage
+                                                                        .backingColor),
                                                         onPressed: () {
                                                           setState(() {
                                                             equipmentSelectedFromChoices[
@@ -5619,18 +5696,11 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                         ),
                                                       ),
                                                       ElevatedButton(
-                                                        style: OutlinedButton.styleFrom(
-                                                            backgroundColor: (itemList
-                                                                        .length ==
-                                                                    2)
-                                                                ? Homepage
-                                                                    .backingColor
-                                                                : const Color
-                                                                        .fromARGB(
-                                                                    247,
-                                                                    56,
-                                                                    53,
-                                                                    52)),
+                                                        style: OutlinedButton
+                                                            .styleFrom(
+                                                                backgroundColor:
+                                                                    Homepage
+                                                                        .backingColor),
                                                         onPressed: () {
                                                           setState(() {
                                                             equipmentSelectedFromChoices[
@@ -5658,7 +5728,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                       equipmentSelectedFromChoices[
                                                           i][0]),
                                                   style: TextStyle(
-                                                      color: Homepage.textColor,
+                                                      color:
+                                                          Homepage.backingColor,
                                                       fontWeight:
                                                           FontWeight.w700))
                                       ],
@@ -5893,7 +5964,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               cursorColor: Homepage.textColor,
                               style: TextStyle(color: Homepage.textColor),
                               decoration: InputDecoration(
-                                  hintText: "Describe your character's Hair",
+                                  hintText: "Describe your character's hair",
                                   hintStyle: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       color: Homepage.textColor),
@@ -5998,6 +6069,9 @@ class MainCreateCharacter extends State<CreateACharacter>
           Scaffold(
               backgroundColor: Homepage.backgroundColor,
               floatingActionButton: FloatingActionButton(
+                tooltip: "Generate a PDF",
+                foregroundColor: Homepage.textColor,
+                backgroundColor: Homepage.backingColor,
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -6122,11 +6196,16 @@ class MainCreateCharacter extends State<CreateACharacter>
                               decoration: BoxDecoration(
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(5)),
-                                color: Homepage.backingColor,
+                                color: (GROUPLIST.isNotEmpty)
+                                    ? Homepage.backingColor
+                                    : const Color.fromARGB(247, 56, 53, 52),
                               ),
                               height: 45,
                               child: DropdownButton<String>(
-                                hint: Text(" No groups available ",
+                                hint: Text(
+                                    (GROUPLIST.isNotEmpty)
+                                        ? " No matching group selected "
+                                        : " No groups available ",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       color: Homepage.textColor,
