@@ -1074,7 +1074,7 @@ class MainCreateCharacter extends State<CreateACharacter>
             child: Text(
               textAlign: TextAlign.center,
               "Create a character",
-              style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700),
+              style: TextStyle(fontSize: 40, fontWeight: FontWeight.w700),
             ),
           ),
           bottom: TabBar(
@@ -1962,11 +1962,13 @@ class MainCreateCharacter extends State<CreateACharacter>
               floatingActionButton: FloatingActionButton(
                 tooltip: "Increase character level by 1",
                 foregroundColor: Homepage.textColor,
-                backgroundColor: Homepage.backingColor,
+                backgroundColor:(int.parse(characterLevel ?? "1")<20)? Homepage.backingColor: const Color.fromARGB(
+                                                    247, 56, 53, 52),
                 onPressed: () {
+                  if (int.parse(characterLevel ?? "1")<20){
                   setState(() {
                     characterLevel = "${int.parse(characterLevel ?? "1") + 1}";
-                  });
+                  });}
                 },
                 child: const Icon(
                   Icons.exposure_plus_1,
@@ -4374,17 +4376,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 height: 550,
                                 child: Column(
                                   children: [
-                                    Text("Feats",
-                                        style: TextStyle(
-                                            color: Homepage.backingColor,
-                                            fontSize: 33,
-                                            fontWeight: FontWeight.w800)),
+                                    
                                     if (featsSelected.isNotEmpty)
                                       Text(
                                           "${featsSelected.length} Feats selected:",
                                           style: TextStyle(
                                               color: Homepage.backingColor,
-                                              fontSize: 29,
+                                              fontSize: 33,
                                               fontWeight: FontWeight.w800)),
                                     if (featsSelected.isNotEmpty)
                                       SizedBox(
@@ -4411,7 +4409,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                     Text("Select Feats:",
                                         style: TextStyle(
                                             color: Homepage.backingColor,
-                                            fontSize: 29,
+                                            fontSize: 33,
                                             fontWeight: FontWeight.w800)),
                                     const SizedBox(height: 8),
                                     SizedBox(
