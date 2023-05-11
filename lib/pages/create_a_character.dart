@@ -1962,13 +1962,16 @@ class MainCreateCharacter extends State<CreateACharacter>
               floatingActionButton: FloatingActionButton(
                 tooltip: "Increase character level by 1",
                 foregroundColor: Homepage.textColor,
-                backgroundColor:(int.parse(characterLevel ?? "1")<20)? Homepage.backingColor: const Color.fromARGB(
-                                                    247, 56, 53, 52),
+                backgroundColor: (int.parse(characterLevel ?? "1") < 20)
+                    ? Homepage.backingColor
+                    : const Color.fromARGB(247, 56, 53, 52),
                 onPressed: () {
-                  if (int.parse(characterLevel ?? "1")<20){
-                  setState(() {
-                    characterLevel = "${int.parse(characterLevel ?? "1") + 1}";
-                  });}
+                  if (int.parse(characterLevel ?? "1") < 20) {
+                    setState(() {
+                      characterLevel =
+                          "${int.parse(characterLevel ?? "1") + 1}";
+                    });
+                  }
                 },
                 child: const Icon(
                   Icons.exposure_plus_1,
@@ -4376,7 +4379,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 height: 550,
                                 child: Column(
                                   children: [
-                                    
                                     if (featsSelected.isNotEmpty)
                                       Text(
                                           "${featsSelected.length} Feats selected:",
@@ -6074,7 +6076,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => PdfPreviewPage(
-                          invoice: Character(
+                          character: Character(
                               skillBonusMap: skillBonusMap,
                               group: group,
                               backstory: backstory,

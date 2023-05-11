@@ -9,8 +9,8 @@ import 'package:frankenstein/PDFdocs/pdf_export.dart';
 
 //import 'package:frankenstein/PDFdocs/preview_page.dart';
 class PdfPreviewPage extends StatelessWidget {
-  final Character invoice;
-  const PdfPreviewPage({Key? key, required this.invoice}) : super(key: key);
+  final Character character;
+  const PdfPreviewPage({Key? key, required this.character}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class PdfPreviewPage extends StatelessWidget {
         title: const Text('PDF Preview'),
       ),
       body: PdfPreview(
-        build: (context) => makePdf(invoice),
+        build: (context) => makePdf(character),
       ),
     );
   }

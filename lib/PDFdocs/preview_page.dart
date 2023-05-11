@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-//import 'package:makepdfs/models/invoice.dart';
-//import 'package:makepdfs/pages/pdfexport/pdf/pdfexport.dart';
 import 'package:frankenstein/PDFdocs/pdf_final_display.dart';
-//import 'package:printing/printing.dart';
 import 'package:frankenstein/character_globals.dart';
 
-//import 'package:frankenstein/PDFdocs/preview_page.dart';
 class DetailPage extends StatelessWidget {
-  final Character invoice;
+  final Character character;
   const DetailPage({
     Key? key,
-    required this.invoice,
+    required this.character,
   }) : super(key: key);
 
   @override
@@ -20,7 +16,7 @@ class DetailPage extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => PdfPreviewPage(invoice: invoice),
+              builder: (context) => PdfPreviewPage(character: character),
             ),
           );
           // rootBundle.
@@ -28,7 +24,7 @@ class DetailPage extends StatelessWidget {
         child: const Icon(Icons.picture_as_pdf),
       ),
       appBar: AppBar(
-        title: Text(invoice.name),
+        title: Text(character.name),
       ),
       body: ListView(
         children: [

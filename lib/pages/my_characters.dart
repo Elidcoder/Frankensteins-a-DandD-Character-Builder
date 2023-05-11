@@ -223,7 +223,7 @@ class MainMyCharacters extends State<MyCharacters> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                           builder: (context) => PdfPreviewPage(
-                                              invoice: CHARACTERLIST
+                                              character: CHARACTERLIST
                                                   .where((element) => element
                                                       .name
                                                       .contains(searchTerm))
