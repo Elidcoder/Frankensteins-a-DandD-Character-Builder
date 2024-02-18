@@ -1,0 +1,1 @@
+This is a project to allow users freedom to create and edit D&D characters, currently it provides methods of building some characters, viewing and editing built characters, downloading + creating content and generating PDF's for your characters.
