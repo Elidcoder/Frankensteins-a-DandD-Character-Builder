@@ -1,5 +1,5 @@
 name: frankenstein
-description: A new Flutter project.
+description: A D&D character builder
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -30,16 +30,17 @@ dependencies:
   
   flutter:
     sdk: flutter
-  file_picker: ^4.0.0
+  file_picker: ^8.1.2
   pdf: ## add this
   printing: ^5.10.3
+  path_provider: ^2.0.11
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
-  flutter_multi_select_items: ^0.4.2
-  google_fonts: ^4.0.3
-  flutter_colorpicker: ^1.0.3
+  cupertino_icons: ^1.0.8
+  flutter_multi_select_items: ^0.4.3
+  google_fonts: ^6.2.1
+  flutter_colorpicker: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -50,7 +51,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -68,6 +69,7 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
+    - assets/userContent.json
     - assets/SRD.json
     - assets/Characters.json
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import "package:frankenstein/characterCreationGlobals.dart";
+import "../../characterCreationGlobals.dart";
 
 int abilityScoreCost(int x) {
   if (x > 12) {

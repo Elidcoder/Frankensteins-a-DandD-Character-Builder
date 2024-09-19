@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frankenstein/characterCreationGlobals.dart';
-import "package:frankenstein/globals.dart";
+import '../characterCreationGlobals.dart';
+import "../globals.dart";
 import "dart:collection";
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 

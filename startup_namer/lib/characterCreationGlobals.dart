@@ -1,4 +1,4 @@
-import "package:frankenstein/globals.dart";
+import "globals.dart";
 import 'package:flutter/material.dart';
 
 class AbilityScore {

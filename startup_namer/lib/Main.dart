@@ -10,7 +10,7 @@ import 'pages/create_a_character.dart';
 import 'pages/my_characters.dart';
 import 'pages/roll_dice.dart';
 import 'pages/search_for_content.dart';
-import "package:frankenstein/globals.dart";
+import "globals.dart";
 
 // ignore: non_constant_identifier_names
 final Map<int, Widget> PAGELINKER = {
