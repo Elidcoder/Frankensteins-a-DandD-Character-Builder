@@ -9,6 +9,7 @@ import "pages/custom_content_options/items.dart";
 import "pages/custom_content_options/weapons.dart";
 import "package:frankenstein/SRD_globals.dart";
 import "package:frankenstein/character_globals.dart";
+import "file_manager.dart";
 import "dart:convert";
 import "dart:io";
 import "package:file_picker/file_picker.dart";
@@ -38,6 +39,8 @@ class Homepage extends StatefulWidget {
       COLORLIST.isEmpty ? Colors.blue : COLORLIST.last[1];
   static Color backgroundColor =
       COLORLIST.isEmpty ? Colors.white : COLORLIST.last[2];
+
+  const Homepage({super.key});
   @override
   MainHomepage createState() => MainHomepage();
 }
@@ -358,30 +361,28 @@ class MainHomepage extends State<Homepage> {
                 ),
                 TextButton(
                   onPressed: () {
+                    
                     setState(() {
                       Homepage.textColor = currentTextColor;
                       Homepage.backingColor = currentBackingColor;
                       Homepage.backgroundColor = currentBackgroundColor;
-                      Navigator.of(context).pop();
-                      final Map<String, dynamic> json =
-                          jsonDecode(jsonString ?? "");
-                      List<dynamic> colors = json["Colours"];
-
-                      colors.removeWhere((list) =>
-                          list.toString() ==
-                          [
-                            colorToJson(Homepage.textColor),
-                            colorToJson(Homepage.backingColor),
-                            colorToJson(Homepage.backgroundColor)
-                          ].toString());
-                      colors.add([
-                        colorToJson(Homepage.textColor),
-                        colorToJson(Homepage.backingColor),
-                        colorToJson(Homepage.backgroundColor)
+                      
+                      
+                      // Put current colour scheme at the top of the list
+                      COLORLIST.removeWhere((colours) =>
+                          (colours.first.value == Homepage.textColor.value && 
+                          colours[2].value == Homepage.backingColor.value && 
+                          colours[3].value == Homepage.backgroundColor.value ));
+                      COLORLIST.add([
+                        Homepage.textColor,
+                        Homepage.backingColor,
+                        Homepage.backgroundColor
                       ]);
-
-                      writeJsonToFile(json, "userContent");
+                      
+                      saveChanges();
                       updateGlobals();
+
+                      Navigator.of(context).pop();
                     });
                   },
                   child: const Text("Save settings"),
@@ -400,7 +401,7 @@ class ScreenTop extends StatelessWidget {
   static Color textColor = Homepage.textColor;
   static Color backingColor = Homepage.backingColor;
   static Color backgroundColor = Homepage.backgroundColor;
-  const ScreenTop({Key? key, this.pagechoice}) : super(key: key);
+  const ScreenTop({super.key, this.pagechoice});
   static const String _title = "Frankenstein's - a D&D 5e character builder";
 
   @override
@@ -451,6 +452,8 @@ class ScreenTop extends StatelessWidget {
 }
 
 class MainMenu extends StatefulWidget {
+  const MainMenu({super.key});
+
   @override
   MainMenupage createState() => MainMenupage();
 }
@@ -599,45 +602,49 @@ class MainMenupage extends State<MainMenu> {
                           result.files.single.path ?? "Never going to happen");
                       final contents = await file.readAsString();
                       final jsonData2 = json.decode(contents);
-                      updateGlobals();
-                      final Map<String, dynamic> jsonData =
-                          jsonDecode(jsonString ?? "");
+                      await updateGlobals();
 
-                      //at some point actually check for dupes
-                      final List<dynamic> characters = jsonData["Spells"];
-                      characters.addAll(jsonData2["Spells"] ?? []);
+                final Map<String, dynamic> jsonData =
+                    jsonDecode(jsonString ?? "");
 
-                      final List<dynamic> classes = jsonData["Classes"];
-                      classes.addAll(jsonData2["Classes"] ?? []);
+                //TODO(CHECK FOR DUPLICATES AT SOME POINT)
+                final List<dynamic> characters = jsonData["Characters"];
+                characters.addAll(jsonData2["Characters"] ?? []);
 
-                      final List<dynamic> sourceBooks = jsonData["Sourcebooks"];
-                      sourceBooks.addAll(jsonData2["Sourcebooks"] ?? []);
+                final List<dynamic> spells = jsonData["Spells"];
+                spells.addAll(jsonData2["Spells"] ?? []);
 
-                      final List<dynamic> proficiencies =
-                          jsonData["Proficiencies"];
-                      proficiencies.addAll(jsonData2["Proficiencies"] ?? []);
+                final List<dynamic> classes = jsonData["Classes"];
+                classes.addAll(jsonData2["Classes"] ?? []);
 
-                      final List<dynamic> equipment = jsonData["Equipment"];
-                      equipment.addAll(jsonData2["Equipment"] ?? []);
+                final List<dynamic> sourceBooks = jsonData["Sourcebooks"];
+                sourceBooks.addAll(jsonData2["Sourcebooks"] ?? []);
 
-                      final List<dynamic> languages = jsonData["Languages"];
-                      languages.addAll(jsonData2["Languages"] ?? []);
+                final List<dynamic> proficiencies = jsonData["Proficiencies"];
+                proficiencies.addAll(jsonData2["Proficiencies"] ?? []);
 
-                      final List<dynamic> races = jsonData["Races"];
-                      races.addAll(jsonData2["Races"] ?? []);
+                final List<dynamic> equipment = jsonData["Equipment"];
+                equipment.addAll(jsonData2["Equipment"] ?? []);
 
-                      final List<dynamic> backgrounds = jsonData["Backgrounds"];
-                      backgrounds.addAll(jsonData2["Backgrounds"] ?? []);
+                final List<dynamic> languages = jsonData["Languages"];
+                languages.addAll(jsonData2["Languages"] ?? []);
 
-                      final List<dynamic> feats = jsonData["Feats"];
-                      feats.addAll(jsonData2["Feats"] ?? []);
-                      writeJsonToFile(jsonData, "userContent");
-                      updateGlobals();
+                final List<dynamic> races = jsonData["Races"];
+                races.addAll(jsonData2["Races"] ?? []);
 
-                      //File("assets/SRD.json").writeAsStringSync(jsonEncode(json));
+                final List<dynamic> backgrounds = jsonData["Backgrounds"];
+                backgrounds.addAll(jsonData2["Backgrounds"] ?? []);
 
-                      // do something with the parsed JSON data
-                    }
+                final List<dynamic> feats = jsonData["Feats"];
+                feats.addAll(jsonData2["Feats"] ?? []);
+
+                //File("assets/SRD.json").writeAsStringSync(jsonEncode(json));
+                //TODO(IMPLEMENT THE REMAINING SECTIONS OF THE CODE TO BE COPIED IN)
+                await saveChanges();
+                await updateGlobals();
+
+                // do something with the parsed JSON data
+              }
                   },
                   /*
               onPressed: () {
@@ -785,7 +792,7 @@ you can create that type of content, saving it to your app.''',
                     const Text(
                       '''This is an open source project, to report bugs, 
 ask for help or suggest improvements please go to:
-https://github.com/Elidcoder/frankensteins2
+https://github.com/Elidcoder/Frankensteins-a-DandD-Character-Builder
 ''',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 20),

@@ -10,8 +10,10 @@ import "dart:math";
 import "dart:convert";
 import "dart:io";
 import 'package:file_picker/file_picker.dart';
-
+import "../file_manager.dart";
 class JsonFilePicker extends StatefulWidget {
+  const JsonFilePicker({super.key});
+
   @override
   _JsonFilePickerState createState() => _JsonFilePickerState();
 }
@@ -42,15 +44,15 @@ class _JsonFilePickerState extends State<JsonFilePicker> {
       children: [
         ElevatedButton(
           onPressed: _pickFile,
-          child: Text('Select JSON file'),
+          child: const Text('Select JSON file'),
         ),
         if (_fileName != null && _fileContents != null) ...[
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text('File name: $_fileName'),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             json.encode(_fileContents),
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'Courier New',
             ),
           ),
@@ -61,6 +63,8 @@ class _JsonFilePickerState extends State<JsonFilePicker> {
 }
 
 class RollDice extends StatefulWidget {
+  const RollDice({super.key});
+
   @override
   MainRollDice createState() => MainRollDice();
 }
@@ -96,18 +100,17 @@ class MainRollDice extends State<RollDice> {
                 final contents = await file.readAsString();
                 final jsonData2 = json.decode(contents);
 
-                updateGlobals();
-                //final String jsonContent =
-                //  File("assets/Characters.json").readAsStringSync();
+                await updateGlobals();
 
-                //final String jsonContents =
-                //  File("assets/SRD.json").readAsStringSync();
                 final Map<String, dynamic> jsonData =
                     jsonDecode(jsonString ?? "");
 
-                //at some point actually check for dupes
-                final List<dynamic> characters = jsonData["Spells"];
-                characters.addAll(jsonData2["Spells"] ?? []);
+                //TODO(CHECK FOR DUPLICATES AT SOME POINT)
+                final List<dynamic> characters = jsonData["Characters"];
+                characters.addAll(jsonData2["Characters"] ?? []);
+
+                final List<dynamic> spells = jsonData["Spells"];
+                spells.addAll(jsonData2["Spells"] ?? []);
 
                 final List<dynamic> classes = jsonData["Classes"];
                 classes.addAll(jsonData2["Classes"] ?? []);
@@ -134,14 +137,14 @@ class MainRollDice extends State<RollDice> {
                 feats.addAll(jsonData2["Feats"] ?? []);
 
                 //File("assets/SRD.json").writeAsStringSync(jsonEncode(json));
-                writeJsonToFile(jsonData, "userContent");
-
-                updateGlobals();
+                //TODO(IMPLEMENT THE REMAINING SECTIONS OF THE CODE TO BE COPIED IN)
+                await saveChanges();
+                await updateGlobals();
 
                 // do something with the parsed JSON data
               }
             },
-            child: Text('Select JSON file'),
+            child: const Text('Select JSON file'),
           ),
         ]));
   }

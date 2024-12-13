@@ -5,9 +5,9 @@ import 'package:frankenstein/character_globals.dart';
 class DetailPage extends StatelessWidget {
   final Character character;
   const DetailPage({
-    Key? key,
+    super.key,
     required this.character,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

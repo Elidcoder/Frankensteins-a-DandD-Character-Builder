@@ -9,7 +9,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:frankenstein/pages/create_a_character.dart';
 import 'package:frankenstein/main.dart';
-
+import "../../file_manager.dart";
 int abilityScoreCost(int x) {
   if (x > 12) {
     return 2;
@@ -37,7 +37,7 @@ Spell listgetter(String spellname) {
 
 class Edittop extends StatelessWidget {
   final Character character;
-  const Edittop(this.character, {Key? key}) : super(key: key);
+  const Edittop(this.character, {super.key});
   static const String _title = 'Frankenstein\'s - a D&D 5e character builder';
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ class Edittop extends StatelessWidget {
 class EditACharacter extends StatefulWidget {
   final Character character;
 
-  EditACharacter({Key? key, required this.character}) : super(key: key);
+  EditACharacter({super.key, required this.character});
   @override
   EditCharacter createState() => EditCharacter(character: character);
 }
@@ -2811,17 +2811,7 @@ class EditCharacter extends State<EditACharacter> {
                                           .where((element) => element[2] != 0)
                                           .isEmpty)) {
                                     updateGlobals();
-
-                                    final Map<String, dynamic> json =
-                                        jsonDecode(jsonString ?? "");
-                                    final List<dynamic> characters =
-                                        json["Characters"]
-                                            .where((element) =>
-                                                element["UniqueID"] !=
-                                                character.uniqueID)
-                                            .toList();
-
-                                    characters.add(Character(
+                                    CHARACTERLIST.add(Character(
                                             backstory: character.backstory,
                                             skillBonusMap:
                                                 character.skillBonusMap,
@@ -2943,23 +2933,20 @@ class EditCharacter extends State<EditACharacter> {
                                             intelligence: intelligence,
                                             wisdom: wisdom,
                                             charisma: charisma)
-                                        .toJson());
-                                    List<dynamic> groupsList = json["Groups"];
-                                    groupsList = groupsList
+                                        );
+                                    GROUPLIST = GROUPLIST
                                         .where((element) => [
-                                              for (var x in characters)
-                                                x["Group"]
+                                              for (var x in CHARACTERLIST)
+                                                x.group
                                             ].contains(element))
                                         .toList();
                                     if ((!GROUPLIST.contains(group)) &&
                                         group != null &&
                                         group!.replaceAll(" ", "") != "") {
-                                      GROUPLIST.add(group ?? "Never happening");
-                                      groupsList.add(group);
+                                      GROUPLIST.add(group!);
                                     }
-                                    json["Groups"] = groupsList;
-                                    json["Characters"] = characters;
-                                    writeJsonToFile(json, "userContent");
+                                    saveChanges();
+                                  
                                     updateGlobals();
                                     setState(() {
                                       Navigator.pop(context);

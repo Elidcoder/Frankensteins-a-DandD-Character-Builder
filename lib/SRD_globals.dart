@@ -84,6 +84,7 @@ class Item {
         stackable: data["Stackable"] ?? false,
         description: data["Description"]);
   }
+
 }
 
 class Armour extends Item {
@@ -92,21 +93,15 @@ class Armour extends Item {
   bool strengthRequirement;
   String armourType;
   Armour(
-      {required String name,
-      required List<dynamic> cost,
-      required double weight,
-      required bool stackable,
-      required List<String> equipmentType,
+      {required super.name,
+      required super.cost,
+      required super.weight,
+      required super.stackable,
+      required super.equipmentType,
       required this.armourFormula,
       required this.imposeStealthDisadvantage,
       required this.strengthRequirement,
-      required this.armourType})
-      : super(
-            name: name,
-            cost: cost,
-            stackable: stackable,
-            weight: weight,
-            equipmentType: equipmentType);
+      required this.armourType});
   @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = super.toJson();
@@ -136,19 +131,13 @@ class Weapon extends Item {
   List<List<String>> damageDiceAndType;
   List<String> properties;
   Weapon(
-      {required String name,
-      required List<dynamic> cost,
-      required bool stackable,
-      required double weight,
-      required List<String> equipmentType,
+      {required super.name,
+      required super.cost,
+      required super.stackable,
+      required super.weight,
+      required super.equipmentType,
       required this.damageDiceAndType,
-      required this.properties})
-      : super(
-            name: name,
-            cost: cost,
-            stackable: stackable,
-            weight: weight,
-            equipmentType: equipmentType);
+      required this.properties});
   @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = super.toJson();
@@ -158,12 +147,14 @@ class Weapon extends Item {
   }
 
   factory Weapon.fromJson(Map<String, dynamic> data) {
+    List<dynamic> damage_DiceAndType_ = data["DamageDiceAndType"];
+    List<List<String>> damage_DiceAndType = damage_DiceAndType_.map((i)=>List<String>.from(i)).toList();
     return Weapon(
         name: data["Name"],
         cost: data["Cost"],
         weight: data["Weight"],
         stackable: data["Stackable"] ?? false,
-        damageDiceAndType: data["DamageDiceAndType"].cast<List<String>>(),
+        damageDiceAndType: damage_DiceAndType,
         equipmentType: data["EquipmentType"].cast<String>() as List<String>,
         properties: data["Properties"].cast<String>() as List<String>);
   }
@@ -800,7 +791,7 @@ List<Spell> SPELLLIST = [];
 List<Feat> FEATLIST = [];
 List<dynamic> ITEMLIST = [];
 
-List<List<dynamic>> COLORLIST = [];
+List<List<Color>> COLORLIST = [];
 dynamic mapEquipment(x) {
   if (x["EquipmentType"].contains("Magic")) {
     ///run through magic subtypes
@@ -812,6 +803,7 @@ dynamic mapEquipment(x) {
   return Item.fromJson(x);
 }
 
+/*
 Future<String> getFile(String filename) async {
   final directory = await getApplicationDocumentsDirectory();
   final file = File('${directory.path}/$filename.json');
@@ -819,17 +811,4 @@ Future<String> getFile(String filename) async {
 
   return contents;
 }
-
-Future<void> writeJsonToFile(
-    Map<String, dynamic> jsonData, String filename) async {
-  final jsonStr = jsonEncode(jsonData);
-  final bytes = utf8.encode(jsonStr);
-  final directory = await getApplicationDocumentsDirectory();
-  final file = File('${directory.path}/$filename.json');
-  await file.writeAsBytes(bytes);
-}
-
-  // To copy from assets, uncomment the following code:
-  // final data = await rootBundle.load('assets/file.json');
-  // final bytes = data.buffer.asUint8List();
-  // await file.writeAsBytes(bytes);
+*/

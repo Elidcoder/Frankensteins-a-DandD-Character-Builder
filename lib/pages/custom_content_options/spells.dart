@@ -11,8 +11,11 @@ import "dart:convert";
 import "dart:io";
 import 'package:file_picker/file_picker.dart';
 import 'package:frankenstein/main.dart';
+import "../../file_manager.dart";
 
 class JsonFilePicker extends StatefulWidget {
+  const JsonFilePicker({super.key});
+
   @override
   _JsonFilePickerState createState() => _JsonFilePickerState();
 }
@@ -43,15 +46,15 @@ class _JsonFilePickerState extends State<JsonFilePicker> {
       children: [
         ElevatedButton(
           onPressed: _pickFile,
-          child: Text('Select JSON file'),
+          child: const Text('Select JSON file'),
         ),
         if (_fileName != null && _fileContents != null) ...[
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text('File name: $_fileName'),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             json.encode(_fileContents),
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'Courier New',
             ),
           ),
@@ -62,6 +65,8 @@ class _JsonFilePickerState extends State<JsonFilePicker> {
 }
 
 class MakeASpell extends StatefulWidget {
+  const MakeASpell({super.key});
+
   @override
   MainMakeASpell createState() => MainMakeASpell();
 }
@@ -535,13 +540,9 @@ class MainMakeASpell extends State<MakeASpell> {
                               .where((element) => element.name == name)
                               .toList()
                               .isEmpty) {
-                            //get the current list of spells
-                            final Map<String, dynamic> jsonData =
-                                jsonDecode(jsonString ?? "");
-                            final List<dynamic> characters = jsonData["Spells"];
 
                             //add the new spell to the list of spells
-                            characters.add(Spell(
+                            SPELLLIST.add(Spell(
                                 name: name,
                                 range:
                                     "$range ${rangeUnit.replaceAll(" ", "")}",
@@ -563,8 +564,8 @@ class MainMakeASpell extends State<MakeASpell> {
                                 material: material));
 
                             //write the modified spell list to the Json
-                            writeJsonToFile(jsonData, "userContent");
-
+                            saveChanges();
+                            
                             //display the popup and return home
                             setState(() {
                               Navigator.pop(context);

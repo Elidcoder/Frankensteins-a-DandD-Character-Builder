@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 //add this back if there are errors:
 //import 'package:flutter/services.dart';
 //import 'dart:io';
-
+import "../file_manager.dart";
 import "package:frankenstein/main.dart";
 import 'package:frankenstein/character_globals.dart';
 
@@ -19,7 +19,7 @@ void main() {
 }
 
 class CustomContent extends StatelessWidget {
-  const CustomContent({Key? key}) : super(key: key);
+  const CustomContent({super.key});
   @override
   Widget build(BuildContext context) {
     updateGlobals();

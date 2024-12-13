@@ -8,8 +8,10 @@ import "my_character_options/edit_character.dart";
 import "dart:convert";
 import "package:frankenstein/main.dart";
 import 'dart:math';
-
+import "../file_manager.dart";
 class MyCharacters extends StatefulWidget {
+  const MyCharacters({super.key});
+
   @override
   MainMyCharacters createState() => MainMyCharacters();
 }
@@ -262,12 +264,8 @@ class MainMyCharacters extends State<MyCharacters> {
                                               .where((element) => element.name
                                                   .contains(searchTerm))
                                               .toList()[index];
-                                      final Map<String, dynamic> json =
-                                          jsonDecode(jsonString ?? "");
-                                      final List<dynamic> characters =
-                                          json["Characters"];
 
-                                      characters.add(Character(
+                                      CHARACTERLIST.add(Character(
                                         skillBonusMap:
                                             selectedCharacter.skillBonusMap,
                                         backstory: selectedCharacter.backstory,
@@ -420,8 +418,8 @@ class MainMyCharacters extends State<MyCharacters> {
                                             selectedCharacter
                                                 .featsASIScoreIncreases,
                                       ));
-                                      writeJsonToFile(json, "userContent");
-                                      updateGlobals();
+                                      saveChanges();
+                                      //updateGlobals();
                                       Navigator.pop(context);
                                       Navigator.push(
                                         context,
@@ -512,7 +510,7 @@ class MainMyCharacters extends State<MyCharacters> {
                                       if (Index != -1) {
                                         characters.removeAt(Index);
                                       }
-                                      writeJsonToFile(json, "userContent");
+                                      saveChanges();
                                       updateGlobals();
                                       Navigator.pop(context);
                                       Navigator.push(

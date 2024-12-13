@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import "package:frankenstein/main.dart";
 
 class SearchForContent extends StatelessWidget {
-  const SearchForContent({Key? key}) : super(key: key);
+  const SearchForContent({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,7 @@ import 'package:frankenstein/PDFdocs/pdf_export.dart';
 //import 'package:frankenstein/PDFdocs/preview_page.dart';
 class PdfPreviewPage extends StatelessWidget {
   final Character character;
-  const PdfPreviewPage({Key? key, required this.character}) : super(key: key);
+  const PdfPreviewPage({super.key, required this.character});
 
   @override
   Widget build(BuildContext context) {

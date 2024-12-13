@@ -7,6 +7,7 @@ import 'package:frankenstein/character_globals.dart';
 import 'package:frankenstein/PDFdocs/pdf_final_display.dart';
 import 'dart:math';
 import 'dart:convert';
+import "../file_manager.dart";
 import "package:frankenstein/main.dart";
 
 /*ListView.builder(
@@ -108,7 +109,7 @@ class SpellSelections extends StatefulWidget {
   //final Class? classSelected;
   List<dynamic> thisDescription;
   List<Spell> allSpells;
-  SpellSelections(this.allSpells, this.thisDescription);
+  SpellSelections(this.allSpells, this.thisDescription, {super.key});
   @override
   _SpellSelectionsState createState() =>
       //_SpellSelectionsState(allSpells, classSelected: classSelected);
@@ -760,7 +761,7 @@ class ChoiceRow extends StatefulWidget {
   // Declare the input list of strings or lists of strings
   final List<dynamic>? x;
 
-  ChoiceRow({this.x, this.allSelected});
+  ChoiceRow({super.key, this.x, this.allSelected});
   dynamic selected;
   final List<dynamic>? allSelected;
   @override
@@ -6458,11 +6459,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                                       if ((!GROUPLIST.contains(group)) &&
                                           group != null &&
                                           group!.replaceAll(" ", "") != "") {
-                                        final List<dynamic> groupsList =
-                                            json["Groups"];
-                                        groupsList.add(group);
+                                        GROUPLIST.add(group!);
                                       }
-                                      writeJsonToFile(json, "userContent");
+                                      saveChanges();
                                       updateGlobals();
                                       Navigator.pop(context);
                                       Navigator.push(

@@ -10,8 +10,11 @@ import "dart:math";
 import "dart:convert";
 import "dart:io";
 import 'package:file_picker/file_picker.dart';
-
+import "../../file_manager.dart";
+//TODO(THIS NEEDS SERIOUS REWRITE IS PLACEHOLDER FOR NOW)
 class JsonFilePicker extends StatefulWidget {
+  const JsonFilePicker({super.key});
+
   @override
   _JsonFilePickerState createState() => _JsonFilePickerState();
 }
@@ -42,15 +45,15 @@ class _JsonFilePickerState extends State<JsonFilePicker> {
       children: [
         ElevatedButton(
           onPressed: _pickFile,
-          child: Text('Select JSON file'),
+          child: const Text('Select JSON file'),
         ),
         if (_fileName != null && _fileContents != null) ...[
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text('File name: $_fileName'),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             json.encode(_fileContents),
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'Courier New',
             ),
           ),
@@ -61,6 +64,8 @@ class _JsonFilePickerState extends State<JsonFilePicker> {
 }
 
 class MakeAWeapon extends StatefulWidget {
+  const MakeAWeapon({super.key});
+
   @override
   MainMakeAWeapon createState() => MainMakeAWeapon();
 }
@@ -134,14 +139,14 @@ class MainMakeAWeapon extends State<MakeAWeapon> {
                 feats.addAll(jsonData2["Feats"] ?? []);
 
                 //File("assets/SRD.json").writeAsStringSync(jsonEncode(json));
-                writeJsonToFile(jsonData, "userContent");
+                //writeJsonToFile(jsonData, "userContent");
 
                 updateGlobals();
 
                 // do something with the parsed JSON data
               }
             },
-            child: Text('Select JSON file'),
+            child: const Text('Select JSON file'),
           ),
         ]));
   }
