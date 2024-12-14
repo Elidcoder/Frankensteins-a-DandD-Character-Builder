@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:frankenstein/character_creation_globals.dart';
 import 'package:frankenstein/SRD_globals.dart';
 import "dart:collection";
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
@@ -82,7 +81,7 @@ int abilityScoreCost(int x) {
   return 1;
 }
 
-//fix this later
+// TODO() 
 bool isAllowedContent(dynamic x) {
   return true;
 }
@@ -95,10 +94,9 @@ Spell listgetter(String spellname) {
       return SPELLLIST[x];
     }
   }
-  //ADD SOMETHING FOR FAILED COMPARISONS
-  ///fix really  really really
+  // TODO(ADD SOMETHING FOR FAILED COMPARISONS)
   return SPELLLIST[0];
-} //}
+}
 
 class CreateACharacter extends StatefulWidget {
   @override
@@ -865,7 +863,6 @@ class _ChoiceRowState extends State<ChoiceRow> {
 //null op here to locate if called by editor (to edit char so will contain info) or otherwise
 class MainCreateCharacter extends State<CreateACharacter>
     with AutomaticKeepAliveClientMixin {
-  //random stsuff
   @override
   bool get wantKeepAlive => true;
   //Text editing controllers

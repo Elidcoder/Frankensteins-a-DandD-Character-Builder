@@ -1,6 +1,4 @@
 import "package:flutter/material.dart";
-
-//import "package:frankenstein/character_creation_globals.dart";
 import 'package:frankenstein/SRD_globals.dart';
 import 'package:frankenstein/character_globals.dart';
 import "package:frankenstein/PDFdocs/pdf_final_display.dart";

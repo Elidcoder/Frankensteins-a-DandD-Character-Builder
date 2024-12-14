@@ -1,12 +1,5 @@
 import "package:flutter/material.dart";
-
-//import "package:frankenstein/character_creation_globals.dart";
 import 'package:frankenstein/SRD_globals.dart';
-import "dart:collection";
-import "package:flutter_multi_select_items/flutter_multi_select_items.dart";
-import 'package:frankenstein/character_globals.dart';
-import "package:frankenstein/PDFdocs/pdf_final_display.dart";
-import "dart:math";
 import "dart:convert";
 import "dart:io";
 import 'package:file_picker/file_picker.dart';

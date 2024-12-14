@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-//import 'package:frankenstein/character_creation_globals.dart';
 import 'package:frankenstein/SRD_globals.dart';
-import "dart:collection";
 import 'package:frankenstein/character_globals.dart';
 import 'package:frankenstein/PDFdocs/pdf_final_display.dart';
 import 'dart:math';
-import 'dart:convert';
-import 'dart:io';
 import 'package:frankenstein/pages/create_a_character.dart';
 import 'package:frankenstein/main.dart';
 import "../../file_manager.dart";

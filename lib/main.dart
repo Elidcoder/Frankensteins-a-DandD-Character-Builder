@@ -1,4 +1,4 @@
-///Imports
+//Imports
 import "package:flutter/material.dart";
 import "pages/custom_content.dart";
 import "pages/create_a_character.dart";
@@ -8,7 +8,6 @@ import "pages/custom_content_options/spells.dart";
 import "pages/custom_content_options/items.dart";
 import "pages/custom_content_options/weapons.dart";
 import "package:frankenstein/SRD_globals.dart";
-import "package:frankenstein/character_globals.dart";
 import "file_manager.dart";
 import "dart:convert";
 import "dart:io";
