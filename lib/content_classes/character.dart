@@ -2,7 +2,7 @@
 import "dart:collection";
 
 // Project Import
-import 'all_non_character_classes.dart';
+import 'non_character_classes/all_non_character_classes.dart';
 
 class Character {
   //general
