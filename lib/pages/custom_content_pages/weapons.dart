@@ -1,69 +1,20 @@
 import "package:flutter/material.dart";
-import 'package:frankenstein/SRD_globals.dart';
+import 'package:frankenstein/content_classes/all_content_classes.dart';
 import "dart:convert";
 import "dart:io";
 import 'package:file_picker/file_picker.dart';
-import "../file_manager.dart";
-class JsonFilePicker extends StatefulWidget {
-  const JsonFilePicker({super.key});
+import "../../file_manager.dart";
+
+//TODO(THIS NEEDS SERIOUS REWRITE IS PLACEHOLDER FOR NOW)
+class MakeAWeapon extends StatefulWidget {
+  const MakeAWeapon({super.key});
 
   @override
-  _JsonFilePickerState createState() => _JsonFilePickerState();
+  MainMakeAWeapon createState() => MainMakeAWeapon();
 }
 
-class _JsonFilePickerState extends State<JsonFilePicker> {
-  String? _fileName;
-  dynamic _fileContents;
-
-  Future<void> _pickFile() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['json'],
-    );
-    if (result != null) {
-      final file = File(result.files.single.path ?? "this'll never happen");
-      final String importedContent = await file.readAsString();
-      final data = json.decode(importedContent);
-      setState(() {
-        _fileName = file.path.split('/').last;
-        _fileContents = data;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ElevatedButton(
-          onPressed: _pickFile,
-          child: const Text('Select JSON file'),
-        ),
-        if (_fileName != null && _fileContents != null) ...[
-          const SizedBox(height: 16),
-          Text('File name: $_fileName'),
-          const SizedBox(height: 8),
-          Text(
-            json.encode(_fileContents),
-            style: const TextStyle(
-              fontFamily: 'Courier New',
-            ),
-          ),
-        ],
-      ],
-    );
-  }
-}
-
-class RollDice extends StatefulWidget {
-  const RollDice({super.key});
-
-  @override
-  MainRollDice createState() => MainRollDice();
-}
-
-class MainRollDice extends State<RollDice> {
-  //MainRollDice({Key? key}) : super(key: key);
+class MainMakeAWeapon extends State<MakeAWeapon> {
+  //MainMakeAWeapon({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -93,17 +44,18 @@ class MainRollDice extends State<RollDice> {
                 final contents = await file.readAsString();
                 final jsonData2 = json.decode(contents);
 
-                await updateGlobals();
+                updateGlobals();
+                //final String jsonContent =
+                //  File("assets/Characters.json").readAsStringSync();
 
+                //final String jsonContents =
+                //  File("assets/SRD.json").readAsStringSync();
                 final Map<String, dynamic> jsonData =
                     jsonDecode(jsonString ?? "");
 
-                //TODO(CHECK FOR DUPLICATES AT SOME POINT)
-                final List<dynamic> characters = jsonData["Characters"];
-                characters.addAll(jsonData2["Characters"] ?? []);
-
-                final List<dynamic> spells = jsonData["Spells"];
-                spells.addAll(jsonData2["Spells"] ?? []);
+                //at some point actually check for dupes
+                final List<dynamic> characters = jsonData["Spells"];
+                characters.addAll(jsonData2["Spells"] ?? []);
 
                 final List<dynamic> classes = jsonData["Classes"];
                 classes.addAll(jsonData2["Classes"] ?? []);
@@ -130,9 +82,9 @@ class MainRollDice extends State<RollDice> {
                 feats.addAll(jsonData2["Feats"] ?? []);
 
                 //File("assets/SRD.json").writeAsStringSync(jsonEncode(json));
-                //TODO(IMPLEMENT THE REMAINING SECTIONS OF THE CODE TO BE COPIED IN)
-                await saveChanges();
-                await updateGlobals();
+                //writeJsonToFile(jsonData, "userContent");
+
+                updateGlobals();
 
                 // do something with the parsed JSON data
               }

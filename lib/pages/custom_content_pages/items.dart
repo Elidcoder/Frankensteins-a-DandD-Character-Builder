@@ -1,77 +1,20 @@
 import "package:flutter/material.dart";
-
-//import "package:frankenstein/character_creation_globals.dart";
-import 'package:frankenstein/SRD_globals.dart';
-import "dart:collection";
-import "package:flutter_multi_select_items/flutter_multi_select_items.dart";
-import 'package:frankenstein/character_globals.dart';
-import "package:frankenstein/PDFdocs/pdf_final_display.dart";
-import "dart:math";
+import 'package:frankenstein/content_classes/all_content_classes.dart';
 import "dart:convert";
 import "dart:io";
 import 'package:file_picker/file_picker.dart';
 import "../../file_manager.dart";
-//TODO(THIS NEEDS SERIOUS REWRITE IS PLACEHOLDER FOR NOW)
-class JsonFilePicker extends StatefulWidget {
-  const JsonFilePicker({super.key});
+
+//TODO(Implement this)
+class MakeAnItem extends StatefulWidget {
+  const MakeAnItem({super.key});
 
   @override
-  _JsonFilePickerState createState() => _JsonFilePickerState();
+  MainMakeAnItem createState() => MainMakeAnItem();
 }
 
-class _JsonFilePickerState extends State<JsonFilePicker> {
-  String? _fileName;
-  dynamic _fileContents;
-
-  Future<void> _pickFile() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['json'],
-    );
-    if (result != null) {
-      final file = File(result.files.single.path ?? "this'll never happen");
-      final String importedContent = await file.readAsString();
-      final data = json.decode(importedContent);
-      setState(() {
-        _fileName = file.path.split('/').last;
-        _fileContents = data;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ElevatedButton(
-          onPressed: _pickFile,
-          child: const Text('Select JSON file'),
-        ),
-        if (_fileName != null && _fileContents != null) ...[
-          const SizedBox(height: 16),
-          Text('File name: $_fileName'),
-          const SizedBox(height: 8),
-          Text(
-            json.encode(_fileContents),
-            style: const TextStyle(
-              fontFamily: 'Courier New',
-            ),
-          ),
-        ],
-      ],
-    );
-  }
-}
-
-class MakeAWeapon extends StatefulWidget {
-  const MakeAWeapon({super.key});
-
-  @override
-  MainMakeAWeapon createState() => MainMakeAWeapon();
-}
-
-class MainMakeAWeapon extends State<MakeAWeapon> {
-  //MainMakeAWeapon({Key? key}) : super(key: key);
+class MainMakeAnItem extends State<MakeAnItem> {
+  //MainMakeAnItem({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

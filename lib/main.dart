@@ -1,18 +1,16 @@
-//Imports
+// External imports
 import "package:flutter/material.dart";
-import "pages/custom_content.dart";
-import "pages/create_a_character.dart";
-import "pages/my_characters.dart";
-import "pages/search_for_content.dart";
-import "pages/custom_content_options/spells.dart";
-import "pages/custom_content_options/items.dart";
-import "pages/custom_content_options/weapons.dart";
-import "package:frankenstein/SRD_globals.dart";
 import "file_manager.dart";
 import "dart:convert";
 import "dart:io";
 import "package:file_picker/file_picker.dart";
 import "package:flutter_colorpicker/flutter_colorpicker.dart";
+
+// Project imports
+import "pages/all_home_subpages.dart";
+import "content_classes/all_content_classes.dart";
+// TODO(Make the below import unnecessary by modifying the PageLinker)
+import "pages/custom_content_pages/all_custom_content_pages.dart";
 
 // ignore: non_constant_identifier_names
 final Map<String, Widget> PAGELINKER = {

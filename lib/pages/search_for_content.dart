@@ -1,5 +1,8 @@
+// External Import
 import 'package:flutter/material.dart';
-import "package:frankenstein/main.dart";
+
+// Project Import
+import "../main.dart";
 
 class SearchForContent extends StatelessWidget {
   const SearchForContent({super.key});

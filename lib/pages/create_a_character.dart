@@ -1,13 +1,15 @@
+// External Imports
 import 'package:flutter/material.dart';
-import 'package:frankenstein/SRD_globals.dart';
 import "dart:collection";
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
-import 'package:frankenstein/character_globals.dart';
-import 'package:frankenstein/PDFdocs/pdf_final_display.dart';
 import 'dart:math';
 import 'dart:convert';
+
+// Project Imports
+import "../main.dart";
+import '../content_classes/all_content_classes.dart';
 import "../file_manager.dart";
-import "package:frankenstein/main.dart";
+import '../pdf_generator/pdf_final_display.dart';
 
 /*ListView.builder(
   itemCount: 3,

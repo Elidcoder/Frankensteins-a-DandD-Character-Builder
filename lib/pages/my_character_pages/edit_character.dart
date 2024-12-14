@@ -1,11 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:frankenstein/SRD_globals.dart';
-import 'package:frankenstein/character_globals.dart';
-import 'package:frankenstein/PDFdocs/pdf_final_display.dart';
+// External Imports
 import 'dart:math';
-import 'package:frankenstein/pages/create_a_character.dart';
-import 'package:frankenstein/main.dart';
+import 'package:flutter/material.dart';
+
+// Project Imports
+import '../create_a_character.dart';
+import '../../content_classes/all_content_classes.dart';
+import '../../pdf_generator/pdf_final_display.dart';
+import '../../main.dart';
 import "../../file_manager.dart";
+
 int abilityScoreCost(int x) {
   if (x > 12) {
     return 2;

@@ -1,10 +1,13 @@
+// External Imports
 import 'dart:io';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
-import 'package:flutter/material.dart'; // For Color class
-import 'package:frankenstein/SRD_globals.dart';
-import "character_globals.dart";
+// For Color class
+import 'package:flutter/material.dart'; 
+
+// Project Import
+import 'content_classes/all_content_classes.dart';
 
 List<Character> CHARACTERLIST = [];
 List<String> GROUPLIST = [];

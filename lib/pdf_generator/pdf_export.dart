@@ -1,10 +1,10 @@
+// External Imports
 import 'dart:typed_data';
-//import 'package:makepdfs/models/invoice.dart';
-//import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:pdf/pdf.dart';
-import 'package:frankenstein/character_globals.dart';
-import 'package:frankenstein/SRD_globals.dart';
+
+// Project Import
+import '../content_classes/all_content_classes.dart';
 
 //final font = Font.ttf(await rootBundle.load("assets/fonts/your_font.ttf"));
 //1038xidk

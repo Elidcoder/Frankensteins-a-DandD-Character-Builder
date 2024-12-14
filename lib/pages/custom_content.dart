@@ -1,7 +1,9 @@
-// Imports
+// External Import
 import 'package:flutter/material.dart';
+
+// Project Imports
 import "../file_manager.dart";
-import "package:frankenstein/main.dart";
+import "../main.dart";
 
 void main() {
   //updateSRDGlobals();

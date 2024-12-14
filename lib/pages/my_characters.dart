@@ -1,12 +1,15 @@
+// External Imports
 import "package:flutter/material.dart";
-import 'package:frankenstein/SRD_globals.dart';
-import 'package:frankenstein/character_globals.dart';
-import "package:frankenstein/PDFdocs/pdf_final_display.dart";
-import "my_character_options/edit_character.dart";
 import "dart:convert";
-import "package:frankenstein/main.dart";
 import 'dart:math';
+
+// Project Imports
+import "my_character_pages/all_my_character_pages.dart";
+import '../content_classes/all_content_classes.dart';
+import "../pdf_generator/pdf_final_display.dart";
+import "../main.dart";
 import "../file_manager.dart";
+
 class MyCharacters extends StatefulWidget {
   const MyCharacters({super.key});
 

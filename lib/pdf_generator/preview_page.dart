@@ -1,6 +1,9 @@
+//External Imports
 import 'package:flutter/material.dart';
-import 'package:frankenstein/PDFdocs/pdf_final_display.dart';
-import 'package:frankenstein/character_globals.dart';
+
+// Project Imports
+import 'pdf_final_display.dart';
+import '../content_classes/character.dart';
 
 class DetailPage extends StatelessWidget {
   final Character character;

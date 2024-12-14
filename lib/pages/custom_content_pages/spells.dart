@@ -1,61 +1,7 @@
 import "package:flutter/material.dart";
-import 'package:frankenstein/SRD_globals.dart';
-import "dart:convert";
-import "dart:io";
-import 'package:file_picker/file_picker.dart';
+import 'package:frankenstein/content_classes/all_content_classes.dart';
 import 'package:frankenstein/main.dart';
 import "../../file_manager.dart";
-
-class JsonFilePicker extends StatefulWidget {
-  const JsonFilePicker({super.key});
-
-  @override
-  _JsonFilePickerState createState() => _JsonFilePickerState();
-}
-
-class _JsonFilePickerState extends State<JsonFilePicker> {
-  String? _fileName;
-  dynamic _fileContents;
-
-  Future<void> _pickFile() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['json'],
-    );
-    if (result != null) {
-      final file = File(result.files.single.path ?? "this'll never happen");
-      final String importedContent = await file.readAsString();
-      final data = json.decode(importedContent);
-      setState(() {
-        _fileName = file.path.split('/').last;
-        _fileContents = data;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ElevatedButton(
-          onPressed: _pickFile,
-          child: const Text('Select JSON file'),
-        ),
-        if (_fileName != null && _fileContents != null) ...[
-          const SizedBox(height: 16),
-          Text('File name: $_fileName'),
-          const SizedBox(height: 8),
-          Text(
-            json.encode(_fileContents),
-            style: const TextStyle(
-              fontFamily: 'Courier New',
-            ),
-          ),
-        ],
-      ],
-    );
-  }
-}
 
 class MakeASpell extends StatefulWidget {
   const MakeASpell({super.key});

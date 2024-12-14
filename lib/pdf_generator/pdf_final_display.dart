@@ -1,13 +1,11 @@
+// External imports
 import 'package:flutter/material.dart';
 import 'package:printing/printing.dart';
-//import 'package:makepdfs/models/invoice.dart';
-//import 'package:makepdfs/pages/pdfexport/pdf/pdfexport.dart';
-//import 'package:frankenstein/PDFdocs/pdf_export.dart';
-//import 'package:printing/printing.dart';
-import 'package:frankenstein/character_globals.dart';
-import 'package:frankenstein/PDFdocs/pdf_export.dart';
 
-//import 'package:frankenstein/PDFdocs/preview_page.dart';
+// Project imports:
+import '../content_classes/character.dart';
+import 'pdf_export.dart';
+
 class PdfPreviewPage extends StatelessWidget {
   final Character character;
   const PdfPreviewPage({super.key, required this.character});
