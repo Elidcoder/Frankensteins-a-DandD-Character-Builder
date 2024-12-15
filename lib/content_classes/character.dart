@@ -21,6 +21,8 @@ class Character {
   final List<String> mainToolProficiencies;
   final Map<String, int> skillBonusMap;
   final Queue<int>? skillsSelected;
+  
+  final String extraFeatures;
   //Basics
   final Map<String, List<String>> speedBonuses;
   final List<List<dynamic>> ACList;
@@ -90,6 +92,7 @@ class Character {
   final List<String> itemList;
   final String? coinTypeSelected;
   final List<dynamic>? equipmentSelectedFromChoices;
+  
   //Background
   final String characterAge;
   final String characterHeight;
@@ -98,7 +101,6 @@ class Character {
   final String characterSkin;
   final String characterHair;
   final String backstory;
-  final String extraFeatures;
 
   //finishing up variables
   final String? group;
@@ -478,4 +480,85 @@ class Character {
         i.toString()
         ].join()
       );
+  
+  Character getCopy() {
+    return Character(
+      languagesKnown: languagesKnown,
+      featuresAndTraits: featuresAndTraits,
+      classList: classList,
+      currency: currency,
+      name: name,
+      playerName: playerName,
+      classLevels: classLevels,
+      inspired: inspired,
+      mainToolProficiencies: mainToolProficiencies,
+      skillBonusMap: skillBonusMap,
+      skillsSelected: skillsSelected, 
+      speedBonuses: speedBonuses,
+      ACList: ACList,
+      gender: gender,
+      featsAllowed: featsAllowed,
+      averageHitPoints: averageHitPoints,
+      multiclassing: multiclassing,
+      milestoneLevelling: milestoneLevelling,
+      useCustomContent: useCustomContent,
+      optionalClassFeatures: optionalClassFeatures,
+      criticalRoleContent: criticalRoleContent,
+      encumberanceRules: encumberanceRules,
+      includeCoinsForWeight: includeCoinsForWeight,
+      unearthedArcanaContent: unearthedArcanaContent,
+      firearmsUsable: firearmsUsable,
+      extraFeatAtLevel1: extraFeatAtLevel1,
+      savingThrowProficiencies: savingThrowProficiencies,
+      skillProficiencies: skillProficiencies,
+      maxHealth: maxHealth,
+      characterExperience: characterExperience,
+      classSkillsSelected: classSkillsSelected,
+      race: race,
+      subrace: subrace,
+      optionalOnesStates: optionalOnesStates,
+      optionalTwosStates: optionalTwosStates,
+      raceAbilityScoreIncreases: raceAbilityScoreIncreases,
+      background: background,
+      backgroundPersonalityTrait: backgroundPersonalityTrait,
+      backgroundIdeal: backgroundIdeal,
+      backgroundBond: backgroundBond,
+      backgroundFlaw: backgroundFlaw,
+      backgroundSkillChoices: backgroundSkillChoices,
+      strength: strength,
+      dexterity: dexterity,
+      constitution: constitution,
+      intelligence: intelligence,
+      wisdom: wisdom,
+      charisma: charisma,
+      levelsPerClass: levelsPerClass,
+      selections: selections,
+      allSelected: allSelected,
+      classSubclassMapper: classSubclassMapper,
+      featsASIScoreIncreases: featsASIScoreIncreases,
+      featsSelected: featsSelected,
+      ASIRemaining: ASIRemaining,
+      numberOfRemainingFeatOrASIs: numberOfRemainingFeatOrASIs,
+      halfFeats: halfFeats,
+      fullFeats: fullFeats,
+      allSpellsSelected: allSpellsSelected,
+      allSpellsSelectedAsListsOfThings: allSpellsSelectedAsListsOfThings,
+      stackableEquipmentSelected: stackableEquipmentSelected,
+      unstackableEquipmentSelected: unstackableEquipmentSelected,
+      armourList: armourList,
+      weaponList: weaponList,
+      itemList: itemList,
+      coinTypeSelected: coinTypeSelected,
+      equipmentSelectedFromChoices: equipmentSelectedFromChoices,
+      characterAge: characterAge,
+      characterHeight: characterHeight,
+      characterWeight: characterWeight,
+      characterEyes: characterEyes,
+      characterSkin: characterSkin,
+      characterHair: characterHair,
+      backstory: backstory,
+      extraFeatures: extraFeatures,
+      group: group
+    );
+  }
 }
