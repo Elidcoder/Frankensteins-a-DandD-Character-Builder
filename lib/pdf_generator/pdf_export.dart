@@ -191,13 +191,13 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                               width: 140.0,
 
                               //child: Text(" ${userCharacter.name}")
-                              child: (userCharacter.name.replaceAll(" ", "") ==
+                              child: (userCharacter.characterDescription.name.replaceAll(" ", "") ==
                                       "")
                                   ? Text(
                                       "No data to display",
                                     )
                                   : Text(
-                                      userCharacter.name,
+                                      userCharacter.characterDescription.name,
                                       style: const TextStyle(
                                           decoration: TextDecoration.underline),
                                     ),

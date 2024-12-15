@@ -945,10 +945,12 @@ class MainCreateCharacter extends State<CreateACharacter>
   String characterGender = "";
   double characterExperience = 0;
   String enteredExperience = "";
+
   //bools representing the states of the checkboxes (basics)
   bool? featsAllowed = true;
-  bool? averageHitPoints = false;
   bool? multiclassing = true;
+
+  bool? averageHitPoints = false;
   bool? milestoneLevelling = false;
   bool? useCustomContent = false;
   bool? optionalClassFeatures = false;
@@ -6077,9 +6079,9 @@ class MainCreateCharacter extends State<CreateACharacter>
                     MaterialPageRoute(
                       builder: (context) => PdfPreviewPage(
                           character: Character(
+                              characterDescription: CharacterDescription(characterAge: characterAge, characterHeight: characterHeight, characterWeight: characterWeight, characterEyes: characterEyes, characterSkin: characterSkin, characterHair: characterHair, backstory: backstory, name: characterName, gender: characterGender),
                               skillBonusMap: skillBonusMap,
                               group: group,
-                              backstory: backstory,
                               extraFeatures: extraFeatures,
                               levelsPerClass: levelsPerClass,
                               selections: selections,
@@ -6093,12 +6095,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                               armourList: armourList,
                               averageHitPoints: averageHitPoints,
                               backgroundSkillChoices: backgroundSkillChoices,
-                              characterAge: characterAge,
-                              characterEyes: characterEyes,
-                              characterHair: characterHair,
-                              characterHeight: characterHeight,
-                              characterSkin: characterSkin,
-                              characterWeight: characterWeight,
                               coinTypeSelected: coinTypeSelected,
                               criticalRoleContent: criticalRoleContent,
                               encumberanceRules: encumberanceRules,
@@ -6108,7 +6104,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                               firearmsUsable: firearmsUsable,
                               fullFeats: fullFeats,
                               halfFeats: halfFeats,
-                              gender: characterGender,
                               includeCoinsForWeight: includeCoinsForWeight,
                               itemList: itemList,
                               milestoneLevelling: milestoneLevelling,
@@ -6151,7 +6146,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                               backgroundIdeal: backgroundIdeal,
                               backgroundBond: backgroundBond,
                               backgroundFlaw: backgroundFlaw,
-                              name: characterName,
                               raceAbilityScoreIncreases: abilityScoreIncreases,
                               featsASIScoreIncreases: ASIBonuses,
                               strength: strength,
@@ -6336,7 +6330,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         characters.removeAt(index);
                                       }
                                       characters.add(Character(
-                                              skillBonusMap: skillBonusMap,                                              backstory: backstory,
+                                              characterDescription: CharacterDescription(characterAge: characterAge, characterHeight: characterHeight, characterWeight: characterWeight, characterEyes: characterEyes, characterSkin: characterSkin, characterHair: characterHair, backstory: backstory, name: characterName, gender: characterGender),
+                                              skillBonusMap: skillBonusMap,
                                               extraFeatures: extraFeatures,
                                               levelsPerClass: levelsPerClass,
                                               selections: selections,
@@ -6354,12 +6349,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                   averageHitPoints,
                                               backgroundSkillChoices:
                                                   backgroundSkillChoices,
-                                              characterAge: characterAge,
-                                              characterEyes: characterEyes,
-                                              characterHair: characterHair,
-                                              characterHeight: characterHeight,
-                                              characterSkin: characterSkin,
-                                              characterWeight: characterWeight,
                                               coinTypeSelected:
                                                   coinTypeSelected,
                                               criticalRoleContent:
@@ -6373,7 +6362,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               firearmsUsable: firearmsUsable,
                                               fullFeats: fullFeats,
                                               halfFeats: halfFeats,
-                                              gender: characterGender,
                                               includeCoinsForWeight:
                                                   includeCoinsForWeight,
                                               itemList: itemList,
@@ -6430,7 +6418,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               backgroundIdeal: backgroundIdeal,
                                               backgroundBond: backgroundBond,
                                               backgroundFlaw: backgroundFlaw,
-                                              name: characterName,
                                               raceAbilityScoreIncreases:
                                                   abilityScoreIncreases,
                                               featsASIScoreIncreases:

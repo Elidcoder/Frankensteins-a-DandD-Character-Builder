@@ -106,7 +106,7 @@ class MainMyCharacters extends State<MyCharacters> {
                         List.generate(
                             CHARACTERLIST
                                 .where((element) =>
-                                    element.name.contains(searchTerm))
+                                    element.characterDescription.name.contains(searchTerm))
                                 .toList()
                                 .length, (index) {
                       return Container(
@@ -131,16 +131,16 @@ class MainMyCharacters extends State<MyCharacters> {
                                       fit: BoxFit.scaleDown,
                                       child: Text(
                                           CHARACTERLIST
-                                              .where((element) => element.name
+                                              .where((element) => element.characterDescription.name
                                                   .contains(searchTerm))
                                               .toList()[index]
-                                              .name,
+                                              .characterDescription.name,
                                           style: const TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.w700,
                                               color: Colors.white)))),
                               Text(
-                                  "Level: ${CHARACTERLIST.where((element) => element.name.contains(searchTerm)).toList()[index].classList.length}",
+                                  "Level: ${CHARACTERLIST.where((element) => element.characterDescription.name.contains(searchTerm)).toList()[index].classList.length}",
                                   style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
@@ -156,7 +156,7 @@ class MainMyCharacters extends State<MyCharacters> {
                                         ( //Only for characters in the searchterm
                                                 CHARACTERLIST
                                                     .where((element) => element
-                                                        .name
+                                                        .characterDescription.name
                                                         .contains(searchTerm))
                                                     .toList()[index]
                                                     //check if the character has any levels in any classes
@@ -174,7 +174,7 @@ class MainMyCharacters extends State<MyCharacters> {
                                                             CHARACTERLIST
                                                                     //get the correct character
                                                                     .where((element) => element
-                                                                        .name
+                                                                        .characterDescription.name
                                                                         .contains(
                                                                             searchTerm))
                                                                     .toList()[index]
@@ -183,7 +183,7 @@ class MainMyCharacters extends State<MyCharacters> {
                                                             0)
                                                     //for each one create a string with the information on how many times that class was taken and the class name
                                                     .map((entry) =>
-                                                        "${entry.value.name}: ${CHARACTERLIST.where((element) => element.name.contains(searchTerm)).toList()[index].classLevels[entry.key]}")
+                                                        "${entry.value.name}: ${CHARACTERLIST.where((element) => element.characterDescription.name.contains(searchTerm)).toList()[index].classLevels[entry.key]}")
                                                     //Join all the strings together as the child of the fitted text widget
                                                     .join(", "),
                                                 style: const TextStyle(
@@ -199,7 +199,7 @@ class MainMyCharacters extends State<MyCharacters> {
                                                     color: Colors.white)),
                                   )),
                               Text(
-                                  "Health: ${CHARACTERLIST.where((element) => element.name.contains(searchTerm)).toList()[index].maxHealth}",
+                                  "Health: ${CHARACTERLIST.where((element) => element.characterDescription.name.contains(searchTerm)).toList()[index].maxHealth}",
                                   style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
@@ -210,7 +210,7 @@ class MainMyCharacters extends State<MyCharacters> {
                                   child: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Text(
-                                        "Group: ${CHARACTERLIST.where((element) => element.name.contains(searchTerm)).toList()[index].group ?? "Not a part of a group"}",
+                                        "Group: ${CHARACTERLIST.where((element) => element.characterDescription.name.contains(searchTerm)).toList()[index].group ?? "Not a part of a group"}",
                                         style: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w700,
@@ -227,7 +227,7 @@ class MainMyCharacters extends State<MyCharacters> {
                                           builder: (context) => PdfPreviewPage(
                                               character: CHARACTERLIST
                                                   .where((element) => element
-                                                      .name
+                                                      .characterDescription.name
                                                       .contains(searchTerm))
                                                   .toList()[index])),
                                     );
@@ -261,7 +261,7 @@ class MainMyCharacters extends State<MyCharacters> {
                                     setState(() {
                                       Character selectedCharacter =
                                           CHARACTERLIST
-                                              .where((element) => element.name
+                                              .where((element) => element.characterDescription.name
                                                   .contains(searchTerm))
                                               .toList()[index];
 
@@ -296,7 +296,7 @@ class MainMyCharacters extends State<MyCharacters> {
                                           builder: (context) => Edittop(
                                               CHARACTERLIST
                                                   .where((element) => element
-                                                      .name
+                                                      .characterDescription.name
                                                       .contains(searchTerm))
                                                   .toList()[index])),
                                     );
@@ -326,7 +326,7 @@ class MainMyCharacters extends State<MyCharacters> {
                                               character["UniqueID"] ==
                                               CHARACTERLIST
                                                   .where((element) => element
-                                                      .name
+                                                      .characterDescription.name
                                                       .contains(searchTerm))
                                                   .toList()[index]
                                                   .uniqueID);
@@ -335,21 +335,21 @@ class MainMyCharacters extends State<MyCharacters> {
                                               element["Group"] ==
                                                   CHARACTERLIST
                                                       .where((element) =>
-                                                          element.name.contains(
+                                                          element.characterDescription.name.contains(
                                                               searchTerm))
                                                       .toList()[index]
                                                       .group &&
                                               element["Name"] !=
                                                   CHARACTERLIST
                                                       .where((element) =>
-                                                          element.name.contains(
+                                                          element.characterDescription.name.contains(
                                                               searchTerm))
                                                       .toList()[index]
-                                                      .name, orElse: () {
+                                                      .characterDescription.name, orElse: () {
                                         final List<dynamic> groups =
                                             json["Groups"];
                                         groups.remove(CHARACTERLIST
-                                            .where((element) => element.name
+                                            .where((element) => element.characterDescription.name
                                                 .contains(searchTerm))
                                             .toList()[index]
                                             .group);

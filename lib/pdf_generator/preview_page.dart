@@ -27,7 +27,7 @@ class DetailPage extends StatelessWidget {
         child: const Icon(Icons.picture_as_pdf),
       ),
       appBar: AppBar(
-        title: Text(character.name),
+        title: Text(character.characterDescription.name),
       ),
       body: ListView(
         children: [

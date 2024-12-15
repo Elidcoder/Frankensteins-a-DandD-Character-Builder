@@ -250,7 +250,7 @@ class EditCharacter extends State<EditACharacter> {
           title: Center(
             child: Text(
               textAlign: TextAlign.center,
-              'Edit ${character.name}',
+              'Edit ${character.characterDescription.name}',
               style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w700),
             ),
           ),
@@ -290,7 +290,7 @@ class EditCharacter extends State<EditACharacter> {
             children: [
               const SizedBox(height: 50),
               Text(
-                  "${character.name} is level $level with $experience experience",
+                  "${character.characterDescription.name} is level $level with $experience experience",
                   style: TextStyle(
                       fontSize: 27,
                       fontWeight: FontWeight.w700,
@@ -2553,7 +2553,6 @@ class EditCharacter extends State<EditACharacter> {
                 backgroundColor: Homepage.backingColor,
                 onPressed: () {
                   Character char = Character(
-                              backstory: character.backstory,
                               skillBonusMap: character.skillBonusMap,
                               extraFeatures: character.extraFeatures,
                               group: group,
@@ -2569,16 +2568,9 @@ class EditCharacter extends State<EditACharacter> {
                               armourList: armourList,
                               backgroundSkillChoices:
                                   character.backgroundSkillChoices,
-                              characterAge: character.characterAge,
-                              characterEyes: character.characterEyes,
-                              characterHair: character.characterHair,
-                              characterHeight: character.characterHeight,
-                              characterSkin: character.characterSkin,
-                              characterWeight: character.characterWeight,
+                              characterDescription: CharacterDescription(characterAge: character.characterDescription.characterAge, characterHeight: character.characterDescription.characterHeight, characterWeight: character.characterDescription.characterWeight, characterEyes: character.characterDescription.characterEyes, characterSkin: character.characterDescription.characterSkin, characterHair: character.characterDescription.characterHair, backstory: character.characterDescription.backstory, name: character.characterDescription.name, gender: character.characterDescription.gender),
                               coinTypeSelected: coinTypeSelected,
-                              name: character.name,
                               playerName: character.playerName,
-                              gender: character.gender,
                               characterExperience: experience,
                               //bools representing the states of the checkboxes (basics)
                               featsAllowed: character.featsAllowed,
@@ -2812,7 +2804,7 @@ class EditCharacter extends State<EditACharacter> {
                                           .isEmpty)) {
                                     updateGlobals();
                                     Character char = Character(
-                                            backstory: character.backstory,
+                                            characterDescription: CharacterDescription(characterAge: character.characterDescription.characterAge, characterHeight: character.characterDescription.characterHeight, characterWeight: character.characterDescription.characterWeight, characterEyes: character.characterDescription.characterEyes, characterSkin: character.characterDescription.characterSkin, characterHair: character.characterDescription.characterHair, backstory: character.characterDescription.backstory, name: character.characterDescription.name, gender: character.characterDescription.gender),
                                             skillBonusMap:
                                                 character.skillBonusMap,
                                             extraFeatures:
@@ -2832,22 +2824,8 @@ class EditCharacter extends State<EditACharacter> {
                                             armourList: armourList,
                                             backgroundSkillChoices: character
                                                 .backgroundSkillChoices,
-                                            characterAge:
-                                                character.characterAge,
-                                            characterEyes:
-                                                character.characterEyes,
-                                            characterHair:
-                                                character.characterHair,
-                                            characterHeight:
-                                                character.characterHeight,
-                                            characterSkin:
-                                                character.characterSkin,
-                                            characterWeight:
-                                                character.characterWeight,
                                             coinTypeSelected: coinTypeSelected,
-                                            name: character.name,
                                             playerName: character.playerName,
-                                            gender: character.gender,
                                             characterExperience: experience,
                                             //bools representing the states of the checkboxes (basics)
                                             featsAllowed:
