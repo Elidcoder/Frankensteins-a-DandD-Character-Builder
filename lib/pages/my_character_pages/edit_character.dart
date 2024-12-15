@@ -2552,14 +2552,10 @@ class EditCharacter extends State<EditACharacter> {
                 foregroundColor: Homepage.textColor,
                 backgroundColor: Homepage.backingColor,
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => PdfPreviewPage(
-                          character: Character(
+                  Character char = Character(
                               backstory: character.backstory,
                               skillBonusMap: character.skillBonusMap,
                               extraFeatures: character.extraFeatures,
-                              uniqueID: character.uniqueID,
                               group: group,
                               levelsPerClass: levelsPerClass,
                               selections: selections,
@@ -2646,7 +2642,12 @@ class EditCharacter extends State<EditACharacter> {
                               constitution: constitution,
                               intelligence: intelligence,
                               wisdom: wisdom,
-                              charisma: charisma)),
+                              charisma: charisma);
+                  char.uniqueID = character.uniqueID;
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => PdfPreviewPage(
+                          character: char),
                     ),
                   );
                   // rootBundle.
@@ -2810,13 +2811,12 @@ class EditCharacter extends State<EditACharacter> {
                                           .where((element) => element[2] != 0)
                                           .isEmpty)) {
                                     updateGlobals();
-                                    CHARACTERLIST.add(Character(
+                                    Character char = Character(
                                             backstory: character.backstory,
                                             skillBonusMap:
                                                 character.skillBonusMap,
                                             extraFeatures:
                                                 character.extraFeatures,
-                                            uniqueID: character.uniqueID,
                                             group: group,
                                             levelsPerClass: levelsPerClass,
                                             selections: selections,
@@ -2931,8 +2931,9 @@ class EditCharacter extends State<EditACharacter> {
                                             constitution: constitution,
                                             intelligence: intelligence,
                                             wisdom: wisdom,
-                                            charisma: charisma)
-                                        );
+                                            charisma: charisma);
+                                    char.uniqueID = character.uniqueID;
+                                    CHARACTERLIST.add(char);
                                     GROUPLIST = GROUPLIST
                                         .where((element) => [
                                               for (var x in CHARACTERLIST)

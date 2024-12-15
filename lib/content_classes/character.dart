@@ -1,12 +1,15 @@
 // External Imports
 import "dart:collection";
+import 'dart:math';
 
 // Project Import
 import 'non_character_classes/all_non_character_classes.dart';
 
 class Character {
+  // make this final after removing the change UID in edit character
+  int uniqueID ;
+  
   //general
-  final int uniqueID;
   final List<String> languagesKnown;
   final List<String> featuresAndTraits;
   final List<String> classList;
@@ -334,7 +337,6 @@ class Character {
       fullFeats: fullFeats,
       halfFeats: halfFeats,
       gender: gender,
-      uniqueID: uniqueID,
       includeCoinsForWeight: includeCoinsForWeight,
       itemList: itemList,
       milestoneLevelling: milestoneLevelling,
@@ -383,6 +385,7 @@ class Character {
       featsASIScoreIncreases: featsASIScoreIncreases,
     );
   }
+  
   Character(
       {required this.skillBonusMap,
       required this.levelsPerClass,
@@ -423,7 +426,6 @@ class Character {
       required this.optionalClassFeatures,
       required this.optionalOnesStates,
       required this.optionalTwosStates,
-      required this.uniqueID,
       //required this.pointsRemaining,
       required this.speedBonuses,
       required this.unearthedArcanaContent,
@@ -462,5 +464,18 @@ class Character {
       required this.featsASIScoreIncreases,
       required this.currency,
       this.subrace,
-      this.group});
+      this.group
+      }
+    ):
+      uniqueID = int.parse([ 
+        for(
+          var i in List.generate(
+            15, (_) => Random().nextInt(
+              10
+            )
+          )
+        )
+        i.toString()
+        ].join()
+      );
 }

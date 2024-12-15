@@ -325,11 +325,6 @@ class MainMyCharacters extends State<MyCharacters> {
                                         fullFeats: selectedCharacter.fullFeats,
                                         halfFeats: selectedCharacter.halfFeats,
                                         gender: selectedCharacter.gender,
-                                        uniqueID: int.parse([
-                                          for (var i in List.generate(
-                                              15, (_) => Random().nextInt(10)))
-                                            i.toString()
-                                        ].join()),
                                         includeCoinsForWeight: selectedCharacter
                                             .includeCoinsForWeight,
                                         itemList: selectedCharacter.itemList,

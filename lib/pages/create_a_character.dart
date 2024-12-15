@@ -6119,11 +6119,6 @@ class MainCreateCharacter extends State<CreateACharacter>
                               optionalClassFeatures: optionalClassFeatures,
                               optionalOnesStates: optionalOnesStates,
                               optionalTwosStates: optionalTwosStates,
-                              uniqueID: int.parse([
-                                for (var i in List.generate(
-                                    15, (_) => Random().nextInt(10)))
-                                  i.toString()
-                              ].join()),
                               speedBonuses: speedBonusMap,
                               unearthedArcanaContent: unearthedArcanaContent,
                               weaponList: weaponList,
@@ -6341,15 +6336,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         characters.removeAt(index);
                                       }
                                       characters.add(Character(
-                                              skillBonusMap: skillBonusMap,
-                                              uniqueID: int.parse([
-                                                for (var i in List.generate(
-                                                    15,
-                                                    (_) =>
-                                                        Random().nextInt(10)))
-                                                  i.toString()
-                                              ].join()),
-                                              backstory: backstory,
+                                              skillBonusMap: skillBonusMap,                                              backstory: backstory,
                                               extraFeatures: extraFeatures,
                                               levelsPerClass: levelsPerClass,
                                               selections: selections,
