@@ -9,9 +9,11 @@ class Character {
   // make this final after removing the change UID in edit character
   int uniqueID ;
   
-  //general
+  // Character information
   final List<String> languagesKnown;
   final List<String> featuresAndTraits;
+
+  //general
   final List<String> classList;
   final Map<String, int> currency;
   final String playerName;
@@ -25,6 +27,8 @@ class Character {
   //Basics
   final Map<String, List<String>> speedBonuses;
   final List<List<dynamic>> ACList;
+
+  // Build parameters
   final bool? featsAllowed;
   final bool? averageHitPoints;
   final bool? multiclassing;
@@ -59,6 +63,7 @@ class Character {
   final String backgroundBond;
   final String backgroundFlaw;
   final List<bool> backgroundSkillChoices;
+
   //Ability scores
   final AbilityScore strength;
   final AbilityScore dexterity;
@@ -222,8 +227,6 @@ class Character {
         .map((row) =>
             (row as List<dynamic>).map((value) => value as bool).toList())
         .toList();
-    //final pointsRemaining = data["PointsRemaining"] as int;
-
     //error
     final speedBonuses = (data["SpeedBonuses"] as Map<String, dynamic>).map(
         (key, value) => MapEntry(key,
@@ -318,7 +321,6 @@ class Character {
       optionalClassFeatures: optionalClassFeatures,
       optionalOnesStates: optionalOnesStates,
       optionalTwosStates: optionalTwosStates,
-      //pointsRemaining: pointsRemaining,
       speedBonuses: speedBonuses,
       unearthedArcanaContent: unearthedArcanaContent,
       weaponList: weaponList,
@@ -392,7 +394,6 @@ class Character {
       required this.optionalClassFeatures,
       required this.optionalOnesStates,
       required this.optionalTwosStates,
-      //required this.pointsRemaining,
       required this.speedBonuses,
       required this.unearthedArcanaContent,
       required this.weaponList,
