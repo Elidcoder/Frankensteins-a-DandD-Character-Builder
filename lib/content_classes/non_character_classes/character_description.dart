@@ -15,15 +15,15 @@ class CharacterDescription {
   /* Constructor */
   CharacterDescription(
     {
-      required this.age,
-      required this.height,
-      required this.weight,
-      required this.eyes,
-      required this.skin,
-      required this.hair,
-      required this.backstory,
-      required this.name,
-      required this.gender
+      this.age = "",
+      this.height = "",
+      this.weight = "",
+      this.eyes = "",
+      this.skin = "",
+      this.hair = "",
+      this.backstory = "",
+      this.name = "",
+      this.gender = ""
     }
   );
 

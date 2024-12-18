@@ -164,210 +164,196 @@ class Character {
   };
 
   factory Character.fromJson(Map<String, dynamic> data) {
-    final _extraFeatures = data["ExtraFeatures"] as String;
-    final _group = data["Group"] as String?;
-    final _levelsPerClass = data["LevelsPerClass"].cast<int>() as List<int>;
-    final _allSelected = data["AllSelected"] as List<dynamic>;
-    final _classSubclassMapper = data["ClassSubclassMapper"]
+    final extraFeatures_ = data["ExtraFeatures"] as String;
+    final group_ = data["Group"] as String?;
+    final levelsPerClass_ = data["LevelsPerClass"].cast<int>() as List<int>;
+    final allSelected_ = data["AllSelected"] as List<dynamic>;
+    final classSubclassMapper_ = data["ClassSubclassMapper"]
         .cast<String, String>() as Map<String, String>;
-    final _skillBonusMap =
+    final skillBonusMap_ =
         data["SkillBonusMap"].cast<String, int>() as Map<String, int>;
-    final _ACList = data["ACList"].cast<List<dynamic>>() as List<List<dynamic>>;
-    final _uniqueID = data["UniqueID"] as int;
+    final ACList_ = data["ACList"].cast<List<dynamic>>() as List<List<dynamic>>;
+    final uniqueID_ = data["UniqueID"] as int;
 
-    final _allSpellsSelected = [
+    final allSpellsSelected_ = [
       for (var x in data["AllSpellsSelected"]) Spell.fromJson(x)
     ];
-    final _allSpellsSelectedAsListsOfThings =
+    final allSpellsSelectedAsListsOfThings_ =
         data["AllSpellsSelectedAsListsOfThings"].cast<List<dynamic>>()
             as List<List<dynamic>>;
-    final _armourList = data["ArmourList"].cast<String>() as List<String>;
-    final _averageHitPoints = data["AverageHitPoints"] as bool;
-    final _backgroundSkillChoices =
+    final armourList_ = data["ArmourList"].cast<String>() as List<String>;
+    final averageHitPoints_ = data["AverageHitPoints"] as bool;
+    final backgroundSkillChoices_ =
         data["BackgroundSkillChoices"].cast<bool>() as List<bool>;
-    final _characterDescription = CharacterDescription.fromJson(data["CharacterDescription"]);
+    final characterDescription_ = CharacterDescription.fromJson(data["CharacterDescription"]);
 
-    final _criticalRoleContent = data["CriticalRoleContent"] as bool;
-    final _encumberanceRules = data["EncumberanceRules"] as bool;
-    final _extraFeatAtLevel1 = data["ExtraFeatAtLevel1"] as bool;
-    final _featsAllowed = data["FeatsAllowed"] as bool;
-    final _featsSelected =
+    final criticalRoleContent_ = data["CriticalRoleContent"] as bool;
+    final encumberanceRules_ = data["EncumberanceRules"] as bool;
+    final extraFeatAtLevel1_ = data["ExtraFeatAtLevel1"] as bool;
+    final featsAllowed_ = data["FeatsAllowed"] as bool;
+    final featsSelected_ =
         data["FeatsSelected"].cast<List<dynamic>>() as List<List<dynamic>>;
-    final _firearmsUsable = data["FirearmsUsable"] as bool;
-    final _includeCoinsForWeight = data["IncludeCoinsForWeight"] as bool;
-    final _itemList = data["ItemList"].cast<String>() as List<String>;
-    final _milestoneLevelling = data["MilestoneLevelling"];
-    final _multiclassing = data["Multiclassing"] as bool;
-    final _useCustomContent = data["UseCustomContent"] as bool;
-    final _equipmentSelectedFromChoices =
+    final firearmsUsable_ = data["FirearmsUsable"] as bool;
+    final includeCoinsForWeight_ = data["IncludeCoinsForWeight"] as bool;
+    final itemList_ = data["ItemList"].cast<String>() as List<String>;
+    final milestoneLevelling_ = data["MilestoneLevelling"];
+    final multiclassing_ = data["Multiclassing"] as bool;
+    final useCustomContent_ = data["UseCustomContent"] as bool;
+    final equipmentSelectedFromChoices_ =
         (data["EquipmentSelectedFromChoices"] ?? []) as List<dynamic>;
-    final _optionalClassFeatures = data["OptionalClassFeatures"] as bool;
-    final _optionalOnesStates = (data["OptionalOnesStates"] as List<dynamic>)
+    final optionalClassFeatures_ = data["OptionalClassFeatures"] as bool;
+    final optionalOnesStates_ = (data["OptionalOnesStates"] as List<dynamic>)
         .map((row) =>
             (row as List<dynamic>).map((value) => value as bool).toList())
         .toList();
-    final _optionalTwosStates = (data["OptionalTwosStates"] as List<dynamic>)
+    final optionalTwosStates_ = (data["OptionalTwosStates"] as List<dynamic>)
         .map((row) =>
             (row as List<dynamic>).map((value) => value as bool).toList())
         .toList();
     //error
-    final _speedBonuses = (data["SpeedBonuses"] as Map<String, dynamic>).map(
+    final speedBonuses_ = (data["SpeedBonuses"] as Map<String, dynamic>).map(
         (key, value) => MapEntry(key,
             (value as List<dynamic>).map((item) => item as String).toList()));
-    final _unearthedArcanaContent = data["UnearthedArcanaContent"];
-    final _weaponList = data["WeaponList"].cast<String>() as List<String>;
+    final unearthedArcanaContent_ = data["UnearthedArcanaContent"];
+    final weaponList_ = data["WeaponList"].cast<String>() as List<String>;
     //error
 
-    final _featuresAndTraits =
+    final featuresAndTraits_ =
         data["FeaturesAndTraits"].cast<String>() as List<String>;
-    final _classList = data["ClassList"].cast<String>() as List<String>;
-    final _classSkillsSelected =
+    final classList_ = data["ClassList"].cast<String>() as List<String>;
+    final classSkillsSelected_ =
         data["ClassSkillsSelected"].cast<bool>() as List<bool>;
-    Subrace? _subrace;
+    Subrace? subrace_;
     if (data["Subrace"] != null) {
-      _subrace = Subrace.fromJson(data["Subrace"]);
+      subrace_ = Subrace.fromJson(data["Subrace"]);
     }
 
-    final _skillsSelected = Queue<int>()
+    final skillsSelected_ = Queue<int>()
             .addAll(data["SkillsSelected"]?.cast<int>() as List<int>? ?? [])
         as Queue<int>?;
-    final _mainToolProficiencies =
+    final mainToolProficiencies_ =
         data["MainToolProficiencies"].cast<String>() as List<String>;
-    final _savingThrowProficiencies =
+    final savingThrowProficiencies_ =
         data["SavingThrowProficiencies"].cast<String>() as List<String>;
-    final _skillProficiencies =
+    final skillProficiencies_ =
         data["SkillProficiencies"].cast<String>() as List<String>;
-    final _maxHealth = data["MaxHealth"] as int;
+    final maxHealth_ = data["MaxHealth"] as int;
 
-    final _playerName = data["PlayerName"] as String;
-    final _currency = data["Currency"].cast<String, int>() as Map<String, int>;
-    final _classLevels = data["ClassLevels"].cast<int>() as List<int>;
-    final _race = Race.fromJson(data["Race"]);
-    final _background = Background.fromJson(data["Background"]);
-    final _backgroundFlaw = data["BackgroundFlaw"] as String;
-    final _backgroundPersonalityTrait =
+    final playerName_ = data["PlayerName"] as String;
+    final currency_ = data["Currency"].cast<String, int>() as Map<String, int>;
+    final classLevels_ = data["ClassLevels"].cast<int>() as List<int>;
+    final race_ = Race.fromJson(data["Race"]);
+    final background_ = Background.fromJson(data["Background"]);
+    final backgroundFlaw_ = data["BackgroundFlaw"] as String;
+    final backgroundPersonalityTrait_ =
         data["BackgroundPersonalityTrait"] as String;
-    final _backgroundBond = data["BackgroundBond"] as String;
-    final _backgroundIdeal = data["BackgroundIdeal"] as String;
-    final _characterExperience = data["CharacterExperience"] as double;
-    final _raceAbilityScoreIncreases =
+    final backgroundBond_ = data["BackgroundBond"] as String;
+    final backgroundIdeal_ = data["BackgroundIdeal"] as String;
+    final characterExperience_ = data["CharacterExperience"] as double;
+    final raceAbilityScoreIncreases_ =
         data["RaceAbilityScoreIncreases"].cast<int>() as List<int>;
 
-    final _strength = AbilityScore.fromJson(data["Strength"]);
-    final _dexterity = AbilityScore.fromJson(data["Dexterity"]);
-    final _constitution = AbilityScore.fromJson(data["Constitution"]);
-    final _intelligence = AbilityScore.fromJson(data["Intelligence"]);
-    final _wisdom = AbilityScore.fromJson(data["Wisdom"]);
-    final _charisma = AbilityScore.fromJson(data["Charisma"]);
-    final _featsASIScoreIncreases =
+    final strength_ = AbilityScore.fromJson(data["Strength"]);
+    final dexterity_ = AbilityScore.fromJson(data["Dexterity"]);
+    final constitution_ = AbilityScore.fromJson(data["Constitution"]);
+    final intelligence_ = AbilityScore.fromJson(data["Intelligence"]);
+    final wisdom_ = AbilityScore.fromJson(data["Wisdom"]);
+    final charisma_ = AbilityScore.fromJson(data["Charisma"]);
+    final featsASIScoreIncreases_ =
         data["FeatsASIScoreIncreases"].cast<int>() as List<int>;
-    final _inspired = data["Inspired"] as bool;
-    final _languagesKnown =
+    final inspired_ = data["Inspired"] as bool;
+    final languagesKnown_ =
         data["LanguagesKnown"].cast<String>() as List<String>;
-    final _stackableEquipmentSelected = data["StackableEquipmentSelected"]
+    final stackableEquipmentSelected_ = data["StackableEquipmentSelected"]
         .cast<String, int>() as Map<String, int>;
-    final _unstackableEquipmentSelected =
+    final unstackableEquipmentSelected_ =
         data["UnstackableEquipmentSelected"] as List<dynamic>;
 
     Character charToReturn = Character(
-      skillBonusMap: _skillBonusMap,
-      extraFeatures: _extraFeatures,
-      levelsPerClass: _levelsPerClass,
-      allSelected: _allSelected,
-      classSubclassMapper: _classSubclassMapper,
-      ACList: _ACList,
-      allSpellsSelected: _allSpellsSelected,
-      allSpellsSelectedAsListsOfThings: _allSpellsSelectedAsListsOfThings,
-      armourList: _armourList,
-      averageHitPoints: _averageHitPoints,
-      backgroundSkillChoices: _backgroundSkillChoices,
-      group: _group,
-      criticalRoleContent: _criticalRoleContent,
-      encumberanceRules: _encumberanceRules,
-      extraFeatAtLevel1: _extraFeatAtLevel1,
-      featsAllowed: _featsAllowed,
-      featsSelected: _featsSelected,
-      firearmsUsable: _firearmsUsable,
-      includeCoinsForWeight: _includeCoinsForWeight,
-      itemList: _itemList,
-      milestoneLevelling: _milestoneLevelling,
-      multiclassing: _multiclassing,
-      useCustomContent: _useCustomContent,
-      equipmentSelectedFromChoices: _equipmentSelectedFromChoices,
-      optionalClassFeatures: _optionalClassFeatures,
-      optionalOnesStates: _optionalOnesStates,
-      optionalTwosStates: _optionalTwosStates,
-      speedBonuses: _speedBonuses,
-      unearthedArcanaContent: _unearthedArcanaContent,
-      weaponList: _weaponList,
-      languagesKnown: _languagesKnown,
-      featuresAndTraits: _featuresAndTraits,
-      skillsSelected: _skillsSelected,
-      stackableEquipmentSelected: _stackableEquipmentSelected,
-      unstackableEquipmentSelected: _unstackableEquipmentSelected,
-      subrace: _subrace,
-      classSkillsSelected: _classSkillsSelected,
-      classList: _classList,
-      savingThrowProficiencies: _savingThrowProficiencies,
-      mainToolProficiencies: _mainToolProficiencies,
-      inspired: _inspired,
-      skillProficiencies: _skillProficiencies,
-      maxHealth: _maxHealth,
-      playerName: _playerName,
-      background: _background,
-      classLevels: _classLevels,
-      race: _race,
-      characterExperience: _characterExperience,
-      currency: _currency,
-      backgroundPersonalityTrait: _backgroundPersonalityTrait,
-      backgroundIdeal: _backgroundIdeal,
-      backgroundBond: _backgroundBond,
-      backgroundFlaw: _backgroundFlaw,
-      strength: _strength,
-      dexterity: _dexterity,
-      constitution: _constitution,
-      intelligence: _intelligence,
-      wisdom: _wisdom,
-      charisma: _charisma,
-      raceAbilityScoreIncreases: _raceAbilityScoreIncreases,
-      featsASIScoreIncreases: _featsASIScoreIncreases,
-      characterDescription: _characterDescription
+      skillBonusMap: skillBonusMap_,
+      extraFeatures: extraFeatures_,
+      levelsPerClass: levelsPerClass_,
+      allSelected: allSelected_,
+      classSubclassMapper: classSubclassMapper_,
+      ACList: ACList_,
+      allSpellsSelected: allSpellsSelected_,
+      allSpellsSelectedAsListsOfThings: allSpellsSelectedAsListsOfThings_,
+      armourList: armourList_,
+      averageHitPoints: averageHitPoints_,
+      backgroundSkillChoices: backgroundSkillChoices_,
+      group: group_,
+      criticalRoleContent: criticalRoleContent_,
+      encumberanceRules: encumberanceRules_,
+      extraFeatAtLevel1: extraFeatAtLevel1_,
+      featsAllowed: featsAllowed_,
+      featsSelected: featsSelected_,
+      firearmsUsable: firearmsUsable_,
+      includeCoinsForWeight: includeCoinsForWeight_,
+      itemList: itemList_,
+      milestoneLevelling: milestoneLevelling_,
+      multiclassing: multiclassing_,
+      useCustomContent: useCustomContent_,
+      equipmentSelectedFromChoices: equipmentSelectedFromChoices_,
+      optionalClassFeatures: optionalClassFeatures_,
+      optionalOnesStates: optionalOnesStates_,
+      optionalTwosStates: optionalTwosStates_,
+      speedBonuses: speedBonuses_,
+      unearthedArcanaContent: unearthedArcanaContent_,
+      weaponList: weaponList_,
+      languagesKnown: languagesKnown_,
+      featuresAndTraits: featuresAndTraits_,
+      skillsSelected: skillsSelected_,
+      stackableEquipmentSelected: stackableEquipmentSelected_,
+      unstackableEquipmentSelected: unstackableEquipmentSelected_,
+      subrace: subrace_,
+      classSkillsSelected: classSkillsSelected_,
+      classList: classList_,
+      savingThrowProficiencies: savingThrowProficiencies_,
+      mainToolProficiencies: mainToolProficiencies_,
+      inspired: inspired_,
+      skillProficiencies: skillProficiencies_,
+      maxHealth: maxHealth_,
+      playerName: playerName_,
+      background: background_,
+      classLevels: classLevels_,
+      race: race_,
+      characterExperience: characterExperience_,
+      currency: currency_,
+      backgroundPersonalityTrait: backgroundPersonalityTrait_,
+      backgroundIdeal: backgroundIdeal_,
+      backgroundBond: backgroundBond_,
+      backgroundFlaw: backgroundFlaw_,
+      strength: strength_,
+      dexterity: dexterity_,
+      constitution: constitution_,
+      intelligence: intelligence_,
+      wisdom: wisdom_,
+      charisma: charisma_,
+      raceAbilityScoreIncreases: raceAbilityScoreIncreases_,
+      featsASIScoreIncreases: featsASIScoreIncreases_,
+      characterDescription: characterDescription_
     );
-    charToReturn.uniqueID = _uniqueID;
+    charToReturn.uniqueID = uniqueID_;
     return charToReturn;
   }
   
   Character(
       {required this.skillBonusMap,
       required this.levelsPerClass,
-      required this.extraFeatures,
       required this.allSelected,
       required this.classSubclassMapper,
       required this.ACList,
       required this.allSpellsSelected,
       required this.allSpellsSelectedAsListsOfThings,
       required this.armourList,
-      required this.averageHitPoints,
-      required this.backgroundSkillChoices,
-      required this.criticalRoleContent,
-      required this.encumberanceRules,
-      required this.extraFeatAtLevel1,
-      required this.featsAllowed,
       required this.featsSelected,
-      required this.firearmsUsable,
-      required this.includeCoinsForWeight,
+      required this.backgroundSkillChoices,
       required this.itemList,
-      required this.milestoneLevelling,
-      required this.multiclassing,
-      required this.useCustomContent,
       required this.equipmentSelectedFromChoices,
-      required this.optionalClassFeatures,
       required this.optionalOnesStates,
       required this.optionalTwosStates,
       required this.speedBonuses,
-      required this.unearthedArcanaContent,
       required this.weaponList,
-      //added stuff
       required this.unstackableEquipmentSelected,
       required this.featuresAndTraits,
       required this.languagesKnown,
@@ -377,10 +363,6 @@ class Character {
       required this.mainToolProficiencies,
       required this.savingThrowProficiencies,
       required this.skillProficiencies,
-      required this.inspired,
-      required this.maxHealth,
-      required this.characterExperience,
-      required this.playerName,
       required this.background,
       required this.classLevels,
       required this.race,
@@ -399,8 +381,26 @@ class Character {
       required this.featsASIScoreIncreases,
       required this.currency,
       required this.characterDescription,
+
+      this.maxHealth = 0,
+      this.characterExperience = 0,
+      this.extraFeatures = "",
+      this.playerName = "",
+      this.multiclassing = true,
+      this.featsAllowed = true,
+      this.criticalRoleContent = false,
+      this.encumberanceRules = false,
+      this.extraFeatAtLevel1 = false,
+      this.averageHitPoints = false,
+      this.firearmsUsable = false,
+      this.includeCoinsForWeight = false,
+      this.unearthedArcanaContent = false,
+      this.milestoneLevelling = false,
+      this.useCustomContent = false,
+      this.optionalClassFeatures = false,
+      this.inspired = false,
       this.subrace,
-      this.group
+      this.group,
       }
     ):
       uniqueID = int.parse([ 
@@ -479,6 +479,112 @@ class Character {
       extraFeatures: extraFeatures,
       group: group,
       characterDescription: characterDescription
+    );
+  }
+
+  factory Character.createDefault() {
+    return Character(
+      characterDescription: CharacterDescription(),
+      skillBonusMap: {
+        "Acrobatics": 0,
+        "Animal Handling": 0,
+        "Arcana": 0,
+        "Athletics": 0,
+        "Deception": 0,
+        "History": 0,
+        "Insight": 0,
+        "Intimidation": 0,
+        "Investigation": 0,
+        "Medicine": 0,
+        "Nature": 0,
+        "Perception": 0,
+        "Performance": 0,
+        "Persuasion": 0,
+        "Religion": 0,
+        "Sleight of Hand": 0,
+        "Stealth": 0,
+        "Survival": 0,
+        "Strength Saving Throw": 0,
+        "Dexterity Saving Throw": 0,
+        "Constitution Saving Throw": 0,
+        "Intelligence Saving Throw": 0,
+        "Wisdom Saving Throw": 0,
+        "Charisma Saving Throw": 0,
+        "Passive Perception": 0,
+        "Initiative": 0,
+      },
+      levelsPerClass: List.filled(CLASSLIST.length, 0),
+      allSelected: [],
+      classSubclassMapper: {},
+      ACList: [
+        ["10 + dexterity"]
+      ],
+      allSpellsSelected: [],
+      allSpellsSelectedAsListsOfThings: [],
+      armourList: [],
+      backgroundSkillChoices: (List.filled(BACKGROUNDLIST.first.numberOfSkillChoices ?? 0, true) +
+          List.filled(
+              (BACKGROUNDLIST.first.optionalSkillProficiencies?.length ?? 0) -
+                  (BACKGROUNDLIST.first.numberOfSkillChoices ?? 0),
+              false)),
+      featsSelected: [],
+      itemList: [],
+      equipmentSelectedFromChoices: [],
+      optionalOnesStates: [
+        [false, false, false, false, false, false],
+        [false, false, false, false, false, false],
+        [false, false, false, false, false, false],
+        [false, false, false, false, false, false],
+        [false, false, false, false, false, false]
+      ],
+      optionalTwosStates: [
+        [false, false, false, false, false, false],
+        [false, false, false, false, false, false],
+        [false, false, false, false, false, false],
+        [false, false, false, false, false, false],
+        [false, false, false, false, false, false]
+      ],
+      speedBonuses: {
+        "Hover": [],
+        "Flying": [],
+        "Walking": [],
+        "Swimming": [],
+        "Climbing": []
+      },
+      weaponList: [],
+      classList: [],
+      stackableEquipmentSelected: {},
+      unstackableEquipmentSelected: [],
+      classSkillsSelected: [],
+      skillsSelected: Queue<int>.from(
+      Iterable.generate(BACKGROUNDLIST.first.numberOfSkillChoices ?? 0)),
+      mainToolProficiencies: [],
+      savingThrowProficiencies: [],
+      languagesKnown: ["Common"],
+      featuresAndTraits: [],
+      skillProficiencies: [],
+      background: BACKGROUNDLIST.first,
+      classLevels: List.filled(CLASSLIST.length, 0),
+      race: RACELIST.first,
+      currency: {
+        "Copper Pieces": 0,
+        "Silver Pieces": 0,
+        "Electrum Pieces": 0,
+        "Gold Pieces": 0,
+        "Platinum Pieces": 0
+      },
+      backgroundPersonalityTrait: BACKGROUNDLIST.first.personalityTrait.first,
+      backgroundIdeal: BACKGROUNDLIST.first.ideal.first,
+      backgroundBond: BACKGROUNDLIST.first.bond.first,
+      backgroundFlaw: BACKGROUNDLIST.first.flaw.first,
+      raceAbilityScoreIncreases: RACELIST.first.raceScoreIncrease,
+      featsASIScoreIncreases: [0, 0, 0, 0, 0, 0],
+      strength: AbilityScore(name: "Strength", value: 8),
+      dexterity: AbilityScore(name: "Dexterity", value: 8),
+      constitution: AbilityScore(name: "Constitution", value: 8),
+      intelligence: AbilityScore(name: "Intelligence", value: 8),
+      wisdom: AbilityScore(name: "Wisdom", value: 8),
+      charisma: AbilityScore(name: "Charisma", value: 8),
     );
   }
 }
