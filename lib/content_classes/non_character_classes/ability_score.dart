@@ -14,3 +14,11 @@ class AbilityScore {
         "value": value,
       };
 }
+
+int abilityScoreCost(int x) {
+  if (x > 12) {
+    return 2;
+  }
+  return 1;
+}
+

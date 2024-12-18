@@ -75,13 +75,6 @@ import '../pdf_generator/pdf_final_display.dart';
   },
 )*/
 
-int abilityScoreCost(int x) {
-  if (x > 12) {
-    return 2;
-  }
-  return 1;
-}
-
 // TODO() 
 bool isAllowedContent(dynamic x) {
   return true;
@@ -884,20 +877,18 @@ class MainCreateCharacter extends State<CreateACharacter>
   TextEditingController additionalFeaturesEnterController =
       TextEditingController();
   ////Finishing up
-
   TextEditingController groupEnterController = TextEditingController();
+  
   String? levellingMethod;
   String? characterLevel = "1";
   int pointsRemaining = 27;
-  List<Widget> widgetsInPlay = []; //added to each time a class is selected
+  //added to each time a class is selected
+  List<Widget> widgetsInPlay = []; 
 
-  // TODO(Below fields currently doing nothing, ensure they aren't missing features then remove them)
+  // TODO(Implement an experience levelling alternative using enteredExperience)
   String enteredExperience = "";
-  Class? classSelectedAtLevel1;
-  
-  // TODO(Below does nothing and is also in constructor for character, remove if it isn't usefull elsewhere)
+  // TODO(Implement a better skill proficiency section using skillProficiencies)
   List<String> skillProficiencies = [];
-  Map<String, List<dynamic>> selections = {};
 
   // TODO(Remove these from the constructor of CHARACTER)
   String? coinTypeSelected = "Gold";
@@ -905,6 +896,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   bool fullFeats = true;
   int numberOfRemainingFeatOrASIs = 0;
   bool ASIRemaining = false;
+  //Map<String, List<dynamic>> selections = {};
   
   Character character = Character(
     characterDescription: CharacterDescription(age: "", height: "", weight: "", eyes: "", skin: "", hair: "", backstory: "", name: "", gender: ""),
@@ -1063,39 +1055,17 @@ class MainCreateCharacter extends State<CreateACharacter>
           ),
           bottom: TabBar(
             tabs: [
-              Tab(
-                  child: Text("Basics",
-                      style: TextStyle(color: Homepage.textColor))),
-              Tab(
-                  child: Text("Race",
-                      style: TextStyle(color: Homepage.textColor))),
-              Tab(
-                  child: Text("Class",
-                      style: TextStyle(color: Homepage.textColor))),
-              Tab(
-                  child: Text("Backround",
-                      style: TextStyle(color: Homepage.textColor))),
-              Tab(
-                  child: Text("Ability scores",
-                      style: TextStyle(color: Homepage.textColor))),
-              Tab(
-                  child: Text("ASI's and Feats",
-                      style: TextStyle(color: Homepage.textColor))),
-              Tab(
-                  child: Text("Spells",
-                      style: TextStyle(color: Homepage.textColor))),
-              Tab(
-                  child: Text("Equipment",
-                      style: TextStyle(color: Homepage.textColor))),
-              Tab(
-                  child: Text("Backstory",
-                      style: TextStyle(color: Homepage.textColor))),
-              Tab(
-                  child: Text("Boons and magic items",
-                      style: TextStyle(color: Homepage.textColor))),
-              Tab(
-                  child: Text("Finishing up",
-                      style: TextStyle(color: Homepage.textColor))),
+              tabLabel("Basics"),
+              tabLabel("Race"),
+              tabLabel("Class"),
+              tabLabel("Backround"),
+              tabLabel("Ability scores"),
+              tabLabel("ASI's and Feats"),
+              tabLabel("Spells"),
+              tabLabel("Equipment"),
+              tabLabel("Backstory"),
+              tabLabel("Boons and magic items"),
+              tabLabel("Finishing up"),
             ],
             indicatorColor: Homepage.textColor,
           ),
@@ -6397,6 +6367,10 @@ class MainCreateCharacter extends State<CreateACharacter>
     );
   }
 
+  Tab tabLabel(String label) {
+    return Tab(child: Text(label, style: TextStyle(color: Homepage.textColor)));
+  }
+
   void showCongratulationsDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -6527,6 +6501,7 @@ class MainCreateCharacter extends State<CreateACharacter>
     } else if (x[0] == "ASI") {
       numberOfRemainingFeatOrASIs++;
     }
+    //TODO(Implement further parsing for: proficiencies, languages, equipment )
 
     /*else if (x[0] == "Equipment") {
     //note base speed is given by race
@@ -6536,7 +6511,7 @@ class MainCreateCharacter extends State<CreateACharacter>
     else if (x[0] == "Money") {
       //("Money", "Copper Pieces", "10")
       character.currency[x[1]] = character.currency[x[1]]! + int.parse(x[2]);
-    } //deal
+    }
     return null;
   }
 
