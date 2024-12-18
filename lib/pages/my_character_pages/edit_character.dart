@@ -2568,7 +2568,7 @@ class EditCharacter extends State<EditACharacter> {
                               armourList: armourList,
                               backgroundSkillChoices:
                                   character.backgroundSkillChoices,
-                              characterDescription: CharacterDescription(characterAge: character.characterDescription.characterAge, characterHeight: character.characterDescription.characterHeight, characterWeight: character.characterDescription.characterWeight, characterEyes: character.characterDescription.characterEyes, characterSkin: character.characterDescription.characterSkin, characterHair: character.characterDescription.characterHair, backstory: character.characterDescription.backstory, name: character.characterDescription.name, gender: character.characterDescription.gender),
+                              characterDescription: CharacterDescription(age: character.characterDescription.age, height: character.characterDescription.height, weight: character.characterDescription.weight, eyes: character.characterDescription.eyes, skin: character.characterDescription.skin, hair: character.characterDescription.hair, backstory: character.characterDescription.backstory, name: character.characterDescription.name, gender: character.characterDescription.gender),
                               coinTypeSelected: coinTypeSelected,
                               playerName: character.playerName,
                               characterExperience: experience,
@@ -2804,7 +2804,7 @@ class EditCharacter extends State<EditACharacter> {
                                           .isEmpty)) {
                                     updateGlobals();
                                     Character char = Character(
-                                            characterDescription: CharacterDescription(characterAge: character.characterDescription.characterAge, characterHeight: character.characterDescription.characterHeight, characterWeight: character.characterDescription.characterWeight, characterEyes: character.characterDescription.characterEyes, characterSkin: character.characterDescription.characterSkin, characterHair: character.characterDescription.characterHair, backstory: character.characterDescription.backstory, name: character.characterDescription.name, gender: character.characterDescription.gender),
+                                            characterDescription: CharacterDescription(age: character.characterDescription.age, height: character.characterDescription.height, weight: character.characterDescription.weight, eyes: character.characterDescription.eyes, skin: character.characterDescription.skin, hair: character.characterDescription.hair, backstory: character.characterDescription.backstory, name: character.characterDescription.name, gender: character.characterDescription.gender),
                                             skillBonusMap:
                                                 character.skillBonusMap,
                                             extraFeatures:

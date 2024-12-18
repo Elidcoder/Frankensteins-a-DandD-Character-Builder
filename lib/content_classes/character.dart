@@ -10,97 +10,97 @@ class Character {
   int uniqueID ;
   
   // Character information
-  final List<String> languagesKnown;
-  final List<String> featuresAndTraits;
+  List<String> languagesKnown;
+  List<String> featuresAndTraits;
 
   //general
-  final List<String> classList;
-  final Map<String, int> currency;
-  final String playerName;
-  final List<int> classLevels;
-  final bool inspired;
-  final List<String> mainToolProficiencies;
-  final Map<String, int> skillBonusMap;
-  final Queue<int>? skillsSelected;
+  List<String> classList;
+  Map<String, int> currency;
+  String playerName;
+  List<int> classLevels;
+  bool inspired;
+  List<String> mainToolProficiencies;
+  Map<String, int> skillBonusMap;
+  Queue<int>? skillsSelected;
   
-  final String extraFeatures;
+  String extraFeatures;
   //Basics
-  final Map<String, List<String>> speedBonuses;
-  final List<List<dynamic>> ACList;
+  Map<String, List<String>> speedBonuses;
+  List<List<dynamic>> ACList;
 
   // Build parameters
-  final bool? featsAllowed;
-  final bool? averageHitPoints;
-  final bool? multiclassing;
-  final bool? milestoneLevelling;
-  final bool? useCustomContent;
-  final bool? optionalClassFeatures;
-  final bool? criticalRoleContent;
-  final bool? encumberanceRules;
-  final bool? includeCoinsForWeight;
-  final bool? unearthedArcanaContent;
-  final bool? firearmsUsable;
-  final bool? extraFeatAtLevel1;
+  bool? featsAllowed;
+  bool? averageHitPoints;
+  bool? multiclassing;
+  bool? milestoneLevelling;
+  bool? useCustomContent;
+  bool? optionalClassFeatures;
+  bool? criticalRoleContent;
+  bool? encumberanceRules;
+  bool? includeCoinsForWeight;
+  bool? unearthedArcanaContent;
+  bool? firearmsUsable;
+  bool? extraFeatAtLevel1;
 
-  final List<String> savingThrowProficiencies;
-  final List<String> skillProficiencies;
-  final int maxHealth;
+  List<String> savingThrowProficiencies;
+  List<String> skillProficiencies;
+  int maxHealth;
 
-  final double characterExperience;
-  final List<bool> classSkillsSelected;
+  double characterExperience;
+  List<bool> classSkillsSelected;
 
-  final Race race;
-  final Subrace? subrace;
+  Race race;
+  Subrace? subrace;
   //Races
-  final List<List<bool>>? optionalOnesStates;
-  final List<List<bool>>? optionalTwosStates;
+  List<List<bool>>? optionalOnesStates;
+  List<List<bool>>? optionalTwosStates;
 
-  final List<int> raceAbilityScoreIncreases;
+  List<int> raceAbilityScoreIncreases;
   //Background
-  final Background background;
-  final String backgroundPersonalityTrait;
-  final String backgroundIdeal;
-  final String backgroundBond;
-  final String backgroundFlaw;
-  final List<bool> backgroundSkillChoices;
+  Background background;
+  String backgroundPersonalityTrait;
+  String backgroundIdeal;
+  String backgroundBond;
+  String backgroundFlaw;
+  List<bool> backgroundSkillChoices;
 
   //Ability scores
-  final AbilityScore strength;
-  final AbilityScore dexterity;
-  final AbilityScore constitution;
-  final AbilityScore intelligence;
-  final AbilityScore wisdom;
-  final AbilityScore charisma;
-  //final int pointsRemaining;
+  AbilityScore strength;
+  AbilityScore dexterity;
+  AbilityScore constitution;
+  AbilityScore intelligence;
+  AbilityScore wisdom;
+  AbilityScore charisma;
+  //int pointsRemaining;
   //Class
-  final List<int> levelsPerClass;
-  final Map<String, List<dynamic>> selections;
-  final List<dynamic> allSelected;
-  final Map<String, String> classSubclassMapper;
+  List<int> levelsPerClass;
+  Map<String, List<dynamic>> selections;
+  List<dynamic> allSelected;
+  Map<String, String> classSubclassMapper;
   //ASI feats
-  final List<int> featsASIScoreIncreases;
-  final List<List<dynamic>> featsSelected;
-  final bool ASIRemaining;
-  final int numberOfRemainingFeatOrASIs;
-  final bool halfFeats;
-  final bool fullFeats;
+  List<int> featsASIScoreIncreases;
+  List<List<dynamic>> featsSelected;
+  bool ASIRemaining;
+  int numberOfRemainingFeatOrASIs;
+  bool halfFeats;
+  bool fullFeats;
   //Spells
-  final List<Spell> allSpellsSelected;
-  final List<List<dynamic>> allSpellsSelectedAsListsOfThings;
+  List<Spell> allSpellsSelected;
+  List<List<dynamic>> allSpellsSelectedAsListsOfThings;
   //Equipment
-  final Map<String, int> stackableEquipmentSelected;
-  final List<dynamic> unstackableEquipmentSelected;
-  final List<String> armourList;
-  final List<String> weaponList;
-  final List<String> itemList;
-  final String? coinTypeSelected;
-  final List<dynamic>? equipmentSelectedFromChoices;
+  Map<String, int> stackableEquipmentSelected;
+  List<dynamic> unstackableEquipmentSelected;
+  List<String> armourList;
+  List<String> weaponList;
+  List<String> itemList;
+  String? coinTypeSelected;
+  List<dynamic> equipmentSelectedFromChoices;
 
   // Backstory & character description information
   CharacterDescription characterDescription;
 
   //finishing up variables
-  final String? group;
+  String? group;
   Map<String, dynamic> toJson() => {
     "ExtraFeatures": extraFeatures,
     "SkillBonusMap": skillBonusMap,
@@ -175,190 +175,190 @@ class Character {
   };
 
   factory Character.fromJson(Map<String, dynamic> data) {
-    final extraFeatures = data["ExtraFeatures"] as String;
-    final group = data["Group"] as String?;
-    final levelsPerClass = data["LevelsPerClass"].cast<int>() as List<int>;
-    final selections = data["Selections"].cast<String, List<dynamic>>()
+    final _extraFeatures = data["ExtraFeatures"] as String;
+    final _group = data["Group"] as String?;
+    final _levelsPerClass = data["LevelsPerClass"].cast<int>() as List<int>;
+    final _selections = data["Selections"].cast<String, List<dynamic>>()
         as Map<String, List<dynamic>>;
-    final allSelected = data["AllSelected"] as List<dynamic>;
-    final classSubclassMapper = data["ClassSubclassMapper"]
+    final _allSelected = data["AllSelected"] as List<dynamic>;
+    final _classSubclassMapper = data["ClassSubclassMapper"]
         .cast<String, String>() as Map<String, String>;
-    final skillBonusMap =
+    final _skillBonusMap =
         data["SkillBonusMap"].cast<String, int>() as Map<String, int>;
-    final ACList = data["ACList"].cast<List<dynamic>>() as List<List<dynamic>>;
-    final ASIRemaining = data["ASIRemaining"] as bool;
-    final uniqueID = data["UniqueID"] as int;
+    final _ACList = data["ACList"].cast<List<dynamic>>() as List<List<dynamic>>;
+    final _ASIRemaining = data["ASIRemaining"] as bool;
+    final _uniqueID = data["UniqueID"] as int;
 
-    final allSpellsSelected = [
+    final _allSpellsSelected = [
       for (var x in data["AllSpellsSelected"]) Spell.fromJson(x)
     ];
-    final allSpellsSelectedAsListsOfThings =
+    final _allSpellsSelectedAsListsOfThings =
         data["AllSpellsSelectedAsListsOfThings"].cast<List<dynamic>>()
             as List<List<dynamic>>;
-    final armourList = data["ArmourList"].cast<String>() as List<String>;
-    final averageHitPoints = data["AverageHitPoints"] as bool;
-    final backgroundSkillChoices =
+    final _armourList = data["ArmourList"].cast<String>() as List<String>;
+    final _averageHitPoints = data["AverageHitPoints"] as bool;
+    final _backgroundSkillChoices =
         data["BackgroundSkillChoices"].cast<bool>() as List<bool>;
-    final characterDescription = CharacterDescription.fromJson(data["CharacterDescription"]);
+    final _characterDescription = CharacterDescription.fromJson(data["CharacterDescription"]);
 
-    final coinTypeSelected = data["CoinTypeSelected"] as String;
-    final criticalRoleContent = data["CriticalRoleContent"] as bool;
-    final encumberanceRules = data["EncumberanceRules"] as bool;
-    final extraFeatAtLevel1 = data["ExtraFeatAtLevel1"] as bool;
-    final featsAllowed = data["FeatsAllowed"] as bool;
-    final featsSelected =
+    final _coinTypeSelected = data["CoinTypeSelected"] as String;
+    final _criticalRoleContent = data["CriticalRoleContent"] as bool;
+    final _encumberanceRules = data["EncumberanceRules"] as bool;
+    final _extraFeatAtLevel1 = data["ExtraFeatAtLevel1"] as bool;
+    final _featsAllowed = data["FeatsAllowed"] as bool;
+    final _featsSelected =
         data["FeatsSelected"].cast<List<dynamic>>() as List<List<dynamic>>;
-    final firearmsUsable = data["FirearmsUsable"] as bool;
-    final fullFeats = data["FullFeats"] as bool;
-    final halfFeats = data["HalfFeats"] as bool;
-    final includeCoinsForWeight = data["IncludeCoinsForWeight"] as bool;
-    final itemList = data["ItemList"].cast<String>() as List<String>;
-    final milestoneLevelling = data["MilestoneLevelling"];
-    final multiclassing = data["Multiclassing"] as bool;
-    final useCustomContent = data["UseCustomContent"] as bool;
-    final equipmentSelectedFromChoices =
+    final _firearmsUsable = data["FirearmsUsable"] as bool;
+    final _fullFeats = data["FullFeats"] as bool;
+    final _halfFeats = data["HalfFeats"] as bool;
+    final _includeCoinsForWeight = data["IncludeCoinsForWeight"] as bool;
+    final _itemList = data["ItemList"].cast<String>() as List<String>;
+    final _milestoneLevelling = data["MilestoneLevelling"];
+    final _multiclassing = data["Multiclassing"] as bool;
+    final _useCustomContent = data["UseCustomContent"] as bool;
+    final _equipmentSelectedFromChoices =
         (data["EquipmentSelectedFromChoices"] ?? []) as List<dynamic>;
-    final optionalClassFeatures = data["OptionalClassFeatures"] as bool;
-    final optionalOnesStates = (data["OptionalOnesStates"] as List<dynamic>)
+    final _optionalClassFeatures = data["OptionalClassFeatures"] as bool;
+    final _optionalOnesStates = (data["OptionalOnesStates"] as List<dynamic>)
         .map((row) =>
             (row as List<dynamic>).map((value) => value as bool).toList())
         .toList();
-    final optionalTwosStates = (data["OptionalTwosStates"] as List<dynamic>)
+    final _optionalTwosStates = (data["OptionalTwosStates"] as List<dynamic>)
         .map((row) =>
             (row as List<dynamic>).map((value) => value as bool).toList())
         .toList();
     //error
-    final speedBonuses = (data["SpeedBonuses"] as Map<String, dynamic>).map(
+    final _speedBonuses = (data["SpeedBonuses"] as Map<String, dynamic>).map(
         (key, value) => MapEntry(key,
             (value as List<dynamic>).map((item) => item as String).toList()));
-    final unearthedArcanaContent = data["UnearthedArcanaContent"];
-    final weaponList = data["WeaponList"].cast<String>() as List<String>;
-    final numberOfRemainingFeatOrASIs =
+    final _unearthedArcanaContent = data["UnearthedArcanaContent"];
+    final _weaponList = data["WeaponList"].cast<String>() as List<String>;
+    final _numberOfRemainingFeatOrASIs =
         data["NumberOfRemainingFeatOrASIs"] as int;
     //error
 
-    final featuresAndTraits =
+    final _featuresAndTraits =
         data["FeaturesAndTraits"].cast<String>() as List<String>;
-    final classList = data["ClassList"].cast<String>() as List<String>;
-    final classSkillsSelected =
+    final _classList = data["ClassList"].cast<String>() as List<String>;
+    final _classSkillsSelected =
         data["ClassSkillsSelected"].cast<bool>() as List<bool>;
-    Subrace? subrace;
+    Subrace? _subrace;
     if (data["Subrace"] != null) {
-      subrace = Subrace.fromJson(data["Subrace"]);
+      _subrace = Subrace.fromJson(data["Subrace"]);
     }
 
-    final skillsSelected = Queue<int>()
+    final _skillsSelected = Queue<int>()
             .addAll(data["SkillsSelected"]?.cast<int>() as List<int>? ?? [])
         as Queue<int>?;
-    final mainToolProficiencies =
+    final _mainToolProficiencies =
         data["MainToolProficiencies"].cast<String>() as List<String>;
-    final savingThrowProficiencies =
+    final _savingThrowProficiencies =
         data["SavingThrowProficiencies"].cast<String>() as List<String>;
-    final skillProficiencies =
+    final _skillProficiencies =
         data["SkillProficiencies"].cast<String>() as List<String>;
-    final maxHealth = data["MaxHealth"] as int;
+    final _maxHealth = data["MaxHealth"] as int;
 
-    final playerName = data["PlayerName"] as String;
-    final currency = data["Currency"].cast<String, int>() as Map<String, int>;
-    final classLevels = data["ClassLevels"].cast<int>() as List<int>;
-    final race = Race.fromJson(data["Race"]);
-    final background = Background.fromJson(data["Background"]);
-    final backgroundFlaw = data["BackgroundFlaw"] as String;
-    final backgroundPersonalityTrait =
+    final _playerName = data["PlayerName"] as String;
+    final _currency = data["Currency"].cast<String, int>() as Map<String, int>;
+    final _classLevels = data["ClassLevels"].cast<int>() as List<int>;
+    final _race = Race.fromJson(data["Race"]);
+    final _background = Background.fromJson(data["Background"]);
+    final _backgroundFlaw = data["BackgroundFlaw"] as String;
+    final _backgroundPersonalityTrait =
         data["BackgroundPersonalityTrait"] as String;
-    final backgroundBond = data["BackgroundBond"] as String;
-    final backgroundIdeal = data["BackgroundIdeal"] as String;
-    final characterExperience = data["CharacterExperience"] as double;
-    final raceAbilityScoreIncreases =
+    final _backgroundBond = data["BackgroundBond"] as String;
+    final _backgroundIdeal = data["BackgroundIdeal"] as String;
+    final _characterExperience = data["CharacterExperience"] as double;
+    final _raceAbilityScoreIncreases =
         data["RaceAbilityScoreIncreases"].cast<int>() as List<int>;
 
-    final strength = AbilityScore.fromJson(data["Strength"]);
-    final dexterity = AbilityScore.fromJson(data["Dexterity"]);
-    final constitution = AbilityScore.fromJson(data["Constitution"]);
-    final intelligence = AbilityScore.fromJson(data["Intelligence"]);
-    final wisdom = AbilityScore.fromJson(data["Wisdom"]);
-    final charisma = AbilityScore.fromJson(data["Charisma"]);
-    final featsASIScoreIncreases =
+    final _strength = AbilityScore.fromJson(data["Strength"]);
+    final _dexterity = AbilityScore.fromJson(data["Dexterity"]);
+    final _constitution = AbilityScore.fromJson(data["Constitution"]);
+    final _intelligence = AbilityScore.fromJson(data["Intelligence"]);
+    final _wisdom = AbilityScore.fromJson(data["Wisdom"]);
+    final _charisma = AbilityScore.fromJson(data["Charisma"]);
+    final _featsASIScoreIncreases =
         data["FeatsASIScoreIncreases"].cast<int>() as List<int>;
-    final inspired = data["Inspired"] as bool;
-    final languagesKnown =
+    final _inspired = data["Inspired"] as bool;
+    final _languagesKnown =
         data["LanguagesKnown"].cast<String>() as List<String>;
-    final stackableEquipmentSelected = data["StackableEquipmentSelected"]
+    final _stackableEquipmentSelected = data["StackableEquipmentSelected"]
         .cast<String, int>() as Map<String, int>;
-    final unstackableEquipmentSelected =
+    final _unstackableEquipmentSelected =
         data["UnstackableEquipmentSelected"] as List<dynamic>;
 
     Character charToReturn = Character(
-      skillBonusMap: skillBonusMap,
-      extraFeatures: extraFeatures,
-      levelsPerClass: levelsPerClass,
-      selections: selections,
-      allSelected: allSelected,
-      classSubclassMapper: classSubclassMapper,
-      ACList: ACList,
-      ASIRemaining: ASIRemaining,
-      allSpellsSelected: allSpellsSelected,
-      allSpellsSelectedAsListsOfThings: allSpellsSelectedAsListsOfThings,
-      armourList: armourList,
-      averageHitPoints: averageHitPoints,
-      backgroundSkillChoices: backgroundSkillChoices,
-      group: group,
-      coinTypeSelected: coinTypeSelected,
-      criticalRoleContent: criticalRoleContent,
-      encumberanceRules: encumberanceRules,
-      extraFeatAtLevel1: extraFeatAtLevel1,
-      featsAllowed: featsAllowed,
-      featsSelected: featsSelected,
-      firearmsUsable: firearmsUsable,
-      fullFeats: fullFeats,
-      halfFeats: halfFeats,
-      includeCoinsForWeight: includeCoinsForWeight,
-      itemList: itemList,
-      milestoneLevelling: milestoneLevelling,
-      multiclassing: multiclassing,
-      useCustomContent: useCustomContent,
-      equipmentSelectedFromChoices: equipmentSelectedFromChoices,
-      optionalClassFeatures: optionalClassFeatures,
-      optionalOnesStates: optionalOnesStates,
-      optionalTwosStates: optionalTwosStates,
-      speedBonuses: speedBonuses,
-      unearthedArcanaContent: unearthedArcanaContent,
-      weaponList: weaponList,
-      numberOfRemainingFeatOrASIs: numberOfRemainingFeatOrASIs,
-      languagesKnown: languagesKnown,
-      featuresAndTraits: featuresAndTraits,
-      skillsSelected: skillsSelected,
-      stackableEquipmentSelected: stackableEquipmentSelected,
-      unstackableEquipmentSelected: unstackableEquipmentSelected,
-      subrace: subrace,
-      classSkillsSelected: classSkillsSelected,
-      classList: classList,
-      savingThrowProficiencies: savingThrowProficiencies,
-      mainToolProficiencies: mainToolProficiencies,
-      inspired: inspired,
-      skillProficiencies: skillProficiencies,
-      maxHealth: maxHealth,
-      playerName: playerName,
-      background: background,
-      classLevels: classLevels,
-      race: race,
-      characterExperience: characterExperience,
-      currency: currency,
-      backgroundPersonalityTrait: backgroundPersonalityTrait,
-      backgroundIdeal: backgroundIdeal,
-      backgroundBond: backgroundBond,
-      backgroundFlaw: backgroundFlaw,
-      strength: strength,
-      dexterity: dexterity,
-      constitution: constitution,
-      intelligence: intelligence,
-      wisdom: wisdom,
-      charisma: charisma,
-      raceAbilityScoreIncreases: raceAbilityScoreIncreases,
-      featsASIScoreIncreases: featsASIScoreIncreases,
-      characterDescription: characterDescription
+      skillBonusMap: _skillBonusMap,
+      extraFeatures: _extraFeatures,
+      levelsPerClass: _levelsPerClass,
+      selections: _selections,
+      allSelected: _allSelected,
+      classSubclassMapper: _classSubclassMapper,
+      ACList: _ACList,
+      ASIRemaining: _ASIRemaining,
+      allSpellsSelected: _allSpellsSelected,
+      allSpellsSelectedAsListsOfThings: _allSpellsSelectedAsListsOfThings,
+      armourList: _armourList,
+      averageHitPoints: _averageHitPoints,
+      backgroundSkillChoices: _backgroundSkillChoices,
+      group: _group,
+      coinTypeSelected: _coinTypeSelected,
+      criticalRoleContent: _criticalRoleContent,
+      encumberanceRules: _encumberanceRules,
+      extraFeatAtLevel1: _extraFeatAtLevel1,
+      featsAllowed: _featsAllowed,
+      featsSelected: _featsSelected,
+      firearmsUsable: _firearmsUsable,
+      fullFeats: _fullFeats,
+      halfFeats: _halfFeats,
+      includeCoinsForWeight: _includeCoinsForWeight,
+      itemList: _itemList,
+      milestoneLevelling: _milestoneLevelling,
+      multiclassing: _multiclassing,
+      useCustomContent: _useCustomContent,
+      equipmentSelectedFromChoices: _equipmentSelectedFromChoices,
+      optionalClassFeatures: _optionalClassFeatures,
+      optionalOnesStates: _optionalOnesStates,
+      optionalTwosStates: _optionalTwosStates,
+      speedBonuses: _speedBonuses,
+      unearthedArcanaContent: _unearthedArcanaContent,
+      weaponList: _weaponList,
+      numberOfRemainingFeatOrASIs: _numberOfRemainingFeatOrASIs,
+      languagesKnown: _languagesKnown,
+      featuresAndTraits: _featuresAndTraits,
+      skillsSelected: _skillsSelected,
+      stackableEquipmentSelected: _stackableEquipmentSelected,
+      unstackableEquipmentSelected: _unstackableEquipmentSelected,
+      subrace: _subrace,
+      classSkillsSelected: _classSkillsSelected,
+      classList: _classList,
+      savingThrowProficiencies: _savingThrowProficiencies,
+      mainToolProficiencies: _mainToolProficiencies,
+      inspired: _inspired,
+      skillProficiencies: _skillProficiencies,
+      maxHealth: _maxHealth,
+      playerName: _playerName,
+      background: _background,
+      classLevels: _classLevels,
+      race: _race,
+      characterExperience: _characterExperience,
+      currency: _currency,
+      backgroundPersonalityTrait: _backgroundPersonalityTrait,
+      backgroundIdeal: _backgroundIdeal,
+      backgroundBond: _backgroundBond,
+      backgroundFlaw: _backgroundFlaw,
+      strength: _strength,
+      dexterity: _dexterity,
+      constitution: _constitution,
+      intelligence: _intelligence,
+      wisdom: _wisdom,
+      charisma: _charisma,
+      raceAbilityScoreIncreases: _raceAbilityScoreIncreases,
+      featsASIScoreIncreases: _featsASIScoreIncreases,
+      characterDescription: _characterDescription
     );
-    charToReturn.uniqueID = uniqueID;
+    charToReturn.uniqueID = _uniqueID;
     return charToReturn;
   }
   

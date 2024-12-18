@@ -23,7 +23,6 @@ Future<bool> updateGlobals() async {
     final jsonString = await file.readAsString();
     final jsonmap = jsonDecode(jsonString);
 
-
      /* Parse the data into the lists*/
     LANGUAGELIST = List<String>.from(jsonmap["Languages"]);
     PROFICIENCYLIST = List<Proficiency>.from(
@@ -113,4 +112,3 @@ Future<void> saveChanges() async {
     debugPrint("Error in saveGlobals: $e");
   }
 }
-
