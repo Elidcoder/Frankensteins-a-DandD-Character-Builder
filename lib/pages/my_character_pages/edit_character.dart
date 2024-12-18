@@ -151,7 +151,7 @@ class EditCharacter extends State<EditACharacter> {
   List<int> ASIBonuses = [0, 0, 0, 0, 0, 0];
   List<List<dynamic>> featsSelected = [];
   bool ASIRemaining = false;
-  int numberOfRemainingFeatOrASIs = 1;
+  int numberOfRemainingFeatOrASIs = 0;
   bool halfFeats = true;
   bool fullFeats = true;
   //Spell variables
@@ -196,7 +196,6 @@ class EditCharacter extends State<EditACharacter> {
     classList = character.classList;
 
     levelsPerClass = character.levelsPerClass;
-    selections = character.selections;
     allSelected = character.allSelected;
     classSubclassMapper = character.classSubclassMapper;
 
@@ -212,10 +211,6 @@ class EditCharacter extends State<EditACharacter> {
     //ASIS AND FEAT variables
     ASIBonuses = character.featsASIScoreIncreases;
     featsSelected = character.featsSelected;
-    ASIRemaining = character.ASIRemaining;
-    numberOfRemainingFeatOrASIs = character.numberOfRemainingFeatOrASIs;
-    halfFeats = character.halfFeats;
-    fullFeats = character.fullFeats;
     //Spell variables
     allSpellsSelected = character.allSpellsSelected;
     allSpellsSelectedAsListsOfThings =
@@ -224,8 +219,7 @@ class EditCharacter extends State<EditACharacter> {
     armourList = character.armourList;
     weaponList = character.weaponList;
     itemList = character.itemList;
-    coinTypeSelected = character.coinTypeSelected;
-    equipmentSelectedFromChoices = character.equipmentSelectedFromChoices ?? [];
+    equipmentSelectedFromChoices = character.equipmentSelectedFromChoices;
     //{thing:numb,...}
     stackableEquipmentSelected = character.stackableEquipmentSelected;
     unstackableEquipmentSelected = character.unstackableEquipmentSelected;
@@ -2557,11 +2551,9 @@ class EditCharacter extends State<EditACharacter> {
                               extraFeatures: character.extraFeatures,
                               group: group,
                               levelsPerClass: levelsPerClass,
-                              selections: selections,
                               allSelected: allSelected,
                               classSubclassMapper: classSubclassMapper,
                               ACList: ACList,
-                              ASIRemaining: ASIRemaining,
                               allSpellsSelected: allSpellsSelected,
                               allSpellsSelectedAsListsOfThings:
                                   allSpellsSelectedAsListsOfThings,
@@ -2569,7 +2561,6 @@ class EditCharacter extends State<EditACharacter> {
                               backgroundSkillChoices:
                                   character.backgroundSkillChoices,
                               characterDescription: CharacterDescription(age: character.characterDescription.age, height: character.characterDescription.height, weight: character.characterDescription.weight, eyes: character.characterDescription.eyes, skin: character.characterDescription.skin, hair: character.characterDescription.hair, backstory: character.characterDescription.backstory, name: character.characterDescription.name, gender: character.characterDescription.gender),
-                              coinTypeSelected: coinTypeSelected,
                               playerName: character.playerName,
                               characterExperience: experience,
                               //bools representing the states of the checkboxes (basics)
@@ -2590,8 +2581,6 @@ class EditCharacter extends State<EditACharacter> {
                               firearmsUsable: character.firearmsUsable,
                               extraFeatAtLevel1: character.extraFeatAtLevel1,
                               featsSelected: featsSelected,
-                              fullFeats: fullFeats,
-                              halfFeats: halfFeats,
                               itemList: itemList,
                               equipmentSelectedFromChoices:
                                   equipmentSelectedFromChoices,
@@ -2599,8 +2588,6 @@ class EditCharacter extends State<EditACharacter> {
                               optionalTwosStates: character.optionalTwosStates,
                               speedBonuses: speedBonusMap,
                               weaponList: weaponList,
-                              numberOfRemainingFeatOrASIs:
-                                  numberOfRemainingFeatOrASIs,
                               classList: classList,
                               stackableEquipmentSelected:
                                   stackableEquipmentSelected,
@@ -2811,12 +2798,10 @@ class EditCharacter extends State<EditACharacter> {
                                                 character.extraFeatures,
                                             group: group,
                                             levelsPerClass: levelsPerClass,
-                                            selections: selections,
                                             allSelected: allSelected,
                                             classSubclassMapper:
                                                 classSubclassMapper,
                                             ACList: ACList,
-                                            ASIRemaining: ASIRemaining,
                                             allSpellsSelected:
                                                 allSpellsSelected,
                                             allSpellsSelectedAsListsOfThings:
@@ -2824,7 +2809,6 @@ class EditCharacter extends State<EditACharacter> {
                                             armourList: armourList,
                                             backgroundSkillChoices: character
                                                 .backgroundSkillChoices,
-                                            coinTypeSelected: coinTypeSelected,
                                             playerName: character.playerName,
                                             characterExperience: experience,
                                             //bools representing the states of the checkboxes (basics)
@@ -2853,8 +2837,6 @@ class EditCharacter extends State<EditACharacter> {
                                             extraFeatAtLevel1:
                                                 character.extraFeatAtLevel1,
                                             featsSelected: featsSelected,
-                                            fullFeats: fullFeats,
-                                            halfFeats: halfFeats,
                                             itemList: itemList,
                                             equipmentSelectedFromChoices:
                                                 equipmentSelectedFromChoices,
@@ -2864,8 +2846,6 @@ class EditCharacter extends State<EditACharacter> {
                                                 character.optionalTwosStates,
                                             speedBonuses: speedBonusMap,
                                             weaponList: weaponList,
-                                            numberOfRemainingFeatOrASIs:
-                                                numberOfRemainingFeatOrASIs,
                                             classList: classList,
                                             stackableEquipmentSelected:
                                                 stackableEquipmentSelected,

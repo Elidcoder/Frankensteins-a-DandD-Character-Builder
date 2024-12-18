@@ -74,16 +74,12 @@ class Character {
   //int pointsRemaining;
   //Class
   List<int> levelsPerClass;
-  Map<String, List<dynamic>> selections;
   List<dynamic> allSelected;
   Map<String, String> classSubclassMapper;
   //ASI feats
   List<int> featsASIScoreIncreases;
   List<List<dynamic>> featsSelected;
-  bool ASIRemaining;
-  int numberOfRemainingFeatOrASIs;
-  bool halfFeats;
-  bool fullFeats;
+
   //Spells
   List<Spell> allSpellsSelected;
   List<List<dynamic>> allSpellsSelectedAsListsOfThings;
@@ -93,7 +89,6 @@ class Character {
   List<String> armourList;
   List<String> weaponList;
   List<String> itemList;
-  String? coinTypeSelected;
   List<dynamic> equipmentSelectedFromChoices;
 
   // Backstory & character description information
@@ -153,15 +148,10 @@ class Character {
     "Charisma": charisma,
     //"PointsRemaining": pointsRemaining,
     "LevelsPerClass": levelsPerClass,
-    "Selections": selections,
     "AllSelected": allSelected,
     "ClassSubclassMapper": classSubclassMapper,
     "FeatsASIScoreIncreases": featsASIScoreIncreases,
     "FeatsSelected": featsSelected,
-    "ASIRemaining": ASIRemaining,
-    "NumberOfRemainingFeatOrASIs": numberOfRemainingFeatOrASIs,
-    "HalfFeats": halfFeats,
-    "FullFeats": fullFeats,
     "AllSpellsSelected": allSpellsSelected,
     "AllSpellsSelectedAsListsOfThings": allSpellsSelectedAsListsOfThings,
     "StackableEquipmentSelected": stackableEquipmentSelected,
@@ -169,7 +159,6 @@ class Character {
     "ArmourList": armourList,
     "WeaponList": weaponList,
     "ItemList": itemList,
-    "CoinTypeSelected": coinTypeSelected,
     "EquipmentSelectedFromChoices": equipmentSelectedFromChoices,
     "CharacterDescription": characterDescription
   };
@@ -178,15 +167,12 @@ class Character {
     final _extraFeatures = data["ExtraFeatures"] as String;
     final _group = data["Group"] as String?;
     final _levelsPerClass = data["LevelsPerClass"].cast<int>() as List<int>;
-    final _selections = data["Selections"].cast<String, List<dynamic>>()
-        as Map<String, List<dynamic>>;
     final _allSelected = data["AllSelected"] as List<dynamic>;
     final _classSubclassMapper = data["ClassSubclassMapper"]
         .cast<String, String>() as Map<String, String>;
     final _skillBonusMap =
         data["SkillBonusMap"].cast<String, int>() as Map<String, int>;
     final _ACList = data["ACList"].cast<List<dynamic>>() as List<List<dynamic>>;
-    final _ASIRemaining = data["ASIRemaining"] as bool;
     final _uniqueID = data["UniqueID"] as int;
 
     final _allSpellsSelected = [
@@ -201,7 +187,6 @@ class Character {
         data["BackgroundSkillChoices"].cast<bool>() as List<bool>;
     final _characterDescription = CharacterDescription.fromJson(data["CharacterDescription"]);
 
-    final _coinTypeSelected = data["CoinTypeSelected"] as String;
     final _criticalRoleContent = data["CriticalRoleContent"] as bool;
     final _encumberanceRules = data["EncumberanceRules"] as bool;
     final _extraFeatAtLevel1 = data["ExtraFeatAtLevel1"] as bool;
@@ -209,8 +194,6 @@ class Character {
     final _featsSelected =
         data["FeatsSelected"].cast<List<dynamic>>() as List<List<dynamic>>;
     final _firearmsUsable = data["FirearmsUsable"] as bool;
-    final _fullFeats = data["FullFeats"] as bool;
-    final _halfFeats = data["HalfFeats"] as bool;
     final _includeCoinsForWeight = data["IncludeCoinsForWeight"] as bool;
     final _itemList = data["ItemList"].cast<String>() as List<String>;
     final _milestoneLevelling = data["MilestoneLevelling"];
@@ -233,8 +216,6 @@ class Character {
             (value as List<dynamic>).map((item) => item as String).toList()));
     final _unearthedArcanaContent = data["UnearthedArcanaContent"];
     final _weaponList = data["WeaponList"].cast<String>() as List<String>;
-    final _numberOfRemainingFeatOrASIs =
-        data["NumberOfRemainingFeatOrASIs"] as int;
     //error
 
     final _featuresAndTraits =
@@ -292,26 +273,21 @@ class Character {
       skillBonusMap: _skillBonusMap,
       extraFeatures: _extraFeatures,
       levelsPerClass: _levelsPerClass,
-      selections: _selections,
       allSelected: _allSelected,
       classSubclassMapper: _classSubclassMapper,
       ACList: _ACList,
-      ASIRemaining: _ASIRemaining,
       allSpellsSelected: _allSpellsSelected,
       allSpellsSelectedAsListsOfThings: _allSpellsSelectedAsListsOfThings,
       armourList: _armourList,
       averageHitPoints: _averageHitPoints,
       backgroundSkillChoices: _backgroundSkillChoices,
       group: _group,
-      coinTypeSelected: _coinTypeSelected,
       criticalRoleContent: _criticalRoleContent,
       encumberanceRules: _encumberanceRules,
       extraFeatAtLevel1: _extraFeatAtLevel1,
       featsAllowed: _featsAllowed,
       featsSelected: _featsSelected,
       firearmsUsable: _firearmsUsable,
-      fullFeats: _fullFeats,
-      halfFeats: _halfFeats,
       includeCoinsForWeight: _includeCoinsForWeight,
       itemList: _itemList,
       milestoneLevelling: _milestoneLevelling,
@@ -324,7 +300,6 @@ class Character {
       speedBonuses: _speedBonuses,
       unearthedArcanaContent: _unearthedArcanaContent,
       weaponList: _weaponList,
-      numberOfRemainingFeatOrASIs: _numberOfRemainingFeatOrASIs,
       languagesKnown: _languagesKnown,
       featuresAndTraits: _featuresAndTraits,
       skillsSelected: _skillsSelected,
@@ -366,25 +341,20 @@ class Character {
       {required this.skillBonusMap,
       required this.levelsPerClass,
       required this.extraFeatures,
-      required this.selections,
       required this.allSelected,
       required this.classSubclassMapper,
       required this.ACList,
-      required this.ASIRemaining,
       required this.allSpellsSelected,
       required this.allSpellsSelectedAsListsOfThings,
       required this.armourList,
       required this.averageHitPoints,
       required this.backgroundSkillChoices,
-      required this.coinTypeSelected,
       required this.criticalRoleContent,
       required this.encumberanceRules,
       required this.extraFeatAtLevel1,
       required this.featsAllowed,
       required this.featsSelected,
       required this.firearmsUsable,
-      required this.fullFeats,
-      required this.halfFeats,
       required this.includeCoinsForWeight,
       required this.itemList,
       required this.milestoneLevelling,
@@ -397,7 +367,6 @@ class Character {
       required this.speedBonuses,
       required this.unearthedArcanaContent,
       required this.weaponList,
-      required this.numberOfRemainingFeatOrASIs,
       //added stuff
       required this.unstackableEquipmentSelected,
       required this.featuresAndTraits,
@@ -495,15 +464,10 @@ class Character {
       wisdom: wisdom,
       charisma: charisma,
       levelsPerClass: levelsPerClass,
-      selections: selections,
       allSelected: allSelected,
       classSubclassMapper: classSubclassMapper,
       featsASIScoreIncreases: featsASIScoreIncreases,
       featsSelected: featsSelected,
-      ASIRemaining: ASIRemaining,
-      numberOfRemainingFeatOrASIs: numberOfRemainingFeatOrASIs,
-      halfFeats: halfFeats,
-      fullFeats: fullFeats,
       allSpellsSelected: allSpellsSelected,
       allSpellsSelectedAsListsOfThings: allSpellsSelectedAsListsOfThings,
       stackableEquipmentSelected: stackableEquipmentSelected,
@@ -511,7 +475,6 @@ class Character {
       armourList: armourList,
       weaponList: weaponList,
       itemList: itemList,
-      coinTypeSelected: coinTypeSelected,
       equipmentSelectedFromChoices: equipmentSelectedFromChoices,
       extraFeatures: extraFeatures,
       group: group,
