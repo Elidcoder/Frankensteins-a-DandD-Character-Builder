@@ -1,9 +1,8 @@
 // External Imports
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:path_provider/path_provider.dart';
-import 'dart:convert';
-// For Color class
 import 'package:flutter/material.dart'; 
 
 // Project Import
@@ -11,39 +10,21 @@ import 'content_classes/all_content_classes.dart';
 
 List<Character> CHARACTERLIST = [];
 List<String> GROUPLIST = [];
-/*
-Move here later
-// Global variables to store your data
-List<String> languageList = [];
-List<Proficiency> proficiencyList = [];
-List<Race> raceList = [];
-List<Background> backgroundList = [];
-List<Class> classList = [];
-List<Spell> spellList = [];
-List<Feat> featList = [];
-List<Item> itemList = [];
-List<String> groupList = [];
-List<Character> characterList = [];
-List<List<Color>> colorList = [];
 
-
- */
-
-
-
+/* UpdateGlobals reads the JSON and uses it to update the LISTS. */
 Future<bool> updateGlobals() async {
   try {
-     // Ensure the local file exists
+    /* Ensure the local file exists */
     await copyAssetFileToLocal();
     final path = await getLocalFilePath();
     final file = File(path);
 
-    // Read the file
+    /* Read the file */
     final jsonString = await file.readAsString();
     final jsonmap = jsonDecode(jsonString);
 
 
-     // Parse the data
+     /* Parse the data into the lists*/
     LANGUAGELIST = List<String>.from(jsonmap["Languages"]);
     PROFICIENCYLIST = List<Proficiency>.from(
       jsonmap["Proficiencies"].map((x) => Proficiency.fromJson(x)),
@@ -63,7 +44,6 @@ Future<bool> updateGlobals() async {
     FEATLIST = List<Feat>.from(
       jsonmap["Feats"].map((x) => Feat.fromJson(x)),
     );
-    //ITEMLIST = [for (var x in jsonmap["Equipment"] ?? []) mapEquipment(x)];
     ITEMLIST = List<Item>.from(
       (jsonmap["Equipment"] ?? []).map((x) => mapEquipment(x)),
     );
@@ -74,20 +54,21 @@ Future<bool> updateGlobals() async {
     COLORLIST = List<List<Color>>.from(
       jsonmap["Colours"].map((x) => [colorFromJson(x[0]), colorFromJson(x[1]), colorFromJson(x[2])]),
     );
-  } catch (e, stacktrace) {
+  /* Update faliure */
+  } catch (e) {
     debugPrint("Error in updateGlobals: $e");
-    debugPrint("Stacktrace: $stacktrace");
     return false;
   }
-
   return true;
 }
 
+/* Get the file path to the content JSON. */
 Future<String> getLocalFilePath() async {
   final directory = await getApplicationDocumentsDirectory();
   return '${directory.path}/userContent.json';
 }
 
+/* Copy the JSON file from the project into the correct location. */
 Future<void> copyAssetFileToLocal() async {
   final path = await getLocalFilePath();
   final file = File(path);
@@ -101,13 +82,14 @@ Future<void> copyAssetFileToLocal() async {
   }
 }
 
+/* Save the changes to the JSON file. */
 Future<void> saveChanges() async {
   try {
+    /* Ensure the JSON exists in filesys and get the file */
     final path = await getLocalFilePath();
     final file = File(path);
-    List<dynamic> equipmen = ITEMLIST.map((x) => x.toJson()).toList();
-    List<Map<String, dynamic>> equipment = List<Map<String, dynamic>>.from(equipmen);
 
+    /* Create the JSON */
     final Map<String, dynamic> data = {
       "Languages": LANGUAGELIST,
       "Proficiencies": PROFICIENCYLIST.map((x) => x.toJson()).toList(),
@@ -119,14 +101,16 @@ Future<void> saveChanges() async {
       "Groups": GROUPLIST,
       "Characters": CHARACTERLIST.map((x) => x.toJson()).toList(),
       "Colours":  List<List<Map<String, dynamic>>>.from(COLORLIST.map((colours) => colours.map((colour) => colorToJson(colour)).toList()).toList()),
-      "Equipment": equipment,
+      "Equipment": List<Map<String, dynamic>>.from(ITEMLIST.map((x) => x.toJson()).toList()),
       };
 
+    /* Write the JSON */
     final jsonStringy = jsonEncode(data);
     await file.writeAsString(jsonStringy);
-  } catch (e, stacktrace) {
+
+  /* Error in saving changes */
+  } catch (e) {
     debugPrint("Error in saveGlobals: $e");
-    debugPrint("Stacktrace: $stacktrace");
   }
 }
 
