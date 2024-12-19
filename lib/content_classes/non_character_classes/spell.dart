@@ -1,5 +1,8 @@
-class Spell {
+import "named.dart";
+
+class Spell implements Named {
   //ADD SPELL TYPE THINGY
+  @override
   final String name;
   final String effect;
   final String spellSchool;

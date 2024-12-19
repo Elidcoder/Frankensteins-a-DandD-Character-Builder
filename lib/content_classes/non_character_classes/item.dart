@@ -1,4 +1,7 @@
-class Item {
+import "named.dart";
+
+class Item implements Named {
+  @override
   String name;
   //[10,"gold"]
   List<dynamic> cost;

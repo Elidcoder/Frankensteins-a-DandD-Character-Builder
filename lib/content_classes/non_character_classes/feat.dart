@@ -1,4 +1,7 @@
-class Feat {
+import "named.dart";
+
+class Feat implements Named {
+  @override
   final String name;
   final List<List<dynamic>> abilites;
   final String sourceBook;

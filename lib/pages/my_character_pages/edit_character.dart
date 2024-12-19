@@ -9,13 +9,6 @@ import '../../pdf_generator/pdf_final_display.dart';
 import '../../main.dart';
 import "../../file_manager.dart";
 
-int abilityScoreCost(int x) {
-  if (x > 12) {
-    return 2;
-  }
-  return 1;
-}
-
 //fix this later
 bool isAllowedContent(dynamic x) {
   return true;

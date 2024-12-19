@@ -1,3 +1,5 @@
+import "named.dart";
+
 List<List<List<dynamic>>> parseJsonToMultiList(List jsonData) {
   List<List<List<dynamic>>> multiList = [];
 
@@ -17,9 +19,10 @@ List<List<List<dynamic>>> parseJsonToMultiList(List jsonData) {
 }
 
 //classes - PROFICIENCY LIST NEEDS FIXING
-class Class {
+class Class implements Named {
   final String? spellsKnownFormula;
   final List<int>? spellsKnownPerLevel;
+  @override
   final String name;
   final String classType;
   final int maxHitDiceRoll;

@@ -1,6 +1,9 @@
+import "named.dart";
+
 //NO CASE SHOULD HAVE NUMBEROFSKILLCHOICES>OPTIONALSKILLPROFICIENCIES.LENGTH
 // TODO(make bond/flawetc optional)
-class Background {
+class Background implements Named {
+  @override
   final String name;
   final int? numberOfSkillChoices;
   final String sourceBook;

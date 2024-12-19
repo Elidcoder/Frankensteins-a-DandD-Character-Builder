@@ -1,4 +1,7 @@
-class Subclass {
+import "named.dart";
+
+class Subclass implements Named {
+  @override
   final String name;
   final String classType;
   final bool? roundDown;

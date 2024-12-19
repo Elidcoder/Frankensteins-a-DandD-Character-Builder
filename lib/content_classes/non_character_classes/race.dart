@@ -1,7 +1,9 @@
 import 'subrace.dart';
 import 'proficiency.dart';
+import "named.dart";
 
-class Race {
+class Race implements Named {
+  @override
   final String name;
   final List<int> raceScoreIncrease;
   final String sourceBook;

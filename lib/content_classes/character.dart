@@ -5,7 +5,9 @@ import 'dart:math';
 // Project Import
 import 'non_character_classes/all_non_character_classes.dart';
 
-class Character {
+class Character implements Named {
+  @override
+  String get name => characterDescription.name;
   // make this final after removing the change UID in edit character
   int uniqueID ;
   
