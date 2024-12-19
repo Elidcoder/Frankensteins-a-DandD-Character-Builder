@@ -903,8 +903,9 @@ class MainCreateCharacter extends State<CreateACharacter>
   int numberOfRemainingFeatOrASIs = 0;
   bool remainingAsi = false;
 
-  // TODO(Implement an experience levelling alternative using enteredExperience)
+  // TODO(Implement an experience levelling alternative using these)
   String enteredExperience = "";
+  TextEditingController experienceEnterController = TextEditingController();
   
   // TODO(Implement a better skill proficiency section using skillProficienciesMap and adding a second field
     /// then delete this)
@@ -954,394 +955,199 @@ class MainCreateCharacter extends State<CreateACharacter>
                     Expanded(
                         child: Column(children: [
                       //title
-                      Container(
-                        width: 330,
-                        height: 65,
-                        decoration: BoxDecoration(
-                          color: Homepage.backingColor,
-                          border: Border.all(
-                            color: Colors.black,
-                            width: 2.1,
-                          ),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(5)),
-                        ),
-                        child: Center(
-                            child: Text(
-                          textAlign: TextAlign.center,
-                          "Character info",
-                          style: TextStyle(
-                              fontSize: 35,
-                              fontWeight: FontWeight.w700,
-                              color: Homepage.textColor),
-                        )),
-                      ),
+                      buildSectionHeader("Character info"),
                       const SizedBox(height: 25),
                       //Character name input
-                      SizedBox(
-                        width: 250,
-                        height: 50,
-                        child: TextField(
-                            controller: nameEnterController,
-                            cursorColor: Homepage.textColor,
-                            style: TextStyle(
-                              color: Homepage.textColor,
-                            ),
-                            decoration: InputDecoration(
-                                hintText: "Enter character's name",
-                                hintStyle: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    color: Homepage.textColor),
-                                filled: true,
-                                fillColor: Homepage.backingColor,
-                                border: const OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(12)))),
-                            onChanged: (characterNameEnteredValue) {
-                              setState(() {
-                                character.characterDescription.name = characterNameEnteredValue;
-                              });
-                            }),
+                      buildStyledTextField(
+                        hintText: "Enter character's name", 
+                        textController: nameEnterController, 
+                        onChanged: (characterNameEnteredValue) {
+                          setState(() {
+                            character.characterDescription.name = characterNameEnteredValue;
+                          });}
                       ),
                       const SizedBox(height: 15),
                       //Player name input
-                      SizedBox(
-                          width: 250,
-                          height: 50,
-                          child: TextField(
-                              controller: playerNameEnterController,
-                              cursorColor: Homepage.textColor,
-                              style: TextStyle(color: Homepage.textColor),
-                              decoration: InputDecoration(
-                                  hintText: "Enter the player's name",
-                                  hintStyle: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: Homepage.textColor),
-                                  filled: true,
-                                  fillColor: Homepage.backingColor,
-                                  border: const OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(12)))),
-                              onChanged: (playerNameEnteredValue) {
-                                setState(() {
-                                  character.playerName = playerNameEnteredValue;
-                                });
-                              })),
+                      buildStyledTextField(
+                        hintText: "Enter the player's name", 
+                        textController: playerNameEnterController, 
+                        onChanged: (playerNameEnteredValue) {
+                          setState(() {
+                            character.playerName = playerNameEnteredValue;
+                          });}
+                      ),
                       const SizedBox(height: 15),
                       //Character gender input
-                      SizedBox(
-                          width: 250,
-                          height: 50,
-                          child: TextField(
-                              controller: genderEnterController,
-                              cursorColor: Homepage.textColor,
-                              style: TextStyle(
-                                color: Homepage.textColor,
-                              ),
-                              decoration: InputDecoration(
-                                  hintText: "Enter the character's gender",
-                                  hintStyle: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: Homepage.textColor),
-                                  filled: true,
-                                  fillColor: Homepage.backingColor,
-                                  border: const OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(12)))),
-                              onChanged: (characterGenderEnteredValue) {
-                                setState(() {
-                                  character.characterDescription.gender = characterGenderEnteredValue;
-                                });
-                              })),
+                      buildStyledTextField(
+                        hintText: "Enter the character's gender", 
+                        textController: genderEnterController, 
+                        onChanged:  (characterGenderEnteredValue) {
+                          setState(() {
+                            character.characterDescription.gender = characterGenderEnteredValue;
+                          });}
+                      ),
                       const SizedBox(height: 15),
                       //exp/levels section
                       SizedBox(
-                          width: 300,
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                //use experience
-                                RadioListTile(
-                                  activeColor: Homepage.backingColor,
-                                  title: Text("Use experience",
-                                      style: TextStyle(
-                                          color: Homepage.backingColor)),
-                                  value: "Experience",
+                        width: 300,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            //use experience
+                            buildStyledRadioListTile(
+                              title: "Use experience",
+                              value: "Experience",
+                              groupValue: levellingMethod,
+                              onChanged: (value) {
+                                setState(() {
+                                  levellingMethod = value.toString();
+                                });
+                              },
+                            ),
+                            const SizedBox(height: 15),
+                            //Experience enterence option if experience is selected
+                            //otherwise display the use levels radio tile
+                            Container(
+                              child: levellingMethod == "Experience" ? 
+                                buildStyledTextField(
+                                  hintText: "Enter the character's exp", 
+                                  textController: experienceEnterController, 
+                                  onChanged:  (characterExperienceEnteredValue) {
+                                    setState(() {
+                                      //TODO(Implement the experience levelling alternative);
+                                    });}
+                                ) : 
+                                buildStyledRadioListTile(
+                                  title: "Use levels",
+                                  value: "Levels",
                                   groupValue: levellingMethod,
                                   onChanged: (value) {
                                     setState(() {
                                       levellingMethod = value.toString();
                                     });
                                   },
-                                ),
-                                const SizedBox(height: 15),
-                                //Experience enterence option if experience is selected
-                                //otherwise display the use levels radio tile
+                                )
+                            ),
+                            const SizedBox(height: 5),
+                            //levels radio tile if experience is selected
+                            //otherwise the levels selection option
+                            Container(
+                              child: levellingMethod == "Experience" ? 
+                                buildStyledRadioListTile(
+                                  title: "Use levels",
+                                  value: "Levels",
+                                  groupValue: levellingMethod,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      levellingMethod = value.toString();
+                                    });
+                                  },
+                                ) : 
                                 Container(
-                                    child: levellingMethod == "Experience"
-                                        ? SizedBox(
-                                            width: 250,
-                                            height: 50,
-                                            child: TextField(
-                                                cursorColor: Colors.blue,
-                                                style: const TextStyle(
-                                                    color: Colors.white),
-                                                decoration: InputDecoration(
-                                                    hintText:
-                                                        "Enter the character's exp",
-                                                    hintStyle: const TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255,
-                                                            212,
-                                                            208,
-                                                            224)),
-                                                    filled: true,
-                                                    fillColor:
-                                                        const Color.fromARGB(
-                                                            255, 124, 112, 112),
-                                                    border: OutlineInputBorder(
-                                                        borderSide:
-                                                            BorderSide.none,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(12)))))
-                                        : RadioListTile(
-                                            activeColor: Homepage.backingColor,
-                                            title: Text("Use levels",
-                                                style: TextStyle(
-                                                    color:
-                                                        Homepage.backingColor)),
-                                            value: "Levels",
-                                            groupValue: levellingMethod,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                levellingMethod =
-                                                    value.toString();
-                                              });
-                                            },
-                                          )),
-                                const SizedBox(height: 5),
-                                //levels radio tile if experience is selected
-                                //otherwise the levels selection option
-                                Container(
-                                  child: levellingMethod == "Experience"
-                                      ? RadioListTile(
-                                          activeColor: Homepage.backingColor,
-                                          title: Text("Use levels",
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                    color: Homepage.backingColor,
+                                  ),
+                                  height: 45,
+                                  child: DropdownButton<String>(
+                                    alignment: Alignment.center,
+                                    value: characterLevel,
+                                    icon: Icon(Icons.arrow_drop_down, color: Homepage.textColor),
+                                    elevation: 16,
+                                    style: TextStyle(
+                                      color: Homepage.textColor,
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 20),
+                                    underline: const SizedBox(),
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        characterLevel = value!;
+                                      });
+                                    },
+                                    items: [for (var i = 1; i <= 20; i += 1) i.toString()]
+                                      .where((e) => int.parse(e) >= int.parse(characterLevel ?? "1"))
+                                      .toList()
+                                      .map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Align(
+                                            child: Text(value,
+                                              textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                  color:
-                                                      Homepage.backingColor)),
-                                          value: "Levels",
-                                          groupValue: levellingMethod,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              levellingMethod =
-                                                  value.toString();
-                                            });
-                                          },
-                                        )
-                                      : Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(5)),
-                                            color: Homepage.backingColor,
-                                          ),
-                                          height: 45,
-                                          child: DropdownButton<String>(
-                                              alignment: Alignment.center,
-                                              value: characterLevel,
-                                              icon: Icon(Icons.arrow_drop_down,
-                                                  color: Homepage.textColor),
-                                              elevation: 16,
-                                              style: TextStyle(
-                                                  color: Homepage.textColor,
-                                                  fontWeight: FontWeight.w800,
-                                                  fontSize: 20),
-                                              underline: const SizedBox(),
-                                              onChanged: (String? value) {
-                                                // This is called when the user selects an item.
-                                                setState(() {
-                                                  characterLevel = value!;
-                                                });
-                                              },
-                                              items: [
-                                                "1",
-                                                "2",
-                                                "3",
-                                                "4",
-                                                "5",
-                                                "6",
-                                                "7",
-                                                "8",
-                                                "9",
-                                                "10",
-                                                "11",
-                                                "12",
-                                                "13",
-                                                "14",
-                                                "15",
-                                                "16",
-                                                "17",
-                                                "18",
-                                                "19",
-                                                "20"
-                                              ]
-                                                  .where((element) =>
-                                                      int.parse(element) >=
-                                                      int.parse(
-                                                          characterLevel ??
-                                                              "1"))
-                                                  .toList()
-                                                  .map<
-                                                          DropdownMenuItem<
-                                                              String>>(
-                                                      (String value) {
-                                                return DropdownMenuItem<String>(
-                                                  value: value,
-                                                  child: Align(
-                                                      child: Text(value,
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: TextStyle(
-                                                            color: Homepage
-                                                                .textColor,
-                                                            decoration:
-                                                                TextDecoration
-                                                                    .underline,
-                                                          ))),
-                                                );
-                                              }).toList(),
-                                              dropdownColor:
-                                                  Homepage.backingColor),
-                                        ),
+                                                color: Homepage.textColor,
+                                                decoration: TextDecoration.underline,
+                                              ))),
+                                        );
+                                      }).toList(),
+                                    dropdownColor:Homepage.backingColor
+                                  ),
                                 ),
-                                const SizedBox(height: 10),
-                              ]))
+                            ),
+                            const SizedBox(height: 10),
+                          ]))
                     ])),
                     Expanded(
                         child: Column(
                       children: [
-                        Container(
-                          width: 335,
-                          height: 65,
-                          decoration: BoxDecoration(
-                            color: Homepage.backingColor,
-                            border: Border.all(
-                              color: Colors.black,
-                              width: 2.1,
-                            ),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(5)),
-                          ),
-                          child: Center(
-                              child: Text(
-                            textAlign: TextAlign.center,
-                            "Build Parameters",
-                            style: TextStyle(
-                                fontSize: 35,
-                                fontWeight: FontWeight.w700,
-                                color: Homepage.textColor),
-                          )),
-                        ),
+                        buildSectionHeader("Build Parameters"),
                         const SizedBox(height: 25),
                         SizedBox(
                           width: 325,
                           child: Column(
                             children: [
-                              CheckboxListTile(
-                                title: Text("Feats in use",
-                                    style: TextStyle(
-                                        color: Homepage.backingColor)),
-                                value: character.featsAllowed,
+                              buildStyledCheckboxListTile(
+                                title: "Feats in use", 
+                                value: character.featsAllowed, 
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    if (character.featsSelected.isEmpty) {
-                                      character.featsAllowed = value;
-                                    }
-                                  });
-                                },
-                                activeColor: Homepage.backingColor,
-                                secondary: Icon(Icons.insert_photo,
-                                    color: Homepage.backingColor),
+                                    character.featsAllowed = value;
+                                  });}
                               ),
                               const SizedBox(height: 15),
-                              CheckboxListTile(
-                                title: Text("Use average for hit dice",
-                                    style: TextStyle(
-                                        color: Homepage.backingColor)),
-                                value: character.averageHitPoints,
+                              buildStyledCheckboxListTile(
+                                title: "Use average for hit dice", 
+                                value: character.averageHitPoints, 
                                 onChanged: (bool? value) {
                                   setState(() {
                                     character.averageHitPoints = value;
-                                  });
-                                },
-                                activeColor: Homepage.backingColor,
-                                secondary: Icon(Icons.insert_photo,
-                                    color: Homepage.backingColor),
+                                  });}
                               ),
                               const SizedBox(height: 15),
-                              CheckboxListTile(
-                                title: Text("Allow multiclassing",
-                                    style: TextStyle(
-                                        color: Homepage.backingColor)),
-                                value: character.multiclassing,
+                              buildStyledCheckboxListTile(
+                                title: "Allow multiclassing", 
+                                value: character.multiclassing, 
                                 onChanged: (bool? value) {
                                   setState(() {
                                     character.multiclassing = value;
-                                  });
-                                },
-                                activeColor: Homepage.backingColor,
-                                secondary: Icon(Icons.insert_photo,
-                                    color: Homepage.backingColor),
+                                  });}
                               ),
                               const SizedBox(height: 15),
-                              CheckboxListTile(
-                                title: Text("Use milestone levelling",
-                                    style: TextStyle(
-                                        color: Homepage.backingColor)),
-                                value: character.milestoneLevelling,
+                              buildStyledCheckboxListTile(
+                                title: "Use milestone levelling", 
+                                value: character.milestoneLevelling, 
                                 onChanged: (bool? value) {
                                   setState(() {
                                     character.milestoneLevelling = value;
-                                  });
-                                },
-                                activeColor: Homepage.backingColor,
-                                secondary: Icon(Icons.insert_photo,
-                                    color: Homepage.backingColor),
+                                  });}
                               ),
                               const SizedBox(height: 15),
-                              CheckboxListTile(
-                                title: Text("Use created content",
-                                    style: TextStyle(
-                                        color: Homepage.backingColor)),
-                                value: character.useCustomContent,
+                              buildStyledCheckboxListTile(
+                                title: "Use created content", 
+                                value: character.useCustomContent, 
                                 onChanged: (bool? value) {
                                   setState(() {
                                     character.useCustomContent = value;
-                                  });
-                                },
-                                activeColor: Homepage.backingColor,
-                                secondary: Icon(Icons.insert_photo,
-                                    color: Homepage.backingColor),
+                                  });}
                               ),
                               const SizedBox(height: 15),
-                              CheckboxListTile(
-                                title: Text("Use optional class features",
-                                    style: TextStyle(
-                                        color: Homepage.backingColor)),
-                                value: character.optionalClassFeatures,
+                              buildStyledCheckboxListTile(
+                                title: "Use optional class features", 
+                                value: character.optionalClassFeatures, 
                                 onChanged: (bool? value) {
                                   setState(() {
                                     character.optionalClassFeatures = value;
-                                  });
-                                },
-                                activeColor: Homepage.backingColor,
-                                secondary: Icon(Icons.insert_photo,
-                                    color: Homepage.backingColor),
+                                  });}
                               ),
                               const SizedBox(height: 8),
                             ],
@@ -1351,114 +1157,61 @@ class MainCreateCharacter extends State<CreateACharacter>
                     )),
                     Expanded(
                         child: Column(
-                      children: [
-                        Container(
-                          width: 335,
-                          height: 65,
-                          decoration: BoxDecoration(
-                            color: Homepage.backingColor,
-                            border: Border.all(
-                              color: Colors.black,
-                              width: 2.1,
-                            ),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(5)),
-                          ),
-                          child: Center(
-                              child: Text(
-                            textAlign: TextAlign.center,
-                            "Rarer Parameters",
-                            style: TextStyle(
-                                fontSize: 35,
-                                fontWeight: FontWeight.w700,
-                                color: Homepage.textColor),
-                          )),
-                        ),
+                        children: [
+                        buildSectionHeader("Rarer Parameters"),
                         const SizedBox(height: 25),
                         SizedBox(
                           width: 325,
                           child: Column(
                             children: [
-                              CheckboxListTile(
-                                title: Text("Use critical role content",
-                                    style: TextStyle(
-                                        color: Homepage.backingColor)),
-                                value: character.criticalRoleContent,
+                              buildStyledCheckboxListTile(
+                                title: "Use critical role content", 
+                                value: character.criticalRoleContent, 
                                 onChanged: (bool? value) {
                                   setState(() {
                                     character.criticalRoleContent = value;
-                                  });
-                                },
-                                activeColor: Homepage.backingColor,
-                                secondary: Icon(Icons.insert_photo,
-                                    color: Homepage.backingColor),
+                                  });}
                               ),
                               const SizedBox(height: 15),
-                              CheckboxListTile(
-                                title: Text("Use encumberance rules",
-                                    style: TextStyle(
-                                        color: Homepage.backingColor)),
-                                value: character.encumberanceRules,
+                              buildStyledCheckboxListTile(
+                                title: "Use encumberance rules", 
+                                value: character.encumberanceRules, 
                                 onChanged: (bool? value) {
                                   setState(() {
                                     character.encumberanceRules = value;
-                                  });
-                                },
-                                activeColor: Homepage.backingColor,
-                                secondary: Icon(Icons.insert_photo,
-                                    color: Homepage.backingColor),
+                                  });}
                               ),
                               const SizedBox(height: 15),
-                              CheckboxListTile(
-                                title: Text("Incude coins' weights",
-                                    style: TextStyle(
-                                        color: Homepage.backingColor)),
-                                value: character.includeCoinsForWeight,
+                              buildStyledCheckboxListTile(
+                                title: "Incude coins' weights", 
+                                value: character.includeCoinsForWeight, 
                                 onChanged: (bool? value) {
                                   setState(() {
                                     character.includeCoinsForWeight = value;
-                                  });
-                                },
-                                activeColor: Homepage.backingColor,
-                                secondary: Icon(Icons.insert_photo,
-                                    color: Homepage.backingColor),
+                                  });}
                               ),
                               const SizedBox(height: 15),
-                              CheckboxListTile(
-                                title: Text("Use UA content",
-                                    style: TextStyle(
-                                        color: Homepage.backingColor)),
-                                value: character.unearthedArcanaContent,
+                              buildStyledCheckboxListTile(
+                                title: "Use UA content", 
+                                value:  character.unearthedArcanaContent, 
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    character.unearthedArcanaContent = value;
-                                  });
-                                },
-                                activeColor: Homepage.backingColor,
-                                secondary: Icon(Icons.insert_photo,
-                                    color: Homepage.backingColor),
+                                     character.unearthedArcanaContent = value;
+                                  });}
                               ),
                               const SizedBox(height: 15),
-                              CheckboxListTile(
-                                title: Text("Allow firearms",
-                                    style: TextStyle(
-                                        color: Homepage.backingColor)),
-                                value: character.firearmsUsable,
+                              buildStyledCheckboxListTile(
+                                title: "Allow firearms", 
+                                value:  character.firearmsUsable, 
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    character.firearmsUsable = value;
-                                  });
-                                },
-                                activeColor: Homepage.backingColor,
-                                secondary: Icon(Icons.insert_photo,
-                                    color: Homepage.backingColor),
+                                     character.firearmsUsable = value;
+                                  });}
                               ),
                               const SizedBox(height: 15),
-                              CheckboxListTile(
-                                title: Text("Give an extra feat at lvl 1",
-                                    style: TextStyle(
-                                        color: Homepage.backingColor)),
-                                value: character.extraFeatAtLevel1,
+                              buildStyledCheckboxListTile(
+                                title: "Give an extra feat at lvl 1", 
+                                value:  character.extraFeatAtLevel1, 
                                 onChanged: (bool? value) {
                                   setState(() {
                                     if (character.classList.isNotEmpty) {
@@ -1475,11 +1228,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                       character.extraFeatAtLevel1 =
                                           !(character.extraFeatAtLevel1 ?? false);
                                     }
-                                  });
-                                },
-                                activeColor: Homepage.backingColor,
-                                secondary: Icon(Icons.insert_photo,
-                                    color: Homepage.backingColor),
+                                  });}
                               ),
                               const SizedBox(height: 8),
                             ],
@@ -6241,6 +5990,88 @@ class MainCreateCharacter extends State<CreateACharacter>
 
   Tab tabLabel(String label) {
     return Tab(child: Text(label, style: TextStyle(color: Homepage.textColor)));
+  }
+
+  Container buildSectionHeader(String title) {
+    return Container(
+      width: 330,
+      height: 65,
+      decoration: BoxDecoration(
+        color: Homepage.backingColor,
+        border: Border.all(color: Colors.black, width: 2.1),
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
+      ),
+      child: Center(
+        child: Text(
+          title,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 35,
+            fontWeight: FontWeight.w700,
+            color: Homepage.textColor,
+          ),
+        ),
+      ),
+    );
+  }
+
+  CheckboxListTile buildStyledCheckboxListTile({
+    required String title,
+    required bool? value,
+    required ValueChanged<bool?> onChanged,
+  }) {
+    return CheckboxListTile(
+      title: Text(title, style: TextStyle(color: Homepage.backingColor)),
+      value: value,
+      onChanged: onChanged,
+      activeColor: Homepage.backingColor,
+      secondary: Icon(Icons.insert_photo, color: Homepage.backingColor),
+    );
+  }
+
+  RadioListTile buildStyledRadioListTile({
+    required String title,
+    required String value,
+    required String? groupValue,
+    required ValueChanged<dynamic> onChanged,
+  }) {
+    return RadioListTile(
+      activeColor: Homepage.backingColor,
+      title: Text(title,
+          style: TextStyle(
+              color:
+                  Homepage.backingColor)),
+      value: value,
+      groupValue: groupValue,
+      onChanged: onChanged,
+    );
+  }
+
+  SizedBox buildStyledTextField({
+    required String hintText,
+    required TextEditingController textController,
+    required ValueChanged<String> onChanged,
+  }) {
+    return SizedBox(
+      width: 250,
+      height: 50,
+      child: TextField(
+        controller: textController,
+        cursorColor: Homepage.textColor,
+        style: TextStyle(color: Homepage.textColor),
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: TextStyle(
+            fontWeight: FontWeight.w700,
+            color: Homepage.textColor),
+          filled: true,
+          fillColor: Homepage.backingColor,
+          border: const OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.all(
+              Radius.circular(12)))),
+        onChanged: onChanged)
+    );
   }
 
   void showCongratulationsDialog(BuildContext context) {
