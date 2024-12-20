@@ -944,7 +944,7 @@ class MainCreateCharacter extends State<CreateACharacter>
           ),
         ),
         body: TabBarView(children: [
-          //basics
+          // Basics Tab
           SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
@@ -1008,7 +1008,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                             //Experience enterence option if experience is selected
                             //otherwise display the use levels radio tile
                             Container(
-                              child: levellingMethod == "Experience" ? 
+                              child: (levellingMethod == "Experience") ? 
                                 buildStyledTextField(
                                   hintText: "Enter the character's exp", 
                                   textController: experienceEnterController, 
@@ -1032,7 +1032,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                             //levels radio tile if experience is selected
                             //otherwise the levels selection option
                             Container(
-                              child: levellingMethod == "Experience" ? 
+                              child: (levellingMethod == "Experience") ? 
                                 buildStyledRadioListTile(
                                   title: "Use levels",
                                   value: "Levels",
@@ -1241,294 +1241,137 @@ class MainCreateCharacter extends State<CreateACharacter>
               ],
             ),
           ),
-          //race
+          
+          // Race Tab
           Column(
             children: [
               const SizedBox(height: 24),
-              SizedBox(
-                  height: 35,
-                  child: Text("Select a race:",
-                      style: TextStyle(
-                          color: Homepage.backingColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w800))),
-              Container(
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(5)),
-                    color: Homepage.backingColor,
-                  ),
-                  height: 45,
-                  child: DropdownButton<String>(
-                    alignment: Alignment.center,
-                    onChanged: (String? value) {
-                      // This is called when the user selects an item.
-                      setState(() {
-                        //efficient this up at some point so ASI[i] isn't accessed twice
-                        //can actually speed this up but only if asi isn't used elsewhere
-                        character.raceAbilityScoreIncreases = [0, 0, 0, 0, 0, 0];
-                        character.race =
-                            RACELIST.singleWhere((x) => x.name == value);
-                        character.subrace = character.race.subRaces?.first;
-                        for (int i = 0; i < 6; i++) {
-                          character.raceAbilityScoreIncreases[i] += character.race
-                                  .raceScoreIncrease[i] +
-                              ((character.subrace?.subRaceScoreIncrease[i]) ?? 0);
+              buildStyledMediumTextBox(text: "Select a race:"),
+              buildStyledDropDown(
+                initialValue: character.race.name, 
+                items: RACELIST, 
+                onChanged: (String? value) {
+                  setState(() {
+                    //TODO(Make this more efficient so ASI[i] isn't accessed twice)
+                    character.raceAbilityScoreIncreases = [0, 0, 0, 0, 0, 0];
+                    character.race =
+                        RACELIST.singleWhere((x) => x.name == value);
+                    character.subrace = character.race.subRaces?.first;
+                    
+                    for (int i = 0; i < 6; i++) {
+                      character.raceAbilityScoreIncreases[i] += character.race
+                              .raceScoreIncrease[i] +
+                          ((character.subrace?.subRaceScoreIncrease[i]) ?? 0);
 
-                          character.optionalOnesStates = [
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false]
-                          ];
-                          character.optionalTwosStates = [
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false]
-                          ];
-                        }
-                      });
-                    },
-                    value: character.race.name,
-                    icon: Icon(Icons.arrow_downward, color: Homepage.textColor),
-                    items: RACELIST.map<DropdownMenuItem<String>>((Race value) {
-                      return DropdownMenuItem<String>(
-                        value: value.name,
-                        child: Align(
-                            child: Text(value.name,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Homepage.textColor,
-                                  decoration: TextDecoration.underline,
-                                ))),
-                      );
-                    }).toList(),
-                    dropdownColor: Homepage.backingColor,
-                    elevation: 2,
-                    style: TextStyle(
-                        color: Homepage.textColor, fontWeight: FontWeight.w700),
-                    underline: const SizedBox(),
-                  )),
+                      character.optionalOnesStates = [
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false]
+                      ];
+                      character.optionalTwosStates = [
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false]
+                      ];
+                  }});
+                }
+              ),
               const SizedBox(height: 10),
-              if (character.race.subRaces != null)
-                SizedBox(
-                    height: 25,
-                    child: Text("Select a subrace:",
-                        style: TextStyle(
-                            color: Homepage.backingColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w800))),
-              if (character.race.subRaces != null) const SizedBox(height: 10),
-              if (character.race.subRaces != null)
-                Container(
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(5)),
-                      color: Homepage.backingColor,
-                    ),
-                    child: DropdownButton<String>(
-                      alignment: Alignment.center,
-                      value: character.subrace?.name,
-                      icon: Icon(Icons.arrow_drop_down,
-                          color: Homepage.textColor),
-                      elevation: 16,
-                      style: TextStyle(
-                          color: Homepage.textColor,
-                          fontWeight: FontWeight.w700),
-                      underline: const SizedBox(),
-                      onChanged: (String? value) {
-                        // This is called when the user selects an item.
-                        setState(() {
-                          character.raceAbilityScoreIncreases = [0, 0, 0, 0, 0, 0];
+              if (character.race.subRaces != null) ...[
+                buildStyledSmallTextBox(text: "Select a subrace:"),
+                const SizedBox(height: 10),
+                buildStyledDropDown(
+                  initialValue: character.subrace?.name,
+                  items: character.race.subRaces,
+                  onChanged: (String? value) {
+                    setState(() {
+                      character.raceAbilityScoreIncreases = [0, 0, 0, 0, 0, 0];
 
-                          character.subrace = character.race.subRaces
-                              ?.singleWhere((x) => x.name == value);
-                          for (int i = 0; i < 6; i++) {
-                            character.raceAbilityScoreIncreases[i] +=
-                                (character.subrace?.subRaceScoreIncrease[i] ?? 0) +
-                                    character.race.raceScoreIncrease[i];
+                      character.subrace = character.race.subRaces
+                          ?.singleWhere((x) => x.name == value);
+                      for (int i = 0; i < 6; i++) {
+                        character.raceAbilityScoreIncreases[i] +=
+                            (character.subrace?.subRaceScoreIncrease[i] ?? 0) +
+                                character.race.raceScoreIncrease[i];
+                      }
+                      character.optionalOnesStates = [
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false]
+                      ];
+                      character.optionalTwosStates = [
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false],
+                        [false, false, false, false, false, false]
+                      ];
+                    });
+                  },
+                ),
+                const SizedBox(height: 10),
+              ],
+              if (character.race.mystery1S + (character.subrace?.mystery1S ?? 0) != 0) ...[
+                buildStyledSmallTextBox(text: "Choose which score(s) to increase by 1"),
+                buildNStyledAsiSelectors(
+                  numbItems: (character.race.mystery1S + (character.subrace?.mystery1S ?? 0)), 
+                  optionalStates: character.optionalOnesStates!, 
+                  onPressed:(int choiceNumber, int index, bool isSelected) {
+                    setState(() {
+                      if (character.optionalOnesStates![choiceNumber][index]) {
+                        character.raceAbilityScoreIncreases[index] -= 1;
+                      } else {
+                        character.raceAbilityScoreIncreases[index] += 1;
+                        for (int buttonIndex = choiceNumber;
+                            buttonIndex < character.optionalOnesStates![choiceNumber].length;
+                            buttonIndex++) {
+                          if (character.optionalOnesStates![choiceNumber][buttonIndex]) {
+                            character.optionalOnesStates![choiceNumber][buttonIndex] = false;
+                            character.raceAbilityScoreIncreases[buttonIndex] -= 1;
                           }
-                          character.optionalOnesStates = [
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false]
-                          ];
-                          character.optionalTwosStates = [
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false],
-                            [false, false, false, false, false, false]
-                          ];
-                        });
-                      },
-                      items: character.race.subRaces
-                          ?.map<DropdownMenuItem<String>>((Subrace value) {
-                        return DropdownMenuItem<String>(
-                          value: value.name,
-                          child: Align(
-                              child: Text(value.name,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Homepage.textColor,
-                                    decoration: TextDecoration.underline,
-                                  ))),
-                        );
-                      }).toList(),
-                      dropdownColor: Homepage.backingColor,
-                    )),
-              if (character.race.subRaces != null) const SizedBox(height: 10),
-              if (character.race.mystery1S + (character.subrace?.mystery1S ?? 0) != 0)
-                SizedBox(
-                    height: 40,
-                    child: Text("Choose which score(s) to increase by 1",
-                        style: TextStyle(
-                            color: Homepage.backingColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w800))),
-              if (character.race.mystery1S + (character.subrace?.mystery1S ?? 0) != 0)
-                SizedBox(
-                    height: (character.race.mystery1S +
-                                (character.subrace?.mystery1S ?? 0)) *
-                            62 -
-                        10,
-                    child: ListView.separated(
-                      itemCount: (character.race.mystery1S +
-                          (character.subrace?.mystery1S ?? 0)),
-                      separatorBuilder: (BuildContext context, int index) =>
-                          Divider(
-                        height: 10.0, // amount of pixels
-                        color: Homepage.backgroundColor,
-                      ),
-                      itemBuilder: (BuildContext context, int choiceNumber) {
-                        return Align(
-                            alignment: Alignment.center,
-                            child: ToggleButtons(
-                              selectedColor: Homepage.textColor,
-                              color: Homepage.backingColor,
-                              fillColor: Homepage.backingColor,
-                              textStyle: const TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              borderColor: Homepage.backingColor,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(20)),
-                              borderWidth: 1.5,
-                              onPressed: (int index) {
-                                setState(() {
-                                  if (character.optionalOnesStates![choiceNumber]
-                                      [index]) {
-                                    character.raceAbilityScoreIncreases[index] -= 1;
-                                  } else {
-                                    character.raceAbilityScoreIncreases[index] += 1;
-                                    for (int buttonIndex = choiceNumber;
-                                        buttonIndex <
-                                            character.optionalOnesStates![choiceNumber]
-                                                .length;
-                                        buttonIndex++) {
-                                      if (character.optionalOnesStates![choiceNumber]
-                                          [buttonIndex]) {
-                                        character.optionalOnesStates![choiceNumber]
-                                            [buttonIndex] = false;
-                                        character.raceAbilityScoreIncreases[buttonIndex] -= 1;
-                                      }
-                                    }
-                                  }
-                                  character.optionalOnesStates![choiceNumber][index] =
-                                      !character.optionalOnesStates![choiceNumber][index];
-                                });
-                              },
-                              isSelected: character.optionalOnesStates![choiceNumber],
-                              children: const <Widget>[
-                                Text(" Strength "),
-                                Text(" Dexterity "),
-                                Text(" Constitution "),
-                                Text(" Intelligence "),
-                                Text(" Wisdom "),
-                                Text(" Charisma ")
-                              ],
-                            ));
-                      },
-                    )),
-              if (character.race.mystery2S + (character.subrace?.mystery2S ?? 0) != 0)
-                SizedBox(
-                    height: 40,
-                    child: Text("Choose which score(s) to increase by 2",
-                        style: TextStyle(
-                            color: Homepage.backingColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w800))),
-              if (character.race.mystery2S + (character.subrace?.mystery2S ?? 0) != 0)
-                SizedBox(
-                    height: (character.race.mystery2S +
-                                (character.subrace?.mystery2S ?? 0)) *
-                            62 -
-                        10,
-                    child: ListView.separated(
-                      itemCount: (character.race.mystery2S +
-                          (character.subrace?.mystery2S ?? 0)),
-                      separatorBuilder: (BuildContext context, int index) =>
-                          Divider(
-                        height: 10.0, // amount of pixels
-                        color: Homepage.backgroundColor,
-                      ),
-                      itemBuilder: (BuildContext context, int choiceNumber) {
-                        return Align(
-                            alignment: Alignment.center,
-                            child: ToggleButtons(
-                              selectedColor: Homepage.textColor,
-                              color: Homepage.backingColor,
-                              fillColor: Homepage.backingColor,
-                              textStyle: const TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              borderColor: Homepage.backingColor,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(20)),
-                              borderWidth: 1.5,
-                              onPressed: (int index) {
-                                setState(() {
-                                  if (character.optionalTwosStates![choiceNumber]
-                                      [index]) {
-                                    character.raceAbilityScoreIncreases[index] -= 1;
-                                  } else {
-                                    character.raceAbilityScoreIncreases[index] += 1;
-                                    for (int buttonIndex = choiceNumber;
-                                        buttonIndex <
-                                            character.optionalTwosStates![choiceNumber]
-                                                .length;
-                                        buttonIndex++) {
-                                      if (character.optionalTwosStates![choiceNumber]
-                                          [buttonIndex]) {
-                                        character.optionalTwosStates![choiceNumber]
-                                            [buttonIndex] = false;
-                                        character.raceAbilityScoreIncreases[buttonIndex] -= 1;
-                                      }
-                                    }
-                                  }
-                                  character.optionalTwosStates![choiceNumber][index] =
-                                      !character.optionalTwosStates![choiceNumber][index];
-                                });
-                              },
-                              isSelected: character.optionalTwosStates![choiceNumber],
-                              children: const <Widget>[
-                                Text(" Strength "),
-                                Text(" Dexterity "),
-                                Text(" Constitution "),
-                                Text(" Intelligence "),
-                                Text(" Wisdom "),
-                                Text(" Charisma ")
-                              ],
-                            ));
-                      },
-                    )),
+                        }
+                      }
+                      character.optionalOnesStates![choiceNumber][index] = !character.optionalOnesStates![choiceNumber][index];
+                    });
+                  }
+                ),
+              ],
+              if (character.race.mystery2S + (character.subrace?.mystery2S ?? 0) != 0) ...[
+                buildStyledSmallTextBox(text: "Choose which score(s) to increase by 2"),
+                buildNStyledAsiSelectors(
+                  numbItems: (character.race.mystery2S + (character.subrace?.mystery2S ?? 0)), 
+                  optionalStates: character.optionalTwosStates!,
+                  onPressed:(int choiceNumber, int index, bool isSelected) {
+                    setState(() {
+                      if (character.optionalTwosStates![choiceNumber][index]) {
+                        character.raceAbilityScoreIncreases[index] -= 1;
+                      } else {
+                        character.raceAbilityScoreIncreases[index] += 1;
+                        for (
+                          int buttonIndex = choiceNumber;
+                          buttonIndex < character.optionalTwosStates![choiceNumber].length;
+                          buttonIndex++
+                          ) {
+                            if (character.optionalTwosStates![choiceNumber][buttonIndex]) {
+                              character.optionalTwosStates![choiceNumber][buttonIndex] = false;
+                              character.raceAbilityScoreIncreases[buttonIndex] -= 1;
+                            }
+                        }
+                      }
+                      character.optionalTwosStates![choiceNumber][index] = !character.optionalTwosStates![choiceNumber][index];
+                    });
+                  }
+                )
+              ]                
             ],
           ),
+
           //class
           DefaultTabController(
             length: 2,
@@ -5992,6 +5835,7 @@ class MainCreateCharacter extends State<CreateACharacter>
     return Tab(child: Text(label, style: TextStyle(color: Homepage.textColor)));
   }
 
+  /* Used in: Basics */
   Container buildSectionHeader(String title) {
     return Container(
       width: 330,
@@ -6015,6 +5859,7 @@ class MainCreateCharacter extends State<CreateACharacter>
     );
   }
 
+  /* Used in: Basics */
   CheckboxListTile buildStyledCheckboxListTile({
     required String title,
     required bool? value,
@@ -6029,6 +5874,7 @@ class MainCreateCharacter extends State<CreateACharacter>
     );
   }
 
+  /* Used in: Basics */
   RadioListTile buildStyledRadioListTile({
     required String title,
     required String value,
@@ -6047,6 +5893,7 @@ class MainCreateCharacter extends State<CreateACharacter>
     );
   }
 
+  /* Used in: Basics */
   SizedBox buildStyledTextField({
     required String hintText,
     required TextEditingController textController,
@@ -6071,6 +5918,126 @@ class MainCreateCharacter extends State<CreateACharacter>
             borderRadius: BorderRadius.all(
               Radius.circular(12)))),
         onChanged: onChanged)
+    );
+  }
+
+  /* Used in: Race */
+  Text buildStyledTextBox({
+    required String text,
+    required double size,
+  }) {
+    return Text(text,
+      style: TextStyle(
+        color: Homepage.backingColor,
+        fontSize: size,
+        fontWeight: FontWeight.w800));
+  }
+
+  /* Used in: Race */
+  Text buildStyledSmallTextBox({
+    required String text,
+  }) {
+    return buildStyledTextBox(text: text, size: 20);
+  }
+
+  /* Used in: Race */
+  Text buildStyledMediumTextBox({
+    required String text,
+  }) {
+    return buildStyledTextBox(text: text, size: 25);
+  }
+
+  /* Used in:  */
+  Text buildStyledLargeTextBox({
+    required String text,
+  }) {
+    return buildStyledTextBox(text: text, size: 20);
+  }
+
+  /* Used in: Races */
+  Container buildStyledDropDown({
+    required String? initialValue,
+    required List<Named>? items,
+    required ValueChanged<String?> onChanged,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
+        color: Homepage.backingColor,
+      ),
+      child: DropdownButton<String>(
+        alignment: Alignment.center,
+        value: initialValue,
+        icon: Icon(Icons.arrow_drop_down,
+            color: Homepage.textColor),
+        elevation: 16,
+        style: TextStyle(
+            color: Homepage.textColor,
+            fontWeight: FontWeight.w700),
+        underline: const SizedBox(),
+        onChanged: onChanged,
+        items: items?.map<DropdownMenuItem<String>>((Named value) {
+          return DropdownMenuItem<String>(
+            value: value.name,
+            child: Align(
+                child: Text(value.name,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Homepage.textColor,
+                      decoration: TextDecoration.underline,
+                    ))),
+          );
+        }).toList(),
+        dropdownColor: Homepage.backingColor,
+      ));
+  }
+
+  /* Used in: Races */
+  SizedBox buildNStyledAsiSelectors({
+    required int numbItems,
+    required void Function(int choiceNumber, int index, bool isSelected) onPressed,
+    required List<List<bool>> optionalStates,
+  }) {
+    return SizedBox(
+      height:  numbItems * 62 - 10,
+      child: ListView.separated(
+        itemCount: numbItems,
+        separatorBuilder: (BuildContext context, int index) =>
+            Divider(
+          height: 10.0,
+          color: Homepage.backgroundColor,
+        ),
+        itemBuilder: (BuildContext context, int choiceNumber) {
+          return Align(
+              alignment: Alignment.center,
+              child: ToggleButtons(
+                selectedColor: Homepage.textColor,
+                color: Homepage.backingColor,
+                fillColor: Homepage.backingColor,
+                textStyle: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                ),
+                borderColor: Homepage.backingColor,
+                borderRadius:
+                    const BorderRadius.all(Radius.circular(20)),
+                borderWidth: 1.5,
+                onPressed: (int index) {
+                  bool currentlySelected = optionalStates[choiceNumber][index];
+                  onPressed(choiceNumber, index, currentlySelected);
+                },
+                isSelected: optionalStates[choiceNumber],
+                children: const <Widget>[
+                  Text(" Strength "),
+                  Text(" Dexterity "),
+                  Text(" Constitution "),
+                  Text(" Intelligence "),
+                  Text(" Wisdom "),
+                  Text(" Charisma ")
+                ],
+              ));
+        },
+      )
     );
   }
 
