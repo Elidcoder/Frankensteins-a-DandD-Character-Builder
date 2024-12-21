@@ -2540,6 +2540,8 @@ class EditCharacter extends State<EditACharacter> {
                 backgroundColor: Homepage.backingColor,
                 onPressed: () {
                   Character char = Character(
+                    languageChoices: character.languageChoices,
+                      
                               skillBonusMap: character.skillBonusMap,
                               extraFeatures: character.extraFeatures,
                               group: group,
@@ -2551,8 +2553,6 @@ class EditCharacter extends State<EditACharacter> {
                               allSpellsSelectedAsListsOfThings:
                                   allSpellsSelectedAsListsOfThings,
                               armourList: armourList,
-                              backgroundSkillChoices:
-                                  character.backgroundSkillChoices,
                               characterDescription: CharacterDescription(age: character.characterDescription.age, height: character.characterDescription.height, weight: character.characterDescription.weight, eyes: character.characterDescription.eyes, skin: character.characterDescription.skin, hair: character.characterDescription.hair, backstory: character.characterDescription.backstory, name: character.characterDescription.name, gender: character.characterDescription.gender),
                               playerName: character.playerName,
                               characterExperience: experience,
@@ -2784,6 +2784,7 @@ class EditCharacter extends State<EditACharacter> {
                                           .isEmpty)) {
                                     updateGlobals();
                                     Character char = Character(
+                                      languageChoices: character.languageChoices,
                                             characterDescription: CharacterDescription(age: character.characterDescription.age, height: character.characterDescription.height, weight: character.characterDescription.weight, eyes: character.characterDescription.eyes, skin: character.characterDescription.skin, hair: character.characterDescription.hair, backstory: character.characterDescription.backstory, name: character.characterDescription.name, gender: character.characterDescription.gender),
                                             skillBonusMap:
                                                 character.skillBonusMap,
@@ -2800,8 +2801,6 @@ class EditCharacter extends State<EditACharacter> {
                                             allSpellsSelectedAsListsOfThings:
                                                 allSpellsSelectedAsListsOfThings,
                                             armourList: armourList,
-                                            backgroundSkillChoices: character
-                                                .backgroundSkillChoices,
                                             playerName: character.playerName,
                                             characterExperience: experience,
                                             //bools representing the states of the checkboxes (basics)

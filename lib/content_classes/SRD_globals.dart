@@ -8,7 +8,7 @@ String? jsonString;
 const JsonDecoder decoder = JsonDecoder();
 final dynamic jsonmap = decoder.convert(jsonString ?? "{}");
 
-List<String> LANGUAGELIST = [];
+
 
 List<Feat> FEATLIST = [];
 

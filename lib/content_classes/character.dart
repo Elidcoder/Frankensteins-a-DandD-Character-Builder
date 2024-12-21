@@ -23,8 +23,11 @@ class Character implements Named {
   bool inspired;
   List<String> mainToolProficiencies;
   Map<String, int> skillBonusMap;
-  Queue<int>? skillsSelected;
-  
+
+  // Gained bonuses from background
+  Queue<String> skillsSelected;
+  Queue<String> languageChoices;
+
   String extraFeatures;
   //Basics
   Map<String, List<String>> speedBonuses;
@@ -64,7 +67,6 @@ class Character implements Named {
   String backgroundIdeal;
   String backgroundBond;
   String backgroundFlaw;
-  List<bool> backgroundSkillChoices;
 
   //Ability scores
   AbilityScore strength;
@@ -111,7 +113,8 @@ class Character implements Named {
     "ClassLevels": classLevels,
     "Inspired": inspired,
     "MainToolProficiencies": mainToolProficiencies,
-    "SkillsSelected": skillsSelected?.toList(),
+    "SkillsSelected": skillsSelected.toList(),
+    "LanguageChoices": languageChoices.toList(),
     "SpeedBonuses": speedBonuses,
     "ACList": ACList,
     "FeatsAllowed": featsAllowed,
@@ -141,14 +144,12 @@ class Character implements Named {
     "BackgroundIdeal": backgroundIdeal,
     "BackgroundBond": backgroundBond,
     "BackgroundFlaw": backgroundFlaw,
-    "BackgroundSkillChoices": backgroundSkillChoices,
     "Strength": strength,
     "Dexterity": dexterity,
     "Constitution": constitution,
     "Intelligence": intelligence,
     "Wisdom": wisdom,
     "Charisma": charisma,
-    //"PointsRemaining": pointsRemaining,
     "LevelsPerClass": levelsPerClass,
     "AllSelected": allSelected,
     "ClassSubclassMapper": classSubclassMapper,
@@ -185,8 +186,6 @@ class Character implements Named {
             as List<List<dynamic>>;
     final armourList_ = data["ArmourList"].cast<String>() as List<String>;
     final averageHitPoints_ = data["AverageHitPoints"] as bool;
-    final backgroundSkillChoices_ =
-        data["BackgroundSkillChoices"].cast<bool>() as List<bool>;
     final characterDescription_ = CharacterDescription.fromJson(data["CharacterDescription"]);
 
     final criticalRoleContent_ = data["CriticalRoleContent"] as bool;
@@ -230,9 +229,8 @@ class Character implements Named {
       subrace_ = Subrace.fromJson(data["Subrace"]);
     }
 
-    final skillsSelected_ = Queue<int>()
-            .addAll(data["SkillsSelected"]?.cast<int>() as List<int>? ?? [])
-        as Queue<int>?;
+    final languageChoices_ = Queue<String>.from((data["LanguageChoices"]??[]).cast<String>());
+    final skillsSelected_ =  Queue<String>.from((data["SkillsSelected"]??[]).cast<String>());
     final mainToolProficiencies_ =
         data["MainToolProficiencies"].cast<String>() as List<String>;
     final savingThrowProficiencies_ =
@@ -282,7 +280,6 @@ class Character implements Named {
       allSpellsSelectedAsListsOfThings: allSpellsSelectedAsListsOfThings_,
       armourList: armourList_,
       averageHitPoints: averageHitPoints_,
-      backgroundSkillChoices: backgroundSkillChoices_,
       group: group_,
       criticalRoleContent: criticalRoleContent_,
       encumberanceRules: encumberanceRules_,
@@ -305,6 +302,7 @@ class Character implements Named {
       languagesKnown: languagesKnown_,
       featuresAndTraits: featuresAndTraits_,
       skillsSelected: skillsSelected_,
+      languageChoices: languageChoices_,
       stackableEquipmentSelected: stackableEquipmentSelected_,
       unstackableEquipmentSelected: unstackableEquipmentSelected_,
       subrace: subrace_,
@@ -349,7 +347,6 @@ class Character implements Named {
       required this.allSpellsSelectedAsListsOfThings,
       required this.armourList,
       required this.featsSelected,
-      required this.backgroundSkillChoices,
       required this.itemList,
       required this.equipmentSelectedFromChoices,
       required this.optionalOnesStates,
@@ -362,6 +359,7 @@ class Character implements Named {
       required this.classList,
       required this.stackableEquipmentSelected,
       required this.skillsSelected,
+      required this.languageChoices,
       required this.mainToolProficiencies,
       required this.savingThrowProficiencies,
       required this.skillProficiencies,
@@ -429,6 +427,7 @@ class Character implements Named {
       mainToolProficiencies: mainToolProficiencies,
       skillBonusMap: skillBonusMap,
       skillsSelected: skillsSelected, 
+      languageChoices: languageChoices,
       speedBonuses: speedBonuses,
       ACList: ACList,
       featsAllowed: featsAllowed,
@@ -458,7 +457,6 @@ class Character implements Named {
       backgroundIdeal: backgroundIdeal,
       backgroundBond: backgroundBond,
       backgroundFlaw: backgroundFlaw,
-      backgroundSkillChoices: backgroundSkillChoices,
       strength: strength,
       dexterity: dexterity,
       constitution: constitution,
@@ -524,11 +522,6 @@ class Character implements Named {
       allSpellsSelected: [],
       allSpellsSelectedAsListsOfThings: [],
       armourList: [],
-      backgroundSkillChoices: (List.filled(BACKGROUNDLIST.first.numberOfSkillChoices ?? 0, true) +
-          List.filled(
-              (BACKGROUNDLIST.first.optionalSkillProficiencies?.length ?? 0) -
-                  (BACKGROUNDLIST.first.numberOfSkillChoices ?? 0),
-              false)),
       featsSelected: [],
       itemList: [],
       equipmentSelectedFromChoices: [],
@@ -558,8 +551,8 @@ class Character implements Named {
       stackableEquipmentSelected: {},
       unstackableEquipmentSelected: [],
       classSkillsSelected: [],
-      skillsSelected: Queue<int>.from(
-      Iterable.generate(BACKGROUNDLIST.first.numberOfSkillChoices ?? 0)),
+      skillsSelected: Queue(),
+      languageChoices: Queue(),
       mainToolProficiencies: [],
       savingThrowProficiencies: [],
       languagesKnown: ["Common"],

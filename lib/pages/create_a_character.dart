@@ -913,6 +913,16 @@ class MainCreateCharacter extends State<CreateACharacter>
 
   Character character = Character.createDefault();
 
+  List<bool> get backgroundSelectedSkills {
+    List<String> options = character.background.optionalSkillProficiencies ?? [];
+    return options.map((x) => character.skillsSelected.contains(x)).toList();
+  }
+
+  List<bool> get backgroundSelectedLanguages {
+    List<String> options = character.background.getLanguageOptions();
+    return options.map((x) => character.languageChoices.contains(x)).toList();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -1064,8 +1074,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         characterLevel = value!;
                                       });
                                     },
-                                    items: [for (var i = 1; i <= 20; i += 1) i.toString()]
-                                      .where((e) => int.parse(e) >= int.parse(characterLevel ?? "1"))
+                                    items: [for (var i = int.parse(characterLevel ?? "1"); i <= 20; i += 1) i.toString()]
                                       .toList()
                                       .map<DropdownMenuItem<String>>(
                                           (String value) {
@@ -1751,434 +1760,131 @@ class MainCreateCharacter extends State<CreateACharacter>
               child: Column(
                 children: [
                   const SizedBox(height: 24),
-                  Text("Select your character's race",
-                      style: TextStyle(
-                          color: Homepage.backingColor,
-                          fontSize: 25,
-                          fontWeight: FontWeight.w800)),
+                  buildStyledMediumTextBox(text: "Select your character's background"),
                   const SizedBox(height: 8),
-                  Container(
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
-                        color: Homepage.backingColor,
-                      ),
-                      height: 45,
-                      child: DropdownButton<String>(
-                          hint: const Center(
-                            child: Text("Select an option"),
-                          ),
-                          alignment: Alignment.center,
-                          onChanged: (String? value) {
-                            // This is called when the user selects an item.
-                            setState(() {
-                              character.background = BACKGROUNDLIST
-                                  .singleWhere((x) => x.name == value);
-                              character.backgroundPersonalityTrait =
-                                  character.background.personalityTrait.first;
-                              character.backgroundIdeal = character.background.ideal.first;
-                              character.backgroundBond = character.background.bond.first;
-                              character.backgroundFlaw = character.background.flaw.first;
-                              character.backgroundSkillChoices = List.filled(
-                                      character.background.numberOfSkillChoices ??
-                                          0,
-                                      true) +
-                                  List.filled(
-                                      (character.background
-                                                  .optionalSkillProficiencies
-                                                  ?.length ??
-                                              0) -
-                                          (character.background
-                                                  .numberOfSkillChoices ??
-                                              0),
-                                      false);
-                              character.skillsSelected = Queue<int>.from(
-                                  Iterable.generate(
-                                      character.background.numberOfSkillChoices ??
-                                          0));
-                              //
-                            });
-                          },
-                          value: character.background.name,
-                          icon: Icon(Icons.arrow_downward,
-                              color: Homepage.textColor),
-                          items: BACKGROUNDLIST.map<DropdownMenuItem<String>>(
-                              (Background value) {
-                            return DropdownMenuItem<String>(
-                              value: value.name,
-                              child: Align(
-                                  child: Text(value.name,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Homepage.textColor,
-                                        decoration: TextDecoration.underline,
-                                      ))),
-                            );
-                          }).toList(),
-                          dropdownColor: Homepage.backingColor,
-                          elevation: 2,
-                          underline: const SizedBox(),
-                          style: TextStyle(
-                              color: Homepage.textColor,
-                              fontWeight: FontWeight.w700))),
+                  buildStyledDropDown(
+                    initialValue: character.background.name, 
+                    items: BACKGROUNDLIST, 
+                    onChanged: (String? value) {                            
+                      setState(() {
+                        character.background = BACKGROUNDLIST.singleWhere((x) => x.name == value);
+                        character.backgroundPersonalityTrait = character.background.personalityTrait.first;
+                        character.backgroundIdeal = character.background.ideal.first;
+                        character.backgroundBond = character.background.bond.first;
+                        character.backgroundFlaw = character.background.flaw.first;
+                        character.skillsSelected.clear();
+                        backgroundSelectedSkills;
+                        character.languageChoices.clear();
+                      });
+                    }
+                  ),
+                  
                   //Personality Trait
-                  const SizedBox(height: 10),
-                  Text("Select your character's personality trait",
-                      style: TextStyle(
-                          color: Homepage.backingColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w800)),
-                  const SizedBox(height: 8),
-                  Container(
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
-                        color: Homepage.backingColor,
-                      ),
-                      height: 45,
-                      child: DropdownButton<String>(
-                        alignment: Alignment.center,
-                        onChanged: (String? value) {
-                          // This is called when the user selects an item.
-                          setState(() {
-                            character.backgroundPersonalityTrait = character.background
+                  buildLabeledDropdown(
+                    labelText: "Select your character's personality trait",
+                    items: character.background.personalityTrait, 
+                    selectedValue: character.backgroundPersonalityTrait,
+                    onChanged: (String? value) {
+                      setState(() {
+                        character.backgroundPersonalityTrait = character.background
                                 .personalityTrait
                                 .singleWhere((x) => x == value);
-                          });
-                        },
-                        value: character.backgroundPersonalityTrait,
-                        icon: Icon(Icons.arrow_downward,
-                            color: Homepage.textColor),
-                        items: character.background.personalityTrait
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Align(
-                                child: Text(value,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Homepage.textColor,
-                                        decoration: TextDecoration.underline))),
-                          );
-                        }).toList(),
-                        dropdownColor: Homepage.backingColor,
-                        elevation: 2,
-                        underline: const SizedBox(),
-                        style: TextStyle(
-                            color: Homepage.textColor,
-                            fontWeight: FontWeight.w700),
-                      )),
-
+                      });
+                    }
+                  ),
+                  
                   //Ideal
-                  const SizedBox(height: 10),
-                  Text("Select your character's ideal",
-                      style: TextStyle(
-                          color: Homepage.backingColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w800)),
-                  const SizedBox(height: 8),
-                  Container(
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
-                        color: Homepage.backingColor,
-                      ),
-                      height: 45,
-                      child: DropdownButton<String>(
-                        alignment: Alignment.center,
-                        onChanged: (String? value) {
-                          // This is called when the user selects an item.
-                          setState(() {
-                            character.backgroundIdeal = character.background.ideal
+                  buildLabeledDropdown(
+                    labelText: "Select your character's ideal",
+                    items: character.background.ideal,
+                    selectedValue: character.backgroundIdeal,
+                    onChanged: (String? value) {
+                      setState(() {
+                        character.backgroundIdeal = character.background.ideal
                                 .singleWhere((x) => x == value);
-                          });
-                        },
-                        value: character.backgroundIdeal,
-                        icon: Icon(Icons.arrow_downward,
-                            color: Homepage.textColor),
-                        items: character.background.ideal
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Center(
-                                child: Text(" $value",
-                                    textAlign: TextAlign.center,
-                                    style:
-                                        TextStyle(color: Homepage.textColor))),
-                          );
-                        }).toList(),
-                        dropdownColor: Homepage.backingColor,
-                        elevation: 2,
-                        underline: const SizedBox(),
-                        style: TextStyle(
-                            color: Homepage.textColor,
-                            decoration: TextDecoration.underline,
-                            fontWeight: FontWeight.w700),
-                      )),
+                      });
+                    }
+                  ),
+                  
                   //Bond
-                  const SizedBox(height: 10),
-                  Text("Select your character's bond",
-                      style: TextStyle(
-                          color: Homepage.backingColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w800)),
-                  const SizedBox(height: 8),
-                  Container(
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
-                        color: Homepage.backingColor,
-                      ),
-                      height: 45,
-                      child: DropdownButton<String>(
-                          alignment: Alignment.center,
-                          onChanged: (String? value) {
-                            // This is called when the user selects an item.
-                            setState(() {
-                              character.backgroundBond = character.background.bond
+                  buildLabeledDropdown(
+                    labelText: "Select your character's bond",
+                    items: character.background.bond, 
+                    selectedValue: character.backgroundBond,
+                    onChanged: (String? value) {
+                      setState(() {
+                        character.backgroundBond = character.background.bond
                                   .singleWhere((x) => x == value);
-                            });
-                          },
-                          value: character.backgroundBond,
-                          icon: Icon(Icons.arrow_downward,
-                              color: Homepage.textColor),
-                          items: character.background.bond
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Center(
-                                  child: Text(" $value",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Homepage.textColor))),
-                            );
-                          }).toList(),
-                          dropdownColor: Homepage.backingColor,
-                          elevation: 2,
-                          underline: const SizedBox(),
-                          style: TextStyle(
-                            color: Homepage.textColor,
-                            decoration: TextDecoration.underline,
-                            fontWeight: FontWeight.w700,
-                          ))),
+                      });
+                    }
+                  ),
+                  
                   //Flaw
-                  const SizedBox(height: 10),
-                  Text("Select your character's flaw",
-                      style: TextStyle(
-                          color: Homepage.backingColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w800)),
-                  const SizedBox(height: 8),
-                  Container(
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
-                        color: Homepage.backingColor,
-                      ),
-                      height: 45,
-                      child: DropdownButton<String>(
-                          alignment: Alignment.center,
-                          onChanged: (String? value) {
-                            // This is called when the user selects an item.
-                            setState(() {
-                              character.backgroundFlaw = character.background.flaw
+                  buildLabeledDropdown(
+                    labelText: "Select your character's flaw",
+                    items: character.background.flaw, 
+                    selectedValue: character.backgroundFlaw,
+                    onChanged: (String? value) {
+                      setState(() {
+                        character.backgroundFlaw = character.background.flaw
                                   .singleWhere((x) => x == value);
-                            });
-                          },
-                          value: character.backgroundFlaw,
-                          icon: Icon(Icons.arrow_downward,
-                              color: Homepage.textColor),
-                          items: character.background.flaw
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Center(
-                                  child: Text(" $value",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Homepage.textColor))),
-                            );
-                          }).toList(),
-                          dropdownColor: Homepage.backingColor,
-                          elevation: 2,
-                          underline: const SizedBox(),
-                          style: TextStyle(
-                            color: Homepage.textColor,
-                            decoration: TextDecoration.underline,
-                            fontWeight: FontWeight.w700,
-                          ))),
-                  //really poor programming in general with the over use of ! - try fix although it isn't an issue this way
-                  if (character.background.numberOfSkillChoices != null)
-                    Text(
-                        "Pick ${(character.background.numberOfSkillChoices)} skill(s) to gain proficiency in",
-                        style: TextStyle(
-                            color: Homepage.backingColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w800)),
-                  const SizedBox(
-                    height: 7,
+                      });
+                    }
                   ),
-                  if (character.background.numberOfSkillChoices != null)
-                    ToggleButtons(
-                        selectedColor: const Color.fromARGB(255, 0, 79, 206),
-                        color: Colors.blue,
-                        textStyle: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                            color: Colors.white),
-                        //color: Color.fromARGB(255, 15, 124, 174)
-                        fillColor: const Color.fromARGB(162, 0, 255, 8),
-                        borderColor: Colors.black,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20)),
-                        borderWidth: 1.5,
-                        onPressed: (int index) {
-                          setState(() {
-                            //bsckgroundskillchoices
-                            if (character.skillsSelected!.contains(index)) {
-                              character.skillsSelected!.remove(index);
-                              character.backgroundSkillChoices[index] = false;
-                            } else {
-                              if (character.skillsSelected!.length ==
-                                  character.background.numberOfSkillChoices) {
-                                int removed = character.skillsSelected!.removeFirst();
-                                character.backgroundSkillChoices[removed] = false;
-                              }
-                              character.skillsSelected!.add(index);
-                              character.backgroundSkillChoices[index] = true;
-                            }
-                          });
-                        },
-                        isSelected: character.backgroundSkillChoices,
-                        children: character.background.optionalSkillProficiencies!
-                            .map((x) => Text(" $x "))
-                            .toList()),
-                  /*if (character.background.numberOfSkillChoices != null)
-                    MultiSelectContainer(
-                        prefix: MultiSelectPrefix(
-                            selectedPrefix: const Padding(
-                              padding: EdgeInsets.only(right: 5),
-                              child: Icon(
-                                Icons.check,
-                                color: Color.fromARGB(255, 0, 255, 8),
-                                size: 20,
-                              ),
-                            ),
-                            enabledPrefix: const Padding(
-                              padding: EdgeInsets.only(right: 5),
-                              child: Icon(
-                                //Icons.do_disturb_alt_sharp,
-                                Icons.close,
-                                size: 20,
-                                color: Color.fromARGB(255, 158, 154, 154),
-                              ),
-                            )),
-                        textStyles: const MultiSelectTextStyles(
-                            textStyle: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18,
-                                color: Colors.white),
-                            selectedTextStyle: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18,
-                              //color: Color.fromARGB(255, 15, 124, 174)
-                            )),
-                        itemsDecoration: MultiSelectDecorations(
-                          selectedDecoration: BoxDecoration(
-                              gradient: const LinearGradient(colors: [
-                                Color.fromARGB(220, 52, 46, 243),
-                                Color.fromARGB(220, 0, 242, 255)
-                              ]),
-                              border: Border.all(
-                                  width: 0.8,
-                                  color:
-                                      const Color.fromARGB(220, 63, 254, 73)),
-                              borderRadius: BorderRadius.circular(15)),
-                          decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 124, 112, 112),
-                              border: Border.all(
-                                  color: const Color.fromARGB(255, 61, 59, 59)),
-                              borderRadius: BorderRadius.circular(15)),
-                        ),
-                        maxSelectableCount:
-                            character.background.numberOfSkillChoices,
-                        items: [
-                          for (var x
-                              in character.background.optionalSkillProficiencies ??
-                                  [])
-                            MultiSelectCard(value: x, label: x)
-                        ],
-                        onChange: (allSelectedItems, selectedItem) {}),*/
-                  if (character.background.numberOfLanguageChoices != null)
-                    Text(
-                        "Pick ${(character.background.numberOfLanguageChoices)} language(s) to learn",
-                        style: TextStyle(
-                            color: Homepage.backingColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w800)),
-                  const SizedBox(
-                    height: 7,
-                  ),
-                  if (character.background.numberOfLanguageChoices != null)
-                    MultiSelectContainer(
-                        prefix: MultiSelectPrefix(
-                            selectedPrefix: const Padding(
-                              padding: EdgeInsets.only(right: 5),
-                              child: Icon(
-                                Icons.check,
-                                color: Color.fromARGB(255, 0, 255, 8),
-                                size: 20,
-                              ),
-                            ),
-                            enabledPrefix: const Padding(
-                              padding: EdgeInsets.only(right: 5),
-                              child: Icon(
-                                //Icons.do_disturb_alt_sharp,
-                                Icons.close,
-                                size: 20,
-                                color: Color.fromARGB(255, 158, 154, 154),
-                              ),
-                            )),
-                        textStyles: const MultiSelectTextStyles(
-                            textStyle: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18,
-                                color: Colors.white),
-                            selectedTextStyle: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18,
-                              //color: Color.fromARGB(255, 15, 124, 174)
-                            )),
-                        itemsDecoration: MultiSelectDecorations(
-                          selectedDecoration: BoxDecoration(
-                              gradient: const LinearGradient(colors: [
-                                Color.fromARGB(220, 52, 46, 243),
-                                Color.fromARGB(220, 0, 242, 255)
-                              ]),
-                              border: Border.all(
-                                  width: 0.8,
-                                  color:
-                                      const Color.fromARGB(220, 63, 254, 73)),
-                              borderRadius: BorderRadius.circular(15)),
-                          decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 124, 112, 112),
-                              border: Border.all(
-                                  color: const Color.fromARGB(255, 61, 59, 59)),
-                              borderRadius: BorderRadius.circular(15)),
-                        ),
-                        maxSelectableCount:
-                            character.background.numberOfLanguageChoices,
-                        items: [
-                          for (var x in LANGUAGELIST)
-                            MultiSelectCard(value: x, label: x)
-                        ],
-                        onChange: (allSelectedItems, selectedItem) {
-                          if (allSelectedItems.contains(selectedItem)) {
-                            character.languagesKnown.add(selectedItem as String);
+                  
+                  // Select background provided skills if the character gets some and there are options for skills
+                  if (character.background.numberOfSkillChoices != 0 && character.background.optionalSkillProficiencies.isNotEmpty) ...[
+                    buildStyledSmallTextBox(text: "Pick ${(character.background.numberOfSkillChoices)} skill(s) to gain proficiency in"),
+                    const SizedBox(height: 7),
+                    buildStyledToggleSelector(
+                      isSelected: backgroundSelectedSkills,
+                      itemLabels: character.background.optionalSkillProficiencies, 
+                      onPressed: (int index, bool _) {
+                        setState(() {
+                          List<String> skillOptions = character.background.optionalSkillProficiencies;
+                          assert(skillOptions.length > index, "Index out of bounds");
+
+                          String skill = skillOptions[index];
+                          if (character.skillsSelected.contains(skill)) {
+                            character.skillsSelected.remove(skill);
                           } else {
-                            character.languagesKnown.remove(selectedItem as String);
+                            character.skillsSelected.add(skill);
+                            if (character.skillsSelected.length > character.background.numberOfSkillChoices) {
+                              character.skillsSelected.removeFirst();
+                            }
                           }
-                        }),
+                          backgroundSelectedSkills;
+                        });
+                      }
+                    ) 
+                  ],
+
+                  // Select background provided languages
+                  if (character.background.numberOfLanguageChoices != 0) ...[
+                    buildStyledSmallTextBox(text: "Pick ${(character.background.numberOfLanguageChoices)} language(s) to learn"),
+                    const SizedBox(height: 7),
+                    buildStyledToggleSelector(
+                      isSelected: backgroundSelectedLanguages,
+                      itemLabels: character.background.getLanguageOptions(), 
+                      onPressed: (int index, bool _) {
+                        setState(() {
+                          List<String> langOptions = character.background.getLanguageOptions();
+                          assert(langOptions.length > index, "Index out of bounds");
+
+                          String language = langOptions[index];
+                          if (character.languageChoices .contains(language)) {
+                            character.languageChoices.remove(language);
+                          } else {
+                            character.languageChoices.add(language);
+                            if (character.languageChoices.length > character.background.numberOfLanguageChoices) {
+                              character.languageChoices.removeFirst();
+                            }
+                          }
+                          backgroundSelectedSkills;
+                        });
+                      }
+                    )
+                  ]
                 ],
               )),
           //ability scores
@@ -5954,42 +5660,109 @@ class MainCreateCharacter extends State<CreateACharacter>
     return buildStyledTextBox(text: text, size: 20);
   }
 
-  /* Used in: Races */
+  /* Helper function */
+  DropdownButton<String> buildBaseDropdownButton({
+  required String? value,
+  required List<String> items,
+  required ValueChanged<String?> onChanged,
+  }) {
+    return DropdownButton<String>(
+      alignment: Alignment.center,
+      dropdownColor: Homepage.backingColor,
+      hint: const Center(child: Text("Select an option")),
+      value: value,
+      underline: const SizedBox(),
+      icon: Icon(Icons.arrow_drop_down, color: Homepage.textColor,),
+      style: TextStyle(
+        color: Homepage.textColor,
+        fontWeight: FontWeight.w700,
+      ),
+      onChanged: onChanged,
+      items: items.map<DropdownMenuItem<String>>((String itemValue) {
+        return DropdownMenuItem<String>(
+          value: itemValue,
+          child: Align(
+            child: Text(
+              itemValue,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Homepage.textColor,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+
+  /* Used in: Races, Background */
   Container buildStyledDropDown({
     required String? initialValue,
     required List<Named>? items,
     required ValueChanged<String?> onChanged,
   }) {
+    final itemNames = items?.map((e) => e.name).toList() ?? [];
     return Container(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(5)),
         color: Homepage.backingColor,
       ),
-      child: DropdownButton<String>(
-        alignment: Alignment.center,
-        value: initialValue,
-        icon: Icon(Icons.arrow_drop_down,
-            color: Homepage.textColor),
-        elevation: 16,
-        style: TextStyle(
-            color: Homepage.textColor,
-            fontWeight: FontWeight.w700),
-        underline: const SizedBox(),
-        onChanged: onChanged,
-        items: items?.map<DropdownMenuItem<String>>((Named value) {
-          return DropdownMenuItem<String>(
-            value: value.name,
-            child: Align(
-                child: Text(value.name,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Homepage.textColor,
-                      decoration: TextDecoration.underline,
-                    ))),
-          );
-        }).toList(),
-        dropdownColor: Homepage.backingColor,
-      ));
+      height: 45,
+      child: buildBaseDropdownButton(value: initialValue, items: itemNames, onChanged: onChanged)
+    );
+  }
+
+  /*Used in Background
+  Takes a title and items (List<String>) and creates a dropdown of the items with the title given */
+  Widget buildLabeledDropdown({
+    required String labelText,
+    required String? selectedValue,
+    required List<String> items,
+    required ValueChanged<String?> onChanged,
+  }) {
+    return Column(
+      children: [
+        const SizedBox(height: 10),
+        buildStyledSmallTextBox(text: labelText),
+        const SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
+            color: Homepage.backingColor,
+          ),
+          height: 45,
+          child: buildBaseDropdownButton(value: selectedValue, items: items, onChanged: onChanged),
+        ),
+      ],
+    );
+  }
+
+  ToggleButtons buildStyledToggleSelector({
+  required List<bool> isSelected,
+  required void Function(int index, bool currentlySelected) onPressed,
+  required List<String> itemLabels,
+  }) {
+    return ToggleButtons(
+      selectedColor: Homepage.textColor,
+      color: Homepage.backingColor,
+      fillColor: Homepage.backingColor,
+      textStyle: const TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.w700,
+    ),
+      borderColor: Homepage.backingColor,
+      borderRadius: const BorderRadius.all(Radius.circular(20)),
+      borderWidth: 1.5,
+      onPressed: (int index) {
+        bool currentlySelected = isSelected[index];
+        onPressed(index, currentlySelected);
+      },
+      isSelected: isSelected,
+      children: itemLabels.map((label) => Text(" $label ")).toList(),
+    );
+        
   }
 
   /* Used in: Races */
@@ -5998,44 +5771,27 @@ class MainCreateCharacter extends State<CreateACharacter>
     required void Function(int choiceNumber, int index, bool isSelected) onPressed,
     required List<List<bool>> optionalStates,
   }) {
+    assert(numbItems <= optionalStates.length, 
+    "itemCount should not exceed the length of optionalStates");
+    assert(numbItems >= 0, 
+    "itemCount should not be negative");
     return SizedBox(
       height:  numbItems * 62 - 10,
       child: ListView.separated(
         itemCount: numbItems,
         separatorBuilder: (BuildContext context, int index) =>
-            Divider(
-          height: 10.0,
-          color: Homepage.backgroundColor,
-        ),
+          Divider(height: 10.0, color: Homepage.backgroundColor),
         itemBuilder: (BuildContext context, int choiceNumber) {
           return Align(
-              alignment: Alignment.center,
-              child: ToggleButtons(
-                selectedColor: Homepage.textColor,
-                color: Homepage.backingColor,
-                fillColor: Homepage.backingColor,
-                textStyle: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
-                ),
-                borderColor: Homepage.backingColor,
-                borderRadius:
-                    const BorderRadius.all(Radius.circular(20)),
-                borderWidth: 1.5,
-                onPressed: (int index) {
-                  bool currentlySelected = optionalStates[choiceNumber][index];
-                  onPressed(choiceNumber, index, currentlySelected);
-                },
-                isSelected: optionalStates[choiceNumber],
-                children: const <Widget>[
-                  Text(" Strength "),
-                  Text(" Dexterity "),
-                  Text(" Constitution "),
-                  Text(" Intelligence "),
-                  Text(" Wisdom "),
-                  Text(" Charisma ")
-                ],
-              ));
+            alignment: Alignment.center,
+            child: buildStyledToggleSelector(
+              isSelected: optionalStates[choiceNumber],
+              onPressed: (index, currentlySelected) {
+                onPressed(choiceNumber, index, currentlySelected);
+              },
+              itemLabels: ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
+            )  
+          );
         },
       )
     );

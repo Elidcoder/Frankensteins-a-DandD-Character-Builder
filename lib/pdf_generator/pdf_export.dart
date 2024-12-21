@@ -61,11 +61,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
               .indexOf(element)])
           .toList()
       : [];
-  final List<String> skillsSelected = [
-    for (var x in userCharacter.skillsSelected?.toList() ?? [])
-      userCharacter.background.optionalSkillProficiencies?[x] ??
-          "ERROR IN pdf_export.dart"
-  ];
+  final List<String> skillsSelected = userCharacter.skillsSelected.toList();
   //var a = CLASSLIST[0];
   Map<int, int> proficiencyBonus = {
     0: 0,
