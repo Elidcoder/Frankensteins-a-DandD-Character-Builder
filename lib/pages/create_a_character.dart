@@ -914,7 +914,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                       buildSectionHeader("Character info"),
                       const SizedBox(height: 25),
                       //Character name input
-                      buildStyledTextField(
+                      buildStyledSmallTextField(
                         hintText: "Enter character's name", 
                         textController: nameEnterController, 
                         onChanged: (characterNameEnteredValue) {
@@ -924,7 +924,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                       ),
                       const SizedBox(height: 15),
                       //Player name input
-                      buildStyledTextField(
+                      buildStyledSmallTextField(
                         hintText: "Enter the player's name", 
                         textController: playerNameEnterController, 
                         onChanged: (playerNameEnteredValue) {
@@ -934,7 +934,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                       ),
                       const SizedBox(height: 15),
                       //Character gender input
-                      buildStyledTextField(
+                      buildStyledSmallTextField(
                         hintText: "Enter the character's gender", 
                         textController: genderEnterController, 
                         onChanged:  (characterGenderEnteredValue) {
@@ -965,7 +965,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                             //otherwise display the use levels radio tile
                             Container(
                               child: (levellingMethod == "Experience") ? 
-                                buildStyledTextField(
+                                buildStyledSmallTextField(
                                   hintText: "Enter the character's exp", 
                                   textController: experienceEnterController, 
                                   onChanged:  (characterExperienceEnteredValue) {
@@ -3736,330 +3736,143 @@ class MainCreateCharacter extends State<CreateACharacter>
                           ))),
                 ],
               )),
-          //Backstory
+          
+          // Backstory Tab
           SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(children: [
-                const SizedBox(
-                  height: 20,
-                  width: 10,
-                ),
-                Text(
-                  textAlign: TextAlign.center,
-                  "Character Information:",
-                  style: TextStyle(
-                      fontSize: 35,
-                      fontWeight: FontWeight.w700,
-                      color: Homepage.backingColor),
-                ),
-                const SizedBox(
-                  height: 10,
-                  width: 10,
-                ),
+                // Character Description
+                const SizedBox(height: 20, width: 10),
+                buildStyledLargeTextBox(text: "Character Information:"),
+                const SizedBox(height: 10, width: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    // Age and Eyes
                     Column(
                       children: [
-                        //age text
-                        Text(
-                          textAlign: TextAlign.center,
-                          "Age:",
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w700,
-                              color: Homepage.backingColor),
+                        buildStyledMediumTextBox(text: "Age:"),
+                        const SizedBox(height: 10),
+                        buildStyledSmallTextField(
+                        hintText: "Enter character's age", 
+                        textController: ageEnterController, 
+                        onChanged:(characterAgeEnteredValue) {
+                            setState(() {
+                              character.characterDescription.age = characterAgeEnteredValue;
+                            });
+                          }
                         ),
                         const SizedBox(height: 10),
-                        //age input
-                        SizedBox(
-                          width: 250,
-                          height: 50,
-                          child: TextField(
-                              controller: ageEnterController,
-                              cursorColor: Homepage.textColor,
-                              style: TextStyle(color: Homepage.textColor),
-                              decoration: InputDecoration(
-                                  hintText: "Enter character's age",
-                                  hintStyle: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: Homepage.textColor),
-                                  filled: true,
-                                  fillColor: Homepage.backingColor,
-                                  border: const OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(12)))),
-                              onChanged: (characterAgeEnteredValue) {
-                                setState(() {
-                                  character.characterDescription.age = characterAgeEnteredValue;
-                                });
-                              }),
-                        ),
+
+                        buildStyledMediumTextBox(text: "Eyes:"),
                         const SizedBox(height: 10),
-                        //eye text
-                        Text(
-                          textAlign: TextAlign.center,
-                          "Eyes:",
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w700,
-                              color: Homepage.backingColor),
-                        ),
-                        const SizedBox(height: 10),
-                        //eye input
-                        SizedBox(
-                          width: 250,
-                          height: 50,
-                          child: TextField(
-                              controller: eyeColourController,
-                              cursorColor: Homepage.textColor,
-                              style: TextStyle(color: Homepage.textColor),
-                              decoration: InputDecoration(
-                                  hintText: "Describe your character's eyes",
-                                  hintStyle: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: Homepage.textColor),
-                                  filled: true,
-                                  fillColor: Homepage.backingColor,
-                                  border: const OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(12)))),
-                              onChanged: (characterEyeEnteredValue) {
-                                setState(() {
-                                  character.characterDescription.eyes = characterEyeEnteredValue;
-                                });
-                              }),
+                        buildStyledSmallTextField(
+                        hintText: "Describe your character's eyes", 
+                        textController: eyeColourController, 
+                        onChanged:(characterEyeEnteredValue) {
+                            setState(() {
+                              character.characterDescription.eyes = characterEyeEnteredValue;
+                            });
+                          }
                         ),
                       ],
                     ),
                     const SizedBox(width: 10, height: 100),
+
+                    // Height and Skin
                     Column(
                       children: [
-                        Text(
-                          textAlign: TextAlign.center,
-                          "Height:",
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w700,
-                              color: Homepage.backingColor),
+                        buildStyledMediumTextBox(text: "Height:"),
+                        const SizedBox(height: 10),
+                        buildStyledSmallTextField(
+                        hintText: "Enter character's height", 
+                        textController: heightEnterController, 
+                        onChanged:(characterHeightEnteredValue) {
+                            setState(() {
+                              character.characterDescription.height = characterHeightEnteredValue;
+                            });
+                          }
                         ),
                         const SizedBox(height: 10),
-                        SizedBox(
-                          width: 250,
-                          height: 50,
-                          child: TextField(
-                              controller: heightEnterController,
-                              cursorColor: Homepage.textColor,
-                              style: TextStyle(color: Homepage.textColor),
-                              decoration: InputDecoration(
-                                  hintText: "Enter character's height",
-                                  hintStyle: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: Homepage.textColor),
-                                  filled: true,
-                                  fillColor: Homepage.backingColor,
-                                  border: const OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(12)))),
-                              onChanged: (characterHeightEnteredValue) {
-                                setState(() {
-                                  character.characterDescription.height = characterHeightEnteredValue;
-                                });
-                              }),
-                        ),
+
+                        buildStyledMediumTextBox(text: "Skin:"),
                         const SizedBox(height: 10),
-                        Text(
-                          textAlign: TextAlign.center,
-                          "Skin:",
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w700,
-                              color: Homepage.backingColor),
-                        ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          width: 250,
-                          height: 50,
-                          child: TextField(
-                              controller: skinEnterController,
-                              cursorColor: Homepage.textColor,
-                              style: TextStyle(color: Homepage.textColor),
-                              decoration: InputDecoration(
-                                  hintText: "Describe your character's skin",
-                                  hintStyle: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: Homepage.textColor),
-                                  filled: true,
-                                  fillColor: Homepage.backingColor,
-                                  border: const OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(12)))),
-                              onChanged: (characterSkinEnteredValue) {
-                                setState(() {
-                                  character.characterDescription.skin = characterSkinEnteredValue;
-                                });
-                              }),
+                        buildStyledSmallTextField(
+                        hintText: "Describe your character's skin", 
+                        textController: skinEnterController, 
+                        onChanged:(characterSkinEnteredValue) {
+                            setState(() {
+                              character.characterDescription.skin = characterSkinEnteredValue;
+                            });
+                          }
                         ),
                       ],
                     ),
                     const SizedBox(width: 10, height: 100),
+
+                    // Weight and Hair
                     Column(
                       children: [
-                        Text(
-                          textAlign: TextAlign.center,
-                          "Weight:",
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w700,
-                              color: Homepage.backingColor),
+                        buildStyledMediumTextBox(text: "Weight:"),
+                        const SizedBox(height: 10),
+                        buildStyledSmallTextField(
+                        hintText: "Enter character's weight", 
+                        textController: weightEnterController, 
+                        onChanged:(characterWeightEnteredValue) {
+                            setState(() {
+                              character.characterDescription.weight = characterWeightEnteredValue;
+                            });
+                          }
                         ),
                         const SizedBox(height: 10),
-                        SizedBox(
-                          width: 250,
-                          height: 50,
-                          child: TextField(
-                              controller: weightEnterController,
-                              cursorColor: Homepage.textColor,
-                              style: TextStyle(color: Homepage.textColor),
-                              decoration: InputDecoration(
-                                  hintText: "Enter character's weight",
-                                  hintStyle: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: Homepage.textColor),
-                                  filled: true,
-                                  fillColor: Homepage.backingColor,
-                                  border: const OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(12)))),
-                              onChanged: (characterWeightEnteredValue) {
-                                setState(() {
-                                  character.characterDescription.weight = characterWeightEnteredValue;
-                                });
-                              }),
-                        ),
+
+                        buildStyledMediumTextBox(text: "Hair:"),
                         const SizedBox(height: 10),
-                        Text(
-                          textAlign: TextAlign.center,
-                          "Hair:",
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w700,
-                              color: Homepage.backingColor),
-                        ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          width: 250,
-                          height: 50,
-                          child: TextField(
-                              controller: hairEnterController,
-                              cursorColor: Homepage.textColor,
-                              style: TextStyle(color: Homepage.textColor),
-                              decoration: InputDecoration(
-                                  hintText: "Describe your character's hair",
-                                  hintStyle: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: Homepage.textColor),
-                                  filled: true,
-                                  fillColor: Homepage.backingColor,
-                                  border: const OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(12)))),
-                              onChanged: (characterHairEnteredValue) {
-                                setState(() {
-                                  character.characterDescription.hair = characterHairEnteredValue;
-                                });
-                              }),
+                        buildStyledSmallTextField(
+                        hintText: "Describe your character's hair", 
+                        textController: hairEnterController, 
+                        onChanged:(characterHairEnteredValue) {
+                            setState(() {
+                              character.characterDescription.hair = characterHairEnteredValue;
+                            });
+                          }
                         ),
                       ],
                     )
                   ],
                 ),
-                Text(
-                  textAlign: TextAlign.center,
-                  "Backstory:",
-                  style: TextStyle(
-                      fontSize: 35,
-                      fontWeight: FontWeight.w700,
-                      color: Homepage.backingColor),
-                ),
+
+                // Character Backstory
+                buildStyledLargeTextBox(text: "Backstory:"),
                 const SizedBox(height: 5),
-                SizedBox(
-                  width: 1000,
-                  height: 100,
-                  child: TextField(
-                      controller: backstoryEnterController,
-                      maxLines: 10000,
-                      minLines: 4,
-                      cursorColor: Homepage.textColor,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          color: Homepage.backingColor),
-                      decoration: InputDecoration(
-                          hintText:
-                              "Write out your character's backstory. This should be a description of their past, including but not limited to: Who raised them/ how were they raised, any serious traumas or achievements in their life and then linking to justify your/ having another, reason for being in the campaign.",
-                          hintStyle: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: Homepage.backingColor),
-                          filled: false,
-                          //fillColor: Color.fromARGB(211, 42, 63, 226),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Homepage.backingColor),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(12)))),
-                      onChanged: (backstoryEnteredValue) {
-                        setState(() {
-                          character.characterDescription.backstory = backstoryEnteredValue;
-                        });
-                      }),
+                buildStyledLargeTextField(
+                  hintText: 
+                    "Write out your character's backstory. This should be a description of their past, including but not limited to: Who raised them/ how were they raised, any serious traumas or achievements in their life and then linking to justify your/ having another, reason for being in the campaign.",
+                  textController: backstoryEnterController,
+                  onChanged: (backstoryEnteredValue) {
+                    setState(() {
+                      character.characterDescription.backstory = backstoryEnteredValue;
+                    });
+                  }
                 ),
-                Text(
-                  textAlign: TextAlign.center,
-                  "Additional Features:",
-                  style: TextStyle(
-                      fontSize: 35,
-                      fontWeight: FontWeight.w700,
-                      color: Homepage.backingColor),
-                ),
+
+                // Additional Features
+                buildStyledLargeTextBox(text: "Additional Features:"),
                 const SizedBox(height: 5),
-                SizedBox(
-                  width: 1000,
-                  height: 100,
-                  child: TextField(
-                      controller: additionalFeaturesEnterController,
-                      maxLines: 10000,
-                      minLines: 4,
-                      cursorColor: Homepage.textColor,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          color: Homepage.backingColor),
-                      decoration: InputDecoration(
-                          hintText:
-                              "Write any additional features, skills or abilites which are not a part of the character's race/class/background etc. These should have been agreed apon by your DM or whoever is running the game.",
-                          hintStyle: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: Homepage.backingColor),
-                          filled: false,
-                          //fillColor: Color.fromARGB(211, 42, 63, 226),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Homepage.backingColor),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(12)))),
-                      onChanged: (extraFeaturesEnteredValue) {
-                        setState(() {
-                          character.extraFeatures = extraFeaturesEnteredValue;
-                        });
-                      }),
+                buildStyledLargeTextField(
+                  hintText: 
+                    "Write any additional features, skills or abilites which are not a part of the character's race/class/background etc. These should have been agreed apon by your DM or whoever is running the game.",
+                  textController: additionalFeaturesEnterController,
+                  onChanged: (extraFeaturesEnteredValue) {
+                    setState(() {
+                      character.extraFeatures = extraFeaturesEnteredValue;
+                    });
+                  }
                 ),
               ])),
-          //Boons and magic items
+          
+          // Boons and magic items Tab
+          // TODO(Add this feature)
           const Icon(Icons.directions_bike),
           //Finishing up
           Scaffold(
@@ -4471,8 +4284,43 @@ class MainCreateCharacter extends State<CreateACharacter>
     );
   }
 
-  /* Used in: Basics */
-  SizedBox buildStyledTextField({
+  /* Helper function */
+  TextField buildStyledTextField({
+    required String hintText,
+    required TextEditingController textController,
+    required ValueChanged<String> onChanged,
+    required Color textColor,
+    required Color backingColor,
+    int lineMax = 1,
+    int? lineMin,
+    bool filled = false,
+  }) {
+    return TextField(
+      controller: textController,
+      maxLines: lineMax,
+      minLines: lineMin,
+      cursorColor: textColor,
+      style: TextStyle(
+          fontWeight: FontWeight.w700,
+          color: textColor),
+      decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: TextStyle(
+              fontWeight: FontWeight.w700,
+              color: textColor),
+          filled: filled,
+          fillColor: backingColor,
+          border: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: backingColor),
+              borderRadius:
+                  const BorderRadius.all(Radius.circular(12)))),
+      onChanged: onChanged
+    );
+  }
+  
+  /* Used in: Basics, Backstory */
+  SizedBox buildStyledSmallTextField({
     required String hintText,
     required TextEditingController textController,
     required ValueChanged<String> onChanged,
@@ -4480,22 +4328,35 @@ class MainCreateCharacter extends State<CreateACharacter>
     return SizedBox(
       width: 250,
       height: 50,
-      child: TextField(
-        controller: textController,
-        cursorColor: Homepage.textColor,
-        style: TextStyle(color: Homepage.textColor),
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: TextStyle(
-            fontWeight: FontWeight.w700,
-            color: Homepage.textColor),
-          filled: true,
-          fillColor: Homepage.backingColor,
-          border: const OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.all(
-              Radius.circular(12)))),
-        onChanged: onChanged)
+      child: buildStyledTextField(
+        backingColor: Homepage.backingColor,
+        textColor: Homepage.textColor, 
+        textController: textController, 
+        hintText: hintText, 
+        onChanged: onChanged, 
+        filled: true
+      )
+    );
+  }
+
+  /* Used in: Basics, Backstory */
+  SizedBox buildStyledLargeTextField({
+    required String hintText,
+    required TextEditingController textController,
+    required ValueChanged<String> onChanged,
+  }) {
+    return SizedBox(
+      width: 1000,
+      height: 100,
+      child: buildStyledTextField(
+        hintText: hintText, 
+        textController: textController, 
+        onChanged: onChanged,
+        textColor: Homepage.backingColor, 
+        backingColor: Homepage.backingColor,
+        lineMax: 100,
+        lineMin: 4
+      )
     );
   }
 
@@ -4508,7 +4369,7 @@ class MainCreateCharacter extends State<CreateACharacter>
       style: TextStyle(
         color: Homepage.backingColor,
         fontSize: size,
-        fontWeight: FontWeight.w800));
+        fontWeight: FontWeight.w700));
   }
 
   /* Used in: Race */
@@ -4671,7 +4532,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   }
 
   /* Used in: Ability score */
-  Widget buildAbilityScoreBlock({
+  Column buildAbilityScoreBlock({
     required AbilityScore score,
   }) {
     
