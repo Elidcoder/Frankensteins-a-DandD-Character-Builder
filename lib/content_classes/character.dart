@@ -582,4 +582,28 @@ class Character implements Named {
       charisma: AbilityScore(name: "Charisma", value: 8),
     );
   }
+
+  // Helper functions for checking creation status
+  bool get basicsComplete => (
+    characterDescription.name.replaceAll(" ", "") != "" &&
+    characterDescription.gender.replaceAll(" ", "") != "" &&
+    playerName.replaceAll(" ", "") != ""
+    // TODO(When experience is implemented, implement this)
+    /* &&(enteredExperience.replaceAll(" ", "") != "" || levellingMethod != "Experience")*/
+  );
+
+  bool get backstoryComplete => (
+    characterDescription.age.replaceAll(" ", "") != "" &&
+    characterDescription.height.replaceAll(" ", "") != "" &&
+    characterDescription.weight.replaceAll(" ", "") != "" &&
+    characterDescription.eyes.replaceAll(" ", "") != "" &&
+    characterDescription.skin.replaceAll(" ", "") != "" &&
+    characterDescription.hair.replaceAll(" ", "") != "" &&
+    characterDescription.backstory.replaceAll(" ", "") != "" &&
+    extraFeatures.replaceAll(" ", "") != ""
+  );
+
+  bool get chosenAllSpells => (allSpellsSelectedAsListsOfThings.where((element) => element[2] != 0).isEmpty);
+
+  bool get chosenAllEqipment => (equipmentSelectedFromChoices.where((element) => element.length == 2).isEmpty);
 }
