@@ -1,12 +1,13 @@
 import 'subrace.dart';
 import 'proficiency.dart';
-import "named.dart";
+import "content.dart";
 
-class Race implements Named {
+class Race implements Content {
   @override
   final String name;
-  final List<int> raceScoreIncrease;
+  @override
   final String sourceBook;
+  final List<int> raceScoreIncrease;
   final List<String> languages;
   final List<String>? toolProficiencies;
   final List<Subrace>? subRaces;
@@ -22,7 +23,7 @@ class Race implements Named {
         "AbilityScoreMap": raceScoreIncrease,
         "Languages": languages,
         "Darkvision": darkVision,
-        "Sourcebook": sourceBook,
+        "SourceBook": sourceBook,
         "Subraces": subRaces?.map((subrace) => subrace.toJson()).toList(),
         "Resistances": resistances,
         "Abilities": abilities,
@@ -39,7 +40,7 @@ class Race implements Named {
     final raceScoreIncrease = data["AbilityScoreMap"].cast<int>() as List<int>;
     final languages = data["Languages"].cast<String>() as List<String>?;
     final darkVision = data["Darkvision"] as int?;
-    final sourceBook = data["Sourcebook"] as String?;
+    final sourceBook = data["SourceBook"] as String?;
     final subRaceData = data["Subraces"] as List<dynamic>?;
     final subRaces = subRaceData
         ?.map((subRaceData) => Subrace.fromJson(subRaceData))

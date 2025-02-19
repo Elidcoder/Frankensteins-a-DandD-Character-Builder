@@ -1,9 +1,7 @@
-import "named.dart";
-
 /* This class stores the physical description of a character. 
 It is used in the character creation process and contains information that's
 independent of anything else in the character. */
-class CharacterDescription implements Named {
+class CharacterDescription {
   String age;
   String height;
   String weight;
@@ -11,7 +9,6 @@ class CharacterDescription implements Named {
   String skin;
   String hair;
   String backstory;
-  @override
   String name;
   String gender;
 

@@ -1,14 +1,14 @@
-import "named.dart";
+import "content.dart";
 
-class Subclass implements Named {
+class Subclass implements Content {
   @override
   final String name;
+  @override
+  final String sourceBook;
   final String classType;
   final bool? roundDown;
   final String mainOrSpellcastingAbility;
-  final List<List<List<String>>>
-      gainAtEachLevel; //replace string with something?
-  final String sourceBook;
+  final List<List<List<String>>> gainAtEachLevel; 
   Map<String, dynamic> toJson() {
     return {
       "Name": name,
@@ -16,7 +16,7 @@ class Subclass implements Named {
       "RoundDown": roundDown,
       "MainOrSpellcastingAbility": mainOrSpellcastingAbility,
       "GainAtEachLevel": gainAtEachLevel,
-      "Sourcebook": sourceBook,
+      "SourceBook": sourceBook,
     };
   }
 
@@ -26,7 +26,7 @@ class Subclass implements Named {
         data["MainOrSpellcastingAbility"] as String;
     final classType = data["ClassType"] as String;
     final roundDown = data["RoundDown"] as bool?;
-    final sourceBook = data["Sourcebook"] as String;
+    final sourceBook = data["SourceBook"] as String;
     final gainAtEachLevel = data["GainAtEachLevel"].cast<List<List<String>>>()
         as List<List<List<String>>>;
     return Subclass(

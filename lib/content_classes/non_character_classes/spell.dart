@@ -1,9 +1,11 @@
-import "named.dart";
+import "content.dart";
 
-class Spell implements Named {
-  //ADD SPELL TYPE THINGY
+class Spell implements Content {
   @override
   final String name;
+  @override
+  final String sourceBook;
+
   final String effect;
   final String spellSchool;
   final int level;
@@ -12,59 +14,56 @@ class Spell implements Named {
   final bool? verbal;
   final bool? somatic;
   final String? material;
-  //[casting 1, number, duration 1, number]
-  final List<dynamic> timings;
   final List<String> availableTo;
-  Map<String, dynamic> toJson() {
-    return {
-      "Name": name,
-      "Effect": effect,
-      "SpellSchool": spellSchool,
-      "Level": level,
-      "Ritual": ritual,
-      "Range": range,
-      "Verbal": verbal,
-      "Somatic": somatic,
-      "Material": material,
-      "Timings": timings,
-      "AvailableTo": availableTo,
-    };
-  }
+
+  // Formatted as [casting time type, casting multiple, duration time type, duration multiple]
+  final List<dynamic> timings;
+
+  Spell({
+    required this.name,
+    required this.sourceBook,
+    required this.level,
+    required this.effect,
+    required this.timings,
+    required this.availableTo,
+    required this.spellSchool,
+    required this.range,
+    this.ritual,
+    this.material,
+    this.somatic,
+    this.verbal
+  });
+
+  Map<String, dynamic> toJson() => {
+    "Name": name,
+    "SourceBook": sourceBook,
+    "Effect": effect,
+    "SpellSchool": spellSchool,
+    "Level": level,
+    "Ritual": ritual,
+    "Range": range,
+    "Verbal": verbal,
+    "Somatic": somatic,
+    "Material": material,
+    "Timings": timings,
+    "AvailableTo": availableTo
+  };
 
   factory Spell.fromJson(Map<String, dynamic> data) {
-    // note the explicit cast to String
-    // this is required if robust lint rules are enabled
-    //COULD GO THROUGH EVERY DATA[SPELL[X,Y,Z*]] TO ALLOW LESS FILES TO BE ADDED WITH CONTENT
-    final level = data["Level"] as int?;
-    final verbal = data["Verbal"] as bool?;
-    final somatic = data["Somatic"] as bool?;
-    final material = data["Material"] as String?;
-    final ritual = data["Ritual"] as bool?;
     return Spell(
-        range: data["Range"] as String,
-        name: data["Name"] as String,
-        effect: data["Effect"],
-        ritual: ritual ?? false,
-        level: level ?? 0,
-        verbal: verbal ?? false,
-        somatic: somatic ?? false,
-        material: material ?? "None",
-        spellSchool: data["SpellSchool"] as String,
-        timings: data["Timings"].cast<dynamic>(),
-        availableTo: data["AvailableTo"].cast<String>());
+      range: data["Range"] as String,
+      sourceBook: data["SourceBook"],
+      name: data["Name"] as String,
+      effect: data["Effect"],
+      ritual: (data["Ritual"] as bool?) ?? false,
+      level: (data["Level"] as int?) ?? 0,
+      verbal: (data["Verbal"] as bool?) ?? false,
+      somatic: (data["Somatic"] as bool?) ?? false,
+      material: (data["Material"] as String?) ?? "None",
+      spellSchool: data["SpellSchool"] as String,
+      timings: data["Timings"].cast<dynamic>(),
+      availableTo: data["AvailableTo"].cast<String>());
   }
-  Spell(
-      {required this.name,
-      required this.level,
-      required this.effect,
-      required this.timings,
-      required this.availableTo,
-      required this.spellSchool,
-      required this.range,
-      this.ritual,
-      this.material,
-      this.somatic,
-      this.verbal});
 }
 
 List<Spell> SPELLLIST = [];

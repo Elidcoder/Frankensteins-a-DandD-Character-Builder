@@ -1,8 +1,5 @@
-import "named.dart";
-
-class AbilityScore implements Named {
+class AbilityScore{
   int value;
-  @override
   String name;
 
   AbilityScore({required this.name, required this.value});

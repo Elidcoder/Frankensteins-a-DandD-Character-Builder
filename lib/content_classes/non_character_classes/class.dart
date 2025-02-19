@@ -1,4 +1,4 @@
-import "named.dart";
+import "content.dart";
 
 List<List<List<dynamic>>> parseJsonToMultiList(List jsonData) {
   List<List<List<dynamic>>> multiList = [];
@@ -19,11 +19,13 @@ List<List<List<dynamic>>> parseJsonToMultiList(List jsonData) {
 }
 
 //classes - PROFICIENCY LIST NEEDS FIXING
-class Class implements Named {
+class Class implements Content {
   final String? spellsKnownFormula;
   final List<int>? spellsKnownPerLevel;
   @override
   final String name;
+  @override
+  final String sourceBook;
   final String classType;
   final int maxHitDiceRoll;
   final bool? roundDown;
@@ -43,7 +45,7 @@ class Class implements Named {
       proficienciesGained; //replace string with equipment (parent of) armour/tools/weapons
 
   final List<List<dynamic>> gainAtEachLevel; //replace string with something?
-  final String sourceBook;
+  
   Map<String, dynamic> toJson() {
     return {
       "Name": name,
@@ -56,7 +58,7 @@ class Class implements Named {
       "OptionsForSkillProficiencies": optionsForSkillProficiencies,
       "SavingThrowProficiencies": savingThrowProficiencies,
       "SpellsAndSpellSlots": spellsAndSpellSlots,
-      "Sourcebook": sourceBook,
+      "SourceBook": sourceBook,
       "EquipmentOptions": equipmentOptions
           .map((option) =>
               option.map((innerList) => innerList.toList()).toList())
@@ -78,7 +80,7 @@ class Class implements Named {
     final maxHitDiceRoll = data["MaxHitDiceRoll"] as int;
     final roundDown = data["RoundDown"] as bool?;
     final numberOfSkillChoices = data["NumberOfSkillChoices"] as int;
-    final sourceBook = data["Sourcebook"] as String;
+    final sourceBook = data["SourceBook"] as String;
 
     final spellsAndSpellSlots =
         data["SpellsAndSpellSlots"]?.cast<String>() as List<String>?;

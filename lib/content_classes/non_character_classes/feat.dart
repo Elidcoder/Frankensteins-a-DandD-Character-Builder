@@ -1,46 +1,46 @@
-import "named.dart";
+import "content.dart";
 
-class Feat implements Named {
+class Feat implements Content {
   @override
   final String name;
-  final List<List<dynamic>> abilites;
+  @override
   final String sourceBook;
-  final int numberOfTimesTakeable;
-  final String description;
+
   final bool isHalfFeat;
-
-  String display() {
-    return "$name: \n •  ${abilites.where((element) => element[0] == "Bonus").toList().map((sublist) => sublist[2]).toList().join('\n •  ')}";
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "Name": name,
-      "Abilities": abilites,
-      "SourceBook": sourceBook,
-      "NumberOfTimesTakeable": numberOfTimesTakeable,
-      "Description": description,
-      "IsHalfFeat": isHalfFeat
-    };
-  }
-
-  factory Feat.fromJson(Map<String, dynamic> data) {
-    return Feat(
-        name: data["Name"],
-        sourceBook: data["SourceBook"],
-        abilites: data["Abilities"].cast<List<dynamic>>(),
-        description: data["Description"],
-        numberOfTimesTakeable: data["NumberOfTimesTakeable"],
-        isHalfFeat: data["IsHalfFeat"],
-        );
-  }
+  final String description;
+  final List<List<dynamic>> abilities;
+  final int numberOfTimesTakeable;
 
   Feat({
     required this.name,
     required this.sourceBook,
-    required this.abilites,
+    required this.isHalfFeat,
     required this.description,
-    required this.numberOfTimesTakeable,
-    required this.isHalfFeat
+    required this.abilities,
+    required this.numberOfTimesTakeable
   });
+
+  String display() {
+    return "$name: \n •  ${abilities.where((element) => element[0] == "Bonus").toList().map((sublist) => sublist[2]).toList().join('\n •  ')}";
+  }
+
+  Map<String, dynamic> toJson() => {
+    "Name": name,
+    "SourceBook": sourceBook,
+    "IsHalfFeat": isHalfFeat,
+    "Description": description,
+    "Abilities": abilities,
+    "NumberOfTimesTakeable": numberOfTimesTakeable
+  };
+
+  factory Feat.fromJson(Map<String, dynamic> data) {
+    return Feat(
+      name: data["Name"],
+      sourceBook: data["SourceBook"],
+      isHalfFeat: data["IsHalfFeat"],
+      description: data["Description"],
+      abilities: data["Abilities"].cast<List<dynamic>>(),
+      numberOfTimesTakeable: data["NumberOfTimesTakeable"]
+    );
+  }
 }

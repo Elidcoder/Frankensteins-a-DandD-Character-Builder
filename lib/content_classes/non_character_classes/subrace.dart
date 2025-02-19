@@ -1,11 +1,12 @@
 import 'proficiency.dart';
-import "named.dart";
+import "content.dart";
 
-class Subrace implements Named {
+class Subrace implements Content {
   @override
   final String name;
-  final List<int> subRaceScoreIncrease;
+  @override
   final String sourceBook;
+  final List<int> subRaceScoreIncrease;
   final List<String>? languages;
   final List<String>? resistances;
   final List<String>? abilities;
@@ -20,7 +21,7 @@ class Subrace implements Named {
         "AbilityScoreMap": subRaceScoreIncrease,
         "Languages": languages ?? [],
         "Darkvision": darkVision,
-        "Sourcebook": sourceBook,
+        "SourceBook": sourceBook,
         "Resistances": resistances ?? [],
         "Abilities": abilities ?? [],
         "GainedProficiencies": proficienciesGained
@@ -38,7 +39,7 @@ class Subrace implements Named {
         data["AbilityScoreMap"].cast<int>() as List<int>;
     final languages = data["Languages"]?.cast<String>() as List<String>?;
     final darkVision = data["Darkvision"] as int?;
-    final sourceBook = data["Sourcebook"] as String;
+    final sourceBook = data["SourceBook"] as String;
     final resistances = data["Resistances"]?.cast<String>() as List<String>?;
     final abilities = data["Abilities"]?.cast<String>() as List<String>?;
     final proficienciesGainedNames =

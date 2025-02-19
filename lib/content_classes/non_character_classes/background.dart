@@ -1,12 +1,13 @@
-import "named.dart";
+import "content.dart";
 
 // TODO(Use asserts to ensure NUMBEROFSKILLCHOICES <= OPTIONALSKILLPROFICIENCIES.LENGTH)
 // TODO(make bond/flaw etc optional)
-class Background implements Named {
+class Background implements Content {
   @override
   final String name;
-  final int numberOfSkillChoices;
+  @override
   final String sourceBook;
+  final int numberOfSkillChoices;
 
   final int numberOfLanguageChoices;
   final List<String> features;
@@ -41,7 +42,7 @@ class Background implements Named {
 
   factory Background.fromJson(Map<String, dynamic> data) {
     final name = data["Name"] as String;
-    final sourceBook = data["Sourcebook"] as String;
+    final sourceBook = data["SourceBook"] as String;
     
     final personalityTrait = data["PersonalityTrait"].cast<String>() as List<String>;
     final ideal = data["Ideal"].cast<String>() as List<String>;

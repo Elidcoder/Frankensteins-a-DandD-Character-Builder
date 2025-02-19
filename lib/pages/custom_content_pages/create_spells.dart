@@ -482,25 +482,27 @@ class MainMakeASpell extends State<MakeASpell> {
 
                             //add the new spell to the list of spells
                             SPELLLIST.add(Spell(
-                                name: name,
-                                range:
-                                    "$range ${rangeUnit.replaceAll(" ", "")}",
-                                ritual: ritual,
-                                spellSchool:
-                                    spellSchool ?? "This should never run",
-                                effect: effect,
-                                availableTo: availableTo
-                                    .replaceAll(", ", ",")
-                                    .replaceAll(" ,", ",")
-                                    .split(","),
-                                level: level ?? 0,
-                                timings: [
-                                  ...casting.split(","),
-                                  ...duration.split(",")
-                                ],
-                                somatic: somatic,
-                                verbal: verbal,
-                                material: material));
+                              name: name,
+                              sourceBook: "MADE BY USER",
+                              range:
+                                  "$range ${rangeUnit.replaceAll(" ", "")}",
+                              ritual: ritual,
+                              spellSchool:
+                                  spellSchool ?? "This should never run",
+                              effect: effect,
+                              availableTo: availableTo
+                                  .replaceAll(", ", ",")
+                                  .replaceAll(" ,", ",")
+                                  .split(","),
+                              level: level ?? 0,
+                              timings: [
+                                ...casting.split(","),
+                                ...duration.split(",")
+                              ],
+                              somatic: somatic,
+                              verbal: verbal,
+                              material: material)
+                            );
 
                             //write the modified spell list to the Json
                             saveChanges();

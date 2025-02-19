@@ -1243,7 +1243,7 @@ class EditCharacter extends State<EditACharacter> {
                                         itemBuilder: (context, index) {
                                           return Tooltip(
                                               message:
-                                                  "${FEATLIST[index].name}: \n •  ${FEATLIST[index].abilites.where((element) => element[0] == "Bonus").toList().map((sublist) => sublist[2]).toList().join('\n • ')}",
+                                                  "${FEATLIST[index].name}: \n •  ${FEATLIST[index].abilities.where((element) => element[0] == "Bonus").toList().map((sublist) => sublist[2]).toList().join('\n • ')}",
                                               child: OutlinedButton(
                                                   style: OutlinedButton.styleFrom(
                                                       backgroundColor: (featsSelected
@@ -1286,7 +1286,7 @@ class EditCharacter extends State<EditACharacter> {
                                                             for (List<dynamic> x
                                                                 in FEATLIST[
                                                                         index]
-                                                                    .abilites) {
+                                                                    .abilities) {
                                                               if (x[0] ==
                                                                   "Choice") {
                                                                 widgetsInPlay.add(
