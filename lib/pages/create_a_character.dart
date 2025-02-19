@@ -70,10 +70,15 @@ class MainCreateCharacter extends State<CreateACharacter>
   String? characterLevel = "1";
   int pointsRemaining = 27;
   String? coinTypeSelected = "Gold";
-  Map<String, bool> featSelectors = {
+  Map<String, bool> featFilters = {
     "Half Feats": true,
     "Full Feats": true
   };
+  List<Feat> get filteredFeats {
+    List<Feat> feats = FEATLIST.where((feat) => (feat.isHalfFeat && featFilters["Half Feats"]!) || (!feat.isHalfFeat && featFilters["Full Feats"]!)).toList();
+    return feats;
+  }
+
   int numberOfRemainingFeatOrASIs = 0;
   bool remainingAsi = false;
   
@@ -82,8 +87,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   String enteredExperience = "";
   TextEditingController experienceEnterController = TextEditingController();
   
-  // TODO(Implement a better skill proficiency section using skillProficienciesMap and adding a second field
-    /// then delete this)
+  // TODO(Implement a better skill proficiency section using skillProficienciesMap and adding a second field then delete this)
   List<String> skillProficiencies = [];
 
   Character character = Character.createDefault();
@@ -982,7 +986,7 @@ class MainCreateCharacter extends State<CreateACharacter>
           
           // TODO(Implement the filtering for the buttons correctly)
           // TODO(Improve the list of widgets method)
-          // Asi & Feat Selection Tab
+          // Ability Score Improvement & Feat selection tab
           SingleChildScrollView(
               scrollDirection: Axis.vertical,
             child: Column(
@@ -1041,17 +1045,17 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 child: ListView.builder(
                                   scrollDirection: Axis.vertical,
                                   shrinkWrap: true,
-                                  itemCount: FEATLIST.length,
+                                  itemCount: filteredFeats.length,
                                   itemBuilder: (context, index) {
                                     return Tooltip(
-                                      message: FEATLIST[index].display(),
+                                      message: filteredFeats[index].display(),
                                       child: OutlinedButton(
                                         style: OutlinedButton.styleFrom(
                                           /* Create a colouring gradient for feats that can be selected multiple times */
-                                          backgroundColor: (character.featsSelected.where((feat) => feat[0].name == FEATLIST[index].name).isNotEmpty) ? Color.fromARGB(
-                                            100 + (((character.featsSelected.where((feat) => feat[0].name == FEATLIST[index].name).length) / FEATLIST[index].numberOfTimesTakeable) * 155).ceil(),
+                                          backgroundColor: (character.featsSelected.where((feat) => feat[0].name == filteredFeats[index].name).isNotEmpty) ? Color.fromARGB(
+                                            100 + (((character.featsSelected.where((feat) => feat[0].name == filteredFeats[index].name).length) / filteredFeats[index].numberOfTimesTakeable) * 155).ceil(),
                                             0,
-                                            50 + (((character.featsSelected.where((feat) => feat[0].name == FEATLIST[index].name).length) / FEATLIST[index].numberOfTimesTakeable) * 205).ceil(),
+                                            50 + (((character.featsSelected.where((feat) => feat[0].name == filteredFeats[index].name).length) / filteredFeats[index].numberOfTimesTakeable) * 205).ceil(),
                                             0
                                           )
                                           : Colors.white,
@@ -1065,22 +1069,17 @@ class MainCreateCharacter extends State<CreateACharacter>
                                             if (numberOfRemainingFeatOrASIs > 0) {
                                               /* Check the feat hasn't been chosen its maximum amount of times. */
                                               if (character.featsSelected.where(
-                                                (element) => element[0].name == FEATLIST[index].name
-                                              ).length < FEATLIST[index].numberOfTimesTakeable) {
+                                                (element) => element[0].name == filteredFeats[index].name
+                                              ).length < filteredFeats[index].numberOfTimesTakeable) {
 
                                                 /* Select the feat */
                                                 numberOfRemainingFeatOrASIs --;
-                                                character.featsSelected.add([FEATLIST[index]]);
+                                                character.featsSelected.add([filteredFeats[index]]);
 
                                                 /* Add any necessary choices to the widgetsInPlay */
-                                                for (List<dynamic> x in FEATLIST[index].abilites) {
-                                                  if (x[0] == "Choice") {
-                                                    widgetsInPlay.add(
-                                                        SizedBox(height: 80,
-                                                            child: ChoiceRow(
-                                                              x: x.sublist(1),
-                                                              allSelected:character.allSelected,
-                                                            )));
+                                                for (List<dynamic> x in filteredFeats[index].abilites) {
+                                                  if (x.first == "Choice") {
+                                                    widgetsInPlay.add(SizedBox(height: 80, child: ChoiceRow(x: x.sublist(1),allSelected:character.allSelected)));
                                                   } else {
                                                     levelGainParser(x, CLASSLIST[index]);
                                                   }
@@ -1090,7 +1089,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                           },
                                         );
                                       },
-                                    child: buildStyledTinyTextBox(text: FEATLIST[index].name)));
+                                    child: buildStyledTinyTextBox(text: filteredFeats[index].name)));
                                   },
                                 ),
                               ),
@@ -3197,13 +3196,13 @@ class MainCreateCharacter extends State<CreateACharacter>
   OutlinedButton buildBinarySelectorButton({
     required String key
   }) {
-    assert(featSelectors.containsKey(key), "Key must be a valid key in featSelectors");
+    assert(featFilters.containsKey(key), "Key must be a valid key in featFilters");
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
-        backgroundColor: (featSelectors[key]!) ? Homepage.backingColor : unavailableColor),
+        backgroundColor: (featFilters[key]!) ? Homepage.backingColor : unavailableColor),
       onPressed: () {
         setState(() {
-          featSelectors[key] = !featSelectors[key]!;
+          featFilters[key] = !featFilters[key]!;
         });
       },
       child: buildStyledTinyTextBox(text: key, color: Homepage.textColor)
