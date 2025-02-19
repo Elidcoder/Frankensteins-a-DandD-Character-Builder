@@ -595,62 +595,47 @@ class MainMenupage extends State<MainMenu> {
                       allowedExtensions: ["json"],
                     );
                     if (result != null) {
-                      final file = File(
-                          result.files.single.path ?? "Never going to happen");
+                      final file = File(result.files.single.path ?? "PATH SHOULD NEVER OCCUR");
                       final contents = await file.readAsString();
                       final jsonData2 = json.decode(contents);
                       await updateGlobals();
 
-                final Map<String, dynamic> jsonData =
-                    jsonDecode(jsonString ?? "");
+                      final Map<String, dynamic> jsonData = jsonDecode(jsonString ?? "");
 
-                //TODO(CHECK FOR DUPLICATES AT SOME POINT)
-                final List<dynamic> characters = jsonData["Characters"];
-                characters.addAll(jsonData2["Characters"] ?? []);
+                      final List<dynamic> characters = jsonData["Characters"];
+                      characters.addAll(jsonData2["Characters"] ?? []);
 
-                final List<dynamic> spells = jsonData["Spells"];
-                spells.addAll(jsonData2["Spells"] ?? []);
+                      final List<dynamic> spells = jsonData["Spells"];
+                      spells.addAll(jsonData2["Spells"] ?? []);
 
-                final List<dynamic> classes = jsonData["Classes"];
-                classes.addAll(jsonData2["Classes"] ?? []);
+                      final List<dynamic> classes = jsonData["Classes"];
+                      classes.addAll(jsonData2["Classes"] ?? []);
 
-                final List<dynamic> sourceBooks = jsonData["Sourcebooks"];
-                sourceBooks.addAll(jsonData2["Sourcebooks"] ?? []);
+                      final List<dynamic> sourceBooks = jsonData["Sourcebooks"];
+                      sourceBooks.addAll(jsonData2["Sourcebooks"] ?? []);
 
-                final List<dynamic> proficiencies = jsonData["Proficiencies"];
-                proficiencies.addAll(jsonData2["Proficiencies"] ?? []);
+                      final List<dynamic> proficiencies = jsonData["Proficiencies"];
+                      proficiencies.addAll(jsonData2["Proficiencies"] ?? []);
 
-                final List<dynamic> equipment = jsonData["Equipment"];
-                equipment.addAll(jsonData2["Equipment"] ?? []);
+                      final List<dynamic> equipment = jsonData["Equipment"];
+                      equipment.addAll(jsonData2["Equipment"] ?? []);
 
-                final List<dynamic> languages = jsonData["Languages"];
-                languages.addAll(jsonData2["Languages"] ?? []);
+                      final List<dynamic> languages = jsonData["Languages"];
+                      languages.addAll(jsonData2["Languages"] ?? []);
 
-                final List<dynamic> races = jsonData["Races"];
-                races.addAll(jsonData2["Races"] ?? []);
+                      final List<dynamic> races = jsonData["Races"];
+                      races.addAll(jsonData2["Races"] ?? []);
 
-                final List<dynamic> backgrounds = jsonData["Backgrounds"];
-                backgrounds.addAll(jsonData2["Backgrounds"] ?? []);
+                      final List<dynamic> backgrounds = jsonData["Backgrounds"];
+                      backgrounds.addAll(jsonData2["Backgrounds"] ?? []);
 
-                final List<dynamic> feats = jsonData["Feats"];
-                feats.addAll(jsonData2["Feats"] ?? []);
+                      final List<dynamic> feats = jsonData["Feats"];
+                      feats.addAll(jsonData2["Feats"] ?? []);
 
-                //File("assets/SRD.json").writeAsStringSync(jsonEncode(json));
-                //TODO(IMPLEMENT THE REMAINING SECTIONS OF THE CODE TO BE COPIED IN)
-                await saveChanges();
-                await updateGlobals();
-
-                // do something with the parsed JSON data
-              }
+                      await saveChanges();
+                      await updateGlobals();
+                    }
                   },
-                  /*
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ScreenTop(pagechoice: 4)),
-                );
-              },*/
                   child: Text(
                     "Download\n Content",
                     style: TextStyle(
@@ -669,7 +654,6 @@ class MainMenupage extends State<MainMenu> {
                     side: const BorderSide(width: 3.3, color: Colors.black),
                   ),
                   onPressed: () {
-                    //()
                     Navigator.push(
                       context,
                       MaterialPageRoute(

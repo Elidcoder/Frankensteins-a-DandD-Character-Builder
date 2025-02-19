@@ -7,6 +7,11 @@ class Feat implements Named {
   final String sourceBook;
   final int numberOfTimesTakeable;
   final String description;
+
+  String display() {
+    return "$name: \n •  ${abilites.where((element) => element[0] == "Bonus").toList().map((sublist) => sublist[2]).toList().join('\n •  ')}";
+  }
+
   Map<String, dynamic> toJson() {
     return {
       "Name": name,

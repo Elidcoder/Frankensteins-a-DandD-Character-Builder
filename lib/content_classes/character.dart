@@ -82,6 +82,7 @@ class Character implements Named {
   Map<String, String> classSubclassMapper;
   //ASI feats
   List<int> featsASIScoreIncreases;
+  //TODO(Replace this with List<Pair<Feat, int>>, (feat, numbTimesTaken)) 
   List<List<dynamic>> featsSelected;
 
   //Spells

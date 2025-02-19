@@ -17,7 +17,6 @@ class MyCharacters extends StatefulWidget {
 }
 
 class MainMyCharacters extends State<MyCharacters> {
-  //MainMyCharacters({Key? key}) : super(key: key);
   String searchTerm = "";
   @override
   void initState() {
@@ -93,8 +92,7 @@ class MainMyCharacters extends State<MyCharacters> {
           ]),
           const SizedBox(height: 15),
           (CHARACTERLIST.isEmpty)
-              ? const Text("You have no created characters to view",
-                  style: TextStyle(color: Colors.blue, fontSize: 22))
+              ? Text("You have no created characters to view", style: TextStyle(color: Homepage.backingColor, fontSize: 25, fontWeight: FontWeight.w700))
               : SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Wrap(
@@ -321,7 +319,7 @@ class MainMyCharacters extends State<MyCharacters> {
                                       final List<dynamic> characters =
                                           json["Characters"];
 
-                                      final int Index = characters.indexWhere(
+                                      final int characterLocation = characters.indexWhere(
                                           (character) =>
                                               character["UniqueID"] ==
                                               CHARACTERLIST
@@ -355,8 +353,8 @@ class MainMyCharacters extends State<MyCharacters> {
                                             .group);
                                       });
                                       //final check as a safety net incase something went wrong elsewhere
-                                      if (Index != -1) {
-                                        characters.removeAt(Index);
+                                      if (characterLocation != -1) {
+                                        characters.removeAt(characterLocation);
                                       }
                                       saveChanges();
                                       updateGlobals();

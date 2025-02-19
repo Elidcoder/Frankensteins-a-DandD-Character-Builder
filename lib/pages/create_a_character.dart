@@ -3,788 +3,15 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 // Project Imports
+import "spell_handling.dart";
 import "../main.dart";
 import '../content_classes/all_content_classes.dart';
 import "../file_manager.dart";
 import '../pdf_generator/pdf_final_display.dart';
 
-// TODO(Implement this function) 
-bool isAllowedContent(dynamic x) {
-  return true;
-}
-
-//Map<String, String> characterTypeReturner = {0.0:"Martial",1.0:"Full Caster", 0.5: "Half Caster", 0.3:"Third caster"};
-Spell listgetter(String spellname) {
-  //huge issue with adding content WITH DUPLICATE NAME AND (TYPE)
-  for (int x = 0; x < SPELLLIST.length; x++) {
-    if (SPELLLIST[x].name == spellname) {
-      return SPELLLIST[x];
-    }
-  }
-  // TODO(ADD SOMETHING FOR FAILED COMPARISONS)
-  return SPELLLIST[0];
-}
-
 class CreateACharacter extends StatefulWidget {
   @override
   MainCreateCharacter createState() => MainCreateCharacter();
-}
-
-class SpellSelections extends StatefulWidget {
-  //final Class? classSelected;
-  List<dynamic> thisDescription;
-  List<Spell> allSpells;
-  SpellSelections(this.allSpells, this.thisDescription, {super.key});
-  @override
-  _SpellSelectionsState createState() =>
-      //_SpellSelectionsState(allSpells, classSelected: classSelected);
-      _SpellSelectionsState(allSpells, thisDescription);
-}
-
-class _SpellSelectionsState extends State<SpellSelections> {
-  // Declare the input list of strings or lists of strings
-  //final Class? classSelected;
-  List<Spell> allSpellsSelected;
-  //CURENTLY: [name, [spelllist], numb, formula]
-  List<dynamic> thisDescription;
-  //_SpellSelectionsState(this.allSpellsSelected, {this.classSelected});
-  _SpellSelectionsState(this.allSpellsSelected, this.thisDescription);
-
-  List<String> spellSchoolsSelected = [
-    "Abjuration",
-    "Conjuration",
-    "Divination",
-    "Enchantment",
-    "Evocation",
-    "Illusion",
-    "Necromancy",
-    "Transmutation"
-  ];
-  List<int> spellLevelsSelected = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-  List<String> castingTimesSelected = [
-    "Action",
-    "Reaction",
-    "Bonus Action",
-    "Other",
-    "Ritual"
-  ];
-  bool ritualsSelected = true;
-  //filter if class available
-  static List<Spell> allAvailableSpells = [
-    for (var x in SPELLLIST
-        /*.where((element) => element.availableTo.contains(classSelected))
-        .toList()*/
-        )
-      if (isAllowedContent(x)) x
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-        height: 281,
-        width: 485,
-        child: MaterialApp(
-            home: Scaffold(
-                body: Column(children: [
-          Text(
-              "${thisDescription[2]} remaining ${thisDescription[0]} spell choices",
-              style: const TextStyle(
-                  color: Colors.blue,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700)),
-          //Spell Schools (Abjuration,Conjuration,Divination,Enchantment)
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    backgroundColor:
-                        (spellSchoolsSelected.contains("Abjuration")
-                            ? Colors.blue
-                            : const Color.fromARGB(247, 56, 53, 52))),
-                onPressed: () {
-                  setState(() {
-                    if (spellSchoolsSelected.contains("Abjuration")) {
-                      spellSchoolsSelected.remove("Abjuration");
-                    } else {
-                      spellSchoolsSelected.add("Abjuration");
-                    }
-                  });
-                },
-                child: const Text("Abjuration",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700))),
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    backgroundColor:
-                        (spellSchoolsSelected.contains("Conjuration")
-                            ? Colors.blue
-                            : const Color.fromARGB(247, 56, 53, 52))),
-                onPressed: () {
-                  setState(() {
-                    if (spellSchoolsSelected.contains("Conjuration")) {
-                      spellSchoolsSelected.remove("Conjuration");
-                    } else {
-                      spellSchoolsSelected.add("Conjuration");
-                    }
-                  });
-                },
-                child: const Text("Conjuration",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700))),
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    backgroundColor:
-                        (spellSchoolsSelected.contains("Divination")
-                            ? Colors.blue
-                            : const Color.fromARGB(247, 56, 53, 52))),
-                onPressed: () {
-                  setState(() {
-                    if (spellSchoolsSelected.contains("Divination")) {
-                      spellSchoolsSelected.remove("Divination");
-                    } else {
-                      spellSchoolsSelected.add("Divination");
-                    }
-                  });
-                },
-                child: const Text("Divination",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700))),
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    backgroundColor:
-                        (spellSchoolsSelected.contains("Enchantment")
-                            ? Colors.blue
-                            : const Color.fromARGB(247, 56, 53, 52))),
-                onPressed: () {
-                  setState(() {
-                    if (spellSchoolsSelected.contains("Enchantment")) {
-                      spellSchoolsSelected.remove("Enchantment");
-                    } else {
-                      spellSchoolsSelected.add("Enchantment");
-                    }
-                  });
-                },
-                child: const Text("Enchantment",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700))),
-          ]),
-          //Spell Schools (Evocation,Illusion,Necromancy,Transmutation)
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    backgroundColor: (spellSchoolsSelected.contains("Evocation")
-                        ? Colors.blue
-                        : const Color.fromARGB(247, 56, 53, 52))),
-                onPressed: () {
-                  setState(() {
-                    if (spellSchoolsSelected.contains("Evocation")) {
-                      spellSchoolsSelected.remove("Evocation");
-                    } else {
-                      spellSchoolsSelected.add("Evocation");
-                    }
-                  });
-                },
-                child: const Text("Evocation",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700))),
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    backgroundColor: (spellSchoolsSelected.contains("Illusion")
-                        ? Colors.blue
-                        : const Color.fromARGB(247, 56, 53, 52))),
-                onPressed: () {
-                  setState(() {
-                    if (spellSchoolsSelected.contains("Illusion")) {
-                      spellSchoolsSelected.remove("Illusion");
-                    } else {
-                      spellSchoolsSelected.add("Illusion");
-                    }
-                  });
-                },
-                child: const Text("Illusion",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700))),
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    backgroundColor:
-                        (spellSchoolsSelected.contains("Necromancy")
-                            ? Colors.blue
-                            : const Color.fromARGB(247, 56, 53, 52))),
-                onPressed: () {
-                  setState(() {
-                    if (spellSchoolsSelected.contains("Necromancy")) {
-                      spellSchoolsSelected.remove("Necromancy");
-                    } else {
-                      spellSchoolsSelected.add("Necromancy");
-                    }
-                  });
-                },
-                child: const Text("Necromancy",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700))),
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    backgroundColor:
-                        (spellSchoolsSelected.contains("Transmutation")
-                            ? Colors.blue
-                            : const Color.fromARGB(247, 56, 53, 52))),
-                onPressed: () {
-                  setState(() {
-                    if (spellSchoolsSelected.contains("Transmutation")) {
-                      spellSchoolsSelected.remove("Transmutation");
-                    } else {
-                      spellSchoolsSelected.add("Transmutation");
-                    }
-                  });
-                },
-                child: const Text("Transmutation",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700)))
-          ]),
-          //Levels 0-9 and main space
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            //levels 0-4
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                        backgroundColor: (spellLevelsSelected.contains(0)
-                            ? Colors.blue
-                            : const Color.fromARGB(247, 56, 53, 52))),
-                    onPressed: () {
-                      setState(() {
-                        if (spellLevelsSelected.contains(0)) {
-                          spellLevelsSelected.remove(0);
-                        } else {
-                          spellLevelsSelected.add(0);
-                        }
-                      });
-                    },
-                    child: const Text("0",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700))),
-                OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                        backgroundColor: (spellLevelsSelected.contains(1)
-                            ? Colors.blue
-                            : const Color.fromARGB(247, 56, 53, 52))),
-                    onPressed: () {
-                      setState(() {
-                        if (spellLevelsSelected.contains(1)) {
-                          spellLevelsSelected.remove(1);
-                        } else {
-                          spellLevelsSelected.add(1);
-                        }
-                      });
-                    },
-                    child: const Text("1",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700))),
-                OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                        backgroundColor: (spellLevelsSelected.contains(2)
-                            ? Colors.blue
-                            : const Color.fromARGB(247, 56, 53, 52))),
-                    onPressed: () {
-                      setState(() {
-                        if (spellLevelsSelected.contains(2)) {
-                          spellLevelsSelected.remove(2);
-                        } else {
-                          spellLevelsSelected.add(2);
-                        }
-                      });
-                    },
-                    child: const Text("2",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700))),
-                OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                        backgroundColor: (spellLevelsSelected.contains(3)
-                            ? Colors.blue
-                            : const Color.fromARGB(247, 56, 53, 52))),
-                    onPressed: () {
-                      setState(() {
-                        if (spellLevelsSelected.contains(3)) {
-                          spellLevelsSelected.remove(3);
-                        } else {
-                          spellLevelsSelected.add(3);
-                        }
-                      });
-                    },
-                    child: const Text("3",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700))),
-                OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                        backgroundColor: (spellLevelsSelected.contains(4)
-                            ? Colors.blue
-                            : const Color.fromARGB(247, 56, 53, 52))),
-                    onPressed: () {
-                      setState(() {
-                        if (spellLevelsSelected.contains(4)) {
-                          spellLevelsSelected.remove(4);
-                        } else {
-                          spellLevelsSelected.add(4);
-                        }
-                      });
-                    },
-                    child: const Text("4",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700)))
-              ],
-            ),
-            //main space
-            Container(
-              height: 140,
-              width: 300,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(247, 56, 53, 52),
-                border: Border.all(
-                  color: Colors.black,
-                  width: 3,
-                ),
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-              ),
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: allAvailableSpells.length,
-                itemBuilder: (context, index) {
-                  return OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                        backgroundColor: (thisDescription[1]
-                                .contains(allAvailableSpells[index])
-                            ? Colors.green
-                            : (allSpellsSelected
-                                    .contains(allAvailableSpells[index])
-                                ? const Color.fromARGB(247, 56, 53, 52)
-                                : Colors.white))),
-                    onPressed: () {
-                      setState(
-                        () {
-                          if (thisDescription[1]
-                              .contains(allAvailableSpells[index])) {
-                            thisDescription[1]
-                                .remove(allAvailableSpells[index]);
-                            allSpellsSelected.remove(allAvailableSpells[index]);
-                            thisDescription[2]++;
-                          } else {
-                            if (thisDescription[2] > 0) {
-                              if (!allSpellsSelected
-                                  .contains(allAvailableSpells[index])) {
-                                thisDescription[1]
-                                    .add(allAvailableSpells[index]);
-                                allSpellsSelected
-                                    .add(allAvailableSpells[index]);
-                                thisDescription[2] -= 1;
-                              }
-                            }
-                          }
-                        },
-                      );
-                      // Code to handle button press
-                    },
-                    child: Text(allAvailableSpells[index].name),
-                  );
-                },
-              ),
-            ),
-            //levels 5-9
-            Column(
-              children: [
-                OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                        backgroundColor: (spellLevelsSelected.contains(5)
-                            ? Colors.blue
-                            : const Color.fromARGB(247, 56, 53, 52))),
-                    onPressed: () {
-                      setState(() {
-                        if (spellLevelsSelected.contains(5)) {
-                          spellLevelsSelected.remove(5);
-                        } else {
-                          spellLevelsSelected.add(5);
-                        }
-                      });
-                    },
-                    child: const Text("5",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700))),
-                OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                        backgroundColor: (spellLevelsSelected.contains(6)
-                            ? Colors.blue
-                            : const Color.fromARGB(247, 56, 53, 52))),
-                    onPressed: () {
-                      setState(() {
-                        if (spellLevelsSelected.contains(6)) {
-                          spellLevelsSelected.remove(6);
-                        } else {
-                          spellLevelsSelected.add(6);
-                        }
-                      });
-                    },
-                    child: const Text("6",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700))),
-                OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                        backgroundColor: (spellLevelsSelected.contains(7)
-                            ? Colors.blue
-                            : const Color.fromARGB(247, 56, 53, 52))),
-                    onPressed: () {
-                      setState(() {
-                        if (spellLevelsSelected.contains(7)) {
-                          spellLevelsSelected.remove(7);
-                        } else {
-                          spellLevelsSelected.add(7);
-                        }
-                      });
-                    },
-                    child: const Text("7",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700))),
-                OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                        backgroundColor: (spellLevelsSelected.contains(8)
-                            ? Colors.blue
-                            : const Color.fromARGB(247, 56, 53, 52))),
-                    onPressed: () {
-                      setState(() {
-                        if (spellLevelsSelected.contains(8)) {
-                          spellLevelsSelected.remove(8);
-                        } else {
-                          spellLevelsSelected.add(8);
-                        }
-                      });
-                    },
-                    child: const Text("8",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700))),
-                OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                        backgroundColor: (spellLevelsSelected.contains(9)
-                            ? Colors.blue
-                            : const Color.fromARGB(247, 56, 53, 52))),
-                    onPressed: () {
-                      setState(() {
-                        if (spellLevelsSelected.contains(9)) {
-                          spellLevelsSelected.remove(9);
-                        } else {
-                          spellLevelsSelected.add(9);
-                        }
-                      });
-                    },
-                    child: const Text("9",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700)))
-              ],
-            )
-          ]),
-          //casting time, rituals and select all/none
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //Unselect all
-              OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                      backgroundColor: Colors.lightBlue),
-                  onPressed: () {
-                    setState(() {
-                      ritualsSelected = false;
-                      castingTimesSelected.clear();
-                      spellSchoolsSelected.clear();
-                      spellLevelsSelected.clear();
-                    });
-                  },
-                  child: const Text("Unpick\n    all",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700))),
-
-              //Casting time and rituals
-              Column(children: [
-//Action, BA and reaction
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                          backgroundColor:
-                              (castingTimesSelected.contains("Action")
-                                  ? Colors.blue
-                                  : const Color.fromARGB(247, 56, 53, 52))),
-                      onPressed: () {
-                        setState(() {
-                          if (castingTimesSelected.contains("Action")) {
-                            castingTimesSelected.remove("Action");
-                          } else {
-                            castingTimesSelected.add("Action");
-                          }
-                        });
-                      },
-                      child: const Text("Action",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700))),
-                  OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                          backgroundColor:
-                              (castingTimesSelected.contains("Bonus Action")
-                                  ? Colors.blue
-                                  : const Color.fromARGB(247, 56, 53, 52))),
-                      onPressed: () {
-                        setState(() {
-                          if (castingTimesSelected.contains("Bonus Action")) {
-                            castingTimesSelected.remove("Bonus Action");
-                          } else {
-                            castingTimesSelected.add("Bonus Action");
-                          }
-                        });
-                      },
-                      child: const Text("Bonus Action",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700))),
-                  OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                          backgroundColor:
-                              (castingTimesSelected.contains("Reaction")
-                                  ? Colors.blue
-                                  : const Color.fromARGB(247, 56, 53, 52))),
-                      onPressed: () {
-                        setState(() {
-                          if (castingTimesSelected.contains("Reaction")) {
-                            castingTimesSelected.remove("Reaction");
-                          } else {
-                            castingTimesSelected.add("Reaction");
-                          }
-                        });
-                      },
-                      child: const Text("Reaction",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700))),
-                ]),
-                //Other options and rituals
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                          backgroundColor:
-                              (castingTimesSelected.contains("Other")
-                                  ? Colors.blue
-                                  : const Color.fromARGB(247, 56, 53, 52))),
-                      onPressed: () {
-                        setState(() {
-                          if (castingTimesSelected.contains("Other")) {
-                            castingTimesSelected.remove("Other");
-                          } else {
-                            castingTimesSelected.add("Other");
-                          }
-                        });
-                      },
-                      child: const Text("Other Casting Times",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700))),
-                  OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                          backgroundColor: (ritualsSelected
-                              ? Colors.blue
-                              : const Color.fromARGB(247, 56, 53, 52))),
-                      onPressed: () {
-                        setState(() {
-                          ritualsSelected = !ritualsSelected;
-                        });
-                      },
-                      child: const Text("Ritual",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700)))
-                ])
-              ]),
-
-              //Select all
-              OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                      backgroundColor: Colors.lightBlue),
-                  onPressed: () {
-                    setState(() {
-                      ritualsSelected = true;
-                      castingTimesSelected = [
-                        "Action",
-                        "Reaction",
-                        "Bonus Action",
-                        "Other",
-                        "Ritual"
-                      ];
-                      spellSchoolsSelected = [
-                        "Abjuration",
-                        "Conjuration",
-                        "Divination",
-                        "Enchantment",
-                        "Evocation",
-                        "Illusion",
-                        "Necromancy",
-                        "Transmutation"
-                      ];
-                      spellLevelsSelected = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-                    });
-                  },
-                  child: const Center(
-                      child: Text("Select\n   all",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700)))),
-            ],
-          )
-        ]))));
-  }
-}
-
-class ChoiceRow extends StatefulWidget {
-  // Declare the input list of strings or lists of strings
-  final List<dynamic>? x;
-
-  ChoiceRow({super.key, this.x, this.allSelected});
-  dynamic selected;
-  final List<dynamic>? allSelected;
-  @override
-  _ChoiceRowState createState() =>
-      _ChoiceRowState(x: x, allSelected: allSelected);
-}
-
-class _ChoiceRowState extends State<ChoiceRow> {
-  // Declare the input list of strings or lists of strings
-  final List<dynamic>? x;
-  dynamic selected;
-  final List<dynamic>? allSelected;
-
-  _ChoiceRowState({this.x, this.allSelected});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
-            body: SizedBox(
-      height: 100,
-      child: Column(children: [
-        Text(x![0],
-            style: const TextStyle(
-                color: Colors.blue, fontSize: 18, fontWeight: FontWeight.w700)),
-        SizedBox(
-            height: 50,
-            child: Center(
-                child: ListView(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              children: [
-                // Call the buildRows method to create a row of buttons for each element in the x list
-                ...buildRows(context, x?.sublist(1)),
-              ],
-            )))
-      ]),
-    )
-            //),
-            ));
-  }
-
-  List<Widget> buildRows(
-      BuildContext context, List<dynamic>? inputStringLists) {
-    return [
-      for (var input in inputStringLists!)
-        //check it isn't a choice
-        if (!["Choice"].contains(input![0]))
-          OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: (selected == input)
-                    ? const Color.fromARGB(255, 73, 244, 113)
-                    : null, //<-- SEE HERE
-              ),
-              onPressed: () {
-                setState(() {
-                  if (selected != null) {
-                    //unparse selected
-                    allSelected?.remove(input);
-                    if (selected == input) {
-                      selected = null;
-                    } else {
-                      selected = input;
-                      allSelected?.add(input);
-                    }
-                  } else {
-                    selected = input;
-                    allSelected?.add(input);
-                  }
-                });
-              },
-              child: Text(input[1]))
-        else
-          Container(
-            height: 40,
-            decoration: BoxDecoration(
-              //color: Colors.pink,
-              border: Border.all(
-                color: Colors.black,
-                width: 1,
-              ),
-              borderRadius: const BorderRadius.all(Radius.circular(5)),
-            ),
-            child: Column(children: [
-              Text(input[1],
-                  style: const TextStyle(
-                      color: Colors.blue,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700)),
-              Row(
-                children: [
-                  ...buildRows(context, input.sublist(2)),
-                ],
-              )
-            ]),
-          )
-    ];
-  }
 }
 
 class MainCreateCharacter extends State<CreateACharacter>
@@ -843,8 +70,10 @@ class MainCreateCharacter extends State<CreateACharacter>
   String? characterLevel = "1";
   int pointsRemaining = 27;
   String? coinTypeSelected = "Gold";
-  bool halfFeats = true;
-  bool fullFeats = true;
+  Map<String, bool> featSelectors = {
+    "Half Feats": true,
+    "Full Feats": true
+  };
   int numberOfRemainingFeatOrASIs = 0;
   bool remainingAsi = false;
   
@@ -924,7 +153,7 @@ class MainCreateCharacter extends State<CreateACharacter>
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
-                const SizedBox(height: 40),
+                const SizedBox(height: 65),
                 Row(
                   children: [
                     Expanded(
@@ -1342,8 +571,8 @@ class MainCreateCharacter extends State<CreateACharacter>
             ],
           ),
 
-          // TODO()
-          //class
+          // TODO(Replace the current list of widgets approach)
+          // Class Tab
           DefaultTabController(
             length: 2,
             child: Scaffold(
@@ -1458,7 +687,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                     onPressed: () {
                                       setState(() {
                                         if (charLevel > character.classList.length && (multiclassingPossible(CLASSLIST[index]))) {
-                                          character.classList .add(CLASSLIST[index].name);
+                                          character.classList.add(CLASSLIST[index].name);
 
                                           if (CLASSLIST[index].gainAtEachLevel[character.classLevels[index]]
                                                   .where((element) => element[0] == "Choice").isEmpty) {
@@ -1750,682 +979,157 @@ class MainCreateCharacter extends State<CreateACharacter>
                   ],
                 )
               ])),
-          //ASI + FEAT
+          
+          // TODO(Implement the filtering for the buttons correctly)
+          // TODO(Improve the list of widgets method)
+          // Asi & Feat Selection Tab
           SingleChildScrollView(
               scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  const SizedBox(height: 24),
-                  Text("$numberOfRemainingFeatOrASIs options remaining",
-                      style: TextStyle(
-                          color: Homepage.backingColor,
-                          fontSize: 35,
-                          fontWeight: FontWeight.w900)),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
+            child: Column(
+              children: [
+                const SizedBox(height: 24),
+                buildStyledHugeTextBox(text: "$numberOfRemainingFeatOrASIs options remaining"),
+                const SizedBox(height: 6),
+                Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        height: 550,
+                        child: Column(
+                          children: [
+                            if (remainingAsi)
+                              buildStyledLargeTextBox(text: "You have an unused ASI")
+                            else  
+                              buildStyledHugeTextBox(text: "ASI's"),
+                            const SizedBox(height: 8),
+                            buildAsiBlockRow(scoreLeft: character.strength, scoreRight: character.intelligence),
+                            const SizedBox(height: 10),
+                            buildAsiBlockRow(scoreLeft: character.dexterity, scoreRight: character.wisdom),
+                            const SizedBox(height: 10),
+                            buildAsiBlockRow(scoreLeft: character.constitution, scoreRight: character.charisma)
+                          ],
+                        )
+                      )
+                    ),
+                    if (character.featsAllowed ?? false)
                       Expanded(
-                          child: SizedBox(
-                              height: 550,
-                              child: Column(
-                                children: [
-                                  Text("ASI's",
-                                      style: TextStyle(
-                                          color: Homepage.backingColor,
-                                          fontSize: 33,
-                                          fontWeight: FontWeight.w800)),
-                                  const SizedBox(height: 8),
-                                  if (remainingAsi)
-                                    Text("You have an unspent ASI",
-                                        style: TextStyle(
-                                            color: Homepage.backingColor,
-                                            fontSize: 27,
-                                            fontWeight: FontWeight.w800)),
-                                  SizedBox(
-                                      child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        height: 132,
-                                        width: 160,
-                                        decoration: BoxDecoration(
-                                          color: Homepage.backingColor,
-                                          border: Border.all(
-                                            color: Colors.black,
-                                            width: 1.6,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(5)),
-                                        ),
-                                        child: Column(children: [
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "Strength",
-                                            style: TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w800,
-                                                color: Homepage.textColor),
-                                          ),
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "+${character.featsASIScoreIncreases[0]}",
-                                            style: TextStyle(
-                                                fontSize: 45,
-                                                fontWeight: FontWeight.w700,
-                                                color: Homepage.textColor),
-                                          ),
-                                          OutlinedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                backgroundColor: (!remainingAsi &&
-                                                            numberOfRemainingFeatOrASIs ==
-                                                                0 ||
-                                                        !(character.strength.value +
-                                                                character.featsASIScoreIncreases[0] <
-                                                            20))
-                                                    ? const Color.fromARGB(
-                                                        247, 56, 53, 52)
-                                                    : Homepage.backingColor,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    4))),
-                                                side: const BorderSide(
-                                                    width: 3,
-                                                    color: Color.fromARGB(
-                                                        255, 10, 126, 54)),
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (character.strength.value +
-                                                          character.featsASIScoreIncreases[0] <
-                                                      20) {
-                                                    if (remainingAsi) {
-                                                      remainingAsi = false;
-                                                      character.featsASIScoreIncreases[0]++;
-                                                    } else if (numberOfRemainingFeatOrASIs >
-                                                        0) {
-                                                      numberOfRemainingFeatOrASIs--;
-                                                      remainingAsi = true;
-                                                      character.featsASIScoreIncreases[0]++;
-                                                    }
-                                                  }
-                                                });
-                                              },
-                                              child: const Icon(Icons.add,
-                                                  color: Colors.white,
-                                                  size: 32)),
-                                        ]),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Container(
-                                        height: 132,
-                                        width: 160,
-                                        decoration: BoxDecoration(
-                                          color: Homepage.backingColor,
-                                          border: Border.all(
-                                            color: Colors.black,
-                                            width: 1.6,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(5)),
-                                        ),
-                                        child: Column(children: [
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "Intelligence",
-                                            style: TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w800,
-                                                color: Homepage.textColor),
-                                          ),
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "+${character.featsASIScoreIncreases[3]}",
-                                            style: TextStyle(
-                                                fontSize: 45,
-                                                fontWeight: FontWeight.w700,
-                                                color: Homepage.textColor),
-                                          ),
-                                          OutlinedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                backgroundColor: (!remainingAsi &&
-                                                            numberOfRemainingFeatOrASIs ==
-                                                                0 ||
-                                                        !(character.intelligence.value +
-                                                                character.featsASIScoreIncreases[3] <
-                                                            20))
-                                                    ? const Color.fromARGB(
-                                                        247, 56, 53, 52)
-                                                    : Homepage.backingColor,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    4))),
-                                                side: const BorderSide(
-                                                    width: 3,
-                                                    color: Color.fromARGB(
-                                                        255, 10, 126, 54)),
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (character.intelligence.value +
-                                                          character.featsASIScoreIncreases[3] <
-                                                      20) {
-                                                    if (remainingAsi) {
-                                                      remainingAsi = false;
-                                                      character.featsASIScoreIncreases[3]++;
-                                                    } else if (numberOfRemainingFeatOrASIs >
-                                                        0) {
-                                                      numberOfRemainingFeatOrASIs--;
-                                                      remainingAsi = true;
-                                                      character.featsASIScoreIncreases[3]++;
-                                                    }
-                                                  }
-                                                });
-                                              },
-                                              child: const Icon(Icons.add,
-                                                  color: Colors.white,
-                                                  size: 32)),
-                                        ]),
-                                      )
-                                    ],
-                                  )),
-                                  const SizedBox(height: 10),
-                                  SizedBox(
-                                      child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        height: 132,
-                                        width: 160,
-                                        decoration: BoxDecoration(
-                                          color: Homepage.backingColor,
-                                          border: Border.all(
-                                            color: Colors.black,
-                                            width: 1.6,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(5)),
-                                        ),
-                                        child: Column(children: [
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "Dexterity",
-                                            style: TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w800,
-                                                color: Homepage.textColor),
-                                          ),
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "+${character.featsASIScoreIncreases[1]}",
-                                            style: TextStyle(
-                                                fontSize: 45,
-                                                fontWeight: FontWeight.w700,
-                                                color: Homepage.textColor),
-                                          ),
-                                          OutlinedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                backgroundColor: ((!remainingAsi &&
-                                                            numberOfRemainingFeatOrASIs ==
-                                                                0) ||
-                                                        !(character.dexterity.value +
-                                                                character.featsASIScoreIncreases[1] <
-                                                            20))
-                                                    ? const Color.fromARGB(
-                                                        247, 56, 53, 52)
-                                                    : Homepage.backingColor,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    4))),
-                                                side: const BorderSide(
-                                                    width: 3,
-                                                    color: Color.fromARGB(
-                                                        255, 10, 126, 54)),
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (character.dexterity.value +
-                                                          character.featsASIScoreIncreases[1] <
-                                                      20) {
-                                                    if (remainingAsi) {
-                                                      remainingAsi = false;
-                                                      character.featsASIScoreIncreases[1]++;
-                                                    } else if (numberOfRemainingFeatOrASIs >
-                                                        0) {
-                                                      numberOfRemainingFeatOrASIs--;
-                                                      remainingAsi = true;
-                                                      character.featsASIScoreIncreases[1]++;
-                                                    }
-                                                  }
-                                                });
-                                              },
-                                              child: const Icon(Icons.add,
-                                                  color: Colors.white,
-                                                  size: 32)),
-                                        ]),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Container(
-                                        height: 132,
-                                        width: 160,
-                                        decoration: BoxDecoration(
-                                          color: Homepage.backingColor,
-                                          border: Border.all(
-                                            color: Colors.black,
-                                            width: 1.6,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(5)),
-                                        ),
-                                        child: Column(children: [
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "Wisdom",
-                                            style: TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w800,
-                                                color: Homepage.textColor),
-                                          ),
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "+${character.featsASIScoreIncreases[4]}",
-                                            style: TextStyle(
-                                                fontSize: 45,
-                                                fontWeight: FontWeight.w700,
-                                                color: Homepage.textColor),
-                                          ),
-                                          OutlinedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                backgroundColor: (!remainingAsi &&
-                                                            numberOfRemainingFeatOrASIs ==
-                                                                0 ||
-                                                        !(character.wisdom.value +
-                                                                character.featsASIScoreIncreases[4] <
-                                                            20))
-                                                    ? const Color.fromARGB(
-                                                        247, 56, 53, 52)
-                                                    : Homepage.backingColor,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    4))),
-                                                side: const BorderSide(
-                                                    width: 3,
-                                                    color: Color.fromARGB(
-                                                        255, 10, 126, 54)),
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (character.wisdom.value +
-                                                          character.featsASIScoreIncreases[4] <
-                                                      20) {
-                                                    if (remainingAsi) {
-                                                      remainingAsi = false;
-                                                      character.featsASIScoreIncreases[4]++;
-                                                    } else if (numberOfRemainingFeatOrASIs >
-                                                        0) {
-                                                      numberOfRemainingFeatOrASIs--;
-                                                      remainingAsi = true;
-                                                      character.featsASIScoreIncreases[4]++;
-                                                    }
-                                                  }
-                                                });
-                                              },
-                                              child: const Icon(Icons.add,
-                                                  color: Colors.white,
-                                                  size: 32)),
-                                        ]),
-                                      )
-                                    ],
-                                  )),
-                                  const SizedBox(height: 10),
-                                  SizedBox(
-                                      child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        height: 132,
-                                        width: 160,
-                                        decoration: BoxDecoration(
-                                          color: Homepage.backingColor,
-                                          border: Border.all(
-                                            color: Colors.black,
-                                            width: 1.6,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(5)),
-                                        ),
-                                        child: Column(children: [
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "Constitution",
-                                            style: TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w800,
-                                                color: Homepage.textColor),
-                                          ),
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "+${character.featsASIScoreIncreases[2]}",
-                                            style: TextStyle(
-                                                fontSize: 45,
-                                                fontWeight: FontWeight.w700,
-                                                color: Homepage.textColor),
-                                          ),
-                                          OutlinedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                backgroundColor: (!remainingAsi &&
-                                                            numberOfRemainingFeatOrASIs ==
-                                                                0 ||
-                                                        !(character.constitution.value +
-                                                                character.featsASIScoreIncreases[2] <
-                                                            20))
-                                                    ? const Color.fromARGB(
-                                                        247, 56, 53, 52)
-                                                    : Homepage.backingColor,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    4))),
-                                                side: const BorderSide(
-                                                    width: 3,
-                                                    color: Color.fromARGB(
-                                                        255, 10, 126, 54)),
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (character.constitution.value +
-                                                          character.featsASIScoreIncreases[2] <
-                                                      20) {
-                                                    if (remainingAsi) {
-                                                      remainingAsi = false;
-                                                      character.featsASIScoreIncreases[2]++;
-                                                    } else if (numberOfRemainingFeatOrASIs >
-                                                        0) {
-                                                      numberOfRemainingFeatOrASIs--;
-                                                      remainingAsi = true;
-                                                      character.featsASIScoreIncreases[2]++;
-                                                    }
-                                                  }
-                                                });
-                                              },
-                                              child: const Icon(Icons.add,
-                                                  color: Colors.white,
-                                                  size: 32)),
-                                        ]),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Container(
-                                        height: 132,
-                                        width: 160,
-                                        decoration: BoxDecoration(
-                                          color: Homepage.backingColor,
-                                          border: Border.all(
-                                            color: Colors.black,
-                                            width: 1.6,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(5)),
-                                        ),
-                                        child: Column(children: [
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "Charisma",
-                                            style: TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w800,
-                                                color: Homepage.textColor),
-                                          ),
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "+${character.featsASIScoreIncreases[5]}",
-                                            style: TextStyle(
-                                                fontSize: 45,
-                                                fontWeight: FontWeight.w700,
-                                                color: Homepage.textColor),
-                                          ),
-                                          OutlinedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                backgroundColor: (!remainingAsi &&
-                                                            numberOfRemainingFeatOrASIs ==
-                                                                0 ||
-                                                        !(character.charisma.value +
-                                                                character.featsASIScoreIncreases[5] <
-                                                            20))
-                                                    ? const Color.fromARGB(
-                                                        247, 56, 53, 52)
-                                                    : Homepage.backingColor,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    4))),
-                                                side: const BorderSide(
-                                                    width: 3,
-                                                    color: Color.fromARGB(
-                                                        255, 10, 126, 54)),
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (character.charisma.value +
-                                                          character.featsASIScoreIncreases[5] <
-                                                      20) {
-                                                    if (remainingAsi) {
-                                                      remainingAsi = false;
-                                                      character.featsASIScoreIncreases[5]++;
-                                                    } else if (numberOfRemainingFeatOrASIs >
-                                                        0) {
-                                                      numberOfRemainingFeatOrASIs--;
-                                                      remainingAsi = true;
-                                                      character.featsASIScoreIncreases[5]++;
-                                                    }
-                                                  }
-                                                });
-                                              },
-                                              child: const Icon(Icons.add,
-                                                  color: Colors.white,
-                                                  size: 32)),
-                                        ]),
-                                      )
-                                    ],
-                                  )),
-                                ],
-                              ))),
-                      if (character.featsAllowed ?? false)
-                        Expanded(
-                            child: SizedBox(
-                                height: 550,
-                                child: Column(
+                        child: SizedBox(
+                          height: 550,
+                          child: Column(
+                            children: [
+                              buildStyledLargeTextBox(text: "Select Feats:"),
+                              const SizedBox(height: 8),
+                              SizedBox(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    if (character.featsSelected.isNotEmpty)
-                                      Text(
-                                          "${character.featsSelected.length} Feats selected:",
-                                          style: TextStyle(
-                                              color: Homepage.backingColor,
-                                              fontSize: 33,
-                                              fontWeight: FontWeight.w800)),
-                                    if (character.featsSelected.isNotEmpty)
-                                      SizedBox(
-                                          height: 50,
-                                          child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            shrinkWrap: true,
-                                            itemCount: character.featsSelected.length,
-                                            itemBuilder: (context, index) {
-                                              return OutlinedButton(
-                                                style: OutlinedButton.styleFrom(
-                                                    backgroundColor:
-                                                        Colors.white),
-                                                onPressed: () {},
-                                                child: Text(
-                                                    character.featsSelected[index][0]
-                                                        .name,
-                                                    style: TextStyle(
-                                                        color: Homepage
-                                                            .backingColor)),
-                                              );
-                                            },
-                                          )),
-                                    Text("Select Feats:",
-                                        style: TextStyle(
-                                            color: Homepage.backingColor,
-                                            fontSize: 33,
-                                            fontWeight: FontWeight.w800)),
-                                    const SizedBox(height: 8),
-                                    SizedBox(
-                                        child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                          OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                                backgroundColor: (fullFeats)
-                                                    ? Homepage.backingColor
-                                                    : const Color.fromARGB(
-                                                        247, 56, 53, 52)),
-                                            onPressed: () {
-                                              setState(() {
-                                                fullFeats = !fullFeats;
-                                              });
-                                            },
-                                            child: Text("Full Feats",
-                                                style: TextStyle(
-                                                    color: Homepage.textColor)),
-                                          ),
-                                          //text for search
-                                          OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                                backgroundColor: (halfFeats)
-                                                    ? Homepage.backingColor
-                                                    : const Color.fromARGB(
-                                                        247, 56, 53, 52)),
-                                            onPressed: () {
-                                              setState(() {
-                                                halfFeats = !halfFeats;
-                                              });
-                                            },
-                                            child: Text("Half Feats",
-                                                style: TextStyle(
-                                                    color: Homepage.textColor)),
-                                          ),
-                                        ])),
-                                    const SizedBox(height: 10),
-                                    Container(
-                                      height: 140,
-                                      width: 300,
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            247, 56, 53, 52),
-                                        border: Border.all(
-                                          color: Colors.black,
-                                          width: 3,
+                                    buildBinarySelectorButton(key: "Full Feats"),                 
+                                    buildBinarySelectorButton(key: "Half Feats"),
+                                ])),
+                              const SizedBox(height: 10),
+                              Container(
+                                height: 140,
+                                width: 300,
+                                decoration: BoxDecoration(
+                                  color: unavailableColor,
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 3,
+                                  ),
+                                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                ),
+                                child: ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  itemCount: FEATLIST.length,
+                                  itemBuilder: (context, index) {
+                                    return Tooltip(
+                                      message: FEATLIST[index].display(),
+                                      child: OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                          /* Create a colouring gradient for feats that can be selected multiple times */
+                                          backgroundColor: (character.featsSelected.where((feat) => feat[0].name == FEATLIST[index].name).isNotEmpty) ? Color.fromARGB(
+                                            100 + (((character.featsSelected.where((feat) => feat[0].name == FEATLIST[index].name).length) / FEATLIST[index].numberOfTimesTakeable) * 155).ceil(),
+                                            0,
+                                            50 + (((character.featsSelected.where((feat) => feat[0].name == FEATLIST[index].name).length) / FEATLIST[index].numberOfTimesTakeable) * 205).ceil(),
+                                            0
+                                          )
+                                          : Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(8),
+                                          )
                                         ),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(8)),
-                                      ),
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.vertical,
-                                        shrinkWrap: true,
-                                        itemCount: FEATLIST.length,
-                                        itemBuilder: (context, index) {
-                                          return Tooltip(
-                                              message:
-                                                  "${FEATLIST[index].name}: \n •  ${FEATLIST[index].abilites.where((element) => element[0] == "Bonus").toList().map((sublist) => sublist[2]).toList().join('\n • ')}",
-                                              child: OutlinedButton(
-                                                  style: OutlinedButton.styleFrom(
-                                                      backgroundColor: (character.featsSelected
-                                                              .where((element) =>
-                                                                  element[0].name ==
-                                                                  FEATLIST[index]
-                                                                      .name)
-                                                              .isNotEmpty)
-                                                          ? Color.fromARGB(
-                                                              100 +
-                                                                  (((character.featsSelected.where((element) => element[0].name == FEATLIST[index].name).length) / FEATLIST[index].numberOfTimesTakeable) * 155)
-                                                                      .ceil(),
-                                                              0,
-                                                              50 +
-                                                                  (((character.featsSelected.where((element) => element[0].name == FEATLIST[index].name).length) / FEATLIST[index].numberOfTimesTakeable) *
-                                                                          205)
-                                                                      .ceil(),
-                                                              0)
-                                                          : Colors.white),
-                                                  onPressed: () {
-                                                    setState(
-                                                      () {
-                                                        if (numberOfRemainingFeatOrASIs >
-                                                            0) {
-                                                          if (character.featsSelected
-                                                                  .where((element) =>
-                                                                      element[0]
-                                                                          .name ==
-                                                                      FEATLIST[
-                                                                              index]
-                                                                          .name)
-                                                                  .length <
-                                                              FEATLIST[index]
-                                                                  .numberOfTimesTakeable) {
-                                                            numberOfRemainingFeatOrASIs--;
-                                                            //call up the selection page
-                                                            character.featsSelected.add([
-                                                              FEATLIST[index]
-                                                            ]);
-                                                            for (List<dynamic> x
-                                                                in FEATLIST[
-                                                                        index]
-                                                                    .abilites) {
-                                                              if (x[0] ==
-                                                                  "Choice") {
-                                                                widgetsInPlay.add(
-                                                                    SizedBox(
-                                                                        height:
-                                                                            80,
-                                                                        child:
-                                                                            ChoiceRow(
-                                                                          x: x.sublist(
-                                                                              1),
-                                                                          allSelected:
-                                                                              character.allSelected,
-                                                                        )));
-                                                              } else {
-                                                                levelGainParser(
-                                                                    x,
-                                                                    CLASSLIST[
-                                                                        index]);
-                                                              }
-                                                            }
-                                                          }
-                                                        }
-                                                      },
-                                                    );
-                                                    // Code to handle button press
-                                                  },
-                                                  child: Text(FEATLIST[index].name,
-                                                      style: TextStyle(
-                                                          color: Homepage.backingColor,
-                                                          fontWeight: FontWeight.w900))));
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ))),
-                    ],
-                  )
-                ],
-              )),
+                                        onPressed: () {
+                                          setState(() {
+                                            /* Check there are choices available for the feat. */
+                                            if (numberOfRemainingFeatOrASIs > 0) {
+                                              /* Check the feat hasn't been chosen its maximum amount of times. */
+                                              if (character.featsSelected.where(
+                                                (element) => element[0].name == FEATLIST[index].name
+                                              ).length < FEATLIST[index].numberOfTimesTakeable) {
+
+                                                /* Select the feat */
+                                                numberOfRemainingFeatOrASIs --;
+                                                character.featsSelected.add([FEATLIST[index]]);
+
+                                                /* Add any necessary choices to the widgetsInPlay */
+                                                for (List<dynamic> x in FEATLIST[index].abilites) {
+                                                  if (x[0] == "Choice") {
+                                                    widgetsInPlay.add(
+                                                        SizedBox(height: 80,
+                                                            child: ChoiceRow(
+                                                              x: x.sublist(1),
+                                                              allSelected:character.allSelected,
+                                                            )));
+                                                  } else {
+                                                    levelGainParser(x, CLASSLIST[index]);
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                        );
+                                      },
+                                    child: buildStyledTinyTextBox(text: FEATLIST[index].name)));
+                                  },
+                                ),
+                              ),
+                              if (character.featsSelected.isNotEmpty) ...[
+                                buildStyledLargeTextBox(text: "Selected Feat${displayPlural(character.featsSelected)}:"),
+                                SizedBox(
+                                  height: 50,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    shrinkWrap: true,
+                                    itemCount: character.featsSelected.length,
+                                    itemBuilder: (context, index) {
+                                      return Tooltip(
+                                        message: FEATLIST[index].display(),
+                                        child: OutlinedButton(
+                                          style: OutlinedButton.styleFrom(
+                                            backgroundColor: Homepage.backingColor,
+                                            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                            ),
+                                            side: BorderSide(
+                                              color: Colors.black,
+                                              width: 2,
+                                            ),
+                                          ),
+                                          onPressed: () {},
+                                          child: buildStyledSmallTextBox(text: character.featsSelected[index][0].name, color: Homepage.textColor)
+                                      ));
+                                    },
+                                  )),
+                              ],
+                            ],
+                          ))),
+                  ],
+                )
+              ],
+            )),
           //spells
           Column(children: [
             Text("Choose your spells from regular progression",
@@ -3616,7 +2320,7 @@ class MainCreateCharacter extends State<CreateACharacter>
               child: Column(children: [
                 // Character Description
                 const SizedBox(height: 20, width: 10),
-                buildStyledLargeTextBox(text: "Character Information:"),
+                buildStyledHugeTextBox(text: "Character Information:"),
                 const SizedBox(height: 10, width: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -3716,7 +2420,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                 ),
 
                 // Character Backstory
-                buildStyledLargeTextBox(text: "Backstory:"),
+                buildStyledHugeTextBox(text: "Backstory:"),
                 const SizedBox(height: 5),
                 buildStyledLargeTextField(
                   hintText: 
@@ -3730,7 +2434,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                 ),
 
                 // Additional Features
-                buildStyledLargeTextBox(text: "Additional Features:"),
+                buildStyledHugeTextBox(text: "Additional Features:"),
                 const SizedBox(height: 5),
                 buildStyledLargeTextField(
                   hintText: 
@@ -3775,7 +2479,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const SizedBox(height: 40),
-                            buildStyledLargeTextBox(text: "Add your character to a group:"),
+                            buildStyledHugeTextBox(text: "Add your character to a group:"),
                             const SizedBox(height: 20),
                             buildStyledMediumTextBox(text: "Select an existing group:"),
                             const SizedBox(height: 20),
@@ -3825,7 +2529,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                             Radius.circular(10))),
                                     side: const BorderSide(width: 3, color: Colors.black),
                                   ),
-                                  child: buildStyledLargeTextBox(text: "Save Character", color: Homepage.textColor),
+                                  child: buildStyledHugeTextBox(text: "Save Character", color: Homepage.textColor),
                                   onPressed: () {
                                     if (canCreateCharacter) {
                                       setState(() {
@@ -3852,7 +2556,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                     flex: 7,
                     child: Column(children: [
                       const SizedBox(height: 40),
-                      buildStyledLargeTextBox(text: "Build checklist:"),
+                      buildStyledHugeTextBox(text: "Build checklist:"),
                       
                       //Basics
                       const SizedBox(height: 20),
@@ -4088,8 +2792,16 @@ class MainCreateCharacter extends State<CreateACharacter>
     return buildStyledTextBox(text: text, size: 25, color: color);
   }
 
-  /* Used in:  */
+    /* Used in:  */
   Text buildStyledLargeTextBox({
+    required String text,
+    Color? color
+  }) {
+    return buildStyledTextBox(text: text, size: 30, color: color);
+  }
+
+  /* Used in:  */
+  Text buildStyledHugeTextBox({
     required String text,
     Color? color
   }) {
@@ -4274,7 +2986,7 @@ class MainCreateCharacter extends State<CreateACharacter>
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // Name
-        buildStyledLargeTextBox(text: score.name),
+        buildStyledHugeTextBox(text: score.name),
         const SizedBox(height: 25),
 
         // Base value & increment/decrement buttons
@@ -4419,6 +3131,85 @@ class MainCreateCharacter extends State<CreateACharacter>
     );
   }
 
+  Container buildAsiBlock({
+    required AbilityScore score,
+  }) {
+    int index = abilityScores.indexOf(score.name);
+    bool scoreBelowMax = (score.value + character.featsASIScoreIncreases[index] < 20);
+    return Container(
+      height: 136,
+      width: 160,
+      decoration: BoxDecoration(
+        color: Homepage.backingColor,
+        border: Border.all(color: Colors.black, width: 1.6),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(5)
+        ),
+      ),
+      child: Column(children: [
+        buildStyledMediumTextBox(text: score.name, color: Homepage.textColor),
+        buildStyledTextBox(text: "+${character.featsASIScoreIncreases[index]}", size: 45, color: Homepage.textColor),
+        OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              backgroundColor: ((!remainingAsi && numberOfRemainingFeatOrASIs == 0) || !(scoreBelowMax))
+                ? unavailableColor
+                : Homepage.backingColor,
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(4))
+                ),
+              side: const BorderSide(width: 3, color: positiveColor),
+            ),
+            onPressed: () {
+              setState(() {
+                if (scoreBelowMax) {
+                  if (remainingAsi) {
+                    remainingAsi = false;
+                    character.featsASIScoreIncreases[index] ++;
+                  } else if (numberOfRemainingFeatOrASIs > 0) {
+                    numberOfRemainingFeatOrASIs --;
+                    remainingAsi = true;
+                    character.featsASIScoreIncreases[index] ++;
+                  }
+                }
+              });
+            },
+            child: const Icon(Icons.add, color: Colors.white, size: 32)),
+      ]),
+    );
+  }
+
+  SizedBox buildAsiBlockRow ({
+    required AbilityScore scoreLeft,
+    required AbilityScore scoreRight,
+  }) {
+    return SizedBox(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          buildAsiBlock(score: scoreLeft),
+          const SizedBox(width: 10),
+          buildAsiBlock(score: scoreRight),
+        ],
+      )
+    );
+  }
+
+  OutlinedButton buildBinarySelectorButton({
+    required String key
+  }) {
+    assert(featSelectors.containsKey(key), "Key must be a valid key in featSelectors");
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        backgroundColor: (featSelectors[key]!) ? Homepage.backingColor : unavailableColor),
+      onPressed: () {
+        setState(() {
+          featSelectors[key] = !featSelectors[key]!;
+        });
+      },
+      child: buildStyledTinyTextBox(text: key, color: Homepage.textColor)
+    );
+  }
+
   Text makeRequiredText({
     required bool condition,
     required String trueText,
@@ -4466,62 +3257,36 @@ class MainCreateCharacter extends State<CreateACharacter>
     );
   }
 
+  bool scoresFailRequirement(Character character, List<int> requirements) {
+    int count = 0;
+    if (character.strength.value + character.raceAbilityScoreIncreases[0] + character.featsASIScoreIncreases[0] >= requirements[0]) count++;
+    if (character.dexterity.value + character.raceAbilityScoreIncreases[1] + character.featsASIScoreIncreases[1] >= requirements[1]) count++;
+    if (character.constitution.value + character.raceAbilityScoreIncreases[2] + character.featsASIScoreIncreases[2] >= requirements[2]) count++;
+    if (character.intelligence.value + character.raceAbilityScoreIncreases[3] + character.featsASIScoreIncreases[3] >= requirements[3]) count++;
+    if (character.wisdom.value + character.raceAbilityScoreIncreases[4] + character.featsASIScoreIncreases[4] >= requirements[4]) count++;
+    if (character.charisma.value + character.raceAbilityScoreIncreases[5] + character.featsASIScoreIncreases[5] >= requirements[5]) count++;
+
+    return count >= requirements[6];
+  }
+  
   bool multiclassingPossible(Class selectedClass) {
-    //check if it is their first class
-    if (character.classList.isEmpty) {
+    // Check if it is their first class or they already have a level in the class
+    if (character.classList.isEmpty || character.classList.contains(selectedClass.name)) {
       return true;
     }
+
+    // Check if multiclassing is allowed
     if (!(character.multiclassing ?? false)) {
       return false;
     }
-    List<int> requirements = selectedClass.multiclassingRequirements;
-    //check if they already have a level in the class
-    if (character.classList.contains(selectedClass.name)) {
-      return true;
-    }
-    //check the class they want to take
-    int count = 0;
-    if (character.strength.value + character.raceAbilityScoreIncreases[0] + character.featsASIScoreIncreases[0] >=
-        requirements[0]) count++;
-    if (character.dexterity.value + character.raceAbilityScoreIncreases[1] + character.featsASIScoreIncreases[1] >=
-        requirements[1]) count++;
-    if (character.constitution.value + character.raceAbilityScoreIncreases[2] + character.featsASIScoreIncreases[2] >=
-        requirements[2]) count++;
-    if (character.intelligence.value + character.raceAbilityScoreIncreases[3] + character.featsASIScoreIncreases[3] >=
-        requirements[3]) count++;
-    if (character.wisdom.value + character.raceAbilityScoreIncreases[4] + character.featsASIScoreIncreases[4] >=
-        requirements[4]) count++;
-    if (character.charisma.value + character.raceAbilityScoreIncreases[5] + character.featsASIScoreIncreases[5] >=
-        requirements[5]) count++;
 
-    if (count < requirements[6]) {
+    // Check they satisfy the class they want to take
+    if (scoresFailRequirement(character, selectedClass.multiclassingRequirements)) {
       return false;
     }
-    //check all other classes they have a level in
-    for (var i = 0; i < character.classList.length; i++) {
-      requirements = CLASSLIST
-          .firstWhere((element) => element.name == character.classList[i])
-          .multiclassingRequirements;
-      int count = 0;
-      if (character.strength.value + character.raceAbilityScoreIncreases[0] + character.featsASIScoreIncreases[0] >=
-          requirements[0]) count++;
-      if (character.dexterity.value + character.raceAbilityScoreIncreases[1] + character.featsASIScoreIncreases[1] >=
-          requirements[1]) count++;
-      if (character.constitution.value + character.raceAbilityScoreIncreases[2] + character.featsASIScoreIncreases[2] >=
-          requirements[2]) count++;
-      if (character.intelligence.value + character.raceAbilityScoreIncreases[3] + character.featsASIScoreIncreases[3] >=
-          requirements[3]) count++;
-      if (character.wisdom.value + character.raceAbilityScoreIncreases[4] + character.featsASIScoreIncreases[4] >=
-          requirements[4]) count++;
-      if (character.charisma.value + character.raceAbilityScoreIncreases[5] + character.featsASIScoreIncreases[5] >=
-          requirements[5]) count++;
 
-      if (count < requirements[6]) {
-        return false;
-      }
-    }
-
-    return true;
+    // Check they satisfy their last added class's requirements
+    return scoresFailRequirement(character, CLASSLIST.last.multiclassingRequirements);
   }
 
   Widget? levelGainParser(List<dynamic> x, Class selectedClass) {
@@ -4546,7 +3311,7 @@ class MainCreateCharacter extends State<CreateACharacter>
       );
     } else if (x[0] == "Bonus") {
       // ("Bonus","String description")
-      character.featuresAndTraits.add(x[1] + ": " + x[2]);
+      character.featuresAndTraits.add("${x[1]}: ${x[2]}");
     } else if (x[0] == "AC") {
       // ("AC","intelligence + 2", "RQUIREMENT")
       character.ACList.add([x[1], x[2]]);

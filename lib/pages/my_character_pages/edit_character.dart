@@ -3,29 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 // Project Imports
-import '../create_a_character.dart';
+import "../spell_handling.dart";
 import '../../content_classes/all_content_classes.dart';
 import '../../pdf_generator/pdf_final_display.dart';
 import '../../main.dart';
 import "../../file_manager.dart";
-
-//fix this later
-bool isAllowedContent(dynamic x) {
-  return true;
-}
-
-//Map<String, String> characterTypeReturner = {0.0:"Martial",1.0:"Full Caster", 0.5: "Half Caster", 0.3:"Third caster"};
-Spell listgetter(String spellname) {
-  //huge issue with adding content WITH DUPLICATE NAME AND (TYPE)
-  for (int x = 0; x < SPELLLIST.length; x++) {
-    if (SPELLLIST[x].name == spellname) {
-      return SPELLLIST[x];
-    }
-  }
-  //ADD SOMETHING FOR FAILED COMPARISONS
-  ///fix really  really really
-  return SPELLLIST[0];
-} //}
 
 class Edittop extends StatelessWidget {
   final Character character;
@@ -3036,84 +3018,36 @@ class EditCharacter extends State<EditACharacter> {
     );
   }
 
+  bool scoresFailRequirement(Character character, List<int> requirements) {
+    int count = 0;
+    if (character.strength.value + character.raceAbilityScoreIncreases[0] + character.featsASIScoreIncreases[0] >= requirements[0]) count++;
+    if (character.dexterity.value + character.raceAbilityScoreIncreases[1] + character.featsASIScoreIncreases[1] >= requirements[1]) count++;
+    if (character.constitution.value + character.raceAbilityScoreIncreases[2] + character.featsASIScoreIncreases[2] >= requirements[2]) count++;
+    if (character.intelligence.value + character.raceAbilityScoreIncreases[3] + character.featsASIScoreIncreases[3] >= requirements[3]) count++;
+    if (character.wisdom.value + character.raceAbilityScoreIncreases[4] + character.featsASIScoreIncreases[4] >= requirements[4]) count++;
+    if (character.charisma.value + character.raceAbilityScoreIncreases[5] + character.featsASIScoreIncreases[5] >= requirements[5]) count++;
+
+    return count >= requirements[6];
+  }
+  
   bool multiclassingPossible(Class selectedClass) {
-    //check if it is their first class
-    if (classList.isEmpty) {
+    // Check if it is their first class or they already have a level in the class
+    if (character.classList.isEmpty || character.classList.contains(selectedClass.name)) {
       return true;
     }
+
+    // Check if multiclassing is allowed
     if (!(character.multiclassing ?? false)) {
       return false;
     }
-    List<int> requirements = selectedClass.multiclassingRequirements;
-    //check if they already have a level in the class
-    if (classList.contains(selectedClass.name)) {
-      return true;
-    }
-    //check the class they want to take
-    int count = 0;
-    if (strength.value +
-            character.raceAbilityScoreIncreases[0] +
-            ASIBonuses[0] >=
-        requirements[0]) count++;
-    if (dexterity.value +
-            character.raceAbilityScoreIncreases[1] +
-            ASIBonuses[1] >=
-        requirements[1]) count++;
-    if (constitution.value +
-            character.raceAbilityScoreIncreases[2] +
-            ASIBonuses[2] >=
-        requirements[2]) count++;
-    if (intelligence.value +
-            character.raceAbilityScoreIncreases[3] +
-            ASIBonuses[3] >=
-        requirements[3]) count++;
-    if (wisdom.value + character.raceAbilityScoreIncreases[4] + ASIBonuses[4] >=
-        requirements[4]) count++;
-    if (charisma.value +
-            character.raceAbilityScoreIncreases[5] +
-            ASIBonuses[5] >=
-        requirements[5]) count++;
 
-    if (count < requirements[6]) {
+    // Check they satisfy the class they want to take
+    if (scoresFailRequirement(character, selectedClass.multiclassingRequirements)) {
       return false;
     }
-    //check all other classes they have a level in
-    for (var i = 0; i < classList.length; i++) {
-      requirements = CLASSLIST
-          .firstWhere((element) => element.name == classList[i])
-          .multiclassingRequirements;
-      int count = 0;
-      if (strength.value +
-              character.raceAbilityScoreIncreases[0] +
-              ASIBonuses[0] >=
-          requirements[0]) count++;
-      if (dexterity.value +
-              character.raceAbilityScoreIncreases[1] +
-              ASIBonuses[1] >=
-          requirements[1]) count++;
-      if (constitution.value +
-              character.raceAbilityScoreIncreases[2] +
-              ASIBonuses[2] >=
-          requirements[2]) count++;
-      if (intelligence.value +
-              character.raceAbilityScoreIncreases[3] +
-              ASIBonuses[3] >=
-          requirements[3]) count++;
-      if (wisdom.value +
-              character.raceAbilityScoreIncreases[4] +
-              ASIBonuses[4] >=
-          requirements[4]) count++;
-      if (charisma.value +
-              character.raceAbilityScoreIncreases[5] +
-              ASIBonuses[5] >=
-          requirements[5]) count++;
 
-      if (count < requirements[6]) {
-        return false;
-      }
-    }
-
-    return true;
+    // Check they satisfy their last added class's requirements
+    return scoresFailRequirement(character, CLASSLIST.last.multiclassingRequirements);
   }
 
   Widget? levelGainParser(List<dynamic> x, Class selectedClass) {
@@ -3138,7 +3072,7 @@ class EditCharacter extends State<EditACharacter> {
       );
     } else if (x[0] == "Bonus") {
       // ("Bonus","String description")
-      featuresAndTraits.add(x[1] + ": " + x[2]);
+      featuresAndTraits.add("${x[1]}: ${x[2]}");
     } else if (x[0] == "AC") {
       // ("AC","intelligence + 2", "RQUIREMENT")
       ACList.add([x[1], x[2]]);

@@ -23,3 +23,15 @@ dynamic mapEquipment(x) {
   }
   return Item.fromJson(x);
 }
+
+// TODO(Implement this function) 
+bool isAllowedContent(dynamic x) {
+  return true;
+}
+
+String displayPlural(List<dynamic> items) {
+  if (items.length > 1) {
+    return "s";
+  }
+  return "";
+}

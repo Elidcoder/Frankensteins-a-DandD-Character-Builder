@@ -1,7 +1,7 @@
 import 'item.dart';
 
 class Weapon extends Item {
-  //[["poison","1d8"]...]
+  // Formatted as [["poison","1d8"]...]
   List<List<String>> damageDiceAndType;
   List<String> properties;
   Weapon(
@@ -21,15 +21,13 @@ class Weapon extends Item {
   }
 
   factory Weapon.fromJson(Map<String, dynamic> data) {
-    List<dynamic> damage_DiceAndType_ = data["DamageDiceAndType"];
-    List<List<String>> damage_DiceAndType = damage_DiceAndType_.map((i)=>List<String>.from(i)).toList();
     return Weapon(
         name: data["Name"],
         cost: data["Cost"],
         weight: data["Weight"],
         stackable: data["Stackable"] ?? false,
-        damageDiceAndType: damage_DiceAndType,
+        properties: data["Properties"].cast<String>() as List<String>,
         equipmentType: data["EquipmentType"].cast<String>() as List<String>,
-        properties: data["Properties"].cast<String>() as List<String>);
+        damageDiceAndType: (data["DamageDiceAndType"] as List).map((i) => List<String>.from(i)).toList());
   }
 }
