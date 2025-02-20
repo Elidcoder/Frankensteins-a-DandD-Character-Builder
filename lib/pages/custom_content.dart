@@ -13,12 +13,13 @@ class CustomContent extends StatelessWidget {
       /* Page title (Create content) */
       appBar: AppBar(
         centerTitle: true,
+        foregroundColor: Homepage.textColor,
         backgroundColor: Homepage.backingColor,
         title: Text(
           textAlign: TextAlign.center,
           'Create content',
           style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700, color: Homepage.textColor),
-        )),
+      )),
       backgroundColor: Homepage.backgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

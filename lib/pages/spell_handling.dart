@@ -6,18 +6,6 @@ import 'create_a_character.dart';
 import '../content_classes/all_content_classes.dart';
 import '../../main.dart';
 
-// FUTUREPLAN(MODIFY THE IMPELEMTNATION OF SPELL SELECTION TO BE SPELL SLOT DEPENDENT)
-
-/* Retrieve a spell from a list. */
-Spell listgetter(String spellname) {
-  for (int x = 0; x < SPELLLIST.length; x++) {
-    if (SPELLLIST[x].name == spellname) {
-      return SPELLLIST[x];
-    }
-  }
-  return SPELLLIST[0];
-}
-
 class SpellSelections extends StatefulWidget {
   final List<dynamic> thisDescription;
   final List<Spell> allSpells;
@@ -105,6 +93,16 @@ class SpellSelectionsState extends State<SpellSelections> {
         )
       )));
   }
+}
+
+/* Retrieve a spell from a list. */
+Spell listgetter(String spellname) {
+  for (int x = 0; x < SPELLLIST.length; x++) {
+    if (SPELLLIST[x].name == spellname) {
+      return SPELLLIST[x];
+    }
+  }
+  return SPELLLIST[0];
 }
 
 class ChoiceRow extends StatefulWidget {

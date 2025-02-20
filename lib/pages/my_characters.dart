@@ -57,34 +57,23 @@ class MainMyCharacters extends State<MyCharacters> {
       ),
       body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
         /* Character name search bar */
-        Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          Expanded(
-            child: Container(
-              height: 50,
-              color: Homepage.backingColor,
-              child: SizedBox(
-                width: 150,
-                child: TextField(
-                  cursorColor: Homepage.textColor,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    hintText: "Search using character names here",
-                    hintStyle: TextStyle(fontWeight: FontWeight.w700, color: Homepage.textColor),
-                    filled: true,
-                    fillColor: Homepage.backingColor,
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                      borderRadius: BorderRadius.all(Radius.circular(12)))
-                  ),
-                  onChanged: (searchEnteredValue) {
-                    setState(() {
-                      searchTerm = searchEnteredValue;
-                    });
-                  }),
-              ),
-          )),
-        ]),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextField(
+            onChanged: (value) {
+              setState(() {
+                searchTerm = value;
+              });
+            },
+            decoration: InputDecoration(
+              hintText: "Search for characters using its names",
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(Icons.search),
+            ),
+          ),
+        ),
         const SizedBox(height: 15),
+        
         /* Display users characters with action buttons. */
         Expanded(
           child: (CHARACTERLIST.isEmpty)

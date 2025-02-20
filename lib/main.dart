@@ -228,49 +228,16 @@ class MainHomepageState extends State<Homepage> {
                                       children: [
                                         /* Mini version of the button that takes the user to the create_a_character page */
                                         const SizedBox(width: 21),
-                                        Container(
-                                          width: 60,
-                                          height: 31,
-                                          decoration: BoxDecoration(
-                                            color: THEMELIST.reversed.toList()[index].backingColour,
-                                            borderRadius: const BorderRadius.all(Radius.circular(4))),
-                                          child: Text("Create a \n character",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 10,
-                                              color: THEMELIST.reversed.toList()[index].textColour),
-                                            textAlign: TextAlign.center)),
+                                        buildStyledMockButton("Create a \n character", index),
                                         
                                         /* Mini version of the button that takes the user to the search_for_content page */
                                         const SizedBox(width: 27.5),
-                                        Container(
-                                          width: 60,
-                                          height: 31,
-                                          decoration: BoxDecoration(
-                                            color: THEMELIST.reversed.toList()[index].backingColour,
-                                            borderRadius: const BorderRadius.all(Radius.circular(4))),
-                                          child: Text("Search for\nContent",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 10,
-                                              color: THEMELIST.reversed.toList()[index].textColour),
-                                            textAlign: TextAlign.center
-                                        )),
+                                        buildStyledMockButton("Search for\nContent", index),
 
                                         /* Mini version of the button that takes the user to the my_characters page */
                                         const SizedBox(width: 27.5),
-                                        Container(
-                                          width: 60,
-                                          height: 31,
-                                          decoration: BoxDecoration(
-                                            color: THEMELIST.reversed.toList()[index].backingColour,
-                                            borderRadius:const BorderRadius.all(Radius.circular(4))),
-                                          child: Text("My\nCharacters",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 10,
-                                              color: THEMELIST.reversed.toList()[index].textColour),
-                                            textAlign: TextAlign.center)),
+                                        buildStyledMockButton("My\nCharacters", index)
+
                                       ],
                                 )),
                                 const SizedBox(height: 25),
@@ -279,35 +246,11 @@ class MainHomepageState extends State<Homepage> {
                                     children: [
                                       /* Mini version of the button that makes the download content popup */
                                       const SizedBox(width: 50),
-                                      Container(
-                                        width: 74,
-                                        height: 31,
-                                        decoration: BoxDecoration(
-                                          color: THEMELIST.reversed.toList()[index].backingColour,
-                                          borderRadius: const BorderRadius.all(Radius.circular(4))),
-                                        child: Text(
-                                          "Download\nContent",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 10,
-                                            color: THEMELIST.reversed.toList()[index].textColour),
-                                          textAlign: TextAlign.center)),
+                                      buildStyledMockButton("Download\nContent", index),
                                       
                                       /* Mini version of the button that takes the user to the create_content page */
                                       const SizedBox(width: 27.5),
-                                      Container(
-                                        width: 74,
-                                        height: 31,
-                                        decoration: BoxDecoration(
-                                          color: THEMELIST.reversed.toList()[index].backingColour,
-                                          borderRadius: const BorderRadius.all(Radius.circular(4))),
-                                        child: Text("Create\nContent",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 10,
-                                            color: THEMELIST.reversed.toList()[index].textColour
-                                          ),
-                                          textAlign: TextAlign.center)),
+                                      buildStyledMockButton("Create\nContent", index)
                                   ],
                                 ))
                               ]),
@@ -361,6 +304,26 @@ class MainHomepageState extends State<Homepage> {
     );
   }
 
+  /* Builds a fake version of a button styled to look like a given colour scheme. */
+  Widget buildStyledMockButton(String text, int index) {
+    return Container(
+      width: 61,
+      height: 31,
+      decoration: BoxDecoration(
+        color: THEMELIST.reversed.toList()[index].backingColour,
+        borderRadius:const BorderRadius.all(Radius.circular(4))),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 10,
+          color: THEMELIST.reversed.toList()[index].textColour),
+        textAlign: TextAlign.center
+      )
+    );
+  }
+
+  /* Return a text widget of the given text followed by a small space. */
   List<Widget> styledSeperatedText(String text){
     return [
       Text(
@@ -388,31 +351,29 @@ class ScreenTop extends StatelessWidget {
         appBar: AppBar(
           foregroundColor: Homepage.textColor,
           backgroundColor: Homepage.backingColor,
+          /* Button taking the user back to the homepage */
           leading: IconButton(
-              icon: (pagechoice == "Main Menu")
-                  ? const Icon(Icons.image)
-                  : const Icon(Icons.home),
-              tooltip: (pagechoice == "Main Menu")
-                  ? "Put logo here"
-                  : "Return to the main menu",
-              onPressed: () {
-                if (pagechoice != "Main Menu") {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const ScreenTop(pagechoice: "Main Menu")));
-                }
-              }),
+            icon: (pagechoice == "Main Menu") ? const Icon(Icons.image) : const Icon(Icons.home),
+            tooltip: (pagechoice == "Main Menu") ? "Put logo here" : "Return to the main menu",
+            onPressed: () {
+              if (pagechoice != "Main Menu") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ScreenTop(pagechoice: "Main Menu"))
+                );
+              }
+            }),
           title: const Center(child: Text(appTitle)),
           actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.arrow_back),
-              tooltip: "Return to the previous page",
-              onPressed: () {
-                Navigator.pop(context);
-              },
+            /* Presents a back button only if one isn't generated. */
+            if (pagechoice == "Main Menu") 
+              IconButton(
+                icon: const Icon(Icons.arrow_back),
+                tooltip: "Return to the previous page",
+                onPressed: () {Navigator.pop(context);}
             ),
+
+            /* Allow users to select a colour scheme */
             IconButton(
                 icon: const Icon(Icons.settings),
                 tooltip: "Settings",
@@ -439,6 +400,15 @@ class MainMenupage extends State<MainMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        foregroundColor: Homepage.textColor,
+        backgroundColor: Homepage.backingColor,
+        title: Text(
+          textAlign: TextAlign.center,
+          "Main Menu",
+          style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700, color: Homepage.textColor),
+      )),
       backgroundColor: Homepage.backgroundColor,
       floatingActionButton: FloatingActionButton(
         tooltip: "Help and guidance",
@@ -454,104 +424,31 @@ class MainMenupage extends State<MainMenu> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  color: Homepage.backingColor,
-                  child: Text(
-                    textAlign: TextAlign.center,
-                    "Main Menu",
-                    style: TextStyle(
-                        fontSize: 45,
-                        fontWeight: FontWeight.w700,
-                        color: Homepage.textColor),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 100),
+          const SizedBox(height: 80),
+          /* Row containing the create character, search for content and my characters buttons. */
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: Homepage.backingColor,
-                  padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  side: const BorderSide(width: 3.3, color: Colors.black),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ScreenTop(
-                            pagechoice: "Create a Character")),
-                  );
-                },
-                child: Text(
-                  textAlign: TextAlign.center,
-                  "Create a \ncharacter",
-                  style: TextStyle(
-                      fontSize: 35,
-                      fontWeight: FontWeight.w700,
-                      color: Homepage.textColor),
-                ),
-              ),
-              const SizedBox(width: 100),
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: Homepage.backingColor,
-                  padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  side: const BorderSide(width: 3.3, color: Colors.black),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ScreenTop(
-                            pagechoice: "Search for Content")),
-                  );
-                },
-                child: Text(
-                  textAlign: TextAlign.center,
-                  "Search for\ncontent",
-                  style: TextStyle(
-                      fontSize: 35,
-                      fontWeight: FontWeight.w700,
-                      color: Homepage.textColor),
-                ),
-              ),
-              const SizedBox(width: 100),
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: Homepage.backingColor,
-                  padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-                  side: const BorderSide(width: 3.3, color: Colors.black),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ScreenTop(pagechoice: "My Characters")),
-                  );
-                },
-                child: Text(
-                  textAlign: TextAlign.center,
-                  "My \ncharacters",
-                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: Homepage.textColor),
-                ),
-              ),
+
+              /* Create a character button. */
+              buildStyledButton("Create a \ncharacter", "Create a Character", context),
+              const SizedBox(width: 120),
+
+              /* Search for content button */
+              buildStyledButton("Search for\ncontent", "Search for Content", context),
+              const SizedBox(width: 120),
+
+              /* My characters button */
+              buildStyledButton("My \ncharacters", "My Characters", context)
             ],
           ),
-          const SizedBox(height: 100),
+          const SizedBox(height: 120),
+
+          /* Row containing the download content and create content buttons */
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              /* Download content button */
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   backgroundColor: Homepage.backingColor,
@@ -559,16 +456,19 @@ class MainMenupage extends State<MainMenu> {
                   shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
                   side: const BorderSide(width: 3.3, color: Colors.black),
                 ),
+                /* Get the target file. */
                 onPressed: () async {
                   final result = await FilePicker.platform.pickFiles(
-                    dialogTitle: 
-                      "Navigate to and select a Json file to download the contents from, this content can then be used in your characters",
+                    dialogTitle: "Navigate to and select a Json file to download the contents from, this content can then be used in your characters",
                     type: FileType.custom,
                     allowedExtensions: ["json"],
                   );
+
+                  /* If a matching file is found read it as a file */
                   if (result != null) {
                     final targetFile = File(result.files.single.path ?? "PATH SHOULD NEVER OCCUR");
 
+                    /* Attempt to add the contents of the file to the LISTS */
                     try {
                       addToGlobalsFromFile(targetFile);
                       await saveChanges();
@@ -588,31 +488,39 @@ class MainMenupage extends State<MainMenu> {
                 ),
               ),
               const SizedBox(width: 100),
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: Homepage.backingColor,
-                  padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-                  side: const BorderSide(width: 3.3, color: Colors.black),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ScreenTop(pagechoice: "Custom Content")),
-                  );
-                },
-                child: Text(
-                  textAlign: TextAlign.center,
-                  'Create \ncontent',
-                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: Homepage.textColor),
-                ),
-              ),
+
+              /* Create content button */
+              buildStyledButton("Create \ncontent", "Custom Content", context)
             ],
           ),
         ],
       ));
   }
 
+  /* Builds a button that takes the user to another page. */
+  OutlinedButton buildStyledButton(String text, String pagechoice, BuildContext context){
+    return OutlinedButton(
+    style: OutlinedButton.styleFrom(
+      backgroundColor: Homepage.backingColor,
+      padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+      side: const BorderSide(width: 3.3, color: Colors.black),
+    ),
+    onPressed: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ScreenTop(pagechoice: pagechoice)),
+      );
+    },
+    child: Text(
+      textAlign: TextAlign.center,
+      text,
+      style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: Homepage.textColor),
+    )
+  );
+  }
+
+  /* Displays a popup with helpfull information for new users. */
   void _showInfoAndHelp(BuildContext context) {
     showDialog(
       context: context,
@@ -621,101 +529,43 @@ class MainMenupage extends State<MainMenu> {
           children: [
             const Opacity(
               opacity: 0.5,
-              child: ModalBarrier(
-                dismissible: false,
-                color: Colors.grey,
-              ),
+              child: ModalBarrier(dismissible: false, color: Colors.grey),
             ),
             AlertDialog(
-              title: const Text("Help and information",
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700)),
+              /* Title */
+              title: const Text("Help and information", style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700)),
               content: SingleChildScrollView(
-                  child: Column(
-                      //crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
+                  child: Column(children: [
+
+                    /* Display an overview of the app with a subtitle */
                     const Text(
                       "App overview",
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                     ),
-                    const SizedBox(
-                      height: 9,
-                    ),
-                    Row(children: const [
-                      Expanded(
-                        child: Text(
-                          '''• Main Menu - This is the section you are currently in, \nit allows you to navigate between every section.''',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      )
-                    ]),
-                    Row(children: const [
-                      Expanded(
-                        child: Text(
-                          '''• Create a Character - This is the section to build your character,\nit contains tabs which will guide you through the creation process.''',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      )
-                    ]),
-                    Row(children: const [
-                      Expanded(
-                        child: Text(
-                          '''• Search for Content - This is the section to look through your content,\nit allows you to search through and delete much of that content.''',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      )
-                    ]),
-                    Row(children: const [
-                      Expanded(
-                        child: Text(
-                          '''• My Characters -  This is the section to look through your characters,\nit allows you to search through, delete, edit and get their PDF.''',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      )
-                    ]),
-                    Row(children: const [
-                      Expanded(
-                        child: Text(
-                          '''• Download Content -  This is a button to install content,\nit allows you to select content to install from your computer.''',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      )
-                    ]),
-                    Row(children: const [
-                      Expanded(
-                        child: Text(
-                          '''• Create Content -  This is the section to create new content, 
-it takes you to another page to select the type of content. Once there,
-you can create that type of content, saving it to your app.''',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      )
-                    ]),
-                    const SizedBox(
-                      height: 9,
-                    ),
+                    const SizedBox(height: 9),
+                    buildStyledBulletPoint('''• Main Menu - This is the section you are currently in, \nit allows you to navigate between every section.'''),
+                    buildStyledBulletPoint('''• Create a Character - This is the section to build your character,\nit contains tabs which will guide you through the creation process.'''),
+                    buildStyledBulletPoint('''• Search for Content - This is the section to look through your content,\nit allows you to search through and delete much of that content.'''),
+                    buildStyledBulletPoint('''• My Characters -  This is the section to look through your characters,\nit allows you to search through, delete, edit and get their PDF.'''),
+                    buildStyledBulletPoint('''• Download Content -  This is a button to install content,\nit allows you to select content to install from your computer.'''),
+                    buildStyledBulletPoint('''• Create Content -  This is the section to create new content,\nit takes you to another page to select the type of content. Once there,\nyou can create that type of content, saving it to your app.'''),
+                    const SizedBox(height: 9),
+
+                    /* Display information on how to report a bug or ask for help */
                     const Text(
                       "Report a bug or ask for help:",
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                     ),
-                    const SizedBox(
-                      height: 9,
-                    ),
+                    const SizedBox(height: 9),
                     const Text(
-                      '''This is an open source project, to report bugs, 
-ask for help or suggest improvements please go to:
-https://github.com/Elidcoder/Frankensteins-a-DandD-Character-Builder
-''',
+                      '''This is an open source project, to report bugs, \nask for help or suggest improvements please go to:\nhttps://github.com/Elidcoder/Frankensteins-a-DandD-Character-Builder''',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 20),
                     ),
                   ])),
               actions: [
                 TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                  onPressed: () {Navigator.of(context).pop();},
                   child: const Text("OK"),
                 ),
               ],
@@ -726,6 +576,14 @@ https://github.com/Elidcoder/Frankensteins-a-DandD-Character-Builder
     );
   }
 
+  /* Generate a bullet point of a string input. */
+  Row buildStyledBulletPoint(String text) {
+    return Row(children: [
+      Expanded(child: Text(text, style: const TextStyle(fontSize: 20)))
+    ]);
+  }
+
+  /* Display an error dialogue letting the user know that the download was bad. */
   void showErrorDialog(BuildContext context) {
     showDialog(
       context: context,
