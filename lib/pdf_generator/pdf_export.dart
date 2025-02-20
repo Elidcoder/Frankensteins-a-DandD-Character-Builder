@@ -2869,7 +2869,6 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                     ])),
                               ])),
                         ])),
-                //Text(userCharacter.name)
               ],
             ));
       },

@@ -49,7 +49,7 @@ class MainMyCharacters extends State<MyCharacters> {
             textAlign: TextAlign.center,
             "My Characters",
             style: TextStyle(
-              fontSize: 45,
+              fontSize: 40,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -61,19 +61,19 @@ class MainMyCharacters extends State<MyCharacters> {
           Expanded(
             child: Container(
               height: 50,
-              color: Colors.grey,
+              color: Homepage.backingColor,
               child: SizedBox(
                 width: 150,
                 child: TextField(
                   cursorColor: Homepage.textColor,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    hintText: "Character name here",
+                    hintText: "Search using character names here",
                     hintStyle: TextStyle(fontWeight: FontWeight.w700, color: Homepage.textColor),
                     filled: true,
-                    fillColor: Colors.grey,
+                    fillColor: Homepage.backingColor,
                     border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
+                      borderSide: BorderSide(color: Colors.black),
                       borderRadius: BorderRadius.all(Radius.circular(12)))
                   ),
                   onChanged: (searchEnteredValue) {
