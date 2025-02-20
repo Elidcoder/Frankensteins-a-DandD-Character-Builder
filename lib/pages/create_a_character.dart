@@ -9,6 +9,9 @@ import '../content_classes/all_content_classes.dart';
 import "../file_manager.dart";
 import '../pdf_generator/pdf_final_display.dart';
 
+/* Notifier for when settings changes colour to rebuild. */
+final ValueNotifier<int> tabRebuildNotifier = ValueNotifier<int>(0);
+
 class CreateACharacter extends StatefulWidget {
   const CreateACharacter({super.key});
 
@@ -134,7 +137,9 @@ class MainCreateCharacter extends State<CreateACharacter>
       setState(() {
       });
     }
-    return DefaultTabController(
+    return ValueListenableBuilder<int>(
+      valueListenable: tabRebuildNotifier,
+      builder: (context, value, child) {return DefaultTabController(
       length: tabLabels.length,
       child: Scaffold(
         backgroundColor: Homepage.backgroundColor,
@@ -953,36 +958,27 @@ class MainCreateCharacter extends State<CreateACharacter>
               Text(
                 textAlign: TextAlign.center,
                 "Points remaining: $pointsRemaining",
-                style: TextStyle(
-                    fontSize: 50,
-                    fontWeight: FontWeight.w700,
-                    color: Homepage.backingColor),
+                style: TextStyle(fontSize: 50, fontWeight: FontWeight.w700, color: Homepage.backingColor),
               ),
               const SizedBox(height: 35),
-              Row(
-                children: [
-                  const Expanded(flex: 12, child: SizedBox()),
-                  Expanded(
-                      flex: 11, 
-                      child: buildAbilityScoreBlock(score: character.strength)),
-                  Expanded(
-                      flex: 11,
-                      child: buildAbilityScoreBlock(score: character.dexterity)),
-                  Expanded(
-                      flex: 15,
-                      child: buildAbilityScoreBlock(score: character.constitution)),
-                  Expanded(
-                      flex: 13,
-                      child: buildAbilityScoreBlock(score: character.intelligence)),
-                  Expanded(
-                      flex: 10,
-                      child: buildAbilityScoreBlock(score: character.wisdom)),
-                  Expanded(
-                      flex: 11,
-                      child: buildAbilityScoreBlock(score: character.charisma)),
-                  const Expanded(flex: 13, child: SizedBox()),
-                ],
-              )
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    const SizedBox(width: 20),
+                    buildAbilityScoreBlock(score: character.strength),
+                    const SizedBox(width: 10),
+                    buildAbilityScoreBlock(score: character.dexterity),
+                    const SizedBox(width: 10),
+                    buildAbilityScoreBlock(score: character.constitution),
+                    const SizedBox(width: 10),
+                    buildAbilityScoreBlock(score: character.intelligence),
+                    const SizedBox(width: 10),
+                    buildAbilityScoreBlock(score: character.wisdom),
+                    const SizedBox(width: 10),
+                    buildAbilityScoreBlock(score: character.charisma)
+                  ],
+              ))
           ])),
                     
           // Ability Score Improvement & Feat selection tab
@@ -1129,7 +1125,7 @@ class MainCreateCharacter extends State<CreateACharacter>
               ],
             )),
 
-          //spells
+          // spells
           Column(children: [
             /* If the character has nothing to do with spells this displays a message.  */
             if (character.allSpellsSelected.isEmpty && character.allSpellsSelectedAsListsOfThings.isEmpty) ...[
@@ -1145,8 +1141,10 @@ class MainCreateCharacter extends State<CreateACharacter>
                       fontWeight: FontWeight.w700,
                       color: Homepage.backingColor)),
               Row(children: [
-                Expanded(
-                    child: Column(children: [
+                Expanded(child: Column(children: [
+                  (character.allSpellsSelected.isNotEmpty) 
+                  ? buildStyledLargeTextBox(text: "Spells learned:")
+                  : buildStyledLargeTextBox(text: "No spells learned"),
                   if (character.allSpellsSelected
                       .where((element) => element.level == 0)
                       .toList()
@@ -1449,11 +1447,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                         )),
                 ])),
                 Expanded(
-                  child: SingleChildScrollView(
-                      child: Column(
-                    children: character.allSpellsSelectedAsListsOfThings
-                        .map((s) => SpellSelections(character.allSpellsSelected, s))
-                        .toList(),
+                  child: SingleChildScrollView(child: Column(
+                    children: [
+                    const SizedBox(height: 20),
+                    ...character.allSpellsSelectedAsListsOfThings.map(
+                      (s) => SpellSelections(character.allSpellsSelected, s)
+                    )
+                    ]
                   )),
                 )
               ]),
@@ -2096,7 +2096,7 @@ class MainCreateCharacter extends State<CreateACharacter>
               ])),
         ]),
       ),
-    );
+    );});
   }
 
   Tab tabLabel(String label) {
@@ -2734,25 +2734,6 @@ class MainCreateCharacter extends State<CreateACharacter>
         });
       },
       child: Text(label, style: TextStyle(color: Homepage.textColor, fontSize: 15))
-    );
-  }
-
-  ElevatedButton makeStyledCoinFilterToggle(String coinType, String? curCurrency) {
-    return ElevatedButton(
-      style: OutlinedButton.styleFrom(
-        backgroundColor: (curCurrency == coinType)
-          ? Homepage.backingColor
-          : unavailableColor),
-      onPressed: () {
-        setState(() {
-          if (curCurrency == coinType) {
-            curCurrency = null;
-          } else {
-            curCurrency = coinType;
-          }
-        });
-      },
-      child: Text(coinType, style: TextStyle(color: Homepage.textColor, fontSize: 15)),
     );
   }
 
