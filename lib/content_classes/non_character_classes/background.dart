@@ -26,7 +26,7 @@ class Background implements Content {
   Map<String, dynamic> toJson() => {
     "Name": name,
     "NumberOfSkillChoices": numberOfSkillChoices,
-    "Sourcebook": sourceBook,
+    "SourceBook": sourceBook,
     "NumberOfLanguageChoices": numberOfLanguageChoices,
     "Features": features,
     "InitialProficiencies": initialProficiencies,
