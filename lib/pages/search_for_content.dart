@@ -1,9 +1,9 @@
 // External Imports
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 // Project Imports
 import "../main.dart";
-import '../content_classes/all_content_classes.dart';
+import "../content_classes/all_content_classes.dart";
 
 class SearchForContent extends StatefulWidget {
   const SearchForContent({super.key});
@@ -13,17 +13,18 @@ class SearchForContent extends StatefulWidget {
 }
 
 class SearchForContentState extends State<SearchForContent> {
-  String searchQuery = "";
+  String searchTerm = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        foregroundColor: Homepage.textColor,
         backgroundColor: Homepage.backingColor,
         title: Text(
           textAlign: TextAlign.center,
-          'Search for content',
+          "Search for content",
           style: TextStyle(
             fontSize: 45,
             fontWeight: FontWeight.w700,
@@ -33,38 +34,50 @@ class SearchForContentState extends State<SearchForContent> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Search field at the top
+          /* Contents name search bar */
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               onChanged: (value) {
                 setState(() {
-                  searchQuery = value;
+                  searchTerm = value;
                 });
               },
               decoration: InputDecoration(
-                hintText: 'Search content...',
+                hintText:  "Search for content using its names",
                 border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.search),
               ),
             ),
           ),
-          // Content list wrapped in an Expanded SingleChildScrollView
+
+          /* All content matching the search displayed as cards. */
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   /* Display the classes. */
+                  buildTitleCard("Classes"),
                   ...buildFilteredContentCards(CLASSLIST),
+
                   /* Display the spells. */ 
+                  buildTitleCard("Spells"),
                   ...buildFilteredContentCards(SPELLLIST),
+
                   /* Display the feaets. */ 
+                  buildTitleCard("Feats"),
                   ...buildFilteredContentCards(FEATLIST),
+
                   /* Display the races. */ 
+                  buildTitleCard("Races"),
                   ...buildFilteredContentCards(RACELIST),
+
                   /* Display the items. */ 
+                  buildTitleCard("Items"),
                   ...buildFilteredContentCards(ITEMLIST),
+
                   /* Display the backgrounds. */ 
+                  buildTitleCard("Backgrounds"),
                   ...buildFilteredContentCards(BACKGROUNDLIST)
                 ],
               ),
@@ -74,51 +87,81 @@ class SearchForContentState extends State<SearchForContent> {
       ));
   }
 
-  List<Widget> buildFilteredContentCards(List<Content> list) {
+  /* Build a card displaying a string. */
+  Center buildTitleCard(String listType) {
+    return Center(
+      child: FractionallySizedBox(
+        widthFactor: 0.5,
+        child: Container(
+          width: double.infinity,
+          margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+          padding: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+            color: Homepage.backingColor,
+            border: Border.all(color: Homepage.textColor, width: 1.5),
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: Center(child:Text(
+            listType,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Homepage.textColor),
+          )),
+        ),
+      ),
+    );
+  }
+
+  /* Generate a list of cards displaying a piece of content. */
+  List<Center> buildFilteredContentCards(List<Content> list) {
     final filtered = list.where((item) {
-      final query = searchQuery.toLowerCase();
+      final query = searchTerm.toLowerCase();
       return item.name.toLowerCase().contains(query) ||
              item.sourceBook.toLowerCase().contains(query);
     }).toList();
     return filtered.map((item) => buildContentCard(item, list)).toList();
   }
 
-  Widget buildContentCard(Content content, List<Content> list) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-      padding: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.grey, width: 1.5),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          /* Display content info */
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(content.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              const SizedBox(height: 4),
-              Text(content.sourceBook, style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
-            ],
-          ),
-          /* Delete content button */
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                list.remove(content);
-              });
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
+  /* Build a card for a piece of content that allows for viewing and deletion. */
+  Center buildContentCard(Content content, List<Content> list) {
+    return Center(child:FractionallySizedBox(
+      widthFactor: 0.5, 
+      child: Container(
+        width: double.infinity,
+        margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+        padding: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          color: Homepage.backingColor,
+          border: Border.all(color: Homepage.textColor, width: 1.5),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            /* Display content info */
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(content.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                const SizedBox(height: 4),
+                Text(content.sourceBook, style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
+              ],
             ),
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
-    );
+
+            /* Delete content button */
+            Tooltip(
+              message: "Delete ${content.name}", 
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    list.remove(content);
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                child: const Icon(Icons.delete, color: Colors.white),
+            ))
+          ]
+        )
+    )));
   }
 }
