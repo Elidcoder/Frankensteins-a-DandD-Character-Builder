@@ -20,8 +20,6 @@ final Map<String, Widget> PAGELINKER = {
   "My Characters": MyCharacters(),
   "Custom Content": const CustomContent(),
   "Create spells": MakeASpell(),
-  "Create Items": MakeAnItem(),
-  "Create weapons": MakeAWeapon(),
 };
 
 void main() {

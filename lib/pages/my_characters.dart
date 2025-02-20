@@ -181,24 +181,6 @@ class MainMyCharacters extends State<MyCharacters> {
                               style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Homepage.textColor)
                         ))),
 
-                        /* Generate echo button */
-                        OutlinedButton(
-                          // TODO(IMPLEMENT THIS)
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Homepage.textColor, width: 0.6),
-                            backgroundColor: Colors.deepPurple,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
-                          ),
-                          onPressed: () {},
-                          child: const SizedBox(
-                            width: 175,
-                            child: Text(
-                                textAlign: TextAlign.center,
-                                "Generate echo",
-                                style:
-                                    TextStyle(color: Colors.white))
-                        )),
-
                         /* Open as PDF button */
                         OutlinedButton(
                           style: OutlinedButton.styleFrom(
