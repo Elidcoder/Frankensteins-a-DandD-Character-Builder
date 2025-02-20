@@ -9,10 +9,10 @@ class SearchForContent extends StatefulWidget {
   const SearchForContent({super.key});
 
   @override
-  _SearchForContentState createState() => _SearchForContentState();
+  SearchForContentState createState() => SearchForContentState();
 }
 
-class _SearchForContentState extends State<SearchForContent> {
+class SearchForContentState extends State<SearchForContent> {
   String searchQuery = "";
 
   @override

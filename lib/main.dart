@@ -331,9 +331,9 @@ class MainHomepageState extends State<Homepage> {
                 TextButton(
                   onPressed: () {
                       ColourScheme currentScheme = ColourScheme(
-                        textColour: Homepage.textColor,
-                        backingColour: Homepage.backingColor,
-                        backgroundColour: Homepage.backgroundColor
+                        textColour: currentTextColor,
+                        backingColour: currentBackingColor,
+                        backgroundColour: currentBackgroundColor
                       );
                       Homepage.textColor = currentTextColor;
                       Homepage.backingColor = currentBackingColor;
@@ -575,7 +575,10 @@ class MainMenupage extends State<MainMenu> {
                     }
                     catch (e) {
                       debugPrint("Error downloading content: $e");
-                      //TODO(ADD POPUP)
+                      if (mounted) {
+                        // ignore: use_build_context_synchronously (mounted check ensures correctness)
+                        showErrorDialog(context);
+                      }
                     }
                   }
                 },
@@ -728,13 +731,10 @@ https://github.com/Elidcoder/Frankensteins-a-DandD-Character-Builder
       context: context,
       builder: (context) => AlertDialog(
         content: const Text("Json format incorrect, reformat and try again!",
-            style: TextStyle(
-                color: Colors.red, fontSize: 45, fontWeight: FontWeight.w800)),
+          style: TextStyle(color: Colors.red, fontSize: 45, fontWeight: FontWeight.w800)),
         actions: [
           TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+            onPressed: () {Navigator.of(context).pop();},
             child: const Text("Continue"),
           ),
         ],

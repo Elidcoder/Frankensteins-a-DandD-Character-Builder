@@ -24,7 +24,7 @@ dynamic mapEquipment(x) {
   return Item.fromJson(x);
 }
 
-// TODO(Implement this function) 
+// FUTUREPLAN(Implement this function) 
 bool isAllowedContent(dynamic x) {
   return true;
 }

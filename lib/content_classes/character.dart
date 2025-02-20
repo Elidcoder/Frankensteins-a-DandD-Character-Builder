@@ -81,7 +81,7 @@ class Character {
   Map<String, String> classSubclassMapper;
   //ASI feats
   List<int> featsASIScoreIncreases;
-  //TODO(Replace this with List<Pair<Feat, int>>, (feat, numbTimesTaken)) 
+  //FUTUREPLAN(Replace this with List<Pair<Feat, int>>, (feat, numbTimesTaken)) 
   List<List<dynamic>> featsSelected;
 
   //Spells
@@ -588,7 +588,7 @@ class Character {
     characterDescription.name.replaceAll(" ", "") != "" &&
     characterDescription.gender.replaceAll(" ", "") != "" &&
     playerName.replaceAll(" ", "") != ""
-    // TODO(When experience is implemented, implement this)
+    // FUTUREPLAN(When experience is implemented, implement this)
     /* &&(enteredExperience.replaceAll(" ", "") != "" || levellingMethod != "Experience")*/
   );
 

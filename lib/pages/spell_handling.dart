@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 // Project Imports
 import '../content_classes/all_content_classes.dart';
 
-// TODO(MODIFY THE IMPELEMTNATION OF SPELL SELECTION TO BE SPELL SLOT DEPENDENT)
+// FUTUREPLAN(MODIFY THE IMPELEMTNATION OF SPELL SELECTION TO BE SPELL SLOT DEPENDENT)
 
 //Map<String, String> characterTypeReturner = {0.0:"Martial",1.0:"Full Caster", 0.5: "Half Caster", 0.3:"Third caster"};
 Spell listgetter(String spellname) {
@@ -14,29 +14,27 @@ Spell listgetter(String spellname) {
       return SPELLLIST[x];
     }
   }
-  // TODO(ADD SOMETHING FOR FAILED COMPARISONS)
+  // FUTUREPLAN(ADD SOMETHING FOR FAILED COMPARISONS)
   return SPELLLIST[0];
 }
 
 class SpellSelections extends StatefulWidget {
   //final Class? classSelected;
-  List<dynamic> thisDescription;
-  List<Spell> allSpells;
-  SpellSelections(this.allSpells, this.thisDescription, {super.key});
+  final List<dynamic> thisDescription;
+  final List<Spell> allSpells;
+  const SpellSelections(this.allSpells, this.thisDescription, {super.key});
   @override
-  _SpellSelectionsState createState() =>
-      //_SpellSelectionsState(allSpells, classSelected: classSelected);
-      _SpellSelectionsState(allSpells, thisDescription);
+  SpellSelectionsState createState() => SpellSelectionsState(allSpells, thisDescription);
 }
 
-class _SpellSelectionsState extends State<SpellSelections> {
+class SpellSelectionsState extends State<SpellSelections> {
   // Declare the input list of strings or lists of strings
   //final Class? classSelected;
   List<Spell> allSpellsSelected;
   //CURENTLY: [name, [spelllist], numb, formula]
   List<dynamic> thisDescription;
-  //_SpellSelectionsState(this.allSpellsSelected, {this.classSelected});
-  _SpellSelectionsState(this.allSpellsSelected, this.thisDescription);
+  //SpellSelectionsState(this.allSpellsSelected, {this.classSelected});
+  SpellSelectionsState(this.allSpellsSelected, this.thisDescription);
 
   List<String> spellSchoolsSelected = [
     "Abjuration",
@@ -674,21 +672,19 @@ class ChoiceRow extends StatefulWidget {
   // Declare the input list of strings or lists of strings
   final List<dynamic>? x;
 
-  ChoiceRow({super.key, this.x, this.allSelected});
-  dynamic selected;
+  const ChoiceRow({super.key, this.x, this.allSelected});
   final List<dynamic>? allSelected;
   @override
-  _ChoiceRowState createState() =>
-      _ChoiceRowState(x: x, allSelected: allSelected);
+  ChoiceRowState createState() => ChoiceRowState(x: x, allSelected: allSelected);
 }
 
-class _ChoiceRowState extends State<ChoiceRow> {
+class ChoiceRowState extends State<ChoiceRow> {
   // Declare the input list of strings or lists of strings
   final List<dynamic>? x;
   dynamic selected;
   final List<dynamic>? allSelected;
 
-  _ChoiceRowState({this.x, this.allSelected});
+  ChoiceRowState({this.x, this.allSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -727,7 +723,7 @@ class _ChoiceRowState extends State<ChoiceRow> {
               style: OutlinedButton.styleFrom(
                 backgroundColor: (selected == input)
                     ? const Color.fromARGB(255, 73, 244, 113)
-                    : null, //<-- SEE HERE
+                    : null,
               ),
               onPressed: () {
                 setState(() {

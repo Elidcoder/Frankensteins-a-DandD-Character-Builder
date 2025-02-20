@@ -1,4 +1,4 @@
-export '../SRD_globals.dart';
+export '../srd_globals.dart';
 export 'ability_score.dart';
 export 'proficiency.dart';
 export 'item.dart';

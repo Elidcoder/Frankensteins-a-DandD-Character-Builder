@@ -10,6 +10,8 @@ import "../file_manager.dart";
 import '../pdf_generator/pdf_final_display.dart';
 
 class CreateACharacter extends StatefulWidget {
+  const CreateACharacter({super.key});
+
   @override
   MainCreateCharacter createState() => MainCreateCharacter();
 }
@@ -83,11 +85,11 @@ class MainCreateCharacter extends State<CreateACharacter>
   bool remainingAsi = false;
   
 
-  // TODO(Implement an experience levelling alternative using these)
+  // FUTUREPLAN(Implement an experience levelling alternative using these)
   String enteredExperience = "";
   TextEditingController experienceEnterController = TextEditingController();
   
-  // TODO(Implement a better skill proficiency section using skillProficienciesMap and adding a second field then delete this)
+  // FUTUREPLAN(Implement a better skill proficiency section using skillProficienciesMap and adding a second field then delete this)
   List<String> skillProficiencies = [];
 
   Character character = Character.createDefault();
@@ -216,7 +218,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   textController: experienceEnterController, 
                                   onChanged:  (characterExperienceEnteredValue) {
                                     setState(() {
-                                      //TODO(Implement the experience levelling alternative);
+                                      //FUTUREPLAN(Implement the experience levelling alternative);
                                     });}
                                 ) : 
                                 buildStyledRadioListTile(
@@ -3336,7 +3338,7 @@ class MainCreateCharacter extends State<CreateACharacter>
     } else if (x[0] == "ASI") {
       numberOfRemainingFeatOrASIs++;
     }
-    //TODO(Implement further parsing for: proficiencies, languages, equipment )
+    //FUTUREPLAN(Implement further parsing for: proficiencies, languages, equipment )
 
     /*else if (x[0] == "Equipment") {
     //note base speed is given by race

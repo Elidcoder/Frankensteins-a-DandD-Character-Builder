@@ -58,7 +58,7 @@ class Edittop extends StatelessWidget {
 class EditACharacter extends StatefulWidget {
   final Character character;
 
-  EditACharacter({super.key, required this.character});
+  const EditACharacter({super.key, required this.character});
   @override
   EditCharacter createState() => EditCharacter(character: character);
 }

@@ -1,7 +1,7 @@
 import "content.dart";
 
-// TODO(Use asserts to ensure NUMBEROFSKILLCHOICES <= OPTIONALSKILLPROFICIENCIES.LENGTH)
-// TODO(make bond/flaw etc optional)
+// FUTUREPLAN(Use asserts to ensure NUMBEROFSKILLCHOICES <= OPTIONALSKILLPROFICIENCIES.LENGTH)
+// FUTUREPLAN(make bond/flaw etc optional)
 class Background implements Content {
   @override
   final String name;
@@ -20,7 +20,7 @@ class Background implements Content {
   final List<String> ideal;
   final List<String> bond;
   final List<String> flaw;
-  // TODO(Make classes for every equipment type)
+  // FUTUREPLAN(Make classes for every equipment type)
   final List<String> equipment;
 
   Map<String, dynamic> toJson() => {
