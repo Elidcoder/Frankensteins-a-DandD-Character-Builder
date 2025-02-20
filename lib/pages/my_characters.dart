@@ -20,6 +20,9 @@ class MainMyCharacters extends State<MyCharacters> {
 
   @override
   Widget build(BuildContext context) {
+    final filteredCharacters = CHARACTERLIST.where(
+      (element) => element.characterDescription.name.toLowerCase().contains(searchTerm.toLowerCase())
+    ).toList();
     return Scaffold(
       backgroundColor: Homepage.backgroundColor,
       floatingActionButton: FloatingActionButton(
@@ -83,17 +86,16 @@ class MainMyCharacters extends State<MyCharacters> {
         ]),
         const SizedBox(height: 15),
         /* Display users characters with action buttons. */
-        (CHARACTERLIST.isEmpty)
-            ? Text("You have no created characters to view", style: TextStyle(color: Homepage.backingColor, fontSize: 25, fontWeight: FontWeight.w700))
+        Expanded(
+          child: (CHARACTERLIST.isEmpty)
+            ? Center(child: Text("You have no created characters to view", style: TextStyle(color: Homepage.backingColor, fontSize: 25, fontWeight: FontWeight.w700)))
           : SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Wrap(
                 spacing: 8.0,
                 runSpacing: 8.0,
                 alignment: WrapAlignment.center,
-                children: List.generate(CHARACTERLIST.where(
-                  (element) => element.characterDescription.name.contains(searchTerm)
-                ).toList().length, (index) {
+                children: List.generate(filteredCharacters.length, (index) {
                   return Container(
                     width: 190,
                     height: 247,
@@ -110,17 +112,13 @@ class MainMyCharacters extends State<MyCharacters> {
                           child: FittedBox(
                             fit: BoxFit.scaleDown,
                             child: Text(
-                              CHARACTERLIST.where(
-                                (element) => element.characterDescription.name.contains(searchTerm)
-                              ).toList()[index].characterDescription.name,
+                              filteredCharacters[index].characterDescription.name,
                               style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700,color: Homepage.textColor)
                         ))),
 
                         /* Character's Level */
                         Text(
-                          "Level: ${CHARACTERLIST.where(
-                            (element) => element.characterDescription.name.contains(searchTerm)
-                          ).toList()[index].classList.length}",
+                          "Level: ${filteredCharacters[index].classList.length}",
                           style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Homepage.textColor)
                         ),
 
@@ -130,20 +128,14 @@ class MainMyCharacters extends State<MyCharacters> {
                           height: 20,
                           child: FittedBox(
                             fit: BoxFit.scaleDown,
-                            child: (CHARACTERLIST.where(
-                              (element) => element.characterDescription.name.contains(searchTerm)
-                            ).toList()[index].classList.isNotEmpty) 
+                            child: (filteredCharacters[index].classList.isNotEmpty) 
 
                             /* If the character has levels in >= 1 class, mach each class to its levels (if > 0) and pretty print them. */
                             ? Text(
                                 CLASSLIST.asMap().entries.where(
-                                  (entry) => CHARACTERLIST.where(
-                                    (char) => char.characterDescription.name.contains(searchTerm)
-                                  ).toList()[index].classLevels[entry.key] != 0
+                                  (entry) => filteredCharacters[index].classLevels[entry.key] != 0
                                 ).map(
-                                  (entry) =>"${entry.value.name}: ${CHARACTERLIST.where(
-                                    (element) => element.characterDescription.name.contains(searchTerm)
-                                  ).toList()[index].classLevels[entry.key]}"
+                                  (entry) =>"${entry.value.name}: ${filteredCharacters[index].classLevels[entry.key]}"
                                 ).join(", "),
                                 style: TextStyle(fontWeight: FontWeight.w700,color: Homepage.textColor)
                             )
@@ -157,9 +149,7 @@ class MainMyCharacters extends State<MyCharacters> {
 
                         /* Character's Health */
                         Text(
-                          "Health: ${CHARACTERLIST.where(
-                            (element) => element.characterDescription.name.contains(searchTerm)
-                          ).toList()[index].maxHealth}",
+                          "Health: ${filteredCharacters[index].maxHealth}",
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Homepage.textColor)
                         ),
 
@@ -170,9 +160,7 @@ class MainMyCharacters extends State<MyCharacters> {
                           child: FittedBox(
                             fit: BoxFit.scaleDown,
                             child: Text(
-                              "Group: ${CHARACTERLIST.where(
-                                (element) => element.characterDescription.name.contains(searchTerm)
-                              ).toList()[index].group ?? "Not a part of a group"}",
+                              "Group: ${filteredCharacters[index].group ?? "Not a part of a group"}",
                               style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Homepage.textColor)
                         ))),
 
@@ -185,18 +173,12 @@ class MainMyCharacters extends State<MyCharacters> {
                           ),
                           onPressed: () {
                             Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => PdfPreviewPage(character: CHARACTERLIST.where(
-                                  (element) => element.characterDescription.name.contains(searchTerm)
-                                ).toList()[index])),
+                              MaterialPageRoute(builder: (context) => PdfPreviewPage(character: filteredCharacters[index])),
                             );
                           },
                           child: const SizedBox(
                             width: 175,
-                            child: Text(
-                              textAlign: TextAlign.center,
-                              "Open PDF",
-                              style: TextStyle(color: Colors.white)
+                            child: Text(textAlign: TextAlign.center, "Open PDF", style: TextStyle(color: Colors.white)
                         ))),
 
                         /* Duplicate character button */
@@ -209,9 +191,7 @@ class MainMyCharacters extends State<MyCharacters> {
                           onPressed: () {
                             setState(() {
                               /* Add the duplicated character to CHARACTERLIST */
-                              Character selectedCharacter = CHARACTERLIST.where(
-                                (element) => element.characterDescription.name.contains(searchTerm)
-                              ).toList()[index];
+                              Character selectedCharacter = filteredCharacters[index];
                               CHARACTERLIST.add(selectedCharacter.getCopy());
                               saveChanges();
                             });
@@ -236,9 +216,7 @@ class MainMyCharacters extends State<MyCharacters> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => Edittop(CHARACTERLIST.where(
-                                    (element) => element.characterDescription.name.contains(searchTerm)
-                                  ).toList()[index])),
+                                  builder: (context) => Edittop(filteredCharacters[index])),
                               );
                             },
                             child: const SizedBox(
@@ -260,9 +238,7 @@ class MainMyCharacters extends State<MyCharacters> {
                             setState(() {
                               /* Locate the character being deleted. */
                               final int charIndex = CHARACTERLIST.indexWhere(
-                                (character) => character.uniqueID == CHARACTERLIST.where(
-                                  (element) => element.characterDescription.name.contains(searchTerm)
-                                ).toList()[index].uniqueID
+                                (character) => character.uniqueID == filteredCharacters[index].uniqueID
                               );
                               final String? charGroup = CHARACTERLIST[charIndex].group;
 
@@ -291,7 +267,7 @@ class MainMyCharacters extends State<MyCharacters> {
                     ));
                 }),
               ),
-            ),
+            )),
       ]));
   }
 
