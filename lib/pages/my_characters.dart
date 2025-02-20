@@ -17,11 +17,6 @@ class MyCharacters extends StatefulWidget {
 
 class MainMyCharacters extends State<MyCharacters> {
   String searchTerm = "";
-  @override
-  void initState() {
-    super.initState();
-    updateGlobals();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +96,7 @@ class MainMyCharacters extends State<MyCharacters> {
                 ).toList().length, (index) {
                   return Container(
                     width: 190,
-                    height: 279,
+                    height: 247,
                     decoration: BoxDecoration(
                       color: Homepage.backingColor,
                       border: Border.all(color: Homepage.textColor, width: 2),
@@ -219,16 +214,6 @@ class MainMyCharacters extends State<MyCharacters> {
                               ).toList()[index];
                               CHARACTERLIST.add(selectedCharacter.getCopy());
                               saveChanges();
-
-                              /* Show the duplication dialog */
-                              Navigator.pop(context);
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => Homepage()));
-                              showStyledDialogue(
-                                context, 
-                                const Text(
-                                  'Character duplicated!',
-                                  style: TextStyle(color: Colors.green, fontSize: 50, fontWeight: FontWeight.w800)
-                              ));
                             });
                           },
                           child: const SizedBox(
@@ -291,19 +276,8 @@ class MainMyCharacters extends State<MyCharacters> {
                                 GROUPLIST.remove(charGroup);
                               }
                               
-                              /* Save changes and show deletion dialogue. */
+                              /* Save changes. */
                               saveChanges();
-                              Navigator.pop(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => Homepage()),
-                              );
-                              showStyledDialogue(
-                                context, 
-                                const Text(
-                                  'Character deleted!', 
-                                  style: TextStyle(color: Colors.red, fontSize: 50, fontWeight: FontWeight.w800) 
-                              ));
                             });
                           },
                           child: const SizedBox(

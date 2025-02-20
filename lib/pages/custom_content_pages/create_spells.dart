@@ -517,9 +517,6 @@ class MainMakeASpell extends State<MakeASpell> {
                               );
                               showCreationDialog(context);
                             });
-
-                            //update globals to update the spell list with its new member
-                            updateGlobals();
                           }
                         }
                       },

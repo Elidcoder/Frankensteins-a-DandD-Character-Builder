@@ -2,14 +2,13 @@
 import 'package:flutter/material.dart';
 
 // Project Imports
-import "../file_manager.dart";
 import "../main.dart";
 
+/* Serves as a linker page between the main page and the users choice of content to create. */
 class CustomContent extends StatelessWidget {
   const CustomContent({super.key});
   @override
   Widget build(BuildContext context) {
-    updateGlobals();
     return Scaffold(
       /* Page title (Create content) */
       appBar: AppBar(
@@ -28,7 +27,8 @@ class CustomContent extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              /* Button to take the user to the create custom spells page */
+
+              /* Button taking the user to the create custom spells page */
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   backgroundColor: Homepage.backingColor,

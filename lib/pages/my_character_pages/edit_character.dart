@@ -15,7 +15,6 @@ class Edittop extends StatelessWidget {
   static const String _title = 'Frankenstein\'s - a D&D 5e character builder';
   @override
   Widget build(BuildContext context) {
-    updateGlobals();
     return MaterialApp(
       title: _title,
       home: Scaffold(
@@ -44,7 +43,9 @@ class Edittop extends StatelessWidget {
             IconButton(
                 icon: const Icon(Icons.settings),
                 tooltip: 'Settings??',
-                onPressed: () {}),
+                onPressed: () {
+                  homepageKey.currentState?.showColorPicker(context);
+                }),
           ],
         ),
         //pick relevent call
@@ -200,8 +201,6 @@ class EditCharacter extends State<EditACharacter> {
     unstackableEquipmentSelected = character.unstackableEquipmentSelected;
     //finishing up variables
     group = character.group;
-
-    updateGlobals();
   }
 
   @override
@@ -2764,7 +2763,6 @@ class EditCharacter extends State<EditACharacter> {
                                       (allSpellsSelectedAsListsOfThings
                                           .where((element) => element[2] != 0)
                                           .isEmpty)) {
-                                    updateGlobals();
                                     Character char = Character(
                                       languageChoices: character.languageChoices,
                                             characterDescription: CharacterDescription(age: character.characterDescription.age, height: character.characterDescription.height, weight: character.characterDescription.weight, eyes: character.characterDescription.eyes, skin: character.characterDescription.skin, hair: character.characterDescription.hair, backstory: character.characterDescription.backstory, name: character.characterDescription.name, gender: character.characterDescription.gender),
@@ -2878,8 +2876,6 @@ class EditCharacter extends State<EditACharacter> {
                                       GROUPLIST.add(group!);
                                     }
                                     saveChanges();
-                                  
-                                    updateGlobals();
                                     setState(() {
                                       Navigator.pop(context);
                                       Navigator.push(

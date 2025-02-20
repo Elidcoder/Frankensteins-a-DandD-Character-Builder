@@ -11,53 +11,74 @@ import 'content_classes/all_content_classes.dart';
 List<Character> CHARACTERLIST = [];
 List<String> GROUPLIST = [];
 
-/* UpdateGlobals reads the JSON and uses it to update the LISTS. */
-Future<bool> updateGlobals() async {
+/* initialiseGlobals reads the JSON and uses it to update the LISTS. */
+Future<bool> initialiseGlobals() async {
+  if (CHARACTERLIST.isNotEmpty) {
+    bool myvar =  true;
+    return myvar;
+  }
+    
   try {
     /* Ensure the local file exists */
     await copyAssetFileToLocal();
     final path = await getLocalFilePath();
     final file = File(path);
 
-    /* Read the file */
-    final jsonString = await file.readAsString();
-    final jsonmap = jsonDecode(jsonString);
+    /* Add the information stored in the apps JSON to the LISTS. */
+    return await addToGlobalsFromFile(file);
 
-     /* Parse the data into the lists*/
-    LANGUAGELIST = List<String>.from(jsonmap["Languages"]);
-    PROFICIENCYLIST = List<Proficiency>.from(
-      jsonmap["Proficiencies"].map((x) => Proficiency.fromJson(x)),
-    );
-    RACELIST = List<Race>.from(
-      jsonmap["Races"].map((x) => Race.fromJson(x)),
-    );
-    BACKGROUNDLIST = List<Background>.from(
-      jsonmap["Backgrounds"].map((x) => Background.fromJson(x)),
-    );
-    CLASSLIST = List<Class>.from(
-      jsonmap["Classes"].map((x) => Class.fromJson(x)),
-    );
-    SPELLLIST = List<Spell>.from(
-      jsonmap["Spells"].map((x) => Spell.fromJson(x)),
-    );
-    FEATLIST = List<Feat>.from(
-      jsonmap["Feats"].map((x) => Feat.fromJson(x)),
-    );
-    ITEMLIST = List<Item>.from(
-      (jsonmap["Equipment"] ?? []).map((x) => mapEquipment(x)),
-    );
-    GROUPLIST = List<String>.from(jsonmap["Groups"]);
-    CHARACTERLIST = List<Character>.from(
-      jsonmap["Characters"].map((x) => Character.fromJson(x)),
-    );
-    COLORLIST = List<List<Color>>.from(
-      jsonmap["Colours"].map((x) => [colorFromJson(x[0]), colorFromJson(x[1]), colorFromJson(x[2])]),
-    );
-  /* Update faliure */
+  /* Update faluire */
   } catch (e) {
-    debugPrint("Error in updateGlobals: $e");
+    debugPrint("Error in initialiseGlobals: $e");
     return false;
   }
+}
+
+/* Helper function that takes in a file, reads it, decodes the JSON,
+ * and updates the LISTS accordingly. 
+ * May throw an error, !!THE ERROR MUST BE HANDLED BY THE CALLER!!, 
+ * returns true if no error was thrown by completion of updates to lists. */
+Future<bool> addToGlobalsFromFile(File file) async {
+  /* Read the file */
+  final jsonString = await file.readAsString();
+  final jsonMap = jsonDecode(jsonString);
+
+  /* Add the data into the correct lists. */
+  LANGUAGELIST.addAll(List<String>.from(jsonMap["Languages"]));
+  PROFICIENCYLIST.addAll(List<Proficiency>.from(
+    jsonMap["Proficiencies"].map((x) => Proficiency.fromJson(x)),
+  ));
+  RACELIST.addAll(List<Race>.from(
+    jsonMap["Races"].map((x) => Race.fromJson(x)),
+  ));
+  BACKGROUNDLIST.addAll(List<Background>.from(
+    jsonMap["Backgrounds"].map((x) => Background.fromJson(x)),
+  ));
+  CLASSLIST.addAll(List<Class>.from(
+    jsonMap["Classes"].map((x) => Class.fromJson(x)),
+  ));
+  SPELLLIST.addAll(List<Spell>.from(
+    jsonMap["Spells"].map((x) => Spell.fromJson(x)),
+  ));
+  FEATLIST.addAll(List<Feat>.from(
+    jsonMap["Feats"].map((x) => Feat.fromJson(x)),
+  ));
+  ITEMLIST.addAll(List<Item>.from(
+    (jsonMap["Equipment"] ?? []).map((x) => mapEquipment(x)),
+  ));
+  GROUPLIST.addAll(List<String>.from(jsonMap["Groups"]));
+  CHARACTERLIST.addAll(List<Character>.from(
+    jsonMap["Characters"].map((x) => Character.fromJson(x)),
+  ));
+  COLORLIST.addAll(List<List<Color>>.from(
+    jsonMap["Colours"].map((x) => [
+      colorFromJson(x[0]),
+      colorFromJson(x[1]),
+      colorFromJson(x[2]),
+    ]),
+  ));
+
+  /* If there were no errors thrown, true is returned. */
   return true;
 }
 

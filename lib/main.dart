@@ -1,7 +1,6 @@
 // External imports
 import "package:flutter/material.dart";
 import "file_manager.dart";
-import "dart:convert";
 import "dart:io";
 import "package:file_picker/file_picker.dart";
 import "package:flutter_colorpicker/flutter_colorpicker.dart";
@@ -9,53 +8,71 @@ import "package:flutter_colorpicker/flutter_colorpicker.dart";
 // Project imports
 import "pages/all_home_subpages.dart";
 import "content_classes/all_content_classes.dart";
-// TODO(Make the below import unnecessary by modifying the PageLinker)
 import "pages/custom_content_pages/all_custom_content_pages.dart";
 
 // ignore: non_constant_identifier_names
-final Map<String, Widget> PAGELINKER = {
-  "Main Menu": MainMenu(),
-  "Create a Character": CreateACharacter(),
-  "Search for Content": SearchForContent(),
-  "My Characters": MyCharacters(),
-  "Custom Content": const CustomContent(),
-  "Create spells": MakeASpell(),
+final Map<String, Widget Function()> PAGELINKER = {
+  "Main Menu": () => MainMenu(),
+  "Create a Character":() => CreateACharacter(),
+  "Search for Content":() => SearchForContent(),
+  "My Characters":() => MyCharacters(),
+  "Custom Content": () => CustomContent(),
+  "Create spells": () => MakeASpell(),
 };
 
 void main() {
   runApp(MaterialApp(
-    home: Homepage(),
+    home: Homepage(key: homepageKey)
   ));
 }
 
+/* Notifier for when settings changes colour to rebuild. */
+final ValueNotifier<int> themeNotifier = ValueNotifier<int>(0);
+
+/* Create a GlobalKey for the state of Homepage. */
+final GlobalKey<MainHomepageState> homepageKey = GlobalKey<MainHomepageState>();
+
 class Homepage extends StatefulWidget {
   static Color textColor = COLORLIST.isEmpty ? Colors.white : COLORLIST.last[0];
-  static Color backingColor =
-      COLORLIST.isEmpty ? Colors.blue : COLORLIST.last[1];
-  static Color backgroundColor =
-      COLORLIST.isEmpty ? Colors.white : COLORLIST.last[2];
+  static Color backingColor = COLORLIST.isEmpty ? Colors.blue : COLORLIST.last[1];
+  static Color backgroundColor = COLORLIST.isEmpty ? Colors.white : COLORLIST.last[2];
 
   const Homepage({super.key});
   @override
-  MainHomepage createState() => MainHomepage();
+  MainHomepageState createState() => MainHomepageState();
 }
 
-class MainHomepage extends State<Homepage> {
+class MainHomepageState extends State<Homepage> {
   Color currentTextColor = Homepage.textColor;
   Color currentBackingColor = Homepage.backingColor;
   Color currentBackgroundColor = Homepage.backgroundColor;
 
-  static const String _title = "Frankenstein's - a D&D 5e character builder";
+  static const String appTitle = "Frankenstein's - a D&D 5e character builder";
+
+  late Future<void> globalsLoaded;
+
+  @override
+  void initState() {
+    super.initState();
+    globalsLoaded = initialiseGlobals();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<void>(
-      //load globals
-      future: updateGlobals(),
-      //keep running until my app is built
+    return ValueListenableBuilder<int>(
+      valueListenable: themeNotifier,
+      builder: (context, value, child) {
+        return  FutureBuilder<void>(
+      /* Load all required global variables */
+      future: globalsLoaded,
+
+      /* keep running until the app is built successfully (globals loaded) */
       builder: (context, snapshot) {
+
+        /* If initialiseGlobals is successfull, return MaterialApp */
         if (snapshot.connectionState == ConnectionState.done) {
-          // if updateGlobals is done successfully, return MaterialApp
+
+          /* Load up the previously used colour scheme. */
           if (COLORLIST.isNotEmpty) {
             Homepage.backgroundColor = COLORLIST.last[2];
             Homepage.backingColor = COLORLIST.last[1];
@@ -64,11 +81,11 @@ class MainHomepage extends State<Homepage> {
             currentBackingColor = COLORLIST.last[1];
             currentBackgroundColor = COLORLIST.last[2];
           }
+
+          /* Create the bar at the top with app name, settings and logo.*/
           return MaterialApp(
-            theme: ThemeData(
-              primaryColor: Homepage.textColor,
-            ),
-            title: _title,
+            theme: ThemeData(primaryColor: Homepage.textColor),
+            title: appTitle,
             home: Scaffold(
               appBar: AppBar(
                 foregroundColor: Homepage.textColor,
@@ -77,22 +94,25 @@ class MainHomepage extends State<Homepage> {
                     icon: const Icon(Icons.image),
                     tooltip: "Put logo here",
                     onPressed: () {}),
-                title: const Center(child: Text(_title)),
+                title: const Center(child: Text(appTitle)),
                 actions: <Widget>[
                   IconButton(
                     icon: const Icon(Icons.settings),
                     tooltip: "Settings",
                     onPressed: () {
-                      _showColorPicker(context);
+                      showColorPicker(context);
                     },
                   ),
                 ],
               ),
+
+              /* Create the main menu as the body */
               body: MainMenu(),
             ),
           );
+
+        /* if saveChanges is still running, output some text to let the user know */
         } else {
-          // if updateGlobals is still loading, output some text to let the user know
           return const Center(
             child: Text(
               "Please wait while the application saves or loads data",
@@ -101,263 +121,215 @@ class MainHomepage extends State<Homepage> {
           );
         }
       },
-    );
+    );});
   }
 
-  void _showColorPicker(BuildContext context) {
+  /* Returns a popup that allows the user to change the app's colour scheme. */ 
+  void showColorPicker(BuildContext context) {
+    int? selectedIndex;
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        return StatefulBuilder(
+        builder: (context, setState) { 
         return Stack(
           children: [
-            const Opacity(
-              opacity: 0.5,
-              child: ModalBarrier(
-                dismissible: false,
-                color: Colors.grey,
-              ),
-            ),
+            const Opacity(opacity: 0.5, child: ModalBarrier(dismissible: false, color: Colors.grey)),
+            /* Settings menu (choosing colours). */
             AlertDialog(
-              title: const Text("Settings",
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700)),
+              title: const Text("Settings", style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700)),
               content: SingleChildScrollView(
-                  child: Column(
-                      //crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                    const Text(
-                      "Select box colours:",
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      height: 9,
-                    ),
+                child: Column(
+                  children: [
+                    /* Selection of backing colour */
+                    ...styledSeperatedText("Select box colours:"),
                     ColorPicker(
                       pickerColor: currentBackingColor,
                       onColorChanged: (color) {
                         currentBackingColor = color;
                       },
                     ),
-                    const Text(
-                      "Select text colour:",
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      height: 9,
-                    ),
+
+                    /* Selection of text colour */
+                    ...styledSeperatedText("Select text colour:"),
                     ColorPicker(
                       pickerColor: currentTextColor,
                       onColorChanged: (color) {
                         currentTextColor = color;
                       },
                     ),
-                    const Text(
-                      "Select background colour:",
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      height: 9,
-                    ),
+
+                    /* Selection of background colour */
+                    ...styledSeperatedText("Select background colour:"),
                     ColorPicker(
                       pickerColor: currentBackgroundColor,
                       onColorChanged: (color) {
-                        //setState(() {
                         currentBackgroundColor = color;
-                        //});
                       },
                     ),
-                    const Text(
-                      "Or choose a theme:",
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      height: 9,
-                    ),
+
+                    /* User can instead make use of a previous colour combination. */
+                    ...styledSeperatedText("Or choose a theme:"),
                     SizedBox(
-                        height: 300,
-                        width: 307,
-                        child: ListView.separated(
-                          separatorBuilder: (BuildContext context, int index) {
-                            return const SizedBox(height: 15);
-                          },
-                          itemCount: COLORLIST.reversed.toList().length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return SizedBox(
-                                width: 305,
-                                height: 180,
-                                child: OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                    backgroundColor:
-                                        COLORLIST.reversed.toList()[index][2],
-                                    //COLORLIST.reversed.toList()[index][0]
-                                    side: const BorderSide(
-                                        width: 0.7, color: Colors.black),
-                                  ),
-                                  child: Column(children: [
-                                    Container(
-                                        width: 305,
-                                        height: 18,
-                                        color: COLORLIST.reversed
-                                            .toList()[index][1],
-                                        child: Text(
-                                          "Frankensteins  - a D&D 5e character builder:",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 9,
-                                              color: COLORLIST.reversed
-                                                  .toList()[index][0]),
-                                          textAlign: TextAlign.center,
-                                        )),
-                                    Container(
-                                        width: 305,
-                                        height: 18,
-                                        color: COLORLIST.reversed
-                                            .toList()[index][1],
-                                        child: Text("Main Menu",
+                      height: 300,
+                      width: 307,
+                      child: ListView.separated(
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const SizedBox(height: 15);
+                        },
+                        itemCount: COLORLIST.reversed.toList().length,
+                        itemBuilder: (BuildContext context, int index) {
+                          /* Create a mini version of the home screen matching each 
+                          * previous set of colours to give a visualisation to the user */
+                          return SizedBox(
+                            width: 305,
+                            height: 180,
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor: COLORLIST.reversed.toList()[index][2],
+                                /* Highlight the selected colour with a thicker boarder */
+                                side: (selectedIndex == index) ? BorderSide(width: 7, color: Colors.amber) :BorderSide(width: 0.7, color: Colors.black),
+                                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+                              ),
+                              child: Column(
+                                children: [
+                                  /* Mini and simplified version of the app title bar. */
+                                  Container(
+                                    width: 305,
+                                    height: 18,
+                                    color: COLORLIST.reversed.toList()[index][1],
+                                    child: Text(
+                                      "Frankensteins  - a D&D 5e character builder:",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 9,
+                                        color: COLORLIST.reversed.toList()[index][0]),
+                                      textAlign: TextAlign.center,
+                                  )),
+                                  
+                                  /* Mini version of the page title bar. */
+                                  Container(
+                                    width: 305,
+                                    height: 18,
+                                    color: COLORLIST.reversed.toList()[index][1],
+                                    child: Text("Main Menu",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 12,
+                                        color: COLORLIST.reversed.toList()[index][0]
+                                      ),
+                                      textAlign: TextAlign.center
+                                  )),
+                                  const SizedBox(height: 28),
+
+                                  /* Mini versions of the buttons on the main page. */
+                                  Center(
+                                    child: Row(
+                                      children: [
+                                        /* Mini version of the button that takes the user to the create_a_character page */
+                                        const SizedBox(width: 21),
+                                        Container(
+                                          width: 60,
+                                          height: 31,
+                                          decoration: BoxDecoration(
+                                            color: COLORLIST.reversed.toList()[index][1],
+                                            borderRadius: const BorderRadius.all(Radius.circular(4))),
+                                          child: Text("Create a \n character",
                                             style: TextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 12,
-                                                color: COLORLIST.reversed
-                                                    .toList()[index][0]),
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 10,
+                                              color: COLORLIST.reversed.toList()[index][0]),
                                             textAlign: TextAlign.center)),
-                                    const SizedBox(
-                                      height: 28,
-                                    ),
-                                    Center(
-                                        child: Row(
-                                      children: [
-                                        const SizedBox(
-                                          width: 21,
-                                        ),
+                                        
+                                        /* Mini version of the button that takes the user to the search_for_content page */
+                                        const SizedBox(width: 27.5),
                                         Container(
-                                            width: 60,
-                                            height: 31,
-                                            decoration: BoxDecoration(
-                                                color: COLORLIST.reversed
-                                                    .toList()[index][1],
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(4))),
-                                            child: Text("Create a \n character",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 10,
-                                                    color: COLORLIST.reversed
-                                                        .toList()[index][0]),
-                                                textAlign: TextAlign.center)),
-                                        const SizedBox(
-                                          width: 27.5,
-                                        ),
+                                          width: 60,
+                                          height: 31,
+                                          decoration: BoxDecoration(
+                                            color: COLORLIST.reversed.toList()[index][1],
+                                            borderRadius: const BorderRadius.all(Radius.circular(4))),
+                                          child: Text("Search for\nContent",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 10,
+                                              color: COLORLIST.reversed.toList()[index][0]),
+                                            textAlign: TextAlign.center
+                                        )),
+
+                                        /* Mini version of the button that takes the user to the my_characters page */
+                                        const SizedBox(width: 27.5),
                                         Container(
-                                            width: 60,
-                                            height: 31,
-                                            decoration: BoxDecoration(
-                                                color: COLORLIST.reversed
-                                                    .toList()[index][1],
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(4))),
-                                            child: Text("Search for\nContent",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 10,
-                                                    color: COLORLIST.reversed
-                                                        .toList()[index][0]),
-                                                textAlign: TextAlign.center)),
-                                        const SizedBox(
-                                          width: 27.5,
-                                        ),
-                                        Container(
-                                            width: 60,
-                                            height: 31,
-                                            decoration: BoxDecoration(
-                                                color: COLORLIST.reversed
-                                                    .toList()[index][1],
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(4))),
-                                            child: Text("My\nCharacters",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 10,
-                                                    color: COLORLIST.reversed
-                                                        .toList()[index][0]),
-                                                textAlign: TextAlign.center)),
+                                          width: 60,
+                                          height: 31,
+                                          decoration: BoxDecoration(
+                                            color: COLORLIST.reversed.toList()[index][1],
+                                            borderRadius:const BorderRadius.all(Radius.circular(4))),
+                                          child: Text("My\nCharacters",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 10,
+                                              color: COLORLIST.reversed.toList()[index][0]),
+                                            textAlign: TextAlign.center)),
                                       ],
-                                    )),
-                                    const SizedBox(
-                                      height: 25,
-                                    ),
-                                    Center(
-                                        child: Row(
-                                      children: [
-                                        const SizedBox(
-                                          width: 50,
-                                        ),
-                                        Container(
-                                            width: 74,
-                                            height: 31,
-                                            decoration: BoxDecoration(
-                                                color: COLORLIST.reversed
-                                                    .toList()[index][1],
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(4))),
-                                            child: Text("Download\nContent",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 10,
-                                                    color: COLORLIST.reversed
-                                                        .toList()[index][0]),
-                                                textAlign: TextAlign.center)),
-                                        const SizedBox(
-                                          width: 27.5,
-                                        ),
-                                        Container(
-                                            width: 74,
-                                            height: 31,
-                                            decoration: BoxDecoration(
-                                                color: COLORLIST.reversed
-                                                    .toList()[index][1],
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(4))),
-                                            child: Text("Create\nContent",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 10,
-                                                    color: COLORLIST.reversed
-                                                        .toList()[index][0]),
-                                                textAlign: TextAlign.center)),
-                                      ],
-                                    ))
-                                  ]),
-                                  onPressed: () {
-                                    currentTextColor =
-                                        COLORLIST.reversed.toList()[index][0];
-                                    currentBackingColor =
-                                        COLORLIST.reversed.toList()[index][1];
-                                    currentBackgroundColor =
-                                        COLORLIST.reversed.toList()[index][2];
-                                  },
-                                ));
-                          },
-                        )),
+                                )),
+                                const SizedBox(height: 25),
+                                Center(
+                                  child: Row(
+                                    children: [
+                                      /* Mini version of the button that makes the download content popup */
+                                      const SizedBox(width: 50),
+                                      Container(
+                                        width: 74,
+                                        height: 31,
+                                        decoration: BoxDecoration(
+                                          color: COLORLIST.reversed.toList()[index][1],
+                                          borderRadius: const BorderRadius.all(Radius.circular(4))),
+                                        child: Text(
+                                          "Download\nContent",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 10,
+                                            color: COLORLIST.reversed.toList()[index][0]),
+                                          textAlign: TextAlign.center)),
+                                      
+                                      /* Mini version of the button that takes the user to the create_content page */
+                                      const SizedBox(width: 27.5),
+                                      Container(
+                                        width: 74,
+                                        height: 31,
+                                        decoration: BoxDecoration(
+                                          color: COLORLIST.reversed.toList()[index][1],
+                                          borderRadius: const BorderRadius.all(Radius.circular(4))),
+                                        child: Text("Create\nContent",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 10,
+                                            color: COLORLIST.reversed.toList()[index][0]
+                                          ),
+                                          textAlign: TextAlign.center)),
+                                  ],
+                                ))
+                              ]),
+                              onPressed: () {
+                                setState(() {
+                                  selectedIndex = index;
+                                  currentTextColor = COLORLIST.reversed.toList()[index][0];
+                                  currentBackingColor = COLORLIST.reversed.toList()[index][1];
+                                  currentBackgroundColor = COLORLIST.reversed.toList()[index][2];
+                                });
+                              },
+                            ));
+                        },
+                      )),
                   ])),
               actions: [
                 TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                  onPressed: () {Navigator.of(context).pop();},
                   child: const Text("Cancel"),
                 ),
                 TextButton(
                   onPressed: () {
-                    
-                    setState(() {
                       Homepage.textColor = currentTextColor;
                       Homepage.backingColor = currentBackingColor;
                       Homepage.backgroundColor = currentBackgroundColor;
@@ -373,12 +345,12 @@ class MainHomepage extends State<Homepage> {
                         Homepage.backingColor,
                         Homepage.backgroundColor
                       ]);
-                      
                       saveChanges();
-                      updateGlobals();
 
+                      // Increment notifier to trigger rebuilds and remove popup.
+                      themeNotifier.value++;
                       Navigator.of(context).pop();
-                    });
+                    
                   },
                   child: const Text("Save settings"),
                 ),
@@ -386,9 +358,19 @@ class MainHomepage extends State<Homepage> {
             ),
           ],
         );
+        });
       },
     );
   }
+
+  List<Widget> styledSeperatedText(String text){
+    return [
+      Text(
+        text,
+        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+      ),
+      const SizedBox(height: 9),
+  ];}
 }
 
 class ScreenTop extends StatelessWidget {
@@ -397,14 +379,14 @@ class ScreenTop extends StatelessWidget {
   static Color backingColor = Homepage.backingColor;
   static Color backgroundColor = Homepage.backgroundColor;
   const ScreenTop({super.key, this.pagechoice});
-  static const String _title = "Frankenstein's - a D&D 5e character builder";
+  static const String appTitle = "Frankenstein's - a D&D 5e character builder";
 
   @override
   Widget build(BuildContext context) {
-    updateGlobals();
-    return MaterialApp(
-      title: _title,
-      home: Scaffold(
+    return ValueListenableBuilder<int>(
+      valueListenable: themeNotifier,
+      builder: (context, value, child) {
+        return Scaffold(
         appBar: AppBar(
           foregroundColor: Homepage.textColor,
           backgroundColor: Homepage.backingColor,
@@ -424,7 +406,7 @@ class ScreenTop extends StatelessWidget {
                               const ScreenTop(pagechoice: "Main Menu")));
                 }
               }),
-          title: const Center(child: Text(_title)),
+          title: const Center(child: Text(appTitle)),
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.arrow_back),
@@ -436,13 +418,15 @@ class ScreenTop extends StatelessWidget {
             IconButton(
                 icon: const Icon(Icons.settings),
                 tooltip: "Settings??",
-                onPressed: () {}),
+                onPressed: () {
+                  homepageKey.currentState?.showColorPicker(context);
+                }),
           ],
         ),
-        //pick relevent call
-        body: PAGELINKER[pagechoice],
-      ),
-    );
+        
+        /* Take the user to the page they chose. */
+        body: PAGELINKER[pagechoice]?.call(),
+      );});
   }
 }
 
@@ -454,224 +438,178 @@ class MainMenu extends StatefulWidget {
 }
 
 class MainMenupage extends State<MainMenu> {
-  //const MainMenupage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Homepage.backgroundColor,
-        floatingActionButton: FloatingActionButton(
-          tooltip: "Help and guidance",
-          foregroundColor: Homepage.textColor,
-          backgroundColor: Homepage.backingColor,
-          onPressed: () {
-            _showInfoAndHelp(context);
-          },
-          child: const Icon(
-            Icons.info,
-          ),
+      backgroundColor: Homepage.backgroundColor,
+      floatingActionButton: FloatingActionButton(
+        tooltip: "Help and guidance",
+        foregroundColor: Homepage.textColor,
+        backgroundColor: Homepage.backingColor,
+        onPressed: () {
+          _showInfoAndHelp(context);
+        },
+        child: const Icon(
+          Icons.info,
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    color: Homepage.backingColor,
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      "Main Menu",
-                      style: TextStyle(
-                          fontSize: 45,
-                          fontWeight: FontWeight.w700,
-                          color: Homepage.textColor),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 100),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: Homepage.backingColor,
-                    padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    side: const BorderSide(width: 3.3, color: Colors.black),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ScreenTop(
-                              pagechoice: "Create a Character")),
-                    );
-                  },
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  color: Homepage.backingColor,
                   child: Text(
                     textAlign: TextAlign.center,
-                    "Create a \ncharacter",
+                    "Main Menu",
                     style: TextStyle(
-                        fontSize: 35,
+                        fontSize: 45,
                         fontWeight: FontWeight.w700,
                         color: Homepage.textColor),
                   ),
                 ),
-                const SizedBox(width: 100),
-                OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: Homepage.backingColor,
-                    padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    side: const BorderSide(width: 3.3, color: Colors.black),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ScreenTop(
-                              pagechoice: "Search for Content")),
-                    );
-                  },
-                  child: Text(
-                    textAlign: TextAlign.center,
-                    "Search for\ncontent",
-                    style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.w700,
-                        color: Homepage.textColor),
-                  ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 100),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: Homepage.backingColor,
+                  padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  side: const BorderSide(width: 3.3, color: Colors.black),
                 ),
-                const SizedBox(width: 100),
-                OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: Homepage.backingColor,
-                    padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    side: const BorderSide(width: 3.3, color: Colors.black),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const ScreenTop(pagechoice: "My Characters")),
-                    );
-                  },
-                  child: Text(
-                    textAlign: TextAlign.center,
-                    "My \ncharacters",
-                    style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.w700,
-                        color: Homepage.textColor),
-                  ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ScreenTop(
+                            pagechoice: "Create a Character")),
+                  );
+                },
+                child: Text(
+                  textAlign: TextAlign.center,
+                  "Create a \ncharacter",
+                  style: TextStyle(
+                      fontSize: 35,
+                      fontWeight: FontWeight.w700,
+                      color: Homepage.textColor),
                 ),
-              ],
-            ),
-            const SizedBox(height: 100),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: Homepage.backingColor,
-                    padding: const EdgeInsets.fromLTRB(45, 25, 45, 25),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    side: const BorderSide(width: 3.3, color: Colors.black),
-                  ),
-                  onPressed: () async {
-                    final result = await FilePicker.platform.pickFiles(
-                      dialogTitle:
-                          "Navigate to and select a Json file to download the contents from, this content can then be used in your characters",
-                      type: FileType.custom,
-                      allowedExtensions: ["json"],
-                    );
-                    if (result != null) {
-                      final file = File(result.files.single.path ?? "PATH SHOULD NEVER OCCUR");
-                      final contents = await file.readAsString();
-                      final jsonData2 = json.decode(contents);
-                      await updateGlobals();
+              ),
+              const SizedBox(width: 100),
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: Homepage.backingColor,
+                  padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  side: const BorderSide(width: 3.3, color: Colors.black),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ScreenTop(
+                            pagechoice: "Search for Content")),
+                  );
+                },
+                child: Text(
+                  textAlign: TextAlign.center,
+                  "Search for\ncontent",
+                  style: TextStyle(
+                      fontSize: 35,
+                      fontWeight: FontWeight.w700,
+                      color: Homepage.textColor),
+                ),
+              ),
+              const SizedBox(width: 100),
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: Homepage.backingColor,
+                  padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                  side: const BorderSide(width: 3.3, color: Colors.black),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ScreenTop(pagechoice: "My Characters")),
+                  );
+                },
+                child: Text(
+                  textAlign: TextAlign.center,
+                  "My \ncharacters",
+                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: Homepage.textColor),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 100),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: Homepage.backingColor,
+                  padding: const EdgeInsets.fromLTRB(45, 25, 45, 25),
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                  side: const BorderSide(width: 3.3, color: Colors.black),
+                ),
+                onPressed: () async {
+                  final result = await FilePicker.platform.pickFiles(
+                    dialogTitle: 
+                      "Navigate to and select a Json file to download the contents from, this content can then be used in your characters",
+                    type: FileType.custom,
+                    allowedExtensions: ["json"],
+                  );
+                  if (result != null) {
+                    final targetFile = File(result.files.single.path ?? "PATH SHOULD NEVER OCCUR");
 
-                      final Map<String, dynamic> jsonData = jsonDecode(jsonString ?? "");
-
-                      final List<dynamic> characters = jsonData["Characters"];
-                      characters.addAll(jsonData2["Characters"] ?? []);
-
-                      final List<dynamic> spells = jsonData["Spells"];
-                      spells.addAll(jsonData2["Spells"] ?? []);
-
-                      final List<dynamic> classes = jsonData["Classes"];
-                      classes.addAll(jsonData2["Classes"] ?? []);
-
-                      final List<dynamic> sourceBooks = jsonData["Sourcebooks"];
-                      sourceBooks.addAll(jsonData2["Sourcebooks"] ?? []);
-
-                      final List<dynamic> proficiencies = jsonData["Proficiencies"];
-                      proficiencies.addAll(jsonData2["Proficiencies"] ?? []);
-
-                      final List<dynamic> equipment = jsonData["Equipment"];
-                      equipment.addAll(jsonData2["Equipment"] ?? []);
-
-                      final List<dynamic> languages = jsonData["Languages"];
-                      languages.addAll(jsonData2["Languages"] ?? []);
-
-                      final List<dynamic> races = jsonData["Races"];
-                      races.addAll(jsonData2["Races"] ?? []);
-
-                      final List<dynamic> backgrounds = jsonData["Backgrounds"];
-                      backgrounds.addAll(jsonData2["Backgrounds"] ?? []);
-
-                      final List<dynamic> feats = jsonData["Feats"];
-                      feats.addAll(jsonData2["Feats"] ?? []);
-
+                    try {
+                      addToGlobalsFromFile(targetFile);
                       await saveChanges();
-                      await updateGlobals();
                     }
-                  },
-                  child: Text(
-                    "Download\n Content",
-                    style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.w700,
-                        color: Homepage.textColor),
-                  ),
+                    catch (e) {
+                      debugPrint("Error downloading content: $e");
+                      //TODO(ADD POPUP)
+                    }
+                  }
+                },
+                child: Text(
+                  "Download\n Content",
+                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: Homepage.textColor),
                 ),
-                const SizedBox(width: 100),
-                OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: Homepage.backingColor,
-                    padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    side: const BorderSide(width: 3.3, color: Colors.black),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const ScreenTop(pagechoice: "Custom Content")),
-                    );
-                  },
-                  child: Text(
-                    textAlign: TextAlign.center,
-                    'Create \ncontent',
-                    style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.w700,
-                        color: Homepage.textColor),
-                  ),
+              ),
+              const SizedBox(width: 100),
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: Homepage.backingColor,
+                  padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                  side: const BorderSide(width: 3.3, color: Colors.black),
                 ),
-              ],
-            ),
-          ],
-        ));
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ScreenTop(pagechoice: "Custom Content")),
+                  );
+                },
+                child: Text(
+                  textAlign: TextAlign.center,
+                  'Create \ncontent',
+                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: Homepage.textColor),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ));
   }
 
   void _showInfoAndHelp(BuildContext context) {
@@ -705,8 +643,7 @@ class MainMenupage extends State<MainMenu> {
                     Row(children: const [
                       Expanded(
                         child: Text(
-                          '''• Main Menu - This is the section you are currently in, 
-it allows you to navigate between every section.''',
+                          '''• Main Menu - This is the section you are currently in, \nit allows you to navigate between every section.''',
                           style: TextStyle(fontSize: 20),
                         ),
                       )
@@ -714,8 +651,7 @@ it allows you to navigate between every section.''',
                     Row(children: const [
                       Expanded(
                         child: Text(
-                          '''• Create a Character - This is the section to build your character, 
-it contains tabs which will guide you through the creation process.''',
+                          '''• Create a Character - This is the section to build your character,\nit contains tabs which will guide you through the creation process.''',
                           style: TextStyle(fontSize: 20),
                         ),
                       )
@@ -723,8 +659,7 @@ it contains tabs which will guide you through the creation process.''',
                     Row(children: const [
                       Expanded(
                         child: Text(
-                          '''• Search for Content - This is the section to look through your content, 
-it allows you to search through and edit much of that content.''',
+                          '''• Search for Content - This is the section to look through your content,\nit allows you to search through and delete much of that content.''',
                           style: TextStyle(fontSize: 20),
                         ),
                       )
@@ -732,8 +667,7 @@ it allows you to search through and edit much of that content.''',
                     Row(children: const [
                       Expanded(
                         child: Text(
-                          '''• My Characters -  This is the section to look through your characters, 
-it allows you to search through, delete, edit and fight with them.''',
+                          '''• My Characters -  This is the section to look through your characters,\nit allows you to search through, delete, edit and get their PDF.''',
                           style: TextStyle(fontSize: 20),
                         ),
                       )
@@ -741,8 +675,7 @@ it allows you to search through, delete, edit and fight with them.''',
                     Row(children: const [
                       Expanded(
                         child: Text(
-                          '''• Download Content -  This is a button to install content, 
-it allows you to select content to install from your computer.''',
+                          '''• Download Content -  This is a button to install content,\nit allows you to select content to install from your computer.''',
                           style: TextStyle(fontSize: 20),
                         ),
                       )

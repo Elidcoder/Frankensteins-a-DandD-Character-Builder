@@ -117,12 +117,6 @@ class MainCreateCharacter extends State<CreateACharacter>
   }
 
   @override
-  void initState() {
-    super.initState();
-    updateGlobals();
-  }
-
-  @override
   Widget build(
     BuildContext context,
   ) {
@@ -711,35 +705,36 @@ class MainCreateCharacter extends State<CreateACharacter>
                                             }
                                           }
 
-                                          // Level 1 bonuses
+                                          // Level 1 treated differently for levelling
                                           if (character.classList.length == 1) {
+                                            // Bonus feat if that option was selected
                                             if (character.extraFeatAtLevel1 ?? false) {
                                               numberOfRemainingFeatOrASIs++;
                                             }
+
+                                            // Gain hit points (max die roll at lvl 1)
                                             character.maxHealth += CLASSLIST[index].maxHitDiceRoll;
                                             
-                                            //gain saving throw proficiencies
+                                            // Gain saving throw proficiencies
                                             character.savingThrowProficiencies = CLASSLIST[index].savingThrowProficiencies;
 
-                                            //equipmentSelectedFromChoices =
-                                            //CLASSLIST[index].equipmentOptions;
-                                            character.equipmentSelectedFromChoices
-                                                .addAll(CLASSLIST[index]
-                                                    .equipmentOptions);
-                                            character.classSkillsSelected = List.filled(
-                                                CLASSLIST[index]
-                                                    .optionsForSkillProficiencies
-                                                    .length,
-                                                false);
+                                            // Gain the equipment choices
+                                            character.equipmentSelectedFromChoices.addAll(CLASSLIST[index].equipmentOptions);
+
+                                            // Gain the skill proficiencies
+                                            character.classSkillsSelected = List.filled(CLASSLIST[index].optionsForSkillProficiencies.length,false);
+
+                                            // Add any further choices needed
                                             widgetsInPlay.addAll([
                                               buildStyledSmallTextBox(text: "Pick ${(CLASSLIST[index].numberOfSkillChoices)} skill(s) to gain proficiency in"),
                                               const SizedBox(height: 7),
-                                              buildStyledToggleSelector(
+                                              StatefulBuilder(
+        builder: (context, setState) { return buildStyledToggleSelector(
                                                 itemLabels: CLASSLIST[index].optionsForSkillProficiencies,
                                                 isSelected: character.classSkillsSelected,
                                                 onPressed: (int subIndex, bool _) {
-                                                  // backgroundskillchoices
-                                                  // TODO(Figure out why this where function is here)
+                                                  setState(() {
+                                                  // Gain background skill choices
                                                   if (character.classSkillsSelected.where((b) => b).length <
                                                       CLASSLIST[index].numberOfSkillChoices) {
                                                     character.classSkillsSelected[subIndex] = !character.classSkillsSelected[subIndex];
@@ -749,22 +744,20 @@ class MainCreateCharacter extends State<CreateACharacter>
                                                     }
                                                   }
                                                   resetState();
-                                                }
-                                              )
+                                                });}
+                                              );})
                                             ]);
-                                          } //run if not level 1
+                                          }
+                                          // Health calculated in a normal way if not level 1
                                           else {
                                             if (character.averageHitPoints ?? false) {
-                                              character.maxHealth += ((CLASSLIST[index]
-                                                          .maxHitDiceRoll) /
-                                                      2)
-                                                  .ceil();
+                                              character.maxHealth += ((CLASSLIST[index].maxHitDiceRoll) / 2).ceil();
                                             } else {
                                               character.maxHealth += 1 + (Random().nextDouble() * CLASSLIST[index].maxHitDiceRoll).floor();
                                             }
                                           }
 
-                                          //check if it's a spellcaster
+                                          // Check if it's a spellcaster, if so add the necessary spell info
                                           if (CLASSLIST[index].classType != "Martial") {
                                             if (character.classList.where((element) => element == CLASSLIST[index].name).length == 1) {
                                               character.allSpellsSelectedAsListsOfThings.add([
@@ -793,6 +786,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               }
                                             }
                                           }
+
+                                          // Increment the class level
                                           character.classLevels[index]++;
                                         }
                                       });
