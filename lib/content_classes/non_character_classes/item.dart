@@ -45,4 +45,4 @@ class Item implements Content {
 
 }
 
-List<dynamic> ITEMLIST = [];
+List<Item> ITEMLIST = [];

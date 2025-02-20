@@ -16,7 +16,7 @@ import "pages/custom_content_pages/all_custom_content_pages.dart";
 final Map<String, Widget> PAGELINKER = {
   "Main Menu": MainMenu(),
   "Create a Character": CreateACharacter(),
-  "Search for Content": const SearchForContent(),
+  "Search for Content": SearchForContent(),
   "My Characters": MyCharacters(),
   "Custom Content": const CustomContent(),
   "Create spells": MakeASpell(),
