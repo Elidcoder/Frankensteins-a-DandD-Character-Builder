@@ -6,8 +6,8 @@ import "package:file_picker/file_picker.dart";
 import "package:flutter_colorpicker/flutter_colorpicker.dart";
 
 // Project imports
+import "colour_scheme.dart";
 import "pages/all_home_subpages.dart";
-import "content_classes/all_content_classes.dart";
 import "pages/custom_content_pages/all_custom_content_pages.dart";
 
 // ignore: non_constant_identifier_names
@@ -33,9 +33,9 @@ final ValueNotifier<int> themeNotifier = ValueNotifier<int>(0);
 final GlobalKey<MainHomepageState> homepageKey = GlobalKey<MainHomepageState>();
 
 class Homepage extends StatefulWidget {
-  static Color textColor = COLORLIST.isEmpty ? Colors.white : COLORLIST.last[0];
-  static Color backingColor = COLORLIST.isEmpty ? Colors.blue : COLORLIST.last[1];
-  static Color backgroundColor = COLORLIST.isEmpty ? Colors.white : COLORLIST.last[2];
+  static Color textColor = THEMELIST.isEmpty ? Colors.white : THEMELIST.last.textColour;
+  static Color backingColor = THEMELIST.isEmpty ? Colors.blue : THEMELIST.last.backingColour;
+  static Color backgroundColor = THEMELIST.isEmpty ? Colors.white : THEMELIST.last.backgroundColour;
 
   const Homepage({super.key});
   @override
@@ -73,13 +73,13 @@ class MainHomepageState extends State<Homepage> {
         if (snapshot.connectionState == ConnectionState.done) {
 
           /* Load up the previously used colour scheme. */
-          if (COLORLIST.isNotEmpty) {
-            Homepage.backgroundColor = COLORLIST.last[2];
-            Homepage.backingColor = COLORLIST.last[1];
-            Homepage.textColor = COLORLIST.last[0];
-            currentTextColor = COLORLIST.last[0];
-            currentBackingColor = COLORLIST.last[1];
-            currentBackgroundColor = COLORLIST.last[2];
+          if (THEMELIST.isNotEmpty) {
+            Homepage.backgroundColor = THEMELIST.last.backgroundColour;
+            Homepage.backingColor = THEMELIST.last.backingColour;
+            Homepage.textColor = THEMELIST.last.textColour;
+            currentTextColor = THEMELIST.last.textColour;
+            currentBackingColor = THEMELIST.last.backingColour;
+            currentBackgroundColor = THEMELIST.last.backgroundColour;
           }
 
           /* Create the bar at the top with app name, settings and logo.*/
@@ -177,7 +177,7 @@ class MainHomepageState extends State<Homepage> {
                         separatorBuilder: (BuildContext context, int index) {
                           return const SizedBox(height: 15);
                         },
-                        itemCount: COLORLIST.reversed.toList().length,
+                        itemCount: THEMELIST.length,
                         itemBuilder: (BuildContext context, int index) {
                           /* Create a mini version of the home screen matching each 
                           * previous set of colours to give a visualisation to the user */
@@ -186,7 +186,7 @@ class MainHomepageState extends State<Homepage> {
                             height: 180,
                             child: OutlinedButton(
                               style: OutlinedButton.styleFrom(
-                                backgroundColor: COLORLIST.reversed.toList()[index][2],
+                                backgroundColor: THEMELIST.reversed.toList()[index].backgroundColour,
                                 /* Highlight the selected colour with a thicker boarder */
                                 side: (selectedIndex == index) ? BorderSide(width: 7, color: Colors.amber) :BorderSide(width: 0.7, color: Colors.black),
                                 shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
@@ -197,13 +197,13 @@ class MainHomepageState extends State<Homepage> {
                                   Container(
                                     width: 305,
                                     height: 18,
-                                    color: COLORLIST.reversed.toList()[index][1],
+                                    color: THEMELIST.reversed.toList()[index].backingColour,
                                     child: Text(
                                       "Frankensteins  - a D&D 5e character builder:",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 9,
-                                        color: COLORLIST.reversed.toList()[index][0]),
+                                        color: THEMELIST.reversed.toList()[index].textColour),
                                       textAlign: TextAlign.center,
                                   )),
                                   
@@ -211,12 +211,12 @@ class MainHomepageState extends State<Homepage> {
                                   Container(
                                     width: 305,
                                     height: 18,
-                                    color: COLORLIST.reversed.toList()[index][1],
+                                    color: THEMELIST.reversed.toList()[index].backingColour,
                                     child: Text("Main Menu",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 12,
-                                        color: COLORLIST.reversed.toList()[index][0]
+                                        color: THEMELIST.reversed.toList()[index].textColour
                                       ),
                                       textAlign: TextAlign.center
                                   )),
@@ -232,13 +232,13 @@ class MainHomepageState extends State<Homepage> {
                                           width: 60,
                                           height: 31,
                                           decoration: BoxDecoration(
-                                            color: COLORLIST.reversed.toList()[index][1],
+                                            color: THEMELIST.reversed.toList()[index].backingColour,
                                             borderRadius: const BorderRadius.all(Radius.circular(4))),
                                           child: Text("Create a \n character",
                                             style: TextStyle(
                                               fontWeight: FontWeight.w600,
                                               fontSize: 10,
-                                              color: COLORLIST.reversed.toList()[index][0]),
+                                              color: THEMELIST.reversed.toList()[index].textColour),
                                             textAlign: TextAlign.center)),
                                         
                                         /* Mini version of the button that takes the user to the search_for_content page */
@@ -247,13 +247,13 @@ class MainHomepageState extends State<Homepage> {
                                           width: 60,
                                           height: 31,
                                           decoration: BoxDecoration(
-                                            color: COLORLIST.reversed.toList()[index][1],
+                                            color: THEMELIST.reversed.toList()[index].backingColour,
                                             borderRadius: const BorderRadius.all(Radius.circular(4))),
                                           child: Text("Search for\nContent",
                                             style: TextStyle(
                                               fontWeight: FontWeight.w600,
                                               fontSize: 10,
-                                              color: COLORLIST.reversed.toList()[index][0]),
+                                              color: THEMELIST.reversed.toList()[index].textColour),
                                             textAlign: TextAlign.center
                                         )),
 
@@ -263,13 +263,13 @@ class MainHomepageState extends State<Homepage> {
                                           width: 60,
                                           height: 31,
                                           decoration: BoxDecoration(
-                                            color: COLORLIST.reversed.toList()[index][1],
+                                            color: THEMELIST.reversed.toList()[index].backingColour,
                                             borderRadius:const BorderRadius.all(Radius.circular(4))),
                                           child: Text("My\nCharacters",
                                             style: TextStyle(
                                               fontWeight: FontWeight.w600,
                                               fontSize: 10,
-                                              color: COLORLIST.reversed.toList()[index][0]),
+                                              color: THEMELIST.reversed.toList()[index].textColour),
                                             textAlign: TextAlign.center)),
                                       ],
                                 )),
@@ -283,14 +283,14 @@ class MainHomepageState extends State<Homepage> {
                                         width: 74,
                                         height: 31,
                                         decoration: BoxDecoration(
-                                          color: COLORLIST.reversed.toList()[index][1],
+                                          color: THEMELIST.reversed.toList()[index].backingColour,
                                           borderRadius: const BorderRadius.all(Radius.circular(4))),
                                         child: Text(
                                           "Download\nContent",
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 10,
-                                            color: COLORLIST.reversed.toList()[index][0]),
+                                            color: THEMELIST.reversed.toList()[index].textColour),
                                           textAlign: TextAlign.center)),
                                       
                                       /* Mini version of the button that takes the user to the create_content page */
@@ -299,13 +299,13 @@ class MainHomepageState extends State<Homepage> {
                                         width: 74,
                                         height: 31,
                                         decoration: BoxDecoration(
-                                          color: COLORLIST.reversed.toList()[index][1],
+                                          color: THEMELIST.reversed.toList()[index].backingColour,
                                           borderRadius: const BorderRadius.all(Radius.circular(4))),
                                         child: Text("Create\nContent",
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 10,
-                                            color: COLORLIST.reversed.toList()[index][0]
+                                            color: THEMELIST.reversed.toList()[index].textColour
                                           ),
                                           textAlign: TextAlign.center)),
                                   ],
@@ -314,9 +314,9 @@ class MainHomepageState extends State<Homepage> {
                               onPressed: () {
                                 setState(() {
                                   selectedIndex = index;
-                                  currentTextColor = COLORLIST.reversed.toList()[index][0];
-                                  currentBackingColor = COLORLIST.reversed.toList()[index][1];
-                                  currentBackgroundColor = COLORLIST.reversed.toList()[index][2];
+                                  currentTextColor = THEMELIST.reversed.toList()[index].textColour;
+                                  currentBackingColor = THEMELIST.reversed.toList()[index].backingColour;
+                                  currentBackgroundColor = THEMELIST.reversed.toList()[index].backgroundColour;
                                 });
                               },
                             ));
@@ -330,21 +330,19 @@ class MainHomepageState extends State<Homepage> {
                 ),
                 TextButton(
                   onPressed: () {
+                      ColourScheme currentScheme = ColourScheme(
+                        textColour: Homepage.textColor,
+                        backingColour: Homepage.backingColor,
+                        backgroundColour: Homepage.backgroundColor
+                      );
                       Homepage.textColor = currentTextColor;
                       Homepage.backingColor = currentBackingColor;
                       Homepage.backgroundColor = currentBackgroundColor;
                       
                       
                       // Put current colour scheme at the top of the list
-                      COLORLIST.removeWhere((colours) =>
-                          (colours.first.value == Homepage.textColor.value && 
-                          colours[2].value == Homepage.backingColor.value && 
-                          colours[3].value == Homepage.backgroundColor.value ));
-                      COLORLIST.add([
-                        Homepage.textColor,
-                        Homepage.backingColor,
-                        Homepage.backgroundColor
-                      ]);
+                      THEMELIST.removeWhere((theme) => currentScheme.isSameColourScheme(theme));
+                      THEMELIST.add(currentScheme);
                       saveChanges();
 
                       // Increment notifier to trigger rebuilds and remove popup.
@@ -417,7 +415,7 @@ class ScreenTop extends StatelessWidget {
             ),
             IconButton(
                 icon: const Icon(Icons.settings),
-                tooltip: "Settings??",
+                tooltip: "Settings",
                 onPressed: () {
                   homepageKey.currentState?.showColorPicker(context);
                 }),

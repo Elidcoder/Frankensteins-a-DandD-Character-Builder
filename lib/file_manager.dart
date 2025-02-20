@@ -1,12 +1,13 @@
 // External Imports
-import 'dart:convert';
-import 'dart:io';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:path_provider/path_provider.dart';
-import 'package:flutter/material.dart'; 
+import "dart:convert";
+import "dart:io";
+import "package:flutter/services.dart" show rootBundle;
+import "package:path_provider/path_provider.dart";
+import "package:flutter/material.dart"; 
 
 // Project Import
-import 'content_classes/all_content_classes.dart';
+import "content_classes/all_content_classes.dart";
+import "colour_scheme.dart";
 
 List<Character> CHARACTERLIST = [];
 List<String> GROUPLIST = [];
@@ -44,39 +45,17 @@ Future<bool> addToGlobalsFromFile(File file) async {
   final jsonMap = jsonDecode(jsonString);
 
   /* Add the data into the correct lists. */
-  LANGUAGELIST.addAll(List<String>.from(jsonMap["Languages"]));
-  PROFICIENCYLIST.addAll(List<Proficiency>.from(
-    jsonMap["Proficiencies"].map((x) => Proficiency.fromJson(x)),
-  ));
-  RACELIST.addAll(List<Race>.from(
-    jsonMap["Races"].map((x) => Race.fromJson(x)),
-  ));
-  BACKGROUNDLIST.addAll(List<Background>.from(
-    jsonMap["Backgrounds"].map((x) => Background.fromJson(x)),
-  ));
-  CLASSLIST.addAll(List<Class>.from(
-    jsonMap["Classes"].map((x) => Class.fromJson(x)),
-  ));
-  SPELLLIST.addAll(List<Spell>.from(
-    jsonMap["Spells"].map((x) => Spell.fromJson(x)),
-  ));
-  FEATLIST.addAll(List<Feat>.from(
-    jsonMap["Feats"].map((x) => Feat.fromJson(x)),
-  ));
-  ITEMLIST.addAll(List<Item>.from(
-    (jsonMap["Equipment"] ?? []).map((x) => mapEquipment(x)),
-  ));
   GROUPLIST.addAll(List<String>.from(jsonMap["Groups"]));
-  CHARACTERLIST.addAll(List<Character>.from(
-    jsonMap["Characters"].map((x) => Character.fromJson(x)),
-  ));
-  COLORLIST.addAll(List<List<Color>>.from(
-    jsonMap["Colours"].map((x) => [
-      colorFromJson(x[0]),
-      colorFromJson(x[1]),
-      colorFromJson(x[2]),
-    ]),
-  ));
+  LANGUAGELIST.addAll(List<String>.from(jsonMap["Languages"]));
+  FEATLIST.addAll(List<Feat>.from(jsonMap["Feats"].map((x) => Feat.fromJson(x))));
+  RACELIST.addAll(List<Race>.from(jsonMap["Races"].map((x) => Race.fromJson(x))));
+  SPELLLIST.addAll(List<Spell>.from(jsonMap["Spells"].map((x) => Spell.fromJson(x))));
+  CLASSLIST.addAll(List<Class>.from(jsonMap["Classes"].map((x) => Class.fromJson(x))));
+  ITEMLIST.addAll(List<Item>.from((jsonMap["Equipment"] ?? []).map((x) => mapEquipment(x))));
+  CHARACTERLIST.addAll(List<Character>.from(jsonMap["Characters"].map((x) => Character.fromJson(x))));
+  BACKGROUNDLIST.addAll(List<Background>.from(jsonMap["Backgrounds"].map((x) => Background.fromJson(x))));
+  THEMELIST.addAll(List<ColourScheme>.from(jsonMap["ColourSchemes"].map((x) => ColourScheme.fromJson(x))));
+  PROFICIENCYLIST.addAll(List<Proficiency>.from(jsonMap["Proficiencies"].map((x) => Proficiency.fromJson(x))));
 
   /* If there were no errors thrown, true is returned. */
   return true;
@@ -85,7 +64,7 @@ Future<bool> addToGlobalsFromFile(File file) async {
 /* Get the file path to the content JSON. */
 Future<String> getLocalFilePath() async {
   final directory = await getApplicationDocumentsDirectory();
-  return '${directory.path}/userContent.json';
+  return "${directory.path}/userContent.json";
 }
 
 /* Copy the JSON file from the project into the correct location. */
@@ -94,10 +73,10 @@ Future<void> copyAssetFileToLocal() async {
   final file = File(path);
 
   if (!(await file.exists())) {
-    // Load the asset
-    final byteData = await rootBundle.load('assets/userContent.json');
+    /* Load the JSON from assets. */
+    final byteData = await rootBundle.load("assets/userContent.json");
 
-    // Write the file
+    /* Write it locally. */
     await file.writeAsBytes(byteData.buffer.asUint8List());
   }
 }
@@ -120,7 +99,7 @@ Future<void> saveChanges() async {
       "Feats": FEATLIST.map((x) => x.toJson()).toList(),
       "Groups": GROUPLIST,
       "Characters": CHARACTERLIST.map((x) => x.toJson()).toList(),
-      "Colours":  List<List<Map<String, dynamic>>>.from(COLORLIST.map((colours) => colours.map((colour) => colorToJson(colour)).toList()).toList()),
+      "ColourSchemes": THEMELIST.map((x) => x.toJson()).toList(),
       "Equipment": List<Map<String, dynamic>>.from(ITEMLIST.map((x) => x.toJson()).toList()),
       };
 

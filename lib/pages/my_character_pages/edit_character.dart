@@ -22,27 +22,25 @@ class Edittop extends StatelessWidget {
           foregroundColor: Homepage.textColor,
           backgroundColor: Homepage.backingColor,
           leading: IconButton(
-              icon: const Icon(Icons.home),
-              tooltip: "Return to the main menu",
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            const ScreenTop(pagechoice: "Main Menu")));
-              }),
+            icon: const Icon(Icons.home),
+            tooltip: "Return to the main menu",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ScreenTop(pagechoice: "Main Menu")));
+            }),
           title: const Center(child: Text(_title)),
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.arrow_back),
-              tooltip: 'Return to the previous page',
+              tooltip: "Return to the previous page",
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
             IconButton(
                 icon: const Icon(Icons.settings),
-                tooltip: 'Settings??',
+                tooltip: "Settings",
                 onPressed: () {
                   homepageKey.currentState?.showColorPicker(context);
                 }),
