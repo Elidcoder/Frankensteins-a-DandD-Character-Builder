@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 
 // Project imports
 import "pages/all_home_subpages.dart";
-import "pages/custom_content_pages/all_custom_content_pages.dart" show MakeASpell;
+import "pages/custom_content_pages/create_spells.dart" show MakeASpell;
 import "main.dart";
 
 /* A map of all the pages that can be navigated to. */

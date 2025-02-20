@@ -6,6 +6,7 @@ import "create_a_character.dart";
 import "../content_classes/all_content_classes.dart";
 import "../../main.dart" show InitialTop;
 
+/* This creates a widget that represents a classes ability to gain spells. */
 class SpellSelections extends StatefulWidget {
   final List<dynamic> thisDescription;
   final List<Spell> allSpells;
@@ -16,11 +17,11 @@ class SpellSelections extends StatefulWidget {
 
 class SpellSelectionsState extends State<SpellSelections> {
   List<Spell> allSpellsSelected;
-  //CURENTLY: [name, [spelllist], numb, formula]
+  // Formatted as: [name, [spelllist], numb, formula]
   List<dynamic> thisDescription;
   SpellSelectionsState(this.allSpellsSelected, this.thisDescription);
 
-  //filter if class available
+  // Filters out unavailable spells
   static List<Spell> allAvailableSpells = SPELLLIST.where((spell) => isAllowedContent(spell)).toList();
 
   @override

@@ -10,9 +10,9 @@ import "../../main.dart" show InitialTop, InitialTopKey;
 import "../../top_bar.dart";
 import "../../file_manager.dart";
 
-class Edittop extends StatelessWidget {
+class EditTop extends StatelessWidget {
   final Character character;
-  const Edittop(this.character, {super.key});
+  const EditTop(this.character, {super.key});
   static const String title= "Frankenstein's - a D&D 5e character builder";
   @override
   Widget build(BuildContext context) {
@@ -47,10 +47,7 @@ class Edittop extends StatelessWidget {
                 }),
           ],
         ),
-        //pick relevent call
-        body: EditACharacter(
-          character: character,
-        ),
+        body: EditACharacter(character: character),
       ),
     );
   }
@@ -64,10 +61,7 @@ class EditACharacter extends StatefulWidget {
   EditCharacter createState() => EditCharacter(character: character);
 }
 
-//null op here to locate if called by editor (to edit char so will contain info) or otherwise
 class EditCharacter extends State<EditACharacter> {
-  //random stsuff
-
   final Character character;
 
   EditCharacter({required this.character});
@@ -91,13 +85,10 @@ class EditCharacter extends State<EditACharacter> {
     "Gold Pieces": 100,
     "Platinum Pieces": 0
   };
-  // ignore: non_constant_identifier_names
   List<List<dynamic>> ACList = [
     ["10 + dexterity"]
   ];
-  //Spell spellExample = list.first;
   String? levellingMethod;
-  //Basics variables initialised
 
   //Class variables initialised
   List<bool> classSkillChoices = [];
@@ -107,7 +98,7 @@ class EditCharacter extends State<EditACharacter> {
 
   List<String> classList = [];
 
-  List<Widget> widgetsInPlay = []; //added to each time a class is selected
+  List<Widget> widgetsInPlay = [];
   List<int> levelsPerClass = List.filled(CLASSLIST.length, 0);
   Map<String, List<dynamic>> selections = {};
   List<dynamic> allSelected = [];
@@ -129,20 +120,23 @@ class EditCharacter extends State<EditACharacter> {
   int numberOfRemainingFeatOrASIs = 0;
   bool halfFeats = true;
   bool fullFeats = true;
+
   //Spell variables
   List<Spell> allSpellsSelected = [];
   List<List<dynamic>> allSpellsSelectedAsListsOfThings = [];
+
   //Equipment variables
   List<String> armourList = [];
   List<String> weaponList = [];
   List<String> itemList = [];
   String? coinTypeSelected = "Gold Pieces";
   List<dynamic> equipmentSelectedFromChoices = [];
-  //{thing:numb,...}
+
+  // Formatted as {thing:numb,...}
   Map<String, int> stackableEquipmentSelected = {};
   List<dynamic> unstackableEquipmentSelected = [];
 
-  //finishing up variables
+  // finishing up variables
   TextEditingController groupEnterController = TextEditingController();
   String? group;
   @override
@@ -155,14 +149,9 @@ class EditCharacter extends State<EditACharacter> {
     inspired = character.inspired;
     speedBonusMap = character.speedBonuses;
     currencyStored = character.currency;
-    // ignore: non_constant_identifier_names
     ACList = character.ACList;
 
-    //Basics variables initialised
-    //characterLevel = "${character.classList.length}";
-
     //Class variables initialised
-    //Class? classSelectedAtLevel1;
     classSkillChoices = character.classSkillsSelected;
     savingThrowProficiencies = character.savingThrowProficiencies;
     skillProficiencies = character.skillProficiencies;
@@ -186,18 +175,21 @@ class EditCharacter extends State<EditACharacter> {
     //ASIS AND FEAT variables
     ASIBonuses = character.featsASIScoreIncreases;
     featsSelected = character.featsSelected;
+
     //Spell variables
     allSpellsSelected = character.allSpellsSelected;
-    allSpellsSelectedAsListsOfThings =
-        character.allSpellsSelectedAsListsOfThings;
+    allSpellsSelectedAsListsOfThings = character.allSpellsSelectedAsListsOfThings;
+    
     //Equipment variables
     armourList = character.armourList;
     weaponList = character.weaponList;
     itemList = character.itemList;
     equipmentSelectedFromChoices = character.equipmentSelectedFromChoices;
-    //{thing:numb,...}
+    
+    // Formatted as {thing:numb,...}
     stackableEquipmentSelected = character.stackableEquipmentSelected;
     unstackableEquipmentSelected = character.unstackableEquipmentSelected;
+    
     //finishing up variables
     group = character.group;
   }

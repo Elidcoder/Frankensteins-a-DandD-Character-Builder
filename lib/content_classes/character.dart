@@ -1,9 +1,9 @@
 // External Imports
-import "dart:collection";
-import 'dart:math';
+import "dart:math" show Random;
+import "dart:collection" show Queue;
 
 // Project Import
-import 'non_character_classes/all_non_character_classes.dart';
+import "non_character_classes/all_non_character_classes.dart";
 
 class Character {
   String get name => characterDescription.name;

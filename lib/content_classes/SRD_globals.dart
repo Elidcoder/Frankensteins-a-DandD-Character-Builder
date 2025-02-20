@@ -1,8 +1,8 @@
 // External Imports
-import "dart:convert";
+import "dart:convert" show JsonDecoder;
 
 // Project Imports
-import 'non_character_classes/all_non_character_classes.dart';
+import "non_character_classes/all_non_character_classes.dart";
 
 String? jsonString;
 const JsonDecoder decoder = JsonDecoder();

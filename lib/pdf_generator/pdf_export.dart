@@ -11,56 +11,45 @@ String formatNumber(int number) {
   return (number >= 0) ? "+$number" : "$number";
 }
 
+/* Takes in for example [2, "Arrow", "Dagger"] 
+ * Outputs: 2xArrow, Dagger */
 String formatList(List list) {
-  // Initialize an empty string to store the result
   String result = "";
 
-  // Iterate through the list
+  /* Iterate through the list adding number-string pairs or just strings */
   for (int i = 0; i < list.length; i++) {
-    // Check if the current element is a number
+    // Current element is a number, so append the number and the next string
     if (list[i] is num) {
-      // Append the current number and string pair to the result string
       result += "${list[i]}x${list[i + 1]}";
-
-      // Skip over the next element (the string)
       i++;
+
+    // Append just the current string to the result string
     } else {
-      // Append just the current string to the result string
       result += "${list[i]}";
     }
 
-    // If this is not the last element, add a comma and space separator
+    /* If this is not the last element, add a comma and space separator */
     if (i != list.length - 1) result += ", ";
   }
-
-  // Return the final formatted string
   return result;
 }
 
+/* Takes in a list of bonuses to a speed and works out the total bonus */
 int decodeBonus(List<String> x) {
   return 0;
 }
 
-//color: const PdfColor.fromInt(0xffEBA834),
+/* Takes in a character and generates the PDF it relates to. */
 Future<Uint8List> makePdf(Character userCharacter) async {
   final pdf = Document();
 
   final classSkills = (userCharacter.classList.isNotEmpty)
-      ? CLASSLIST
-          .firstWhere((element) =>
-              userCharacter.classList.isNotEmpty &&
-              element.name == userCharacter.classList.first)
-          .optionsForSkillProficiencies
-          .where((element) => userCharacter.classSkillsSelected[CLASSLIST
-              .firstWhere((element) =>
-                  userCharacter.classList.isNotEmpty &&
-                  element.name == userCharacter.classList.first)
-              .optionsForSkillProficiencies
-              .indexOf(element)])
-          .toList()
-      : [];
+    ? CLASSLIST.firstWhere((element) => userCharacter.classList.isNotEmpty && element.name == userCharacter.classList.first).optionsForSkillProficiencies.where(
+      (element) => userCharacter.classSkillsSelected[CLASSLIST.firstWhere(
+        (element) => userCharacter.classList.isNotEmpty && element.name == userCharacter.classList.first
+      ).optionsForSkillProficiencies.indexOf(element)]).toList()
+    : [];
   final List<String> skillsSelected = userCharacter.skillsSelected.toList();
-  //var a = CLASSLIST[0];
   Map<int, int> proficiencyBonus = {
     0: 0,
     1: 2,

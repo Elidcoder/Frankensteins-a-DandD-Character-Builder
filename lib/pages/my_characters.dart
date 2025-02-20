@@ -2,13 +2,14 @@
 import "package:flutter/material.dart";
 
 // Project Imports
-import "my_character_pages/all_my_character_pages.dart";
-import "../content_classes/all_content_classes.dart";
-import "../pdf_generator/pdf_final_display.dart";
-import "../main.dart" show InitialTop;
 import "../top_bar.dart";
 import "../file_manager.dart";
+import "../main.dart" show InitialTop;
+import "my_character_pages/edit_character.dart";
+import "../pdf_generator/pdf_final_display.dart";
+import "../content_classes/all_content_classes.dart";
 
+/* This is a page where all characters created are displayed to be edited, viewed, deleted etc. */
 class MyCharacters extends StatefulWidget {
   const MyCharacters({super.key});
 
@@ -155,104 +156,56 @@ class MainMyCharacters extends State<MyCharacters> {
                         ))),
 
                         /* Open as PDF button */
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: InitialTop.colourScheme.textColour, width: 0.6),
-                            backgroundColor: Colors.grey,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => PdfPreviewPage(character: filteredCharacters[index])),
-                            );
-                          },
-                          child: const SizedBox(
-                            width: 175,
-                            child: Text(textAlign: TextAlign.center, "Open PDF", style: TextStyle(color: Colors.white)
-                        ))),
+                        buildCharacterActionButton("Open PDF", Colors.grey, () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => PdfPreviewPage(character: filteredCharacters[index]),
+                            ),
+                          );
+                        }),
 
                         /* Duplicate character button */
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: InitialTop.colourScheme.textColour, width: 0.6),
-                            backgroundColor: Colors.lightBlue,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              /* Add the duplicated character to CHARACTERLIST */
-                              Character selectedCharacter = filteredCharacters[index];
-                              CHARACTERLIST.add(selectedCharacter.getCopy());
-                              saveChanges();
-                            });
-                          },
-                          child: const SizedBox(
-                            width: 175,
-                            child: Text(
-                              textAlign: TextAlign.center,
-                              "Duplicate character",
-                              style:TextStyle(color: Colors.white))
-                        )),
+                        buildCharacterActionButton("Duplicate character", Colors.lightBlue, () {
+                          setState(() {
+                            Character selectedCharacter = filteredCharacters[index];
+                            CHARACTERLIST.add(selectedCharacter.getCopy());
+                            saveChanges();
+                          });
+                        }),
 
                         /* Edit character button */
-                        OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: InitialTop.colourScheme.textColour, width: 0.6),
-                              backgroundColor: Colors.green,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
+                        buildCharacterActionButton("Edit Character", Colors.green, () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditTop(filteredCharacters[index]),
                             ),
-                            onPressed: () {
-                              /* Navigate to the character editing page */
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Edittop(filteredCharacters[index])),
-                              );
-                            },
-                            child: const SizedBox(
-                              width: 175,
-                              child: Text(
-                                textAlign: TextAlign.center,
-                                "Edit Character",
-                                style:TextStyle(color: Colors.white))
-                        )),
+                          );
+                        }),
 
                         /* Delete character button */
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: InitialTop.colourScheme.textColour, width: 0.6),
-                            backgroundColor: Colors.red,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              /* Locate the character being deleted. */
-                              final int charIndex = CHARACTERLIST.indexWhere(
-                                (character) => character.uniqueID == filteredCharacters[index].uniqueID
-                              );
-                              final String? charGroup = CHARACTERLIST[charIndex].group;
+                        buildCharacterActionButton("Delete character", Colors.red, () {
+                          setState(() {
+                            /* Locate the character being deleted. */
+                            final int charIndex = CHARACTERLIST.indexWhere(
+                              (character) => character.uniqueID == filteredCharacters[index].uniqueID
+                            );
+                            final String? charGroup = CHARACTERLIST[charIndex].group;
 
-                              /* Remove the character. */
-                              if (charIndex != -1) {
-                                CHARACTERLIST.removeAt(charIndex);
-                              }
+                            /* Remove the character. */
+                            if (charIndex != -1) {
+                              CHARACTERLIST.removeAt(charIndex);
+                            }
 
-                              /* Clean up unused groups. */
-                              if (!CHARACTERLIST.any((character) => character.group == charGroup)) {
-                                GROUPLIST.remove(charGroup);
-                              }
-                              
-                              /* Save changes. */
-                              saveChanges();
-                            });
-                          },
-                          child: const SizedBox(
-                            width: 175,
-                            child: Text(
-                              textAlign: TextAlign.center,
-                              "Delete character",
-                              style: TextStyle(color: Colors.white))
-                        )),
+                            /* Clean up unused groups. */
+                            if (!CHARACTERLIST.any((character) => character.group == charGroup)) {
+                              GROUPLIST.remove(charGroup);
+                            }
+                            
+                            /* Save changes. */
+                            saveChanges();
+                          });
+                        }),
                       ],
                     ));
                 }),
@@ -260,4 +213,20 @@ class MainMyCharacters extends State<MyCharacters> {
             )),
       ]));
   }
+
+  /* Returns a button for putting inside the character's card */
+  Widget buildCharacterActionButton(String label, Color backgroundColour, VoidCallback onPressed) {
+  return OutlinedButton(
+    style: OutlinedButton.styleFrom(
+      side: BorderSide(color: InitialTop.colourScheme.textColour, width: 0.6),
+      backgroundColor: backgroundColour,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    ),
+    onPressed: onPressed,
+    child: SizedBox(
+      width: 175,
+      child: Text(label, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white)),
+    ),
+  );
+}
 }
