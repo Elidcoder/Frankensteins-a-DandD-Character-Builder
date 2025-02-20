@@ -13,14 +13,14 @@ class CustomContent extends StatelessWidget {
       /* Page title (Create content) */
       appBar: AppBar(
         centerTitle: true,
-        foregroundColor: Homepage.textColor,
-        backgroundColor: Homepage.backingColor,
+        foregroundColor: Homepage.colourScheme.textColour,
+        backgroundColor: Homepage.colourScheme.backingColour,
         title: Text(
           textAlign: TextAlign.center,
           'Create content',
-          style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700, color: Homepage.textColor),
+          style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700, color: Homepage.colourScheme.textColour),
       )),
-      backgroundColor: Homepage.backgroundColor,
+      backgroundColor: Homepage.colourScheme.backgroundColour,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -32,7 +32,7 @@ class CustomContent extends StatelessWidget {
               /* Button taking the user to the create custom spells page */
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                  backgroundColor: Homepage.backingColor,
+                  backgroundColor: Homepage.colourScheme.backingColour,
                   padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
                   shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
                   side: const BorderSide(width: 3, color: Colors.black),
@@ -46,7 +46,7 @@ class CustomContent extends StatelessWidget {
                 child: Text(
                   textAlign: TextAlign.center,
                   'Create a\nspell',
-                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: Homepage.textColor),
+                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: Homepage.colourScheme.textColour),
                 ),
               ),
             ],

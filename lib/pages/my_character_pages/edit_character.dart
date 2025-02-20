@@ -19,8 +19,8 @@ class Edittop extends StatelessWidget {
       title: _title,
       home: Scaffold(
         appBar: AppBar(
-          foregroundColor: Homepage.textColor,
-          backgroundColor: Homepage.backingColor,
+          foregroundColor: Homepage.colourScheme.textColour,
+          backgroundColor: Homepage.colourScheme.backingColour,
           leading: IconButton(
             icon: const Icon(Icons.home),
             tooltip: "Return to the main menu",
@@ -209,10 +209,10 @@ class EditCharacter extends State<EditACharacter> {
     return DefaultTabController(
       length: 7,
       child: Scaffold(
-        backgroundColor: Homepage.backgroundColor,
+        backgroundColor: Homepage.colourScheme.backgroundColour,
         appBar: AppBar(
-          foregroundColor: Homepage.textColor,
-          backgroundColor: Homepage.backingColor,
+          foregroundColor: Homepage.colourScheme.textColour,
+          backgroundColor: Homepage.colourScheme.backingColour,
           title: Center(
             child: Text(
               textAlign: TextAlign.center,
@@ -224,27 +224,27 @@ class EditCharacter extends State<EditACharacter> {
             tabs: [
               Tab(
                   child: Text("Quick edits",
-                      style: TextStyle(color: Homepage.textColor))),
+                      style: TextStyle(color: Homepage.colourScheme.textColour))),
               Tab(
                   child: Text("Class",
-                      style: TextStyle(color: Homepage.textColor))),
+                      style: TextStyle(color: Homepage.colourScheme.textColour))),
               Tab(
                   child: Text("ASI's and Feats",
-                      style: TextStyle(color: Homepage.textColor))),
+                      style: TextStyle(color: Homepage.colourScheme.textColour))),
               Tab(
                   child: Text("Spells",
-                      style: TextStyle(color: Homepage.textColor))),
+                      style: TextStyle(color: Homepage.colourScheme.textColour))),
               Tab(
                   child: Text("Equipment",
-                      style: TextStyle(color: Homepage.textColor))),
+                      style: TextStyle(color: Homepage.colourScheme.textColour))),
               Tab(
                   child: Text("Boons and magic items",
-                      style: TextStyle(color: Homepage.textColor))),
+                      style: TextStyle(color: Homepage.colourScheme.textColour))),
               Tab(
                   child: Text("Finishing up",
-                      style: TextStyle(color: Homepage.textColor))),
+                      style: TextStyle(color: Homepage.colourScheme.textColour))),
             ],
-            indicatorColor: Homepage.textColor,
+            indicatorColor: Homepage.colourScheme.textColour,
           ),
         ),
         body: TabBarView(children: [
@@ -260,18 +260,18 @@ class EditCharacter extends State<EditACharacter> {
                   style: TextStyle(
                       fontSize: 27,
                       fontWeight: FontWeight.w700,
-                      color: Homepage.backingColor)),
+                      color: Homepage.colourScheme.backingColour)),
               const SizedBox(height: 16),
               Text("Increase level by 1:  ",
                   style: TextStyle(
                       fontSize: 23,
                       fontWeight: FontWeight.w600,
-                      color: Homepage.backingColor)),
+                      color: Homepage.colourScheme.backingColour)),
               const SizedBox(height: 8),
               OutlinedButton(
                   style: OutlinedButton.styleFrom(
                     backgroundColor: (level < 20)
-                        ? Homepage.backingColor
+                        ? Homepage.colourScheme.backingColour
                         : const Color.fromARGB(247, 56, 53, 52),
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(4))),
@@ -285,29 +285,29 @@ class EditCharacter extends State<EditACharacter> {
                       }
                     });
                   },
-                  child: Icon(Icons.add, color: Homepage.textColor, size: 37)),
+                  child: Icon(Icons.add, color: Homepage.colourScheme.textColour, size: 37)),
               const SizedBox(height: 16),
               Text("Experience amount to add:  ",
                   style: TextStyle(
                       fontSize: 23,
                       fontWeight: FontWeight.w600,
-                      color: Homepage.backingColor)),
+                      color: Homepage.colourScheme.backingColour)),
               const SizedBox(height: 8),
               SizedBox(
                 width: 320,
                 height: 50,
                 child: TextField(
-                    cursorColor: Homepage.backingColor,
+                    cursorColor: Homepage.colourScheme.backingColour,
                     style: TextStyle(
-                      color: Homepage.textColor,
+                      color: Homepage.colourScheme.textColour,
                     ),
                     decoration: InputDecoration(
                         hintText: "Amount of experience to add (number)",
                         hintStyle: TextStyle(
                             fontWeight: FontWeight.w700,
-                            color: Homepage.textColor),
+                            color: Homepage.colourScheme.textColour),
                         filled: true,
-                        fillColor: Homepage.backingColor,
+                        fillColor: Homepage.colourScheme.backingColour,
                         border: const OutlineInputBorder(
                             borderSide: BorderSide.none,
                             borderRadius:
@@ -323,14 +323,14 @@ class EditCharacter extends State<EditACharacter> {
                   style: TextStyle(
                       fontSize: 23,
                       fontWeight: FontWeight.w600,
-                      color: Homepage.backingColor)),
+                      color: Homepage.colourScheme.backingColour)),
               const SizedBox(height: 8),
               OutlinedButton(
                   style: OutlinedButton.styleFrom(
                     backgroundColor:
                         (double.tryParse(experienceIncrease ?? "NOT NUMBER") !=
                                 null)
-                            ? Homepage.backingColor
+                            ? Homepage.colourScheme.backingColour
                             : const Color.fromARGB(247, 56, 53, 52),
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(4))),
@@ -348,19 +348,19 @@ class EditCharacter extends State<EditACharacter> {
                       }
                     });
                   },
-                  child: Icon(Icons.add, color: Homepage.textColor, size: 37))
+                  child: Icon(Icons.add, color: Homepage.colourScheme.textColour, size: 37))
             ],
           ),
           //class - updated to color scheme
           DefaultTabController(
             length: 2,
             child: Scaffold(
-              backgroundColor: Homepage.backgroundColor,
+              backgroundColor: Homepage.colourScheme.backgroundColour,
               floatingActionButton: FloatingActionButton(
                 tooltip: "Increase character level by 1",
-                foregroundColor: Homepage.textColor,
+                foregroundColor: Homepage.colourScheme.textColour,
                 backgroundColor: (level < 20)
-                    ? Homepage.backingColor
+                    ? Homepage.colourScheme.backingColour
                     : const Color.fromARGB(247, 56, 53, 52),
                 onPressed: () {
                   if (level < 20) {
@@ -374,8 +374,8 @@ class EditCharacter extends State<EditACharacter> {
                 ),
               ),
               appBar: AppBar(
-                foregroundColor: Homepage.textColor,
-                backgroundColor: Homepage.backingColor,
+                foregroundColor: Homepage.colourScheme.textColour,
+                backgroundColor: Homepage.colourScheme.backingColour,
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -385,7 +385,7 @@ class EditCharacter extends State<EditACharacter> {
                             style: TextStyle(
                                 fontSize: 21,
                                 fontWeight: FontWeight.w600,
-                                color: Homepage.textColor),
+                                color: Homepage.colourScheme.textColour),
                             textAlign: TextAlign.center)),
                     classList.isNotEmpty
                         ? Text(
@@ -393,13 +393,13 @@ class EditCharacter extends State<EditACharacter> {
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
-                                color: Homepage.textColor),
+                                color: Homepage.colourScheme.textColour),
                             textAlign: TextAlign.center)
                         : Text("You have no levels in any class",
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
-                                color: Homepage.textColor),
+                                color: Homepage.colourScheme.textColour),
                             textAlign: TextAlign.center)
                   ],
                 ),
@@ -407,13 +407,13 @@ class EditCharacter extends State<EditACharacter> {
                   tabs: [
                     Tab(
                         child: Text("Choose your classes",
-                            style: TextStyle(color: Homepage.textColor))),
+                            style: TextStyle(color: Homepage.colourScheme.textColour))),
                     Tab(
                         child: Text(
                             "Make your selections for each level in your class",
-                            style: TextStyle(color: Homepage.textColor))),
+                            style: TextStyle(color: Homepage.colourScheme.textColour))),
                   ],
-                  indicatorColor: Homepage.textColor,
+                  indicatorColor: Homepage.colourScheme.textColour,
                 ),
               ),
               body: TabBarView(children: [
@@ -435,7 +435,7 @@ class EditCharacter extends State<EditACharacter> {
                                   : 225,
                               height: 170,
                               decoration: BoxDecoration(
-                                color: Homepage.backingColor,
+                                color: Homepage.colourScheme.backingColour,
                                 border: Border.all(
                                   color: Colors.black,
                                   width: 1.8,
@@ -449,13 +449,13 @@ class EditCharacter extends State<EditACharacter> {
                                       style: TextStyle(
                                           fontSize: 30,
                                           fontWeight: FontWeight.w700,
-                                          color: Homepage.textColor)),
+                                          color: Homepage.colourScheme.textColour)),
                                   Text(
                                       "Class type: ${CLASSLIST[index].classType}",
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w600,
-                                          color: Homepage.textColor)),
+                                          color: Homepage.colourScheme.textColour)),
                                   (["Martial", "Third Caster"]
                                           .contains(CLASSLIST[index].classType))
                                       ? Text(
@@ -463,25 +463,25 @@ class EditCharacter extends State<EditACharacter> {
                                           style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.w600,
-                                              color: Homepage.textColor))
+                                              color: Homepage.colourScheme.textColour))
                                       : Text(
                                           "Spellcasting ability: ${CLASSLIST[index].mainOrSpellcastingAbility}",
                                           style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.w600,
-                                              color: Homepage.textColor)),
+                                              color: Homepage.colourScheme.textColour)),
                                   Text(
                                       "Hit die: D${CLASSLIST[index].maxHitDiceRoll}",
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w600,
-                                          color: Homepage.textColor)),
+                                          color: Homepage.colourScheme.textColour)),
                                   Text(
                                       "Saves: ${CLASSLIST[index].savingThrowProficiencies.join(",")}",
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w600,
-                                          color: Homepage.textColor)),
+                                          color: Homepage.colourScheme.textColour)),
                                   const SizedBox(height: 7),
                                   ElevatedButton(
                                       style: OutlinedButton.styleFrom(
@@ -493,7 +493,7 @@ class EditCharacter extends State<EditACharacter> {
                                                     CLASSLIST[index])))
                                             ? const Color.fromARGB(
                                                 247, 56, 53, 52)
-                                            : Homepage.backingColor,
+                                            : Homepage.colourScheme.backingColour,
                                         shape: const RoundedRectangleBorder(
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(4))),
@@ -637,7 +637,7 @@ class EditCharacter extends State<EditACharacter> {
                                         });
                                       },
                                       child: Icon(Icons.add,
-                                          color: Homepage.textColor, size: 35))
+                                          color: Homepage.colourScheme.textColour, size: 35))
                                 ],
                               ));
                         }),
@@ -655,7 +655,7 @@ class EditCharacter extends State<EditACharacter> {
                   const SizedBox(height: 24),
                   Text("$numberOfRemainingFeatOrASIs options remaining",
                       style: TextStyle(
-                          color: Homepage.backingColor,
+                          color: Homepage.colourScheme.backingColour,
                           fontSize: 35,
                           fontWeight: FontWeight.w900)),
                   const SizedBox(height: 6),
@@ -668,14 +668,14 @@ class EditCharacter extends State<EditACharacter> {
                                 children: [
                                   Text("ASI's",
                                       style: TextStyle(
-                                          color: Homepage.backingColor,
+                                          color: Homepage.colourScheme.backingColour,
                                           fontSize: 33,
                                           fontWeight: FontWeight.w800)),
                                   const SizedBox(height: 8),
                                   if (ASIRemaining)
                                     Text("You have an unspent ASI",
                                         style: TextStyle(
-                                            color: Homepage.backingColor,
+                                            color: Homepage.colourScheme.backingColour,
                                             fontSize: 27,
                                             fontWeight: FontWeight.w800)),
                                   SizedBox(
@@ -686,7 +686,7 @@ class EditCharacter extends State<EditACharacter> {
                                         height: 132,
                                         width: 160,
                                         decoration: BoxDecoration(
-                                          color: Homepage.backingColor,
+                                          color: Homepage.colourScheme.backingColour,
                                           border: Border.all(
                                             color: Colors.black,
                                             width: 1.6,
@@ -701,7 +701,7 @@ class EditCharacter extends State<EditACharacter> {
                                             style: TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.w800,
-                                                color: Homepage.textColor),
+                                                color: Homepage.colourScheme.textColour),
                                           ),
                                           Text(
                                             textAlign: TextAlign.center,
@@ -709,7 +709,7 @@ class EditCharacter extends State<EditACharacter> {
                                             style: TextStyle(
                                                 fontSize: 45,
                                                 fontWeight: FontWeight.w700,
-                                                color: Homepage.textColor),
+                                                color: Homepage.colourScheme.textColour),
                                           ),
                                           OutlinedButton(
                                               style: OutlinedButton.styleFrom(
@@ -721,7 +721,7 @@ class EditCharacter extends State<EditACharacter> {
                                                             20))
                                                     ? const Color.fromARGB(
                                                         247, 56, 53, 52)
-                                                    : Homepage.backingColor,
+                                                    : Homepage.colourScheme.backingColour,
                                                 shape:
                                                     const RoundedRectangleBorder(
                                                         borderRadius:
@@ -760,7 +760,7 @@ class EditCharacter extends State<EditACharacter> {
                                         height: 132,
                                         width: 160,
                                         decoration: BoxDecoration(
-                                          color: Homepage.backingColor,
+                                          color: Homepage.colourScheme.backingColour,
                                           border: Border.all(
                                             color: Colors.black,
                                             width: 1.6,
@@ -775,7 +775,7 @@ class EditCharacter extends State<EditACharacter> {
                                             style: TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.w800,
-                                                color: Homepage.textColor),
+                                                color: Homepage.colourScheme.textColour),
                                           ),
                                           Text(
                                             textAlign: TextAlign.center,
@@ -783,7 +783,7 @@ class EditCharacter extends State<EditACharacter> {
                                             style: TextStyle(
                                                 fontSize: 45,
                                                 fontWeight: FontWeight.w700,
-                                                color: Homepage.textColor),
+                                                color: Homepage.colourScheme.textColour),
                                           ),
                                           OutlinedButton(
                                               style: OutlinedButton.styleFrom(
@@ -795,7 +795,7 @@ class EditCharacter extends State<EditACharacter> {
                                                             20))
                                                     ? const Color.fromARGB(
                                                         247, 56, 53, 52)
-                                                    : Homepage.backingColor,
+                                                    : Homepage.colourScheme.backingColour,
                                                 shape:
                                                     const RoundedRectangleBorder(
                                                         borderRadius:
@@ -840,7 +840,7 @@ class EditCharacter extends State<EditACharacter> {
                                         height: 132,
                                         width: 160,
                                         decoration: BoxDecoration(
-                                          color: Homepage.backingColor,
+                                          color: Homepage.colourScheme.backingColour,
                                           border: Border.all(
                                             color: Colors.black,
                                             width: 1.6,
@@ -855,7 +855,7 @@ class EditCharacter extends State<EditACharacter> {
                                             style: TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.w800,
-                                                color: Homepage.textColor),
+                                                color: Homepage.colourScheme.textColour),
                                           ),
                                           Text(
                                             textAlign: TextAlign.center,
@@ -863,7 +863,7 @@ class EditCharacter extends State<EditACharacter> {
                                             style: TextStyle(
                                                 fontSize: 45,
                                                 fontWeight: FontWeight.w700,
-                                                color: Homepage.textColor),
+                                                color: Homepage.colourScheme.textColour),
                                           ),
                                           OutlinedButton(
                                               style: OutlinedButton.styleFrom(
@@ -875,7 +875,7 @@ class EditCharacter extends State<EditACharacter> {
                                                             20))
                                                     ? const Color.fromARGB(
                                                         247, 56, 53, 52)
-                                                    : Homepage.backingColor,
+                                                    : Homepage.colourScheme.backingColour,
                                                 shape:
                                                     const RoundedRectangleBorder(
                                                         borderRadius:
@@ -914,7 +914,7 @@ class EditCharacter extends State<EditACharacter> {
                                         height: 132,
                                         width: 160,
                                         decoration: BoxDecoration(
-                                          color: Homepage.backingColor,
+                                          color: Homepage.colourScheme.backingColour,
                                           border: Border.all(
                                             color: Colors.black,
                                             width: 1.6,
@@ -929,7 +929,7 @@ class EditCharacter extends State<EditACharacter> {
                                             style: TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.w800,
-                                                color: Homepage.textColor),
+                                                color: Homepage.colourScheme.textColour),
                                           ),
                                           Text(
                                             textAlign: TextAlign.center,
@@ -937,7 +937,7 @@ class EditCharacter extends State<EditACharacter> {
                                             style: TextStyle(
                                                 fontSize: 45,
                                                 fontWeight: FontWeight.w700,
-                                                color: Homepage.textColor),
+                                                color: Homepage.colourScheme.textColour),
                                           ),
                                           OutlinedButton(
                                               style: OutlinedButton.styleFrom(
@@ -949,7 +949,7 @@ class EditCharacter extends State<EditACharacter> {
                                                             20))
                                                     ? const Color.fromARGB(
                                                         247, 56, 53, 52)
-                                                    : Homepage.backingColor,
+                                                    : Homepage.colourScheme.backingColour,
                                                 shape:
                                                     const RoundedRectangleBorder(
                                                         borderRadius:
@@ -994,7 +994,7 @@ class EditCharacter extends State<EditACharacter> {
                                         height: 132,
                                         width: 160,
                                         decoration: BoxDecoration(
-                                          color: Homepage.backingColor,
+                                          color: Homepage.colourScheme.backingColour,
                                           border: Border.all(
                                             color: Colors.black,
                                             width: 1.6,
@@ -1009,7 +1009,7 @@ class EditCharacter extends State<EditACharacter> {
                                             style: TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.w800,
-                                                color: Homepage.textColor),
+                                                color: Homepage.colourScheme.textColour),
                                           ),
                                           Text(
                                             textAlign: TextAlign.center,
@@ -1017,7 +1017,7 @@ class EditCharacter extends State<EditACharacter> {
                                             style: TextStyle(
                                                 fontSize: 45,
                                                 fontWeight: FontWeight.w700,
-                                                color: Homepage.textColor),
+                                                color: Homepage.colourScheme.textColour),
                                           ),
                                           OutlinedButton(
                                               style: OutlinedButton.styleFrom(
@@ -1029,7 +1029,7 @@ class EditCharacter extends State<EditACharacter> {
                                                             20))
                                                     ? const Color.fromARGB(
                                                         247, 56, 53, 52)
-                                                    : Homepage.backingColor,
+                                                    : Homepage.colourScheme.backingColour,
                                                 shape:
                                                     const RoundedRectangleBorder(
                                                         borderRadius:
@@ -1068,7 +1068,7 @@ class EditCharacter extends State<EditACharacter> {
                                         height: 132,
                                         width: 160,
                                         decoration: BoxDecoration(
-                                          color: Homepage.backingColor,
+                                          color: Homepage.colourScheme.backingColour,
                                           border: Border.all(
                                             color: Colors.black,
                                             width: 1.6,
@@ -1083,7 +1083,7 @@ class EditCharacter extends State<EditACharacter> {
                                             style: TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.w800,
-                                                color: Homepage.textColor),
+                                                color: Homepage.colourScheme.textColour),
                                           ),
                                           Text(
                                             textAlign: TextAlign.center,
@@ -1091,7 +1091,7 @@ class EditCharacter extends State<EditACharacter> {
                                             style: TextStyle(
                                                 fontSize: 45,
                                                 fontWeight: FontWeight.w700,
-                                                color: Homepage.textColor),
+                                                color: Homepage.colourScheme.textColour),
                                           ),
                                           OutlinedButton(
                                               style: OutlinedButton.styleFrom(
@@ -1103,7 +1103,7 @@ class EditCharacter extends State<EditACharacter> {
                                                             20))
                                                     ? const Color.fromARGB(
                                                         247, 56, 53, 52)
-                                                    : Homepage.backingColor,
+                                                    : Homepage.colourScheme.backingColour,
                                                 shape:
                                                     const RoundedRectangleBorder(
                                                         borderRadius:
@@ -1151,7 +1151,7 @@ class EditCharacter extends State<EditACharacter> {
                                       Text(
                                           "${featsSelected.length} Feats selected:",
                                           style: TextStyle(
-                                              color: Homepage.backingColor,
+                                              color: Homepage.colourScheme.backingColour,
                                               fontSize: 33,
                                               fontWeight: FontWeight.w800)),
                                     if (featsSelected.isNotEmpty)
@@ -1171,14 +1171,13 @@ class EditCharacter extends State<EditACharacter> {
                                                     featsSelected[index][0]
                                                         .name,
                                                     style: TextStyle(
-                                                        color: Homepage
-                                                            .backingColor)),
+                                                        color: Homepage.colourScheme.backingColour)),
                                               );
                                             },
                                           )),
                                     Text("Select Feats:",
                                         style: TextStyle(
-                                            color: Homepage.backingColor,
+                                            color: Homepage.colourScheme.backingColour,
                                             fontSize: 33,
                                             fontWeight: FontWeight.w800)),
                                     const SizedBox(height: 8),
@@ -1190,7 +1189,7 @@ class EditCharacter extends State<EditACharacter> {
                                           OutlinedButton(
                                             style: OutlinedButton.styleFrom(
                                                 backgroundColor: (fullFeats)
-                                                    ? Homepage.backingColor
+                                                    ? Homepage.colourScheme.backingColour
                                                     : const Color.fromARGB(
                                                         247, 56, 53, 52)),
                                             onPressed: () {
@@ -1200,13 +1199,13 @@ class EditCharacter extends State<EditACharacter> {
                                             },
                                             child: Text("Full Feats",
                                                 style: TextStyle(
-                                                    color: Homepage.textColor)),
+                                                    color: Homepage.colourScheme.textColour)),
                                           ),
                                           //text for search
                                           OutlinedButton(
                                             style: OutlinedButton.styleFrom(
                                                 backgroundColor: (halfFeats)
-                                                    ? Homepage.backingColor
+                                                    ? Homepage.colourScheme.backingColour
                                                     : const Color.fromARGB(
                                                         247, 56, 53, 52)),
                                             onPressed: () {
@@ -1216,7 +1215,7 @@ class EditCharacter extends State<EditACharacter> {
                                             },
                                             child: Text("Half Feats",
                                                 style: TextStyle(
-                                                    color: Homepage.textColor)),
+                                                    color: Homepage.colourScheme.textColour)),
                                           ),
                                         ])),
                                     const SizedBox(height: 10),
@@ -1312,7 +1311,7 @@ class EditCharacter extends State<EditACharacter> {
                                                   },
                                                   child: Text(FEATLIST[index].name,
                                                       style: TextStyle(
-                                                          color: Homepage.backingColor,
+                                                          color: Homepage.colourScheme.backingColour,
                                                           fontWeight: FontWeight.w900))));
                                         },
                                       ),
@@ -1329,7 +1328,7 @@ class EditCharacter extends State<EditACharacter> {
                 style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.w700,
-                    color: Homepage.backingColor)),
+                    color: Homepage.colourScheme.backingColour)),
             Row(children: [
               Expanded(
                   child: Column(children: [
@@ -1661,14 +1660,14 @@ class EditCharacter extends State<EditACharacter> {
                                     style: TextStyle(
                                         fontSize: 23,
                                         fontWeight: FontWeight.w700,
-                                        color: Homepage.backingColor)),
+                                        color: Homepage.colourScheme.backingColour)),
                                 const SizedBox(height: 6),
                                 Text(
                                     "You have ${currencyStored["Platinum Pieces"]} platinum, ${currencyStored["Gold Pieces"]} gold, ${currencyStored["Electrum Pieces"]} electrum, ${currencyStored["Silver Pieces"]} silver and ${currencyStored["Copper Pieces"]} copper pieces to spend",
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w700,
-                                        color: Homepage.backingColor)),
+                                        color: Homepage.colourScheme.backingColour)),
                                 const SizedBox(height: 6),
                                 SizedBox(
                                   width: 775,
@@ -1678,7 +1677,7 @@ class EditCharacter extends State<EditACharacter> {
                                       style: OutlinedButton.styleFrom(
                                           backgroundColor:
                                               (armourList.length == 4)
-                                                  ? Homepage.backingColor
+                                                  ? Homepage.colourScheme.backingColour
                                                   : const Color.fromARGB(
                                                       247, 56, 53, 52)),
                                       onPressed: () {
@@ -1702,7 +1701,7 @@ class EditCharacter extends State<EditACharacter> {
                                             children: [
                                               Text("Armour",
                                                   style: TextStyle(
-                                                      color: Homepage.textColor,
+                                                      color: Homepage.colourScheme.textColour,
                                                       fontSize: 22)),
                                               Row(
                                                 children: [
@@ -1712,8 +1711,7 @@ class EditCharacter extends State<EditACharacter> {
                                                         backgroundColor:
                                                             (armourList.contains(
                                                                     "Light"))
-                                                                ? Homepage
-                                                                    .backingColor
+                                                                ? Homepage.colourScheme.backingColour
                                                                 : const Color
                                                                         .fromARGB(
                                                                     247,
@@ -1734,8 +1732,7 @@ class EditCharacter extends State<EditACharacter> {
                                                     },
                                                     child: Text("Light",
                                                         style: TextStyle(
-                                                            color: Homepage
-                                                                .textColor,
+                                                            color: Homepage.colourScheme.textColour,
                                                             fontSize: 15)),
                                                   ),
                                                   ElevatedButton(
@@ -1743,8 +1740,7 @@ class EditCharacter extends State<EditACharacter> {
                                                           backgroundColor: (armourList
                                                                   .contains(
                                                                       "Medium"))
-                                                              ? Homepage
-                                                                  .backingColor
+                                                              ? Homepage.colourScheme.backingColour
                                                               : const Color
                                                                       .fromARGB(
                                                                   247,
@@ -1766,16 +1762,14 @@ class EditCharacter extends State<EditACharacter> {
                                                       },
                                                       child: Text("Medium",
                                                           style: TextStyle(
-                                                              color: Homepage
-                                                                  .textColor,
+                                                              color:  Homepage.colourScheme.textColour,
                                                               fontSize: 15))),
                                                   ElevatedButton(
                                                     style: OutlinedButton.styleFrom(
                                                         backgroundColor:
                                                             (armourList.contains(
                                                                     "Heavy"))
-                                                                ? Homepage
-                                                                    .backingColor
+                                                                ? Homepage.colourScheme.backingColour
                                                                 : const Color
                                                                         .fromARGB(
                                                                     247,
@@ -1796,8 +1790,7 @@ class EditCharacter extends State<EditACharacter> {
                                                     },
                                                     child: Text("Heavy",
                                                         style: TextStyle(
-                                                            color: Homepage
-                                                                .textColor,
+                                                            color:  Homepage.colourScheme.textColour,
                                                             fontSize: 15)),
                                                   ),
                                                   ElevatedButton(
@@ -1805,8 +1798,7 @@ class EditCharacter extends State<EditACharacter> {
                                                           backgroundColor: (armourList
                                                                   .contains(
                                                                       "Shield"))
-                                                              ? Homepage
-                                                                  .backingColor
+                                                              ? Homepage.colourScheme.backingColour
                                                               : const Color
                                                                       .fromARGB(
                                                                   247,
@@ -1828,8 +1820,7 @@ class EditCharacter extends State<EditACharacter> {
                                                       },
                                                       child: Text("Shield",
                                                           style: TextStyle(
-                                                              color: Homepage
-                                                                  .textColor,
+                                                              color:  Homepage.colourScheme.textColour,
                                                               fontSize: 15)))
                                                 ],
                                               )
@@ -1842,7 +1833,7 @@ class EditCharacter extends State<EditACharacter> {
                                       style: OutlinedButton.styleFrom(
                                           backgroundColor:
                                               (weaponList.length == 2)
-                                                  ? Homepage.backingColor
+                                                  ? Homepage.colourScheme.backingColour
                                                   : const Color.fromARGB(
                                                       247, 56, 53, 52)),
                                       onPressed: () {
@@ -1861,7 +1852,7 @@ class EditCharacter extends State<EditACharacter> {
                                             children: [
                                               Text("Weapon",
                                                   style: TextStyle(
-                                                      color: Homepage.textColor,
+                                                      color: Homepage.colourScheme.textColour,
                                                       fontSize: 22)),
                                               Row(
                                                 children: [
@@ -1870,8 +1861,7 @@ class EditCharacter extends State<EditACharacter> {
                                                         backgroundColor:
                                                             (weaponList.contains(
                                                                     "Ranged"))
-                                                                ? Homepage
-                                                                    .backingColor
+                                                                ? Homepage.colourScheme.backingColour
                                                                 : const Color
                                                                         .fromARGB(
                                                                     247,
@@ -1892,8 +1882,7 @@ class EditCharacter extends State<EditACharacter> {
                                                     },
                                                     child: Text("Ranged",
                                                         style: TextStyle(
-                                                            color: Homepage
-                                                                .textColor,
+                                                            color:  Homepage.colourScheme.textColour,
                                                             fontSize: 15)),
                                                   ),
                                                   ElevatedButton(
@@ -1901,8 +1890,7 @@ class EditCharacter extends State<EditACharacter> {
                                                           backgroundColor: (weaponList
                                                                   .contains(
                                                                       "Melee"))
-                                                              ? Homepage
-                                                                  .backingColor
+                                                              ? Homepage.colourScheme.backingColour
                                                               : const Color
                                                                       .fromARGB(
                                                                   247,
@@ -1924,8 +1912,7 @@ class EditCharacter extends State<EditACharacter> {
                                                       },
                                                       child: Text("Melee",
                                                           style: TextStyle(
-                                                              color: Homepage
-                                                                  .textColor,
+                                                              color:  Homepage.colourScheme.textColour,
                                                               fontSize: 15))),
                                                 ],
                                               )
@@ -1938,7 +1925,7 @@ class EditCharacter extends State<EditACharacter> {
                                       style: OutlinedButton.styleFrom(
                                           backgroundColor:
                                               (itemList.length == 2)
-                                                  ? Homepage.backingColor
+                                                  ? Homepage.colourScheme.backingColour
                                                   : const Color.fromARGB(
                                                       247, 56, 53, 52)),
                                       onPressed: () {
@@ -1960,7 +1947,7 @@ class EditCharacter extends State<EditACharacter> {
                                             children: [
                                               Text("Items",
                                                   style: TextStyle(
-                                                      color: Homepage.textColor,
+                                                      color: Homepage.colourScheme.textColour,
                                                       fontSize: 22)),
                                               Row(
                                                 children: [
@@ -1969,8 +1956,7 @@ class EditCharacter extends State<EditACharacter> {
                                                         backgroundColor: (itemList
                                                                 .contains(
                                                                     "Stackable"))
-                                                            ? Homepage
-                                                                .backingColor
+                                                            ? Homepage.colourScheme.backingColour
                                                             : const Color
                                                                     .fromARGB(
                                                                 247,
@@ -1991,8 +1977,7 @@ class EditCharacter extends State<EditACharacter> {
                                                     },
                                                     child: Text("Stackable",
                                                         style: TextStyle(
-                                                            color: Homepage
-                                                                .textColor,
+                                                            color:  Homepage.colourScheme.textColour,
                                                             fontSize: 15)),
                                                   ),
                                                   ElevatedButton(
@@ -2000,8 +1985,7 @@ class EditCharacter extends State<EditACharacter> {
                                                           backgroundColor: (itemList
                                                                   .contains(
                                                                       "Unstackable"))
-                                                              ? Homepage
-                                                                  .backingColor
+                                                              ? Homepage.colourScheme.backingColour
                                                               : const Color
                                                                       .fromARGB(
                                                                   247,
@@ -2022,8 +2006,7 @@ class EditCharacter extends State<EditACharacter> {
                                                       },
                                                       child: Text("Unstackable",
                                                           style: TextStyle(
-                                                              color: Homepage
-                                                                  .textColor,
+                                                              color:  Homepage.colourScheme.textColour,
                                                               fontSize: 15))),
                                                 ],
                                               )
@@ -2038,7 +2021,7 @@ class EditCharacter extends State<EditACharacter> {
                                 //costs
                                 Container(
                                   decoration: BoxDecoration(
-                                    color: Homepage.backgroundColor,
+                                    color: Homepage.colourScheme.backgroundColour,
                                     border: Border.all(
                                       color:
                                           const Color.fromARGB(247, 56, 53, 52),
@@ -2054,7 +2037,7 @@ class EditCharacter extends State<EditACharacter> {
                                         children: [
                                           Text("Cost range:",
                                               style: TextStyle(
-                                                  color: Homepage.textColor,
+                                                  color: Homepage.colourScheme.textColour,
                                                   fontSize: 22)),
                                           //box<X<box2
                                           Row(
@@ -2064,8 +2047,7 @@ class EditCharacter extends State<EditACharacter> {
                                                     backgroundColor:
                                                         (coinTypeSelected ==
                                                                 "Platinum")
-                                                            ? Homepage
-                                                                .backingColor
+                                                            ? Homepage.colourScheme.backingColour
                                                             : const Color
                                                                     .fromARGB(
                                                                 247,
@@ -2086,7 +2068,7 @@ class EditCharacter extends State<EditACharacter> {
                                                 child: Text("Platinum",
                                                     style: TextStyle(
                                                         color:
-                                                            Homepage.textColor,
+                                                            Homepage.colourScheme.textColour,
                                                         fontSize: 15)),
                                               ),
                                               ElevatedButton(
@@ -2094,8 +2076,7 @@ class EditCharacter extends State<EditACharacter> {
                                                     backgroundColor:
                                                         (coinTypeSelected ==
                                                                 "Gold")
-                                                            ? Homepage
-                                                                .backingColor
+                                                            ? Homepage.colourScheme.backingColour
                                                             : const Color
                                                                     .fromARGB(
                                                                 247,
@@ -2115,7 +2096,7 @@ class EditCharacter extends State<EditACharacter> {
                                                 child: Text("Gold",
                                                     style: TextStyle(
                                                         color:
-                                                            Homepage.textColor,
+                                                            Homepage.colourScheme.textColour,
                                                         fontSize: 15)),
                                               ),
                                               ElevatedButton(
@@ -2123,8 +2104,7 @@ class EditCharacter extends State<EditACharacter> {
                                                     backgroundColor:
                                                         (coinTypeSelected ==
                                                                 "Electrum")
-                                                            ? Homepage
-                                                                .backingColor
+                                                            ? Homepage.colourScheme.backingColour
                                                             : const Color
                                                                     .fromARGB(
                                                                 247,
@@ -2145,7 +2125,7 @@ class EditCharacter extends State<EditACharacter> {
                                                 child: Text("Electrum",
                                                     style: TextStyle(
                                                         color:
-                                                            Homepage.textColor,
+                                                            Homepage.colourScheme.textColour,
                                                         fontSize: 15)),
                                               ),
                                               ElevatedButton(
@@ -2153,8 +2133,7 @@ class EditCharacter extends State<EditACharacter> {
                                                     backgroundColor:
                                                         (coinTypeSelected ==
                                                                 "Silver")
-                                                            ? Homepage
-                                                                .backingColor
+                                                            ? Homepage.colourScheme.backingColour
                                                             : const Color
                                                                     .fromARGB(
                                                                 247,
@@ -2175,7 +2154,7 @@ class EditCharacter extends State<EditACharacter> {
                                                 child: Text("Silver",
                                                     style: TextStyle(
                                                         color:
-                                                            Homepage.textColor,
+                                                            Homepage.colourScheme.textColour,
                                                         fontSize: 15)),
                                               ),
                                               ElevatedButton(
@@ -2183,8 +2162,7 @@ class EditCharacter extends State<EditACharacter> {
                                                     backgroundColor:
                                                         (coinTypeSelected ==
                                                                 "Copper")
-                                                            ? Homepage
-                                                                .backingColor
+                                                            ? Homepage.colourScheme.backingColour
                                                             : const Color
                                                                     .fromARGB(
                                                                 247,
@@ -2205,7 +2183,7 @@ class EditCharacter extends State<EditACharacter> {
                                                 child: Text("Copper",
                                                     style: TextStyle(
                                                         color:
-                                                            Homepage.textColor,
+                                                            Homepage.colourScheme.textColour,
                                                         fontSize: 15)),
                                               ),
                                             ],
@@ -2219,7 +2197,7 @@ class EditCharacter extends State<EditACharacter> {
                                 Container(
                                     padding: const EdgeInsets.only(top: 10),
                                     decoration: BoxDecoration(
-                                      color: Homepage.backgroundColor,
+                                      color: Homepage.colourScheme.backgroundColour,
                                       border: Border.all(
                                         color: Colors.black,
                                         width: 1.6,
@@ -2258,7 +2236,7 @@ class EditCharacter extends State<EditACharacter> {
                                             return OutlinedButton(
                                               style: OutlinedButton.styleFrom(
                                                   backgroundColor:
-                                                      Homepage.backingColor),
+                                                      Homepage.colourScheme.backingColour),
                                               onPressed: () {
                                                 setState(() {
                                                   if (ITEMLIST
@@ -2400,7 +2378,7 @@ class EditCharacter extends State<EditACharacter> {
                                                   "${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].name}: ${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[0]}x${ITEMLIST.where((element) => ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => armourList.contains(item))) || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => weaponList.contains(item))) || (element.equipmentType.contains("Item") && ((itemList.contains("Stackable") && element.stackable) || (itemList.contains("Unstackable") && !element.stackable)))) && element.cost[1] == coinTypeSelected).toList()[index].cost[1]}",
                                                   style: TextStyle(
                                                       color:
-                                                          Homepage.textColor)),
+                                                          Homepage.colourScheme.textColour)),
                                             );
                                           }),
                                         )))
@@ -2415,7 +2393,7 @@ class EditCharacter extends State<EditACharacter> {
                                   style: TextStyle(
                                       fontSize: 23,
                                       fontWeight: FontWeight.w700,
-                                      color: Homepage.backingColor)),
+                                      color: Homepage.colourScheme.backingColour)),
                               const SizedBox(height: 6),
                               if (equipmentSelectedFromChoices != [])
                                 SizedBox(
@@ -2442,8 +2420,7 @@ class EditCharacter extends State<EditACharacter> {
                                                         style: OutlinedButton
                                                             .styleFrom(
                                                                 backgroundColor:
-                                                                    Homepage
-                                                                        .backingColor),
+                                                                    Homepage.colourScheme.backingColour),
                                                         onPressed: () {
                                                           setState(() {
                                                             equipmentSelectedFromChoices[
@@ -2458,8 +2435,7 @@ class EditCharacter extends State<EditACharacter> {
                                                               equipmentSelectedFromChoices[
                                                                   i][0]),
                                                           style: TextStyle(
-                                                            color: Homepage
-                                                                .textColor,
+                                                            color:  Homepage.colourScheme.textColour,
                                                           ),
                                                         ),
                                                       ),
@@ -2467,8 +2443,7 @@ class EditCharacter extends State<EditACharacter> {
                                                         style: OutlinedButton
                                                             .styleFrom(
                                                                 backgroundColor:
-                                                                    Homepage
-                                                                        .backingColor),
+                                                                    Homepage.colourScheme.backingColour),
                                                         onPressed: () {
                                                           setState(() {
                                                             equipmentSelectedFromChoices[
@@ -2483,8 +2458,7 @@ class EditCharacter extends State<EditACharacter> {
                                                               equipmentSelectedFromChoices[
                                                                   i][1]),
                                                           style: TextStyle(
-                                                            color: Homepage
-                                                                .textColor,
+                                                            color: Homepage.colourScheme.textColour
                                                           ),
                                                         ),
                                                       )
@@ -2497,7 +2471,7 @@ class EditCharacter extends State<EditACharacter> {
                                                           i][0]),
                                                   style: TextStyle(
                                                       color:
-                                                          Homepage.backingColor,
+                                                          Homepage.colourScheme.backingColour,
                                                       fontWeight:
                                                           FontWeight.w700))
                                       ],
@@ -2512,11 +2486,11 @@ class EditCharacter extends State<EditACharacter> {
           const Icon(Icons.directions_bike),
           //Finishing up
           Scaffold(
-              backgroundColor: Homepage.backgroundColor,
+              backgroundColor: Homepage.colourScheme.backgroundColour,
               floatingActionButton: FloatingActionButton(
                 tooltip: "Generate a PDF",
-                foregroundColor: Homepage.textColor,
-                backgroundColor: Homepage.backingColor,
+                foregroundColor: Homepage.colourScheme.textColour,
+                backgroundColor: Homepage.colourScheme.backingColour,
                 onPressed: () {
                   Character char = Character(
                     languageChoices: character.languageChoices,
@@ -2618,20 +2592,20 @@ class EditCharacter extends State<EditACharacter> {
                               style: TextStyle(
                                   fontSize: 32,
                                   fontWeight: FontWeight.w800,
-                                  color: Homepage.backingColor)),
+                                  color: Homepage.colourScheme.backingColour)),
                           const SizedBox(height: 20),
                           Text("Select an existing group:",
                               style: TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.w800,
-                                  color: Homepage.backingColor)),
+                                  color: Homepage.colourScheme.backingColour)),
                           const SizedBox(height: 20),
                           Container(
                               decoration: BoxDecoration(
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(5)),
                                 color: (GROUPLIST.isNotEmpty)
-                                    ? Homepage.backingColor
+                                    ? Homepage.colourScheme.backingColour
                                     : const Color.fromARGB(247, 56, 53, 52),
                               ),
                               height: 45,
@@ -2642,7 +2616,7 @@ class EditCharacter extends State<EditACharacter> {
                                         : " No groups available ",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      color: Homepage.textColor,
+                                      color: Homepage.colourScheme.textColour,
                                       decoration: TextDecoration.underline,
                                     )),
                                 alignment: Alignment.center,
@@ -2654,7 +2628,7 @@ class EditCharacter extends State<EditACharacter> {
                                 },
                                 value: GROUPLIST.contains(group) ? group : null,
                                 icon: Icon(Icons.arrow_drop_down,
-                                    color: Homepage.textColor),
+                                    color: Homepage.colourScheme.textColour),
                                 items: (GROUPLIST != [])
                                     ? GROUPLIST.map<DropdownMenuItem<String>>(
                                         (String value) {
@@ -2664,17 +2638,17 @@ class EditCharacter extends State<EditACharacter> {
                                               child: Text(value,
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
-                                                    color: Homepage.textColor,
+                                                    color: Homepage.colourScheme.textColour,
                                                     decoration: TextDecoration
                                                         .underline,
                                                   ))),
                                         );
                                       }).toList()
                                     : null,
-                                dropdownColor: Homepage.backingColor,
+                                dropdownColor: Homepage.colourScheme.backingColour,
                                 elevation: 2,
                                 style: TextStyle(
-                                    color: Homepage.textColor,
+                                    color: Homepage.colourScheme.textColour,
                                     fontWeight: FontWeight.w700),
                                 underline: const SizedBox(),
                               )),
@@ -2683,21 +2657,21 @@ class EditCharacter extends State<EditACharacter> {
                               style: TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.w800,
-                                  color: Homepage.backingColor)),
+                                  color: Homepage.colourScheme.backingColour)),
                           const SizedBox(height: 20),
                           SizedBox(
                             width: 300,
                             child: TextField(
                                 controller: groupEnterController,
-                                cursorColor: Homepage.textColor,
-                                style: TextStyle(color: Homepage.textColor),
+                                cursorColor: Homepage.colourScheme.textColour,
+                                style: TextStyle(color: Homepage.colourScheme.textColour),
                                 decoration: InputDecoration(
                                     hintText: "Enter a group",
                                     hintStyle: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        color: Homepage.textColor),
+                                        color: Homepage.colourScheme.textColour),
                                     filled: true,
-                                    fillColor: Homepage.backingColor,
+                                    fillColor: Homepage.colourScheme.backingColour,
                                     border: const OutlineInputBorder(
                                         borderSide: BorderSide.none,
                                         borderRadius: BorderRadius.all(
@@ -2731,7 +2705,7 @@ class EditCharacter extends State<EditACharacter> {
                                                       (element) =>
                                                           element[2] != 0)
                                                   .isEmpty))
-                                          ? Homepage.backingColor
+                                          ? Homepage.colourScheme.backingColour
                                           : const Color.fromARGB(
                                               247, 56, 53, 52),
                                   padding:
@@ -2746,7 +2720,7 @@ class EditCharacter extends State<EditACharacter> {
                                     style: TextStyle(
                                       fontSize: 32,
                                       fontWeight: FontWeight.w800,
-                                      color: Homepage.textColor,
+                                      color: Homepage.colourScheme.textColour,
                                     )),
                                 onPressed: () {
                                   if (numberOfRemainingFeatOrASIs == 0 &&
@@ -2898,7 +2872,7 @@ class EditCharacter extends State<EditACharacter> {
                           style: TextStyle(
                               fontSize: 32,
                               fontWeight: FontWeight.w800,
-                              color: Homepage.backingColor)),
+                              color: Homepage.colourScheme.backingColour)),
                       //ASI+feats
                       const SizedBox(height: 20),
                       (numberOfRemainingFeatOrASIs == 0)

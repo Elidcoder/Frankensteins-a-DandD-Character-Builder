@@ -3,9 +3,9 @@
 import "package:flutter/material.dart" show Color;
 
 class ColourScheme {
-  final Color textColour;
-  final Color backingColour;
-  final Color backgroundColour;
+  Color textColour;
+  Color backingColour;
+  Color backgroundColour;
 
   ColourScheme({required this.textColour, required this.backingColour, required this.backgroundColour});
 

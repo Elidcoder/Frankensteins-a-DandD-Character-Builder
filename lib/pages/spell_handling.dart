@@ -35,7 +35,7 @@ class SpellSelectionsState extends State<SpellSelections> {
           /* Number of choices remaining */
           Text(
             "${thisDescription[2]} remaining ${thisDescription[0]} spell choices",
-            style: TextStyle(color: Homepage.backingColor, fontSize: 22, fontWeight: FontWeight.w700)
+            style: TextStyle(color: Homepage.colourScheme.backingColour, fontSize: 22, fontWeight: FontWeight.w700)
           ),
           
           /* List of spells */

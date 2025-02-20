@@ -33,9 +33,9 @@ final ValueNotifier<int> themeNotifier = ValueNotifier<int>(0);
 final GlobalKey<MainHomepageState> homepageKey = GlobalKey<MainHomepageState>();
 
 class Homepage extends StatefulWidget {
-  static Color textColor = THEMELIST.isEmpty ? Colors.white : THEMELIST.last.textColour;
-  static Color backingColor = THEMELIST.isEmpty ? Colors.blue : THEMELIST.last.backingColour;
-  static Color backgroundColor = THEMELIST.isEmpty ? Colors.white : THEMELIST.last.backgroundColour;
+  static ColourScheme colourScheme = THEMELIST.isEmpty 
+    ? ColourScheme(textColour: Colors.white, backingColour: Colors.blue, backgroundColour: Colors.white) 
+    : THEMELIST.last;
 
   const Homepage({super.key});
   @override
@@ -43,12 +43,8 @@ class Homepage extends StatefulWidget {
 }
 
 class MainHomepageState extends State<Homepage> {
-  Color currentTextColor = Homepage.textColor;
-  Color currentBackingColor = Homepage.backingColor;
-  Color currentBackgroundColor = Homepage.backgroundColor;
-
+  ColourScheme currentScheme = Homepage.colourScheme;
   static const String appTitle = "Frankenstein's - a D&D 5e character builder";
-
   late Future<void> globalsLoaded;
 
   @override
@@ -74,22 +70,18 @@ class MainHomepageState extends State<Homepage> {
 
           /* Load up the previously used colour scheme. */
           if (THEMELIST.isNotEmpty) {
-            Homepage.backgroundColor = THEMELIST.last.backgroundColour;
-            Homepage.backingColor = THEMELIST.last.backingColour;
-            Homepage.textColor = THEMELIST.last.textColour;
-            currentTextColor = THEMELIST.last.textColour;
-            currentBackingColor = THEMELIST.last.backingColour;
-            currentBackgroundColor = THEMELIST.last.backgroundColour;
+            Homepage.colourScheme = THEMELIST.last;
+            currentScheme = THEMELIST.last;
           }
 
           /* Create the bar at the top with app name, settings and logo.*/
           return MaterialApp(
-            theme: ThemeData(primaryColor: Homepage.textColor),
+            theme: ThemeData(primaryColor: Homepage.colourScheme.textColour),
             title: appTitle,
             home: Scaffold(
               appBar: AppBar(
-                foregroundColor: Homepage.textColor,
-                backgroundColor: Homepage.backingColor,
+                foregroundColor: Homepage.colourScheme.textColour,
+                backgroundColor: Homepage.colourScheme.backingColour,
                 leading: IconButton(
                     icon: const Icon(Icons.image),
                     tooltip: "Put logo here",
@@ -144,27 +136,27 @@ class MainHomepageState extends State<Homepage> {
                     /* Selection of backing colour */
                     ...styledSeperatedText("Select box colours:"),
                     ColorPicker(
-                      pickerColor: currentBackingColor,
+                      pickerColor: currentScheme.backingColour,
                       onColorChanged: (color) {
-                        currentBackingColor = color;
+                        currentScheme.backingColour = color;
                       },
                     ),
 
                     /* Selection of text colour */
                     ...styledSeperatedText("Select text colour:"),
                     ColorPicker(
-                      pickerColor: currentTextColor,
+                      pickerColor: currentScheme.textColour,
                       onColorChanged: (color) {
-                        currentTextColor = color;
+                        currentScheme.textColour = color;
                       },
                     ),
 
                     /* Selection of background colour */
                     ...styledSeperatedText("Select background colour:"),
                     ColorPicker(
-                      pickerColor: currentBackgroundColor,
+                      pickerColor: currentScheme.backgroundColour,
                       onColorChanged: (color) {
-                        currentBackgroundColor = color;
+                        currentScheme.backgroundColour = color;
                       },
                     ),
 
@@ -257,9 +249,7 @@ class MainHomepageState extends State<Homepage> {
                               onPressed: () {
                                 setState(() {
                                   selectedIndex = index;
-                                  currentTextColor = THEMELIST.reversed.toList()[index].textColour;
-                                  currentBackingColor = THEMELIST.reversed.toList()[index].backingColour;
-                                  currentBackgroundColor = THEMELIST.reversed.toList()[index].backgroundColour;
+                                  currentScheme = THEMELIST.reversed.toList()[index];
                                 });
                               },
                             ));
@@ -273,15 +263,7 @@ class MainHomepageState extends State<Homepage> {
                 ),
                 TextButton(
                   onPressed: () {
-                      ColourScheme currentScheme = ColourScheme(
-                        textColour: currentTextColor,
-                        backingColour: currentBackingColor,
-                        backgroundColour: currentBackgroundColor
-                      );
-                      Homepage.textColor = currentTextColor;
-                      Homepage.backingColor = currentBackingColor;
-                      Homepage.backgroundColor = currentBackgroundColor;
-                      
+                      Homepage.colourScheme = currentScheme;
                       
                       // Put current colour scheme at the top of the list
                       THEMELIST.removeWhere((theme) => currentScheme.isSameColourScheme(theme));
@@ -336,9 +318,9 @@ class MainHomepageState extends State<Homepage> {
 
 class ScreenTop extends StatelessWidget {
   final String? pagechoice;
-  static Color textColor = Homepage.textColor;
-  static Color backingColor = Homepage.backingColor;
-  static Color backgroundColor = Homepage.backgroundColor;
+  static Color textColor = Homepage.colourScheme.textColour;
+  static Color backingColor = Homepage.colourScheme.backingColour;
+  static Color backgroundColor = Homepage.colourScheme.backgroundColour;
   const ScreenTop({super.key, this.pagechoice});
   static const String appTitle = "Frankenstein's - a D&D 5e character builder";
 
@@ -349,8 +331,8 @@ class ScreenTop extends StatelessWidget {
       builder: (context, value, child) {
         return Scaffold(
         appBar: AppBar(
-          foregroundColor: Homepage.textColor,
-          backgroundColor: Homepage.backingColor,
+          foregroundColor: Homepage.colourScheme.textColour,
+          backgroundColor: Homepage.colourScheme.backingColour,
           /* Button taking the user back to the homepage */
           leading: IconButton(
             icon: (pagechoice == "Main Menu") ? const Icon(Icons.image) : const Icon(Icons.home),
@@ -402,18 +384,18 @@ class MainMenupage extends State<MainMenu> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        foregroundColor: Homepage.textColor,
-        backgroundColor: Homepage.backingColor,
+        foregroundColor: Homepage.colourScheme.textColour,
+        backgroundColor: Homepage.colourScheme.backingColour,
         title: Text(
           textAlign: TextAlign.center,
           "Main Menu",
-          style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700, color: Homepage.textColor),
+          style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700, color: Homepage.colourScheme.textColour),
       )),
-      backgroundColor: Homepage.backgroundColor,
+      backgroundColor: Homepage.colourScheme.backgroundColour,
       floatingActionButton: FloatingActionButton(
         tooltip: "Help and guidance",
-        foregroundColor: Homepage.textColor,
-        backgroundColor: Homepage.backingColor,
+        foregroundColor: Homepage.colourScheme.textColour,
+        backgroundColor: Homepage.colourScheme.backingColour,
         onPressed: () {
           _showInfoAndHelp(context);
         },
@@ -451,7 +433,7 @@ class MainMenupage extends State<MainMenu> {
               /* Download content button */
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                  backgroundColor: Homepage.backingColor,
+                  backgroundColor: Homepage.colourScheme.backingColour,
                   padding: const EdgeInsets.fromLTRB(45, 25, 45, 25),
                   shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
                   side: const BorderSide(width: 3.3, color: Colors.black),
@@ -484,7 +466,7 @@ class MainMenupage extends State<MainMenu> {
                 },
                 child: Text(
                   "Download\n Content",
-                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: Homepage.textColor),
+                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: Homepage.colourScheme.textColour),
                 ),
               ),
               const SizedBox(width: 100),
@@ -501,7 +483,7 @@ class MainMenupage extends State<MainMenu> {
   OutlinedButton buildStyledButton(String text, String pagechoice, BuildContext context){
     return OutlinedButton(
     style: OutlinedButton.styleFrom(
-      backgroundColor: Homepage.backingColor,
+      backgroundColor: Homepage.colourScheme.backingColour,
       padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
       side: const BorderSide(width: 3.3, color: Colors.black),
@@ -515,7 +497,7 @@ class MainMenupage extends State<MainMenu> {
     child: Text(
       textAlign: TextAlign.center,
       text,
-      style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: Homepage.textColor),
+      style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: Homepage.colourScheme.textColour),
     )
   );
   }

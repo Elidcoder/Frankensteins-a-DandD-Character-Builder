@@ -20,17 +20,17 @@ class SearchForContentState extends State<SearchForContent> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        foregroundColor: Homepage.textColor,
-        backgroundColor: Homepage.backingColor,
+        foregroundColor: Homepage.colourScheme.textColour,
+        backgroundColor: Homepage.colourScheme.backingColour,
         title: Text(
           textAlign: TextAlign.center,
           "Search for content",
           style: TextStyle(
             fontSize: 45,
             fontWeight: FontWeight.w700,
-            color: Homepage.textColor),
+            color: Homepage.colourScheme.textColour),
         )),
-      backgroundColor: Homepage.backgroundColor,
+      backgroundColor: Homepage.colourScheme.backgroundColour,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -97,13 +97,13 @@ class SearchForContentState extends State<SearchForContent> {
           margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
           padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
-            color: Homepage.backingColor,
-            border: Border.all(color: Homepage.textColor, width: 1.5),
+            color: Homepage.colourScheme.backingColour,
+            border: Border.all(color: Homepage.colourScheme.textColour, width: 4),
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: Center(child:Text(
             listType,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Homepage.textColor),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Homepage.colourScheme.textColour),
           )),
         ),
       ),
@@ -129,8 +129,8 @@ class SearchForContentState extends State<SearchForContent> {
         margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-          color: Homepage.backingColor,
-          border: Border.all(color: Homepage.textColor, width: 1.5),
+          color: Homepage.colourScheme.backingColour,
+          border: Border.all(color: Homepage.colourScheme.textColour, width: 1.5),
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Row(
