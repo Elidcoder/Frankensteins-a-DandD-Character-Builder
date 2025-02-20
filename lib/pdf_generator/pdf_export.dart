@@ -1,13 +1,11 @@
 // External Imports
-import 'dart:typed_data';
-import 'package:pdf/widgets.dart';
-import 'package:pdf/pdf.dart';
+import "package:pdf/pdf.dart";
+import "package:pdf/widgets.dart";
+import "dart:typed_data" show Uint8List;
 
 // Project Import
-import '../content_classes/all_content_classes.dart';
+import "../content_classes/all_content_classes.dart";
 
-//final font = Font.ttf(await rootBundle.load("assets/fonts/your_font.ttf"));
-//1038xidk
 //ARGB => 0x(AA)(RR)(GG)(BB)
 String formatNumber(int number) {
   return (number >= 0) ? "+$number" : "$number";
@@ -15,24 +13,24 @@ String formatNumber(int number) {
 
 String formatList(List list) {
   // Initialize an empty string to store the result
-  String result = '';
+  String result = "";
 
   // Iterate through the list
   for (int i = 0; i < list.length; i++) {
     // Check if the current element is a number
     if (list[i] is num) {
       // Append the current number and string pair to the result string
-      result += '${list[i]}x${list[i + 1]}';
+      result += "${list[i]}x${list[i + 1]}";
 
       // Skip over the next element (the string)
       i++;
     } else {
       // Append just the current string to the result string
-      result += '${list[i]}';
+      result += "${list[i]}";
     }
 
     // If this is not the last element, add a comma and space separator
-    if (i != list.length - 1) result += ', ';
+    if (i != list.length - 1) result += ", ";
   }
 
   // Return the final formatted string

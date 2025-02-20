@@ -1,8 +1,9 @@
 // External Import
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 // Project Imports
-import "../main.dart";
+import "../main.dart" show InitialTop;
+import "../top_bar.dart";
 
 /* Serves as a linker page between the main page and the users choice of content to create. */
 class CustomContent extends StatelessWidget {
@@ -13,14 +14,14 @@ class CustomContent extends StatelessWidget {
       /* Page title (Create content) */
       appBar: AppBar(
         centerTitle: true,
-        foregroundColor: Homepage.colourScheme.textColour,
-        backgroundColor: Homepage.colourScheme.backingColour,
+        foregroundColor: InitialTop.colourScheme.textColour,
+        backgroundColor: InitialTop.colourScheme.backingColour,
         title: Text(
           textAlign: TextAlign.center,
-          'Create content',
-          style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700, color: Homepage.colourScheme.textColour),
+          "Create content",
+          style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.textColour),
       )),
-      backgroundColor: Homepage.colourScheme.backgroundColour,
+      backgroundColor: InitialTop.colourScheme.backgroundColour,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -32,7 +33,7 @@ class CustomContent extends StatelessWidget {
               /* Button taking the user to the create custom spells page */
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                  backgroundColor: Homepage.colourScheme.backingColour,
+                  backgroundColor: InitialTop.colourScheme.backingColour,
                   padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
                   shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
                   side: const BorderSide(width: 3, color: Colors.black),
@@ -40,13 +41,13 @@ class CustomContent extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const ScreenTop(pagechoice: "Create spells")),
+                    MaterialPageRoute(builder: (context) => const RegularTop(pagechoice: "Create spells")),
                   );
                 },
                 child: Text(
                   textAlign: TextAlign.center,
-                  'Create a\nspell',
-                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: Homepage.colourScheme.textColour),
+                  "Create a\nspell",
+                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.textColour),
                 ),
               ),
             ],

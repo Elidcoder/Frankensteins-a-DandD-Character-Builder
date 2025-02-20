@@ -1,13 +1,13 @@
 // External Imports
-import 'package:flutter/material.dart';
-import 'dart:math';
+import "package:flutter/material.dart";
+import "dart:math";
 
 // Project Imports
 import "spell_handling.dart";
 import "../main.dart";
-import '../content_classes/all_content_classes.dart';
+import "../content_classes/all_content_classes.dart";
 import "../file_manager.dart";
-import '../pdf_generator/pdf_final_display.dart';
+import "../pdf_generator/pdf_final_display.dart";
 
 /* Notifier for when settings changes colour to rebuild. */
 final ValueNotifier<int> tabRebuildNotifier = ValueNotifier<int>(0);
@@ -145,10 +145,10 @@ class MainCreateCharacter extends State<CreateACharacter>
       builder: (context, value, child) {return DefaultTabController(
       length: tabLabels.length,
       child: Scaffold(
-        backgroundColor: Homepage.colourScheme.backgroundColour,
+        backgroundColor: InitialTop.colourScheme.backgroundColour,
         appBar: AppBar(
-          foregroundColor: Homepage.colourScheme.textColour,
-          backgroundColor: Homepage.colourScheme.backingColour,
+          foregroundColor: InitialTop.colourScheme.textColour,
+          backgroundColor: InitialTop.colourScheme.backingColour,
           title: const Center(
             child: Text(
               textAlign: TextAlign.center,
@@ -158,7 +158,7 @@ class MainCreateCharacter extends State<CreateACharacter>
           ),
           bottom: TabBar(
             tabs: tabLabels.map((e) => tabLabel(e)).toList(),
-            indicatorColor: Homepage.colourScheme.textColour,
+            indicatorColor: InitialTop.colourScheme.textColour,
           ),
         ),
         body: TabBarView(children: [
@@ -264,16 +264,16 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 Container(
                                   decoration: BoxDecoration(
                                     borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                    color: Homepage.colourScheme.backingColour,
+                                    color: InitialTop.colourScheme.backingColour,
                                   ),
                                   height: 45,
                                   child: DropdownButton<String>(
                                     alignment: Alignment.center,
                                     value: characterLevel,
-                                    icon: Icon(Icons.arrow_drop_down, color: Homepage.colourScheme.textColour),
+                                    icon: Icon(Icons.arrow_drop_down, color: InitialTop.colourScheme.textColour),
                                     elevation: 16,
                                     style: TextStyle(
-                                      color: Homepage.colourScheme.textColour,
+                                      color: InitialTop.colourScheme.textColour,
                                       fontWeight: FontWeight.w800,
                                       fontSize: 20),
                                     underline: const SizedBox(),
@@ -292,12 +292,12 @@ class MainCreateCharacter extends State<CreateACharacter>
                                             child: Text(value,
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                color: Homepage.colourScheme.textColour,
+                                                color: InitialTop.colourScheme.textColour,
                                                 decoration: TextDecoration.underline,
                                               ))),
                                         );
                                       }).toList(),
-                                    dropdownColor:Homepage.colourScheme.backingColour
+                                    dropdownColor:InitialTop.colourScheme.backingColour
                                   ),
                                 ),
                             ),
@@ -588,12 +588,12 @@ class MainCreateCharacter extends State<CreateACharacter>
           DefaultTabController(
             length: 2,
             child: Scaffold(
-              backgroundColor: Homepage.colourScheme.backgroundColour,
+              backgroundColor: InitialTop.colourScheme.backgroundColour,
               floatingActionButton: FloatingActionButton(
                 tooltip: "Increase character level by 1",
-                foregroundColor: Homepage.colourScheme.textColour,
+                foregroundColor: InitialTop.colourScheme.textColour,
                 backgroundColor: (charLevel < 20)
-                    ? Homepage.colourScheme.backingColour
+                    ? InitialTop.colourScheme.backingColour
                     : unavailableColor,
                 onPressed: () {
                   if (charLevel < 20) {
@@ -605,23 +605,23 @@ class MainCreateCharacter extends State<CreateACharacter>
                 child: const Icon(Icons.exposure_plus_1),
               ),
               appBar: AppBar(
-                foregroundColor: Homepage.colourScheme.textColour,
-                backgroundColor: Homepage.colourScheme.backingColour,
+                foregroundColor: InitialTop.colourScheme.textColour,
+                backgroundColor: InitialTop.colourScheme.backingColour,
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Center(
                       child: buildStyledMediumTextBox(
                         text: "${charLevel - character.classLevels.reduce(sum)} class level(s) unselected",
-                        color: Homepage.colourScheme.textColour)
+                        color: InitialTop.colourScheme.textColour)
                       ),
                     character.classList.isNotEmpty
                       ? buildStyledSmallTextBox(
                         text: "Levels in Classes: ${CLASSLIST.asMap().entries.where((entry) => character.classLevels[entry.key] != 0).map((entry) => "${entry.value.name} - ${character.classLevels[entry.key]}").join(", ")}",
-                        color: Homepage.colourScheme.textColour)                        
+                        color: InitialTop.colourScheme.textColour)                        
                       :  buildStyledSmallTextBox(
                         text: "No levels selected in any class",
-                        color: Homepage.colourScheme.textColour),
+                        color: InitialTop.colourScheme.textColour),
                     const SizedBox(height: 3)
                   ],
                 ),
@@ -630,7 +630,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                     tabLabel("Choose your classes"),
                     tabLabel("Make your selections for each level in your class")
                   ],
-                  indicatorColor: Homepage.colourScheme.textColour,
+                  indicatorColor: InitialTop.colourScheme.textColour,
                 ),
               ),
               body: TabBarView(children: [
@@ -649,7 +649,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               width: 240,
                               height: 175,
                               decoration: BoxDecoration(
-                                color: Homepage.colourScheme.backingColour,
+                                color: InitialTop.colourScheme.backingColour,
                                 border: Border.all(
                                   color: Colors.black,
                                   width: 1.8,
@@ -663,24 +663,24 @@ class MainCreateCharacter extends State<CreateACharacter>
                                       style: TextStyle(
                                           fontSize: 30,
                                           fontWeight: FontWeight.w700,
-                                          color: Homepage.colourScheme.textColour)),
+                                          color: InitialTop.colourScheme.textColour)),
                                   buildStyledTinyTextBox(
                                     text: "Class type: ${CLASSLIST[index].classType}", 
-                                    color: Homepage.colourScheme.textColour
+                                    color: InitialTop.colourScheme.textColour
                                   ),
                                   buildStyledTinyTextBox(
                                     text: (["Martial", "Third Caster"].contains(CLASSLIST[index].classType))
                                       ? "Main ability: ${CLASSLIST[index].mainOrSpellcastingAbility}"
                                       : "Spellcasting ability: ${CLASSLIST[index].mainOrSpellcastingAbility}", 
-                                    color: Homepage.colourScheme.textColour
+                                    color: InitialTop.colourScheme.textColour
                                   ),
                                   buildStyledTinyTextBox(
                                     text: "Hit die: D${CLASSLIST[index].maxHitDiceRoll}", 
-                                    color: Homepage.colourScheme.textColour
+                                    color: InitialTop.colourScheme.textColour
                                   ),
                                   buildStyledTinyTextBox(
                                     text: "Saves: ${CLASSLIST[index].savingThrowProficiencies.join(", ")}", 
-                                    color: Homepage.colourScheme.textColour
+                                    color: InitialTop.colourScheme.textColour
                                   ),
                                   const SizedBox(height: 7),
                                   ElevatedButton(
@@ -688,7 +688,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                       backgroundColor:
                                           (charLevel <= character.classLevels.reduce(sum) || (!multiclassingPossible(CLASSLIST[index])))
                                             ? unavailableColor
-                                            : Homepage.colourScheme.backingColour,
+                                            : InitialTop.colourScheme.backingColour,
                                       shape: const RoundedRectangleBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(4))),
@@ -808,7 +808,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         }
                                       });
                                     },
-                                    child: Icon(Icons.add, color: Homepage.colourScheme.textColour, size: 35))
+                                    child: Icon(Icons.add, color: InitialTop.colourScheme.textColour, size: 35))
                                 ],
                               ));
                         }),
@@ -961,7 +961,7 @@ class MainCreateCharacter extends State<CreateACharacter>
               Text(
                 textAlign: TextAlign.center,
                 "Points remaining: $pointsRemaining",
-                style: TextStyle(fontSize: 50, fontWeight: FontWeight.w700, color: Homepage.colourScheme.backingColour),
+                style: TextStyle(fontSize: 50, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.backingColour),
               ),
               const SizedBox(height: 35),
               SingleChildScrollView(
@@ -1109,14 +1109,14 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         message: FEATLIST[index].display(),
                                         child: OutlinedButton(
                                           style: OutlinedButton.styleFrom(
-                                            backgroundColor: Homepage.colourScheme.backingColour,
+                                            backgroundColor: InitialTop.colourScheme.backingColour,
                                             padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                                             side: BorderSide(color: Colors.black, width: 2),
                                           ),
                                           onPressed: () {},
-                                          child: buildStyledSmallTextBox(text: character.featsSelected[index][0].name, color: Homepage.colourScheme.textColour)
+                                          child: buildStyledSmallTextBox(text: character.featsSelected[index][0].name, color: InitialTop.colourScheme.textColour)
                                       ));
                                     },
                                   )),
@@ -1142,7 +1142,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                   style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w700,
-                      color: Homepage.colourScheme.backingColour)),
+                      color: InitialTop.colourScheme.backingColour)),
               Row(children: [
                 Expanded(child: Column(children: [
                   (character.allSpellsSelected.isNotEmpty) 
@@ -1479,13 +1479,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                         style: TextStyle(
                           fontSize: 23,
                           fontWeight: FontWeight.w700,
-                          color: Homepage.colourScheme.backingColour)),
+                          color: InitialTop.colourScheme.backingColour)),
 
                       /* Display the characters available money */
                       const SizedBox(height: 6),
                       Text(
                         "You have ${character.currency["Platinum Pieces"]} platinum, ${character.currency["Gold Pieces"]} gold, ${character.currency["Electrum Pieces"]} electrum, ${character.currency["Silver Pieces"]} silver and ${character.currency["Copper Pieces"]} copper pieces to spend",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: Homepage.colourScheme.backingColour)
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.backingColour)
                       ),
                       
                       /* Row of buttons for Armour, Weapons & Items */
@@ -1498,7 +1498,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                           OutlinedButton(
                             style: OutlinedButton.styleFrom(
                               backgroundColor: (character.armourList.length == 4)
-                                ? Homepage.colourScheme.backingColour
+                                ? InitialTop.colourScheme.backingColour
                                 : unavailableColor),
                             onPressed: () {
                               setState(() {
@@ -1524,7 +1524,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               child: Column(
                                 children: [
                                   /* Title */
-                                  Text("Armour", style: TextStyle(color: Homepage.colourScheme.textColour,fontSize: 22)),
+                                  Text("Armour", style: TextStyle(color: InitialTop.colourScheme.textColour,fontSize: 22)),
                                   Row(
                                     children: [
 
@@ -1550,7 +1550,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                           OutlinedButton(
                             style: OutlinedButton.styleFrom(
                               backgroundColor: (character.weaponList.length == 2)
-                                ? Homepage.colourScheme.backingColour
+                                ? InitialTop.colourScheme.backingColour
                                 : unavailableColor),
                             onPressed: () {
                               setState(() {
@@ -1567,7 +1567,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               child: Column(
                                 children: [
                                   /* Title */
-                                  Text("Weapon", style: TextStyle(color: Homepage.colourScheme.textColour, fontSize: 22)),
+                                  Text("Weapon", style: TextStyle(color: InitialTop.colourScheme.textColour, fontSize: 22)),
                                   Row(
                                     children: [
 
@@ -1588,7 +1588,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                             style: OutlinedButton.styleFrom(
                               backgroundColor:
                                 (character.itemList.length == 2)
-                                  ? Homepage.colourScheme.backingColour
+                                  ? InitialTop.colourScheme.backingColour
                                   : unavailableColor),
                             onPressed: () {
                               setState(() {
@@ -1607,7 +1607,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               height: 63,
                               child: Column(
                                 children: [
-                                  Text("Items", style: TextStyle(color: Homepage.colourScheme.textColour, fontSize: 22)),
+                                  Text("Items", style: TextStyle(color: InitialTop.colourScheme.textColour, fontSize: 22)),
                                   Row(
                                     children: [
 
@@ -1629,7 +1629,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                       OutlinedButton(
                         style: OutlinedButton.styleFrom(
                           backgroundColor: (coinTypesSelected.length == 5)
-                            ? Homepage.colourScheme.backingColour
+                            ? InitialTop.colourScheme.backingColour
                             : unavailableColor),
                         onPressed: () {
                           setState(() {
@@ -1655,7 +1655,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                           child: Column(
                             children: [
                               /* Title */
-                              Text("Coin types", style: TextStyle(color: Homepage.colourScheme.textColour, fontSize: 22)),
+                              Text("Coin types", style: TextStyle(color: InitialTop.colourScheme.textColour, fontSize: 22)),
                               Row(
                                 children: [
 
@@ -1684,7 +1684,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                       Container(
                           padding: const EdgeInsets.only(top: 10),
                           decoration: BoxDecoration(
-                            color: Homepage.colourScheme.backgroundColour,
+                            color: InitialTop.colourScheme.backgroundColour,
                             border: Border.all(color: Colors.black, width: 1.6),
                             borderRadius: const BorderRadius.all(Radius.circular(5))
                           ),
@@ -1698,7 +1698,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                               alignment: WrapAlignment.center,
                               children: List.generate(filteredItems.length, (index) {
                                 return OutlinedButton(
-                                  style: OutlinedButton.styleFrom(backgroundColor: Homepage.colourScheme.backingColour),
+                                  style: OutlinedButton.styleFrom(backgroundColor: InitialTop.colourScheme.backingColour),
 
                                   /* If the character has enough money of the correct denomination than the purchase is made. */
                                   onPressed: () {
@@ -1723,7 +1723,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   /* Item name and price. */
                                   child: Text(
                                     "${filteredItems[index].name}: ${filteredItems[index].cost[0]}x${filteredItems[index].cost[1]}",
-                                    style: TextStyle(color: Homepage.colourScheme.textColour)),
+                                    style: TextStyle(color: InitialTop.colourScheme.textColour)),
                                 );
                               }),
                             )))
@@ -1739,7 +1739,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                         const SizedBox(height: 9),
                         Text(
                           "Pick your equipment from options gained:",
-                          style: TextStyle(fontSize: 23, fontWeight: FontWeight.w700, color: Homepage.colourScheme.backingColour)
+                          style: TextStyle(fontSize: 23, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.backingColour)
                         ),
                         const SizedBox(height: 6),
 
@@ -1758,7 +1758,7 @@ class MainCreateCharacter extends State<CreateACharacter>
 
                                             /* Button for the first option */
                                             ElevatedButton(
-                                              style: OutlinedButton.styleFrom(backgroundColor: Homepage.colourScheme.backingColour),
+                                              style: OutlinedButton.styleFrom(backgroundColor: InitialTop.colourScheme.backingColour),
                                               onPressed: () {
                                                 setState(() {
                                                   character.equipmentSelectedFromChoices[i] = [character.equipmentSelectedFromChoices[i][0]];
@@ -1766,13 +1766,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               },
                                               child: Text(
                                                 produceEquipmentOptionDescription(character.equipmentSelectedFromChoices[i][0]),
-                                                style: TextStyle(color: Homepage.colourScheme.textColour)
+                                                style: TextStyle(color: InitialTop.colourScheme.textColour)
                                               ),
                                             ),
 
                                             /* Button for the second option */
                                             ElevatedButton(
-                                              style: OutlinedButton.styleFrom(backgroundColor: Homepage.colourScheme.backingColour),
+                                              style: OutlinedButton.styleFrom(backgroundColor: InitialTop.colourScheme.backingColour),
                                               onPressed: () {
                                                 setState(() {
                                                   character.equipmentSelectedFromChoices[i] = [character.equipmentSelectedFromChoices[i][1]];
@@ -1780,7 +1780,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                               },
                                               child: Text(
                                                 produceEquipmentOptionDescription(character.equipmentSelectedFromChoices[i][1]),
-                                                style: TextStyle(color: Homepage.colourScheme.textColour)
+                                                style: TextStyle(color: InitialTop.colourScheme.textColour)
                                               ),
                                             )
                                           ],
@@ -1788,7 +1788,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                       )
                                     : Text(
                                         produceEquipmentOptionDescription(character.equipmentSelectedFromChoices[i][0]),
-                                        style: TextStyle(color: Homepage.colourScheme.backingColour, fontWeight: FontWeight.w700)
+                                        style: TextStyle(color: InitialTop.colourScheme.backingColour, fontWeight: FontWeight.w700)
                                       ),
                                 ],
                               ),
@@ -1935,12 +1935,12 @@ class MainCreateCharacter extends State<CreateACharacter>
           
           // Finishing Up Tab
           Scaffold(
-              backgroundColor: Homepage.colourScheme.backgroundColour,
+              backgroundColor: InitialTop.colourScheme.backgroundColour,
               // Floating pdf generator button
               floatingActionButton: FloatingActionButton(
                 tooltip: "Generate a PDF",
-                foregroundColor: Homepage.colourScheme.textColour,
-                backgroundColor: Homepage.colourScheme.backingColour,
+                foregroundColor: InitialTop.colourScheme.textColour,
+                backgroundColor: InitialTop.colourScheme.backingColour,
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -1970,7 +1970,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(5)),
                                 color: (GROUPLIST.isNotEmpty)
-                                    ? Homepage.colourScheme.backingColour
+                                    ? InitialTop.colourScheme.backingColour
                                     : const Color.fromARGB(247, 56, 53, 52),
                               ),
                               height: 45,
@@ -2003,14 +2003,14 @@ class MainCreateCharacter extends State<CreateACharacter>
                                 message: canCreateCharacter? "This button will save your character putting it into the Json and then send you back to the main menu.": "You must complete the required tabs before saving your character",
                                 child: ElevatedButton(
                                   style: OutlinedButton.styleFrom(
-                                    backgroundColor: canCreateCharacter ? Homepage.colourScheme.backingColour : unavailableColor,
+                                    backgroundColor: canCreateCharacter ? InitialTop.colourScheme.backingColour : unavailableColor,
                                     padding: const EdgeInsets.fromLTRB(45, 20, 45, 20),
                                     shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10))),
                                     side: const BorderSide(width: 3, color: Colors.black),
                                   ),
-                                  child: buildStyledHugeTextBox(text: "Save Character", color: Homepage.colourScheme.textColour),
+                                  child: buildStyledHugeTextBox(text: "Save Character", color: InitialTop.colourScheme.textColour),
                                   onPressed: () {
                                     if (canCreateCharacter) {
                                       setState(() {
@@ -2025,7 +2025,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => Homepage()),
+                                              builder: (context) => InitialTop()),
                                         );
                                         showCongratulationsDialog(context);
                                       });
@@ -2098,7 +2098,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   }
 
   Tab tabLabel(String label) {
-    return Tab(child: Text(label, style: TextStyle(color: Homepage.colourScheme.textColour)));
+    return Tab(child: Text(label, style: TextStyle(color: InitialTop.colourScheme.textColour)));
   }
 
   /* Used in: Basics */
@@ -2107,7 +2107,7 @@ class MainCreateCharacter extends State<CreateACharacter>
       width: 330,
       height: 65,
       decoration: BoxDecoration(
-        color: Homepage.colourScheme.backingColour,
+        color: InitialTop.colourScheme.backingColour,
         border: Border.all(color: Colors.black, width: 2.1),
         borderRadius: const BorderRadius.all(Radius.circular(5)),
       ),
@@ -2118,7 +2118,7 @@ class MainCreateCharacter extends State<CreateACharacter>
           style: TextStyle(
             fontSize: 35,
             fontWeight: FontWeight.w700,
-            color: Homepage.colourScheme.textColour,
+            color: InitialTop.colourScheme.textColour,
           ),
         ),
       ),
@@ -2132,11 +2132,11 @@ class MainCreateCharacter extends State<CreateACharacter>
     required ValueChanged<bool?> onChanged,
   }) {
     return CheckboxListTile(
-      title: Text(title, style: TextStyle(color: Homepage.colourScheme.backingColour)),
+      title: Text(title, style: TextStyle(color: InitialTop.colourScheme.backingColour)),
       value: value,
       onChanged: onChanged,
-      activeColor: Homepage.colourScheme.backingColour,
-      secondary: Icon(Icons.insert_photo, color: Homepage.colourScheme.backingColour),
+      activeColor: InitialTop.colourScheme.backingColour,
+      secondary: Icon(Icons.insert_photo, color: InitialTop.colourScheme.backingColour),
     );
   }
 
@@ -2148,11 +2148,11 @@ class MainCreateCharacter extends State<CreateACharacter>
     required ValueChanged<dynamic> onChanged,
   }) {
     return RadioListTile(
-      activeColor: Homepage.colourScheme.backingColour,
+      activeColor: InitialTop.colourScheme.backingColour,
       title: Text(title,
           style: TextStyle(
               color:
-                  Homepage.colourScheme.backingColour)),
+                  InitialTop.colourScheme.backingColour)),
       value: value,
       groupValue: groupValue,
       onChanged: onChanged,
@@ -2205,8 +2205,8 @@ class MainCreateCharacter extends State<CreateACharacter>
       width: width,
       height: 50,
       child: buildStyledTextField(
-        backingColor: Homepage.colourScheme.backingColour,
-        textColor: Homepage.colourScheme.textColour, 
+        backingColor: InitialTop.colourScheme.backingColour,
+        textColor: InitialTop.colourScheme.textColour, 
         textController: textController, 
         hintText: hintText, 
         onChanged: onChanged, 
@@ -2228,8 +2228,8 @@ class MainCreateCharacter extends State<CreateACharacter>
         hintText: hintText, 
         textController: textController, 
         onChanged: onChanged,
-        textColor: Homepage.colourScheme.backingColour, 
-        backingColor: Homepage.colourScheme.backingColour,
+        textColor: InitialTop.colourScheme.backingColour, 
+        backingColor: InitialTop.colourScheme.backingColour,
         lineMax: 100,
         lineMin: 4
       )
@@ -2244,7 +2244,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   }) {
     return Text(text,
       style: TextStyle(
-        color: color ?? Homepage.colourScheme.backingColour,
+        color: color ?? InitialTop.colourScheme.backingColour,
         fontSize: size,
         fontWeight: FontWeight.w700));
   }
@@ -2298,21 +2298,21 @@ class MainCreateCharacter extends State<CreateACharacter>
   }) {
     return DropdownButton<String>(
       alignment: Alignment.center,
-      dropdownColor: Homepage.colourScheme.backingColour,
+      dropdownColor: InitialTop.colourScheme.backingColour,
       hint: Center(
         child: Text(
           hintText,
           textAlign: TextAlign.center,
             style: TextStyle(
-              color: Homepage.colourScheme.textColour,
+              color: InitialTop.colourScheme.textColour,
               decoration: TextDecoration.underline,
             ),
       )),
       value: value,
       underline: SizedBox(),
-      icon: Icon(Icons.arrow_drop_down, color: Homepage.colourScheme.textColour,),
+      icon: Icon(Icons.arrow_drop_down, color: InitialTop.colourScheme.textColour,),
       style: TextStyle(
-        color: Homepage.colourScheme.textColour,
+        color: InitialTop.colourScheme.textColour,
         fontWeight: FontWeight.w700,
       ),
       onChanged: onChanged,
@@ -2324,7 +2324,7 @@ class MainCreateCharacter extends State<CreateACharacter>
               itemValue,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Homepage.colourScheme.textColour,
+                color: InitialTop.colourScheme.textColour,
                 decoration: TextDecoration.underline,
               ),
             ),
@@ -2345,7 +2345,7 @@ class MainCreateCharacter extends State<CreateACharacter>
     return Container(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(5)),
-        color: Homepage.colourScheme.backingColour,
+        color: InitialTop.colourScheme.backingColour,
       ),
       height: 45,
       child: buildBaseDropdownButton(value: initialValue, items: itemNames, onChanged: onChanged)
@@ -2368,7 +2368,7 @@ class MainCreateCharacter extends State<CreateACharacter>
         Container(
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(5)),
-            color: Homepage.colourScheme.backingColour,
+            color: InitialTop.colourScheme.backingColour,
           ),
           height: 45,
           child: buildBaseDropdownButton(value: selectedValue, items: items, onChanged: onChanged),
@@ -2384,14 +2384,14 @@ class MainCreateCharacter extends State<CreateACharacter>
   required List<String> itemLabels,
   }) {
     return ToggleButtons(
-      selectedColor: Homepage.colourScheme.textColour,
-      color: Homepage.colourScheme.backingColour,
-      fillColor: Homepage.colourScheme.backingColour,
+      selectedColor: InitialTop.colourScheme.textColour,
+      color: InitialTop.colourScheme.backingColour,
+      fillColor: InitialTop.colourScheme.backingColour,
       textStyle: const TextStyle(
       fontSize: 22,
       fontWeight: FontWeight.w700,
     ),
-      borderColor: Homepage.colourScheme.backingColour,
+      borderColor: InitialTop.colourScheme.backingColour,
       borderRadius: const BorderRadius.all(Radius.circular(20)),
       borderWidth: 1.5,
       onPressed: (int index) {
@@ -2419,7 +2419,7 @@ class MainCreateCharacter extends State<CreateACharacter>
       child: ListView.separated(
         itemCount: numbItems,
         separatorBuilder: (BuildContext context, int index) =>
-          Divider(height: 10.0, color: Homepage.colourScheme.backgroundColour),
+          Divider(height: 10.0, color: InitialTop.colourScheme.backgroundColour),
         itemBuilder: (BuildContext context, int choiceNumber) {
           return Align(
             alignment: Alignment.center,
@@ -2475,7 +2475,7 @@ class MainCreateCharacter extends State<CreateACharacter>
           height: 128.2,
           width: 135.2,
           decoration: BoxDecoration(
-            color: Homepage.colourScheme.backingColour,
+            color: InitialTop.colourScheme.backingColour,
             border: Border.all(color: Colors.black, width: 1.6),
             borderRadius: const BorderRadius.all(Radius.circular(5)),
           ),
@@ -2488,7 +2488,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                 style: TextStyle(
                     fontSize: 65,
                     fontWeight: FontWeight.w700,
-                    color: Homepage.colourScheme.textColour),
+                    color: InitialTop.colourScheme.textColour),
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -2501,7 +2501,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                   if (canRemove)
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                        backgroundColor: Homepage.colourScheme.backingColour,
+                        backgroundColor: InitialTop.colourScheme.backingColour,
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(4)),
                         ),
@@ -2525,7 +2525,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                         backgroundColor:
                             (abilityScoreCost(score.value) > pointsRemaining)
                                 ? unavailableColor 
-                                : Homepage.colourScheme.backingColour,
+                                : InitialTop.colourScheme.backingColour,
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(4)),
                         ),
@@ -2569,7 +2569,7 @@ class MainCreateCharacter extends State<CreateACharacter>
             style: TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.w700,
-              color: Homepage.colourScheme.backingColour,
+              color: InitialTop.colourScheme.backingColour,
             ),
           ),
         ]),
@@ -2581,7 +2581,7 @@ class MainCreateCharacter extends State<CreateACharacter>
           width: 90,
           height: 80,
           decoration: BoxDecoration(
-            color: Homepage.colourScheme.backingColour,
+            color: InitialTop.colourScheme.backingColour,
             border: Border.all(color: Colors.black, width: 1.6),
             borderRadius: const BorderRadius.all(Radius.circular(5)),
           ),
@@ -2591,7 +2591,7 @@ class MainCreateCharacter extends State<CreateACharacter>
             style: TextStyle(
               fontSize: 50,
               fontWeight: FontWeight.w700,
-              color: Homepage.colourScheme.textColour,
+              color: InitialTop.colourScheme.textColour,
             ),
           ),
         ),
@@ -2621,20 +2621,20 @@ class MainCreateCharacter extends State<CreateACharacter>
       height: 136,
       width: 160,
       decoration: BoxDecoration(
-        color: Homepage.colourScheme.backingColour,
+        color: InitialTop.colourScheme.backingColour,
         border: Border.all(color: Colors.black, width: 1.6),
         borderRadius: const BorderRadius.all(
           Radius.circular(5)
         ),
       ),
       child: Column(children: [
-        buildStyledMediumTextBox(text: score.name, color: Homepage.colourScheme.textColour),
-        buildStyledTextBox(text: "+${character.featsASIScoreIncreases[index]}", size: 45, color: Homepage.colourScheme.textColour),
+        buildStyledMediumTextBox(text: score.name, color: InitialTop.colourScheme.textColour),
+        buildStyledTextBox(text: "+${character.featsASIScoreIncreases[index]}", size: 45, color: InitialTop.colourScheme.textColour),
         OutlinedButton(
             style: OutlinedButton.styleFrom(
               backgroundColor: ((!remainingAsi && numberOfRemainingFeatOrASIs == 0) || !(scoreBelowMax))
                 ? unavailableColor
-                : Homepage.colourScheme.backingColour,
+                : InitialTop.colourScheme.backingColour,
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(4))
                 ),
@@ -2681,13 +2681,13 @@ class MainCreateCharacter extends State<CreateACharacter>
     assert(featFilters.containsKey(key), "Key must be a valid key in featFilters");
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
-        backgroundColor: (featFilters[key]!) ? Homepage.colourScheme.backingColour : unavailableColor),
+        backgroundColor: (featFilters[key]!) ? InitialTop.colourScheme.backingColour : unavailableColor),
       onPressed: () {
         setState(() {
           featFilters[key] = !featFilters[key]!;
         });
       },
-      child: buildStyledTinyTextBox(text: key, color: Homepage.colourScheme.textColour)
+      child: buildStyledTinyTextBox(text: key, color: InitialTop.colourScheme.textColour)
     );
   }
 
@@ -2720,7 +2720,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   ElevatedButton makeStyledFilterToggle(String label, List<String> filters) {
     return ElevatedButton(
       style: OutlinedButton.styleFrom(
-        backgroundColor: (filters.contains(label)) ? Homepage.colourScheme.backingColour : unavailableColor
+        backgroundColor: (filters.contains(label)) ? InitialTop.colourScheme.backingColour : unavailableColor
       ),
       onPressed: () {
         setState(() {
@@ -2731,7 +2731,7 @@ class MainCreateCharacter extends State<CreateACharacter>
           }
         });
       },
-      child: Text(label, style: TextStyle(color: Homepage.colourScheme.textColour, fontSize: 15))
+      child: Text(label, style: TextStyle(color: InitialTop.colourScheme.textColour, fontSize: 15))
     );
   }
 

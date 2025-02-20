@@ -1,13 +1,12 @@
 // External Imports
 import "dart:io" show File;
 import "dart:convert" show jsonDecode, jsonEncode;
-import "package:flutter/material.dart" show debugPrint; 
 import "package:flutter/services.dart" show rootBundle;
 import "package:path_provider/path_provider.dart" show getApplicationDocumentsDirectory;
 
 // Project Import
-import "content_classes/all_content_classes.dart";
 import "colour_scheme.dart";
+import "content_classes/all_content_classes.dart";
 
 List<Character> CHARACTERLIST = [];
 List<String> GROUPLIST = [];
@@ -30,7 +29,6 @@ Future<bool> initialiseGlobals() async {
 
   /* Update faluire */
   } catch (e) {
-    debugPrint("Error in initialiseGlobals: $e");
     return false;
   }
 }
@@ -109,6 +107,6 @@ Future<void> saveChanges() async {
 
   /* Error in saving changes */
   } catch (e) {
-    debugPrint("Error in saveGlobals: $e");
+    // do nothing
   }
 }

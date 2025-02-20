@@ -1,5 +1,5 @@
-import 'subrace.dart';
-import 'proficiency.dart';
+import "subrace.dart";
+import "proficiency.dart";
 import "content.dart";
 
 class Race implements Content {
@@ -7,6 +7,7 @@ class Race implements Content {
   final String name;
   @override
   final String sourceBook;
+
   final List<int> raceScoreIncrease;
   final List<String> languages;
   final List<String>? toolProficiencies;
@@ -18,23 +19,25 @@ class Race implements Content {
   final int walkingSpeed;
   final int mystery1S;
   final int mystery2S;
+
   Map<String, dynamic> toJson() => {
-        "Name": name,
-        "AbilityScoreMap": raceScoreIncrease,
-        "Languages": languages,
-        "Darkvision": darkVision,
-        "SourceBook": sourceBook,
-        "Subraces": subRaces?.map((subrace) => subrace.toJson()).toList(),
-        "Resistances": resistances,
-        "Abilities": abilities,
-        "GainedProficiencies": proficienciesGained
-            ?.map((prof) => prof.proficiencyTree.last)
-            .toList(),
-        "ToolProficiencies": toolProficiencies,
-        "WalkingSpeed": walkingSpeed,
-        "Mystery1S": mystery1S,
-        "Mystery2S": mystery2S,
-      };
+    "Name": name,
+    "AbilityScoreMap": raceScoreIncrease,
+    "Languages": languages,
+    "Darkvision": darkVision,
+    "SourceBook": sourceBook,
+    "Subraces": subRaces?.map((subrace) => subrace.toJson()).toList(),
+    "Resistances": resistances,
+    "Abilities": abilities,
+    "GainedProficiencies": proficienciesGained
+        ?.map((prof) => prof.proficiencyTree.last)
+        .toList(),
+    "ToolProficiencies": toolProficiencies,
+    "WalkingSpeed": walkingSpeed,
+    "Mystery1S": mystery1S,
+    "Mystery2S": mystery2S,
+  };
+
   factory Race.fromJson(Map<String, dynamic> data) {
     final name = data["Name"] as String;
     final raceScoreIncrease = data["AbilityScoreMap"].cast<int>() as List<int>;

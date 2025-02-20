@@ -1,49 +1,40 @@
 // External imports
+import "dart:io" show File;
 import "package:flutter/material.dart";
-import "file_manager.dart";
-import "dart:io";
-import "package:file_picker/file_picker.dart";
-import "package:flutter_colorpicker/flutter_colorpicker.dart";
+import "package:file_picker/file_picker.dart" show FilePicker, FileType;
+import "package:flutter_colorpicker/flutter_colorpicker.dart" show ColorPicker;
 
 // Project imports
 import "colour_scheme.dart";
-import "pages/all_home_subpages.dart";
-import "pages/custom_content_pages/all_custom_content_pages.dart";
+import "file_manager.dart";
+import "top_bar.dart" show RegularTop;
 
-// ignore: non_constant_identifier_names
-final Map<String, Widget Function()> PAGELINKER = {
-  "Main Menu": () => MainMenu(),
-  "Create a Character":() => CreateACharacter(),
-  "Search for Content":() => SearchForContent(),
-  "My Characters":() => MyCharacters(),
-  "Custom Content": () => CustomContent(),
-  "Create spells": () => MakeASpell(),
-};
+
 
 void main() {
   runApp(MaterialApp(
-    home: Homepage(key: homepageKey)
+    home: InitialTop(key: InitialTopKey)
   ));
 }
 
 /* Notifier for when settings changes colour to rebuild. */
 final ValueNotifier<int> themeNotifier = ValueNotifier<int>(0);
 
-/* Create a GlobalKey for the state of Homepage. */
-final GlobalKey<MainHomepageState> homepageKey = GlobalKey<MainHomepageState>();
+/* Create a GlobalKey for the state of InitialTop. */
+final GlobalKey<InitialTopState> InitialTopKey = GlobalKey<InitialTopState>();
 
-class Homepage extends StatefulWidget {
+class InitialTop extends StatefulWidget {
   static ColourScheme colourScheme = THEMELIST.isEmpty 
     ? ColourScheme(textColour: Colors.white, backingColour: Colors.blue, backgroundColour: Colors.white) 
     : THEMELIST.last;
 
-  const Homepage({super.key});
+  const InitialTop({super.key});
   @override
-  MainHomepageState createState() => MainHomepageState();
+  InitialTopState createState() => InitialTopState();
 }
 
-class MainHomepageState extends State<Homepage> {
-  ColourScheme currentScheme = Homepage.colourScheme;
+class InitialTopState extends State<InitialTop> {
+  ColourScheme currentScheme = InitialTop.colourScheme;
   static const String appTitle = "Frankenstein's - a D&D 5e character builder";
   late Future<void> globalsLoaded;
 
@@ -70,18 +61,18 @@ class MainHomepageState extends State<Homepage> {
 
           /* Load up the previously used colour scheme. */
           if (THEMELIST.isNotEmpty) {
-            Homepage.colourScheme = THEMELIST.last;
+            InitialTop.colourScheme = THEMELIST.last;
             currentScheme = THEMELIST.last;
           }
 
           /* Create the bar at the top with app name, settings and logo.*/
           return MaterialApp(
-            theme: ThemeData(primaryColor: Homepage.colourScheme.textColour),
+            theme: ThemeData(primaryColor: InitialTop.colourScheme.textColour),
             title: appTitle,
             home: Scaffold(
               appBar: AppBar(
-                foregroundColor: Homepage.colourScheme.textColour,
-                backgroundColor: Homepage.colourScheme.backingColour,
+                foregroundColor: InitialTop.colourScheme.textColour,
+                backgroundColor: InitialTop.colourScheme.backingColour,
                 leading: IconButton(
                     icon: const Icon(Icons.image),
                     tooltip: "Put logo here",
@@ -263,7 +254,7 @@ class MainHomepageState extends State<Homepage> {
                 ),
                 TextButton(
                   onPressed: () {
-                      Homepage.colourScheme = currentScheme;
+                      InitialTop.colourScheme = currentScheme;
                       
                       // Put current colour scheme at the top of the list
                       THEMELIST.removeWhere((theme) => currentScheme.isSameColourScheme(theme));
@@ -316,86 +307,32 @@ class MainHomepageState extends State<Homepage> {
   ];}
 }
 
-class ScreenTop extends StatelessWidget {
-  final String? pagechoice;
-  static Color textColor = Homepage.colourScheme.textColour;
-  static Color backingColor = Homepage.colourScheme.backingColour;
-  static Color backgroundColor = Homepage.colourScheme.backgroundColour;
-  const ScreenTop({super.key, this.pagechoice});
-  static const String appTitle = "Frankenstein's - a D&D 5e character builder";
-
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder<int>(
-      valueListenable: themeNotifier,
-      builder: (context, value, child) {
-        return Scaffold(
-        appBar: AppBar(
-          foregroundColor: Homepage.colourScheme.textColour,
-          backgroundColor: Homepage.colourScheme.backingColour,
-          /* Button taking the user back to the homepage */
-          leading: IconButton(
-            icon: (pagechoice == "Main Menu") ? const Icon(Icons.image) : const Icon(Icons.home),
-            tooltip: (pagechoice == "Main Menu") ? "Put logo here" : "Return to the main menu",
-            onPressed: () {
-              if (pagechoice != "Main Menu") {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ScreenTop(pagechoice: "Main Menu"))
-                );
-              }
-            }),
-          title: const Center(child: Text(appTitle)),
-          actions: <Widget>[
-            /* Presents a back button only if one isn't generated. */
-            if (pagechoice == "Main Menu") 
-              IconButton(
-                icon: const Icon(Icons.arrow_back),
-                tooltip: "Return to the previous page",
-                onPressed: () {Navigator.pop(context);}
-            ),
-
-            /* Allow users to select a colour scheme */
-            IconButton(
-                icon: const Icon(Icons.settings),
-                tooltip: "Settings",
-                onPressed: () {
-                  homepageKey.currentState?.showColorPicker(context);
-                }),
-          ],
-        ),
-        
-        /* Take the user to the page they chose. */
-        body: PAGELINKER[pagechoice]?.call(),
-      );});
-  }
-}
-
+/* Displays the 5 buttons that take you to other pages as well as the floating button
+ * Note: This should not be moved into "initialtop" as it is used elsewhere */
 class MainMenu extends StatefulWidget {
   const MainMenu({super.key});
 
   @override
-  MainMenupage createState() => MainMenupage();
+  MainMenuState createState() => MainMenuState();
 }
-
-class MainMenupage extends State<MainMenu> {
+class MainMenuState extends State<MainMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        foregroundColor: Homepage.colourScheme.textColour,
-        backgroundColor: Homepage.colourScheme.backingColour,
+        foregroundColor: InitialTop.colourScheme.textColour,
+        backgroundColor: InitialTop.colourScheme.backingColour,
         title: Text(
           textAlign: TextAlign.center,
           "Main Menu",
-          style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700, color: Homepage.colourScheme.textColour),
+          style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.textColour),
       )),
-      backgroundColor: Homepage.colourScheme.backgroundColour,
+      backgroundColor: InitialTop.colourScheme.backgroundColour,
       floatingActionButton: FloatingActionButton(
         tooltip: "Help and guidance",
-        foregroundColor: Homepage.colourScheme.textColour,
-        backgroundColor: Homepage.colourScheme.backingColour,
+        foregroundColor: InitialTop.colourScheme.textColour,
+        backgroundColor: InitialTop.colourScheme.backingColour,
         onPressed: () {
           _showInfoAndHelp(context);
         },
@@ -433,7 +370,7 @@ class MainMenupage extends State<MainMenu> {
               /* Download content button */
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                  backgroundColor: Homepage.colourScheme.backingColour,
+                  backgroundColor: InitialTop.colourScheme.backingColour,
                   padding: const EdgeInsets.fromLTRB(45, 25, 45, 25),
                   shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
                   side: const BorderSide(width: 3.3, color: Colors.black),
@@ -456,7 +393,6 @@ class MainMenupage extends State<MainMenu> {
                       await saveChanges();
                     }
                     catch (e) {
-                      debugPrint("Error downloading content: $e");
                       if (mounted) {
                         // ignore: use_build_context_synchronously (mounted check ensures correctness)
                         showErrorDialog(context);
@@ -466,7 +402,7 @@ class MainMenupage extends State<MainMenu> {
                 },
                 child: Text(
                   "Download\n Content",
-                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: Homepage.colourScheme.textColour),
+                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.textColour),
                 ),
               ),
               const SizedBox(width: 100),
@@ -483,7 +419,7 @@ class MainMenupage extends State<MainMenu> {
   OutlinedButton buildStyledButton(String text, String pagechoice, BuildContext context){
     return OutlinedButton(
     style: OutlinedButton.styleFrom(
-      backgroundColor: Homepage.colourScheme.backingColour,
+      backgroundColor: InitialTop.colourScheme.backingColour,
       padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
       side: const BorderSide(width: 3.3, color: Colors.black),
@@ -491,13 +427,13 @@ class MainMenupage extends State<MainMenu> {
     onPressed: () {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ScreenTop(pagechoice: pagechoice)),
+        MaterialPageRoute(builder: (context) => RegularTop(pagechoice: pagechoice)),
       );
     },
     child: Text(
       textAlign: TextAlign.center,
       text,
-      style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: Homepage.colourScheme.textColour),
+      style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.textColour),
     )
   );
   }

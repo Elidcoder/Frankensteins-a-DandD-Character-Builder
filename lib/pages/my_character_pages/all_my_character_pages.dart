@@ -1,1 +1,1 @@
-export 'edit_character.dart';
+export "edit_character.dart";

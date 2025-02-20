@@ -1,10 +1,10 @@
 // External Imports
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 // Project Imports
-import 'create_a_character.dart';
-import '../content_classes/all_content_classes.dart';
-import '../../main.dart';
+import "create_a_character.dart";
+import "../content_classes/all_content_classes.dart";
+import "../../main.dart" show InitialTop;
 
 class SpellSelections extends StatefulWidget {
   final List<dynamic> thisDescription;
@@ -35,7 +35,7 @@ class SpellSelectionsState extends State<SpellSelections> {
           /* Number of choices remaining */
           Text(
             "${thisDescription[2]} remaining ${thisDescription[0]} spell choices",
-            style: TextStyle(color: Homepage.colourScheme.backingColour, fontSize: 22, fontWeight: FontWeight.w700)
+            style: TextStyle(color: InitialTop.colourScheme.backingColour, fontSize: 22, fontWeight: FontWeight.w700)
           ),
           
           /* List of spells */

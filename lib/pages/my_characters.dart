@@ -3,9 +3,10 @@ import "package:flutter/material.dart";
 
 // Project Imports
 import "my_character_pages/all_my_character_pages.dart";
-import '../content_classes/all_content_classes.dart';
+import "../content_classes/all_content_classes.dart";
 import "../pdf_generator/pdf_final_display.dart";
-import "../main.dart";
+import "../main.dart" show InitialTop;
+import "../top_bar.dart";
 import "../file_manager.dart";
 
 class MyCharacters extends StatefulWidget {
@@ -24,17 +25,17 @@ class MainMyCharacters extends State<MyCharacters> {
       (element) => element.characterDescription.name.toLowerCase().contains(searchTerm.toLowerCase())
     ).toList();
     return Scaffold(
-      backgroundColor: Homepage.colourScheme.backgroundColour,
+      backgroundColor: InitialTop.colourScheme.backgroundColour,
       floatingActionButton: FloatingActionButton(
         tooltip: "Create a character",
-        foregroundColor: Homepage.colourScheme.textColour,
-        backgroundColor: Homepage.colourScheme.backingColour,
+        foregroundColor: InitialTop.colourScheme.textColour,
+        backgroundColor: InitialTop.colourScheme.backingColour,
         onPressed: () {
           setState(() {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const ScreenTop(pagechoice: "Create a Character")
+                builder: (context) => const RegularTop(pagechoice: "Create a Character")
               ),
             );
           });
@@ -42,8 +43,8 @@ class MainMyCharacters extends State<MyCharacters> {
         child: const Icon(Icons.person_add),
       ),
       appBar: AppBar(
-        foregroundColor: Homepage.colourScheme.textColour,
-        backgroundColor: Homepage.colourScheme.backingColour,
+        foregroundColor: InitialTop.colourScheme.textColour,
+        backgroundColor: InitialTop.colourScheme.backingColour,
         title: const Center(
           child: Text(
             textAlign: TextAlign.center,
@@ -77,7 +78,7 @@ class MainMyCharacters extends State<MyCharacters> {
         /* Display users characters with action buttons. */
         Expanded(
           child: (CHARACTERLIST.isEmpty)
-            ? Center(child: Text("You have no created characters to view", style: TextStyle(color: Homepage.colourScheme.backingColour, fontSize: 25, fontWeight: FontWeight.w700)))
+            ? Center(child: Text("You have no created characters to view", style: TextStyle(color: InitialTop.colourScheme.backingColour, fontSize: 25, fontWeight: FontWeight.w700)))
           : SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Wrap(
@@ -89,8 +90,8 @@ class MainMyCharacters extends State<MyCharacters> {
                     width: 190,
                     height: 247,
                     decoration: BoxDecoration(
-                      color: Homepage.colourScheme.backingColour,
-                      border: Border.all(color: Homepage.colourScheme.textColour, width: 2),
+                      color: InitialTop.colourScheme.backingColour,
+                      border: Border.all(color: InitialTop.colourScheme.textColour, width: 2),
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
                     ),
                     child: Column(
@@ -102,13 +103,13 @@ class MainMyCharacters extends State<MyCharacters> {
                             fit: BoxFit.scaleDown,
                             child: Text(
                               filteredCharacters[index].characterDescription.name,
-                              style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700,color: Homepage.colourScheme.textColour)
+                              style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700,color: InitialTop.colourScheme.textColour)
                         ))),
 
                         /* Character's Level */
                         Text(
                           "Level: ${filteredCharacters[index].classList.length}",
-                          style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Homepage.colourScheme.textColour)
+                          style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: InitialTop.colourScheme.textColour)
                         ),
 
                         /* Character's level in each class */
@@ -126,20 +127,20 @@ class MainMyCharacters extends State<MyCharacters> {
                                 ).map(
                                   (entry) =>"${entry.value.name}: ${filteredCharacters[index].classLevels[entry.key]}"
                                 ).join(", "),
-                                style: TextStyle(fontWeight: FontWeight.w700,color: Homepage.colourScheme.textColour)
+                                style: TextStyle(fontWeight: FontWeight.w700,color: InitialTop.colourScheme.textColour)
                             )
 
                             /* If the character has levels in no classes. */
                             : Text(
                               "No Classes to display",
-                              style: TextStyle(fontWeight: FontWeight.w700,color: Homepage.colourScheme.textColour)
+                              style: TextStyle(fontWeight: FontWeight.w700,color: InitialTop.colourScheme.textColour)
                             ),
                           )),
 
                         /* Character's Health */
                         Text(
                           "Health: ${filteredCharacters[index].maxHealth}",
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Homepage.colourScheme.textColour)
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.textColour)
                         ),
 
                         /* Character's Group */
@@ -150,13 +151,13 @@ class MainMyCharacters extends State<MyCharacters> {
                             fit: BoxFit.scaleDown,
                             child: Text(
                               "Group: ${filteredCharacters[index].group ?? "Not a part of a group"}",
-                              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Homepage.colourScheme.textColour)
+                              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: InitialTop.colourScheme.textColour)
                         ))),
 
                         /* Open as PDF button */
                         OutlinedButton(
                           style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Homepage.colourScheme.textColour, width: 0.6),
+                            side: BorderSide(color: InitialTop.colourScheme.textColour, width: 0.6),
                             backgroundColor: Colors.grey,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
                           ),
@@ -173,7 +174,7 @@ class MainMyCharacters extends State<MyCharacters> {
                         /* Duplicate character button */
                         OutlinedButton(
                           style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Homepage.colourScheme.textColour, width: 0.6),
+                            side: BorderSide(color: InitialTop.colourScheme.textColour, width: 0.6),
                             backgroundColor: Colors.lightBlue,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
                           ),
@@ -196,7 +197,7 @@ class MainMyCharacters extends State<MyCharacters> {
                         /* Edit character button */
                         OutlinedButton(
                             style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: Homepage.colourScheme.textColour, width: 0.6),
+                              side: BorderSide(color: InitialTop.colourScheme.textColour, width: 0.6),
                               backgroundColor: Colors.green,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
                             ),
@@ -219,7 +220,7 @@ class MainMyCharacters extends State<MyCharacters> {
                         /* Delete character button */
                         OutlinedButton(
                           style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Homepage.colourScheme.textColour, width: 0.6),
+                            side: BorderSide(color: InitialTop.colourScheme.textColour, width: 0.6),
                             backgroundColor: Colors.red,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
                           ),
@@ -258,20 +259,5 @@ class MainMyCharacters extends State<MyCharacters> {
               ),
             )),
       ]));
-  }
-
-  void showStyledDialogue(BuildContext context, Text styledText) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        content: styledText,
-        actions: [
-          TextButton(
-            onPressed: () {Navigator.of(context).pop();},
-            child: const Text('Continue'),
-          ),
-        ],
-      ),
-    );
   }
 }
