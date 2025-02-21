@@ -30,6 +30,7 @@ class SpellSelectionsState extends State<SpellSelections> {
       height: 200,
       width: 375,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: Scaffold(
         body: Column(children: [
           const SizedBox(height: 20),

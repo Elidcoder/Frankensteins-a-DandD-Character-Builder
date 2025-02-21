@@ -13,6 +13,7 @@ import "top_bar.dart" show RegularTop;
 
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: InitialTop(key: InitialTopKey)
   ));
 }
@@ -48,63 +49,63 @@ class InitialTopState extends State<InitialTop> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder<int>(
       valueListenable: themeNotifier,
-      builder: (context, value, child) {
-        return  FutureBuilder<void>(
-      /* Load all required global variables */
-      future: globalsLoaded,
+      builder: (context, value, child) {return  FutureBuilder<void>(
+        /* Load all required global variables */
+        future: globalsLoaded,
 
-      /* keep running until the app is built successfully (globals loaded) */
-      builder: (context, snapshot) {
+        /* keep running until the app is built successfully (globals loaded) */
+        builder: (context, snapshot) {
 
-        /* If initialiseGlobals is successfull, return MaterialApp */
-        if (snapshot.connectionState == ConnectionState.done) {
+          /* If initialiseGlobals is done (connection state is an enum), return MaterialApp */
+          if (snapshot.connectionState == ConnectionState.done) {
 
-          /* Load up the previously used colour scheme. */
-          if (THEMELIST.isNotEmpty) {
-            InitialTop.colourScheme = THEMELIST.last;
-            currentScheme = THEMELIST.last;
-          }
+            /* Load up the previously used colour scheme. */
+            if (THEMELIST.isNotEmpty) {
+              InitialTop.colourScheme = THEMELIST.last;
+              currentScheme = THEMELIST.last;
+            }
 
-          /* Create the bar at the top with app name, settings and logo.*/
-          return MaterialApp(
-            theme: ThemeData(primaryColor: InitialTop.colourScheme.textColour),
-            title: appTitle,
-            home: Scaffold(
-              appBar: AppBar(
-                foregroundColor: InitialTop.colourScheme.textColour,
-                backgroundColor: InitialTop.colourScheme.backingColour,
-                leading: IconButton(
+            /* Create the bar at the top with app name, settings and logo.*/
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(primaryColor: InitialTop.colourScheme.textColour),
+              title: appTitle,
+              home: Scaffold(
+                appBar: AppBar(
+                  foregroundColor: InitialTop.colourScheme.textColour,
+                  backgroundColor: InitialTop.colourScheme.backingColour,
+                  leading: IconButton(
                     icon: const Icon(Icons.image),
                     tooltip: "Put logo here",
                     onPressed: () {}),
-                title: const Center(child: Text(appTitle)),
-                actions: <Widget>[
-                  IconButton(
-                    icon: const Icon(Icons.settings),
-                    tooltip: "Settings",
-                    onPressed: () {
-                      showColorPicker(context);
-                    },
-                  ),
-                ],
+                  title: const Center(child: Text(appTitle)),
+                  actions: <Widget>[
+                    IconButton(
+                      icon: const Icon(Icons.settings),
+                      tooltip: "Settings",
+                      onPressed: () {
+                        showColorPicker(context);
+                      },
+                    ),
+                  ],
+                ),
+
+                /* Create the main menu as the body */
+                body: MainMenu(),
               ),
+            );
 
-              /* Create the main menu as the body */
-              body: MainMenu(),
-            ),
-          );
-
-        /* if saveChanges is still running, output some text to let the user know */
-        } else {
-          return const Center(
-            child: Text(
-              "Please wait while the application saves or loads data",
-              style: TextStyle(color: Colors.blue, fontSize: 30),
-            ),
-          );
-        }
-      },
-    );});
+          /* if saveChanges is still running, output some text to let the user know */
+          } else {
+            return const Center(
+              child: Text(
+                "Please wait while the application saves or loads data",
+                style: TextStyle(color: Colors.blue, fontSize: 30),
+              ),
+            );
+          }
+        },
+      );});
   }
 
   /* Returns a popup that allows the user to change the app's colour scheme. */ 
@@ -254,17 +255,16 @@ class InitialTopState extends State<InitialTop> {
                 ),
                 TextButton(
                   onPressed: () {
-                      InitialTop.colourScheme = currentScheme;
-                      
-                      // Put current colour scheme at the top of the list
-                      THEMELIST.removeWhere((theme) => currentScheme.isSameColourScheme(theme));
-                      THEMELIST.add(currentScheme);
-                      saveChanges();
-
-                      // Increment notifier to trigger rebuilds and remove popup.
-                      themeNotifier.value++;
-                      Navigator.of(context).pop();
+                    InitialTop.colourScheme = currentScheme;
                     
+                    // Put current colour scheme at the top of the list
+                    THEMELIST.removeWhere((theme) => currentScheme.isSameColourScheme(theme));
+                    THEMELIST.add(currentScheme);
+                    saveChanges();
+
+                    // Increment notifier to trigger rebuilds and remove popup.
+                    themeNotifier.value++;
+                    Navigator.of(context).pop();
                   },
                   child: const Text("Save settings"),
                 ),

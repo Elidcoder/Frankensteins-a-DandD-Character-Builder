@@ -99,7 +99,7 @@ Future<void> saveChanges() async {
       "Characters": CHARACTERLIST.map((x) => x.toJson()).toList(),
       "ColourSchemes": THEMELIST.map((x) => x.toJson()).toList(),
       "Equipment": List<Map<String, dynamic>>.from(ITEMLIST.map((x) => x.toJson()).toList()),
-      };
+    };
 
     /* Write the JSON */
     final jsonStringy = jsonEncode(data);

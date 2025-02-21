@@ -56,11 +56,11 @@ class RegularTop extends StatelessWidget {
 
             /* Allow users to select a colour scheme */
             IconButton(
-                icon: const Icon(Icons.settings),
-                tooltip: "Settings",
-                onPressed: () {
-                  InitialTopKey.currentState?.showColorPicker(context);
-                }),
+              icon: const Icon(Icons.settings),
+              tooltip: "Settings",
+              onPressed: () {
+                InitialTopKey.currentState?.showColorPicker(context);
+              }),
           ],
         ),
         
