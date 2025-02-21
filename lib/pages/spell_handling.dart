@@ -126,85 +126,78 @@ class ChoiceRowState extends State<ChoiceRow> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
-            body: SizedBox(
-      height: 100,
+    return Scaffold(
+      backgroundColor: InitialTop.colourScheme.backgroundColour,
+      body: SizedBox(
+      height: 110,
       child: Column(children: [
-        Text(x![0],
-            style: const TextStyle(
-                color: Colors.blue, fontSize: 18, fontWeight: FontWeight.w700)),
+        Text(
+          x![0],
+          style: TextStyle(color: InitialTop.colourScheme.backingColour, fontSize: 18, fontWeight: FontWeight.w700)
+        ),
         SizedBox(
-            height: 50,
-            child: Center(
-                child: ListView(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              children: [
-                // Call the buildRows method to create a row of buttons for each element in the x list
-                ...buildRows(context, x?.sublist(1)),
-              ],
-            )))
+          height: 57,
+          child: Center(
+            child: ListView(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            children: [
+              /* Use buildRows to create a row of buttons for each element in the x list */
+              ...buildRows(context, x?.sublist(1)),
+          ],
+        )))
       ]),
-    )
-            //),
-            ));
+    ));
   }
 
-  List<Widget> buildRows(
-      BuildContext context, List<dynamic>? inputStringLists) {
-    return [
-      for (var input in inputStringLists!)
-        //check it isn't a choice
-        if (!["Choice"].contains(input![0]))
-          OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: (selected == input)
-                    ? const Color.fromARGB(255, 73, 244, 113)
-                    : null,
-              ),
-              onPressed: () {
-                setState(() {
-                  if (selected != null) {
-                    //unparse selected
-                    allSelected?.remove(input);
-                    if (selected == input) {
-                      selected = null;
-                    } else {
-                      selected = input;
-                      allSelected?.add(input);
-                    }
-                  } else {
-                    selected = input;
-                    allSelected?.add(input);
-                  }
-                });
-              },
-              child: Text(input[1]))
-        else
-          Container(
-            height: 40,
-            decoration: BoxDecoration(
-              //color: Colors.pink,
-              border: Border.all(
-                color: Colors.black,
-                width: 1,
-              ),
-              borderRadius: const BorderRadius.all(Radius.circular(5)),
+  List<Widget> buildRows(BuildContext context, List<dynamic>? inputStringLists) {
+    return [for (var input in inputStringLists!)
+      /* Check if it is a choice */
+      if (!["Choice"].contains(input![0]))
+        /* Unpack as non choice. */
+        OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            backgroundColor: (selected == input)
+              ? const Color.fromARGB(255, 73, 244, 113): null,
+          ),
+          onPressed: () {
+            setState(() {
+              if (selected != null) {
+                allSelected?.remove(input);
+                if (selected == input) {
+                  selected = null;
+                } else {
+                  selected = input;
+                  allSelected?.add(input);
+                }
+              } else {
+                selected = input;
+                allSelected?.add(input);
+              }
+            });
+          },
+          child: Text(input[1]))
+
+      /* Unpack as choice if it is one */
+      else
+        Container(
+          height: 40,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.black,
+              width: 1,
             ),
-            child: Column(children: [
-              Text(input[1],
-                  style: const TextStyle(
-                      color: Colors.blue,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700)),
-              Row(
-                children: [
-                  ...buildRows(context, input.sublist(2)),
-                ],
-              )
-            ]),
-          )
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
+          ),
+          child: Column(children: [
+            Text(input[1],
+              style: TextStyle(
+                color: InitialTop.colourScheme.backingColour,
+                fontSize: 15,
+                fontWeight: FontWeight.w700)),
+            Row(children: [...buildRows(context, input.sublist(2))])
+          ]),
+        )
     ];
   }
 }

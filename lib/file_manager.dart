@@ -43,17 +43,17 @@ Future<bool> addToGlobalsFromFile(File file) async {
   final jsonMap = jsonDecode(jsonString);
 
   /* Add the data into the correct lists. */
-  GROUPLIST.addAll(List<String>.from(jsonMap["Groups"]));
-  LANGUAGELIST.addAll(List<String>.from(jsonMap["Languages"]));
-  FEATLIST.addAll(List<Feat>.from(jsonMap["Feats"].map((x) => Feat.fromJson(x))));
-  RACELIST.addAll(List<Race>.from(jsonMap["Races"].map((x) => Race.fromJson(x))));
-  SPELLLIST.addAll(List<Spell>.from(jsonMap["Spells"].map((x) => Spell.fromJson(x))));
-  CLASSLIST.addAll(List<Class>.from(jsonMap["Classes"].map((x) => Class.fromJson(x))));
-  ITEMLIST.addAll(List<Item>.from((jsonMap["Equipment"] ?? []).map((x) => mapEquipment(x))));
-  CHARACTERLIST.addAll(List<Character>.from(jsonMap["Characters"].map((x) => Character.fromJson(x))));
-  BACKGROUNDLIST.addAll(List<Background>.from(jsonMap["Backgrounds"].map((x) => Background.fromJson(x))));
-  THEMELIST.addAll(List<ColourScheme>.from(jsonMap["ColourSchemes"].map((x) => ColourScheme.fromJson(x))));
-  PROFICIENCYLIST.addAll(List<Proficiency>.from(jsonMap["Proficiencies"].map((x) => Proficiency.fromJson(x))));
+  GROUPLIST.addAll(List<String>.from((jsonMap["Groups"]?? [])));
+  LANGUAGELIST.addAll(List<String>.from((jsonMap["Languages"]?? [])));
+  FEATLIST.addAll(List<Feat>.from((jsonMap["Feats"]?? []).map((x) => Feat.fromJson(x))));
+  RACELIST.addAll(List<Race>.from((jsonMap["Races"]?? []).map((x) => Race.fromJson(x))));
+  SPELLLIST.addAll(List<Spell>.from((jsonMap["Spells"]?? []).map((x) => Spell.fromJson(x))));
+  CLASSLIST.addAll(List<Class>.from((jsonMap["Classes"]?? []).map((x) => Class.fromJson(x))));
+  ITEMLIST.addAll(List<Item>.from((jsonMap["Equipment"]?? []).map((x) => mapEquipment(x))));
+  CHARACTERLIST.addAll(List<Character>.from((jsonMap["Characters"]?? []).map((x) => Character.fromJson(x))));
+  BACKGROUNDLIST.addAll(List<Background>.from((jsonMap["Backgrounds"]?? []).map((x) => Background.fromJson(x))));
+  THEMELIST.addAll(List<ColourScheme>.from((jsonMap["ColourSchemes"]?? []).map((x) => ColourScheme.fromJson(x))));
+  PROFICIENCYLIST.addAll(List<Proficiency>.from((jsonMap["Proficiencies"]?? []).map((x) => Proficiency.fromJson(x))));
 
   /* If there were no errors thrown, true is returned. */
   return true;
@@ -105,8 +105,19 @@ Future<void> saveChanges() async {
     final jsonStringy = jsonEncode(data);
     await file.writeAsString(jsonStringy);
 
-  /* Error in saving changes */
+  /* Error in saving changes, reset globals to undo bad change. */
   } catch (e) {
-    // do nothing
+    GROUPLIST.clear();
+    LANGUAGELIST.clear();
+    FEATLIST.clear();
+    RACELIST.clear();
+    SPELLLIST.clear();
+    CLASSLIST.clear();
+    ITEMLIST.clear();
+    CHARACTERLIST.clear();
+    BACKGROUNDLIST.clear();
+    THEMELIST.clear();
+    PROFICIENCYLIST.clear();
+    initialiseGlobals();
   }
 }

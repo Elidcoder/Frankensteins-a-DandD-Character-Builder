@@ -129,6 +129,8 @@ class MainCreateCharacter extends State<CreateACharacter>
     BuildContext context,
   ) {
     super.build(context);
+
+    /* Calculate the items meeting user filters. */
     List<Item> filteredItems = ITEMLIST.where((element) =>
       ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => character.armourList.contains(item))) 
       || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => character.weaponList.contains(item))) 
@@ -136,10 +138,6 @@ class MainCreateCharacter extends State<CreateACharacter>
       || (character.itemList.contains("Unstackable") && !element.stackable)))) && coinTypesSelected.contains(element.cost[1] as String)
       ).toList();
 
-    void resetState () {
-      setState(() {
-      });
-    }
     return ValueListenableBuilder<int>(
       valueListenable: tabRebuildNotifier,
       builder: (context, value, child) {return DefaultTabController(
@@ -593,8 +591,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                 tooltip: "Increase character level by 1",
                 foregroundColor: InitialTop.colourScheme.textColour,
                 backgroundColor: (charLevel < 20)
-                    ? InitialTop.colourScheme.backingColour
-                    : unavailableColor,
+                  ? InitialTop.colourScheme.backingColour
+                  : unavailableColor,
                 onPressed: () {
                   if (charLevel < 20) {
                     setState(() {
@@ -607,6 +605,15 @@ class MainCreateCharacter extends State<CreateACharacter>
               appBar: AppBar(
                 foregroundColor: InitialTop.colourScheme.textColour,
                 backgroundColor: InitialTop.colourScheme.backingColour,
+
+                /* Remove default back button */
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back, color: InitialTop.colourScheme.backingColour),
+                  onPressed: () {},
+                ),
+
+                
+                /* Class choices available and taken to/by the user. */
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -634,6 +641,8 @@ class MainCreateCharacter extends State<CreateACharacter>
                 ),
               ),
               body: TabBarView(children: [
+                /* Generates a set of cards (1 for each class) with buttons allowing 
+                 * users to view and select each class */
                 Container(
                     padding: const EdgeInsets.only(top: 17),
                     child: SingleChildScrollView(
@@ -642,175 +651,169 @@ class MainCreateCharacter extends State<CreateACharacter>
                         spacing: 8.0,
                         runSpacing: 8.0,
                         alignment: WrapAlignment.center,
-                        children:
-                            // This is the list of buttons
-                          List.generate(CLASSLIST.length, (index) {
+                        children: List.generate(CLASSLIST.length, (index) {
                           return Container(
-                              width: 240,
-                              height: 175,
-                              decoration: BoxDecoration(
-                                color: InitialTop.colourScheme.backingColour,
-                                border: Border.all(
-                                  color: Colors.black,
-                                  width: 1.8,
+                            width: 240,
+                            height: 175,
+                            decoration: BoxDecoration(
+                              color: InitialTop.colourScheme.backingColour,
+                              border: Border.all(color: Colors.black, width: 1.8),
+                              borderRadius: const BorderRadius.all(Radius.circular(5)),
+                            ),
+                            child: Column(
+                              children: [
+                                /* Information about the class */
+                                Text(CLASSLIST[index].name,
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w700,
+                                    color: InitialTop.colourScheme.textColour)),
+                                buildStyledTinyTextBox(
+                                  text: "Class type: ${CLASSLIST[index].classType}", 
+                                  color: InitialTop.colourScheme.textColour
                                 ),
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(5)),
-                              ),
-                              child: Column(
-                                children: [
-                                  Text(CLASSLIST[index].name,
-                                      style: TextStyle(
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.w700,
-                                          color: InitialTop.colourScheme.textColour)),
-                                  buildStyledTinyTextBox(
-                                    text: "Class type: ${CLASSLIST[index].classType}", 
-                                    color: InitialTop.colourScheme.textColour
-                                  ),
-                                  buildStyledTinyTextBox(
-                                    text: (["Martial", "Third Caster"].contains(CLASSLIST[index].classType))
-                                      ? "Main ability: ${CLASSLIST[index].mainOrSpellcastingAbility}"
-                                      : "Spellcasting ability: ${CLASSLIST[index].mainOrSpellcastingAbility}", 
-                                    color: InitialTop.colourScheme.textColour
-                                  ),
-                                  buildStyledTinyTextBox(
-                                    text: "Hit die: D${CLASSLIST[index].maxHitDiceRoll}", 
-                                    color: InitialTop.colourScheme.textColour
-                                  ),
-                                  buildStyledTinyTextBox(
-                                    text: "Saves: ${CLASSLIST[index].savingThrowProficiencies.join(", ")}", 
-                                    color: InitialTop.colourScheme.textColour
-                                  ),
-                                  const SizedBox(height: 7),
-                                  ElevatedButton(
-                                    style: OutlinedButton.styleFrom(
-                                      backgroundColor:
-                                          (charLevel <= character.classLevels.reduce(sum) || (!multiclassingPossible(CLASSLIST[index])))
-                                            ? unavailableColor
-                                            : InitialTop.colourScheme.backingColour,
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(4))),
-                                      side: const BorderSide(
-                                          width: 3,
-                                          color: positiveColor),
-                                    ),
-                                    onPressed: () {
-                                      setState(() {
-                                        if (charLevel > character.classList.length && (multiclassingPossible(CLASSLIST[index]))) {
-                                          character.classList.add(CLASSLIST[index].name);
+                                buildStyledTinyTextBox(
+                                  text: (["Martial", "Third Caster"].contains(CLASSLIST[index].classType))
+                                    ? "Main ability: ${CLASSLIST[index].mainOrSpellcastingAbility}"
+                                    : "Spellcasting ability: ${CLASSLIST[index].mainOrSpellcastingAbility}", 
+                                  color: InitialTop.colourScheme.textColour
+                                ),
+                                buildStyledTinyTextBox(
+                                  text: "Hit die: D${CLASSLIST[index].maxHitDiceRoll}", 
+                                  color: InitialTop.colourScheme.textColour
+                                ),
+                                buildStyledTinyTextBox(
+                                  text: "Saves: ${CLASSLIST[index].savingThrowProficiencies.join(", ")}", 
+                                  color: InitialTop.colourScheme.textColour
+                                ),
+                                const SizedBox(height: 7),
 
-                                          if (CLASSLIST[index].gainAtEachLevel[character.classLevels[index]]
-                                                  .where((element) => element[0] == "Choice").isEmpty) {
-                                            widgetsInPlay.add(buildStyledSmallTextBox(text: "No choices needed for ${CLASSLIST[index].name} level ${CLASSLIST[index].gainAtEachLevel[character.classLevels[index]][0][1]}"));
+                                /* Button to take a level in the class */
+                                ElevatedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    backgroundColor: (charLevel <= character.classLevels.reduce(sum) || (!multiclassingPossible(CLASSLIST[index])))
+                                      ? unavailableColor
+                                      : InitialTop.colourScheme.backingColour,
+                                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
+                                    side: const BorderSide(width: 3, color: positiveColor)
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+
+                                      // Check if the character can level up in the class
+                                      if (charLevel > character.classList.length && (multiclassingPossible(CLASSLIST[index]))) {
+                                        character.classList.add(CLASSLIST[index].name);
+
+                                        if (CLASSLIST[index].gainAtEachLevel[character.classLevels[index]]
+                                                .where((element) => element[0] == "Choice").isEmpty) {
+                                          widgetsInPlay.add(buildStyledSmallTextBox(text: "No choices needed for ${CLASSLIST[index].name} level ${CLASSLIST[index].gainAtEachLevel[character.classLevels[index]][0][1]}"));
+                                        } else {
+                                          widgetsInPlay.add(buildStyledMediumTextBox(text: "${CLASSLIST[index].name} Level ${CLASSLIST[index].gainAtEachLevel[character.classLevels[index]][0][1]} choice(s):"));
+                                        }
+
+                                        for (List<dynamic> x in CLASSLIST[index].gainAtEachLevel[character.classLevels[index]]) {
+                                          if (x[0] == "Choice") {
+                                            widgetsInPlay.add(SizedBox(
+                                                height: 85,
+                                                child: ChoiceRow(
+                                                  x: x.sublist(1),
+                                                  allSelected: character.allSelected,
+                                                )));
                                           } else {
-                                            widgetsInPlay.add(buildStyledMediumTextBox(text: "${CLASSLIST[index].name} Level ${CLASSLIST[index].gainAtEachLevel[character.classLevels[index]][0][1]} choice(s):"));
+                                            levelGainParser(x, CLASSLIST[index]);
+                                          }
+                                        }
+
+                                        // Level 1 treated differently for levelling
+                                        if (character.classList.length == 1) {
+                                          // Bonus feat if that option was selected
+                                          if (character.extraFeatAtLevel1 ?? false) {
+                                            numberOfRemainingFeatOrASIs++;
                                           }
 
-                                          for (List<dynamic> x in CLASSLIST[index].gainAtEachLevel[character.classLevels[index]]) {
-                                            if (x[0] == "Choice") {
-                                              widgetsInPlay.add(SizedBox(
-                                                  height: 80,
-                                                  child: ChoiceRow(
-                                                    x: x.sublist(1),
-                                                    allSelected: character.allSelected,
-                                                  )));
-                                            } else {
-                                              levelGainParser(x, CLASSLIST[index]);
-                                            }
-                                          }
+                                          // Gain hit points (max die roll at lvl 1)
+                                          character.maxHealth += CLASSLIST[index].maxHitDiceRoll;
+                                          
+                                          // Gain saving throw proficiencies
+                                          character.savingThrowProficiencies = CLASSLIST[index].savingThrowProficiencies;
 
-                                          // Level 1 treated differently for levelling
-                                          if (character.classList.length == 1) {
-                                            // Bonus feat if that option was selected
-                                            if (character.extraFeatAtLevel1 ?? false) {
-                                              numberOfRemainingFeatOrASIs++;
-                                            }
+                                          // Gain the equipment choices
+                                          character.equipmentSelectedFromChoices.addAll(CLASSLIST[index].equipmentOptions);
 
-                                            // Gain hit points (max die roll at lvl 1)
-                                            character.maxHealth += CLASSLIST[index].maxHitDiceRoll;
-                                            
-                                            // Gain saving throw proficiencies
-                                            character.savingThrowProficiencies = CLASSLIST[index].savingThrowProficiencies;
+                                          // Gain the skill proficiencies
+                                          character.classSkillsSelected = List.filled(CLASSLIST[index].optionsForSkillProficiencies.length,false);
 
-                                            // Gain the equipment choices
-                                            character.equipmentSelectedFromChoices.addAll(CLASSLIST[index].equipmentOptions);
-
-                                            // Gain the skill proficiencies
-                                            character.classSkillsSelected = List.filled(CLASSLIST[index].optionsForSkillProficiencies.length,false);
-
-                                            // Add any further choices needed
-                                            widgetsInPlay.addAll([
-                                              buildStyledSmallTextBox(text: "Pick ${(CLASSLIST[index].numberOfSkillChoices)} skill(s) to gain proficiency in"),
-                                              const SizedBox(height: 7),
-                                              StatefulBuilder(
-        builder: (context, setState) { return buildStyledToggleSelector(
-                                                itemLabels: CLASSLIST[index].optionsForSkillProficiencies,
-                                                isSelected: character.classSkillsSelected,
-                                                onPressed: (int subIndex, bool _) {
-                                                  setState(() {
-                                                  // Gain background skill choices
-                                                  if (character.classSkillsSelected.where((b) => b).length <
-                                                      CLASSLIST[index].numberOfSkillChoices) {
-                                                    character.classSkillsSelected[subIndex] = !character.classSkillsSelected[subIndex];
-                                                  } else {
-                                                    if (character.classSkillsSelected[subIndex]) {
-                                                      character.classSkillsSelected[subIndex] = false;
-                                                    }
+                                          // Add any further choices needed
+                                          widgetsInPlay.addAll([
+                                            buildStyledSmallTextBox(text: "Pick ${(CLASSLIST[index].numberOfSkillChoices)} skill(s) to gain proficiency in"),
+                                            const SizedBox(height: 7),
+                                            StatefulBuilder(
+                                              builder: (context, setState) { return buildStyledToggleSelector(
+                                              itemLabels: CLASSLIST[index].optionsForSkillProficiencies,
+                                              isSelected: character.classSkillsSelected,
+                                              onPressed: (int subIndex, bool _) {
+                                                setState(() {
+                                                // Gain background skill choices
+                                                if (character.classSkillsSelected.where((b) => b).length <
+                                                    CLASSLIST[index].numberOfSkillChoices) {
+                                                  character.classSkillsSelected[subIndex] = !character.classSkillsSelected[subIndex];
+                                                } else {
+                                                  if (character.classSkillsSelected[subIndex]) {
+                                                    character.classSkillsSelected[subIndex] = false;
                                                   }
-                                                  resetState();
-                                                });}
-                                              );})
-                                            ]);
+                                                }
+                                                tabRebuildNotifier.value++;
+                                              });}
+                                            );})
+                                          ]);
+                                        }
+                                        // Health calculated in a normal way if not level 1
+                                        else {
+                                          if (character.averageHitPoints ?? false) {
+                                            character.maxHealth += ((CLASSLIST[index].maxHitDiceRoll) / 2).ceil();
+                                          } else {
+                                            character.maxHealth += 1 + (Random().nextDouble() * CLASSLIST[index].maxHitDiceRoll).floor();
                                           }
-                                          // Health calculated in a normal way if not level 1
-                                          else {
-                                            if (character.averageHitPoints ?? false) {
-                                              character.maxHealth += ((CLASSLIST[index].maxHitDiceRoll) / 2).ceil();
-                                            } else {
-                                              character.maxHealth += 1 + (Random().nextDouble() * CLASSLIST[index].maxHitDiceRoll).floor();
-                                            }
-                                          }
+                                        }
 
-                                          // Check if it's a spellcaster, if so add the necessary spell info
-                                          if (CLASSLIST[index].classType != "Martial") {
-                                            if (character.classList.where((element) => element == CLASSLIST[index].name).length == 1) {
-                                              character.allSpellsSelectedAsListsOfThings.add([
-                                                CLASSLIST[index].name,
-                                                [],
-                                                levelZeroGetSpellsKnown(index),
-                                                CLASSLIST[index].spellsKnownFormula ?? CLASSLIST[index].spellsKnownPerLevel
-                                              ]); 
-                                            } else {
-                                              var a = character.classSubclassMapper[CLASSLIST[index].name];
-                                              for (var x = 0; x < character.allSpellsSelectedAsListsOfThings.length; x++) {
-                                                if (character.allSpellsSelectedAsListsOfThings[x][0] == CLASSLIST[index].name) {
-                                                  character.allSpellsSelectedAsListsOfThings[x][2] =
-                                                      getSpellsKnown(
-                                                          index,
-                                                          character.allSpellsSelectedAsListsOfThings[x]);
-                                                } else if (a != null) {
-                                                  if (character.allSpellsSelectedAsListsOfThings[x][0] == a) {
-                                                    character.allSpellsSelectedAsListsOfThings[x][2] =
-                                                      getSpellsKnown(
+                                        // Check if it's a spellcaster, if so add the necessary spell info
+                                        if (CLASSLIST[index].classType != "Martial") {
+                                          if (character.classList.where((element) => element == CLASSLIST[index].name).length == 1) {
+                                            character.allSpellsSelectedAsListsOfThings.add([
+                                              CLASSLIST[index].name,
+                                              [],
+                                              levelZeroGetSpellsKnown(index),
+                                              CLASSLIST[index].spellsKnownFormula ?? CLASSLIST[index].spellsKnownPerLevel
+                                            ]); 
+                                          } else {
+                                            var a = character.classSubclassMapper[CLASSLIST[index].name];
+                                            for (var x = 0; x < character.allSpellsSelectedAsListsOfThings.length; x++) {
+                                              if (character.allSpellsSelectedAsListsOfThings[x][0] == CLASSLIST[index].name) {
+                                                character.allSpellsSelectedAsListsOfThings[x][2] =
+                                                    getSpellsKnown(
                                                         index,
-                                                        character.allSpellsSelectedAsListsOfThings[x]
-                                                      );
-                                                  }
+                                                        character.allSpellsSelectedAsListsOfThings[x]);
+                                              } else if (a != null) {
+                                                if (character.allSpellsSelectedAsListsOfThings[x][0] == a) {
+                                                  character.allSpellsSelectedAsListsOfThings[x][2] =
+                                                    getSpellsKnown(
+                                                      index,
+                                                      character.allSpellsSelectedAsListsOfThings[x]
+                                                    );
                                                 }
                                               }
                                             }
                                           }
-
-                                          // Increment the class level
-                                          character.classLevels[index]++;
                                         }
-                                      });
-                                    },
-                                    child: Icon(Icons.add, color: InitialTop.colourScheme.textColour, size: 35))
-                                ],
-                              ));
+
+                                        // Increment the class level
+                                        character.classLevels[index]++;
+                                      }
+                                    });
+                                  },
+                                  child: Icon(Icons.add, color: InitialTop.colourScheme.textColour, size: 35))
+                              ],
+                            ));
                         }),
                       ),
                     )),
@@ -1475,11 +1478,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                     children: [
                       /* Title */
                       const SizedBox(height: 9),
-                      Text("Purchase Equipment",
-                        style: TextStyle(
-                          fontSize: 23,
-                          fontWeight: FontWeight.w700,
-                          color: InitialTop.colourScheme.backingColour)),
+                      buildStyledLargeTextBox(text: "Purchase Equipment"),
 
                       /* Display the characters available money */
                       const SizedBox(height: 6),
@@ -1737,15 +1736,13 @@ class MainCreateCharacter extends State<CreateACharacter>
                       children: [
                         /* Title */
                         const SizedBox(height: 9),
-                        Text(
-                          "Pick your equipment from options gained:",
-                          style: TextStyle(fontSize: 23, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.backingColour)
-                        ),
+                        buildStyledMediumTextBox(text: "Choose equipment from options gained:"),
                         const SizedBox(height: 6),
 
                         /* A column containing each choice as a pair of buttons */
-                        if (character.equipmentSelectedFromChoices != [])
-                          SizedBox(
+                        (character.equipmentSelectedFromChoices.isEmpty) 
+                          ? buildStyledSmallTextBox(text: "No equipment choices available")
+                          : SizedBox(
                             height: 300,
                             child: SingleChildScrollView(
                               child: Column(
