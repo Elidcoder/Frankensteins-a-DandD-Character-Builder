@@ -9,7 +9,7 @@ export "subrace.dart";
 export "race.dart";
 export "class.dart";
 export "subclass/subclass.dart";
-export "background.dart";
+export "background/background.dart";
 export "spell.dart";
 export "character_description.dart";
 export "content.dart";
