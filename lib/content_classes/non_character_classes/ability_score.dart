@@ -1,24 +1,17 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'ability_score.g.dart';
+
+@JsonSerializable()
 class AbilityScore{
   int value;
   String name;
 
+  int get abilityScoreCost  => (value > 12) ? 2 : 1;
+
   AbilityScore({required this.name, required this.value});
 
-  factory AbilityScore.fromJson(Map<String, dynamic> json) => AbilityScore(
-        name: json["name"],
-        value: json["value"],
-      );
+  factory AbilityScore.fromJson(Map<String, dynamic> json) => _$AbilityScoreFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "name": name,
-        "value": value,
-      };
+  Map<String, dynamic> toJson() => _$AbilityScoreToJson(this);
 }
-
-int abilityScoreCost(int x) {
-  if (x > 12) {
-    return 2;
-  }
-  return 1;
-}
-
