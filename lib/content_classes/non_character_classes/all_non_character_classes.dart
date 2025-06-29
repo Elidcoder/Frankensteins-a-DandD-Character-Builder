@@ -1,7 +1,7 @@
 export "../srd_globals.dart";
 export "ability_score/ability_score.dart";
 export "proficiency.dart";
-export "item.dart";
+export "item/item.dart";
 export "armour.dart";
 export "weapon.dart";
 export "feat.dart";

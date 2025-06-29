@@ -1,4 +1,4 @@
-import "item.dart";
+import "item/item.dart";
 
 class Armour extends Item {
   String armourFormula;

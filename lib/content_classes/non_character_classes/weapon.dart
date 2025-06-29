@@ -1,4 +1,4 @@
-import 'item.dart';
+import 'item/item.dart';
 
 class Weapon extends Item {
   List<String> properties;
