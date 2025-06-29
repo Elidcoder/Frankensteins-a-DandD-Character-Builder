@@ -4,7 +4,7 @@ export "proficiency.dart";
 export "item/item.dart";
 export "armour/armour.dart";
 export "weapon/weapon.dart";
-export "feat.dart";
+export "feat/feat.dart";
 export "subrace.dart";
 export "race.dart";
 export "class.dart";

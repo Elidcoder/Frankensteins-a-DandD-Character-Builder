@@ -1,4 +1,4 @@
-import '../feat.dart';
+import '../feat/feat.dart';
 
 import 'package:json_annotation/json_annotation.dart';
 

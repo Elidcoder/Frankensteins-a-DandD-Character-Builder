@@ -1054,7 +1054,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                   itemCount: filteredFeats.length,
                                   itemBuilder: (context, index) {
                                     return Tooltip(
-                                      message: filteredFeats[index].display(),
+                                      message: filteredFeats[index].display,
                                       child: OutlinedButton(
                                         style: OutlinedButton.styleFrom(
                                           /* Create a colouring gradient for feats that can be selected multiple times */
@@ -1109,7 +1109,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                                     itemCount: character.featsSelected.length,
                                     itemBuilder: (context, index) {
                                       return Tooltip(
-                                        message: FEATLIST[index].display(),
+                                        message: FEATLIST[index].display,
                                         child: OutlinedButton(
                                           style: OutlinedButton.styleFrom(
                                             backgroundColor: InitialTop.colourScheme.backingColour,
