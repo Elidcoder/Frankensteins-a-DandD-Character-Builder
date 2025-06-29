@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'weapon.dart';
+part of 'armour.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Map<String, dynamic> _$WeaponToJson(Weapon instance) => <String, dynamic>{
+Map<String, dynamic> _$ArmourToJson(Armour instance) => <String, dynamic>{
       'Name': instance.name,
       'SourceBook': instance.sourceBook,
       'Cost': instance.cost,
@@ -14,6 +14,8 @@ Map<String, dynamic> _$WeaponToJson(Weapon instance) => <String, dynamic>{
       'Stackable': instance.stackable,
       'Description': instance.description,
       'EquipmentType': instance.equipmentType,
-      'Properties': instance.properties,
-      'DamageDiceAndType': instance.damageDiceAndType,
+      'ArmourFormula': instance.armourFormula,
+      'ImposeStealthDisadvantage': instance.imposeStealthDisadvantage,
+      'StrengthRequirement': instance.strengthRequirement,
+      'armourType': instance.armourType,
     };

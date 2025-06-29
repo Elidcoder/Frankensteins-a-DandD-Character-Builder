@@ -2,7 +2,7 @@ export "../srd_globals.dart";
 export "ability_score/ability_score.dart";
 export "proficiency.dart";
 export "item/item.dart";
-export "armour.dart";
+export "armour/armour.dart";
 export "weapon/weapon.dart";
 export "feat.dart";
 export "subrace.dart";
