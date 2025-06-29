@@ -18,7 +18,7 @@ class Item implements Content {
   double weight;
   @JsonKey(name: 'Stackable', defaultValue: false)
   bool stackable;
-  @JsonKey(name: 'Description')
+  @JsonKey(name: 'Description', defaultValue: null)
   String? description;
   @JsonKey(name: 'EquipmentType')
   List<String> equipmentType;
