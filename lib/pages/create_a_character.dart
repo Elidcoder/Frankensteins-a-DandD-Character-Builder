@@ -2442,13 +2442,13 @@ class MainCreateCharacter extends State<CreateACharacter>
     void decrementScore() {
       if (score.value > 8) {
         score.value--;
-        pointsRemaining += abilityScoreCost(score.value);
+        pointsRemaining += score.abilityScoreCost;
       }
     }
 
     void incrementScore() {
       if (score.value < 15) {
-        final cost = abilityScoreCost(score.value);
+        final cost = score.abilityScoreCost;
         if (cost <= pointsRemaining) {
           pointsRemaining -= cost;
           score.value ++;
@@ -2520,7 +2520,7 @@ class MainCreateCharacter extends State<CreateACharacter>
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(
                         backgroundColor:
-                            (abilityScoreCost(score.value) > pointsRemaining)
+                            (score.abilityScoreCost > pointsRemaining)
                                 ? unavailableColor 
                                 : InitialTop.colourScheme.backingColour,
                         shape: const RoundedRectangleBorder(
