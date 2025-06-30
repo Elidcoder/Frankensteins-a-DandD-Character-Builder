@@ -11,5 +11,5 @@ export "class.dart";
 export "subclass/subclass.dart";
 export "background/background.dart";
 export "spell.dart";
-export "character_description.dart";
+export "character_description/character_description.dart";
 export "content.dart";
