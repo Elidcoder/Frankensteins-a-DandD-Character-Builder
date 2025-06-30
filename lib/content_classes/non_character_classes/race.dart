@@ -1,4 +1,4 @@
-import "subrace.dart";
+import "subrace/subrace.dart";
 import "proficiency.dart";
 import "content.dart";
 
