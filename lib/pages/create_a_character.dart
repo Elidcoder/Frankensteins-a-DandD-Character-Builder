@@ -6,7 +6,7 @@ import "dart:math";
 import "spell_handling.dart";
 import "../main.dart";
 import "../content_classes/all_content_classes.dart";
-import "../file_manager.dart";
+import "../file_manager/file_manager.dart";
 import "../pdf_generator/pdf_final_display.dart";
 
 /* Notifier for when settings changes colour to rebuild. */

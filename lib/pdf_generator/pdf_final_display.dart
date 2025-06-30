@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 import "package:printing/printing.dart" show PdfPreview;
 
 // Project imports:
-import "../content_classes/character.dart";
+import "../content_classes/character/character.dart";
 import "pdf_export.dart";
 
 class PdfPreviewPage extends StatelessWidget {

@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 
 // Project Imports
 import "pdf_final_display.dart" show PdfPreviewPage;
-import "../content_classes/character.dart";
+import "../content_classes/character/character.dart";
 
 class DetailPage extends StatelessWidget {
   final Character character;

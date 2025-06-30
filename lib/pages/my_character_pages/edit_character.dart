@@ -8,7 +8,7 @@ import "../../content_classes/all_content_classes.dart";
 import "../../pdf_generator/pdf_final_display.dart";
 import "../../main.dart" show InitialTop, InitialTopKey;
 import "../../top_bar.dart";
-import "../../file_manager.dart";
+import "../../file_manager/file_manager.dart";
 
 class EditTop extends StatelessWidget {
   final Character character;

@@ -4,7 +4,7 @@ import "dart:collection" show Queue;
 import 'package:json_annotation/json_annotation.dart';
 
 // Project Import
-import "non_character_classes/all_non_character_classes.dart";
+import "../non_character_classes/all_non_character_classes.dart";
 
 part 'character.g.dart';
 

@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 
 // Project Imports
 import "../../main.dart" show InitialTop;
-import "../../file_manager.dart" show saveChanges;
+import "../../file_manager/file_manager.dart" show saveChanges;
 import "package:frankenstein/content_classes/all_content_classes.dart" show Spell, SPELLLIST;
 
 class MakeASpell extends StatefulWidget {

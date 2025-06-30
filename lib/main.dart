@@ -6,7 +6,7 @@ import "package:flutter_colorpicker/flutter_colorpicker.dart" show ColorPicker;
 
 // Project imports
 import "colour_scheme_class/colour_scheme.dart";
-import "file_manager.dart";
+import "file_manager/file_manager.dart";
 import "top_bar.dart" show RegularTop;
 
 
