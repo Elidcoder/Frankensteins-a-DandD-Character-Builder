@@ -10,6 +10,6 @@ export "race/race.dart";
 export "class/class.dart";
 export "subclass/subclass.dart";
 export "background/background.dart";
-export "spell.dart";
+export "spell/spell.dart";
 export "character_description/character_description.dart";
 export "content.dart";
