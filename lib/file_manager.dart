@@ -5,7 +5,7 @@ import "package:flutter/services.dart" show rootBundle;
 import "package:path_provider/path_provider.dart" show getApplicationDocumentsDirectory;
 
 // Project Import
-import "colour_scheme.dart";
+import "colour_scheme_class/colour_scheme.dart";
 import "content_classes/all_content_classes.dart";
 
 List<Character> CHARACTERLIST = [];
