@@ -7,7 +7,7 @@ export "weapon/weapon.dart";
 export "feat/feat.dart";
 export "subrace.dart";
 export "race.dart";
-export "class.dart";
+export "class/class.dart";
 export "subclass/subclass.dart";
 export "background/background.dart";
 export "spell.dart";
