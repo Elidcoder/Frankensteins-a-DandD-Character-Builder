@@ -8,6 +8,7 @@ import "../main.dart";
 import "../content_classes/all_content_classes.dart";
 import "../file_manager/file_manager.dart";
 import "../pdf_generator/pdf_final_display.dart";
+import "backstory_tab.dart";
 
 /* Notifier for when settings changes colour to rebuild. */
 final ValueNotifier<int> tabRebuildNotifier = ValueNotifier<int>(0);
@@ -29,18 +30,6 @@ class MainCreateCharacter extends State<CreateACharacter>
   TextEditingController nameEnterController = TextEditingController();
   TextEditingController playerNameEnterController = TextEditingController();
   TextEditingController genderEnterController = TextEditingController();
-  /// Backstory
-  //// Short answers 
-  TextEditingController ageEnterController = TextEditingController();
-  TextEditingController heightEnterController = TextEditingController();
-  TextEditingController weightEnterController = TextEditingController();
-  TextEditingController eyeColourController = TextEditingController();
-  TextEditingController skinEnterController = TextEditingController();
-  TextEditingController hairEnterController = TextEditingController();
-  //// Long answers
-  TextEditingController backstoryEnterController = TextEditingController();
-  TextEditingController additionalFeaturesEnterController =
-      TextEditingController();
   /// Character group
   TextEditingController groupEnterController = TextEditingController();
   
@@ -1797,138 +1786,15 @@ class MainCreateCharacter extends State<CreateACharacter>
           )),
           
           // Backstory Tab
-          SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(children: [
-                // Character Description
-                const SizedBox(height: 20, width: 10),
-                buildStyledHugeTextBox(text: "Character Information:"),
-                const SizedBox(height: 10, width: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Age and Eyes
-                    Column(
-                      children: [
-                        buildStyledMediumTextBox(text: "Age:"),
-                        const SizedBox(height: 10),
-                        buildStyledSmallTextField(
-                        hintText: "Enter character's age", 
-                        textController: ageEnterController, 
-                        onChanged:(characterAgeEnteredValue) {
-                            setState(() {
-                              character.characterDescription.age = characterAgeEnteredValue;
-                            });
-                          }
-                        ),
-                        const SizedBox(height: 10),
-
-                        buildStyledMediumTextBox(text: "Eyes:"),
-                        const SizedBox(height: 10),
-                        buildStyledSmallTextField(
-                        hintText: "Describe your character's eyes", 
-                        textController: eyeColourController, 
-                        onChanged:(characterEyeEnteredValue) {
-                            setState(() {
-                              character.characterDescription.eyes = characterEyeEnteredValue;
-                            });
-                          }
-                        ),
-                      ],
-                    ),
-                    const SizedBox(width: 10, height: 100),
-
-                    // Height and Skin
-                    Column(
-                      children: [
-                        buildStyledMediumTextBox(text: "Height:"),
-                        const SizedBox(height: 10),
-                        buildStyledSmallTextField(
-                        hintText: "Enter character's height", 
-                        textController: heightEnterController, 
-                        onChanged:(characterHeightEnteredValue) {
-                            setState(() {
-                              character.characterDescription.height = characterHeightEnteredValue;
-                            });
-                          }
-                        ),
-                        const SizedBox(height: 10),
-
-                        buildStyledMediumTextBox(text: "Skin:"),
-                        const SizedBox(height: 10),
-                        buildStyledSmallTextField(
-                        hintText: "Describe your character's skin", 
-                        textController: skinEnterController, 
-                        onChanged:(characterSkinEnteredValue) {
-                            setState(() {
-                              character.characterDescription.skin = characterSkinEnteredValue;
-                            });
-                          }
-                        ),
-                      ],
-                    ),
-                    const SizedBox(width: 10, height: 100),
-
-                    // Weight and Hair
-                    Column(
-                      children: [
-                        buildStyledMediumTextBox(text: "Weight:"),
-                        const SizedBox(height: 10),
-                        buildStyledSmallTextField(
-                        hintText: "Enter character's weight", 
-                        textController: weightEnterController, 
-                        onChanged:(characterWeightEnteredValue) {
-                            setState(() {
-                              character.characterDescription.weight = characterWeightEnteredValue;
-                            });
-                          }
-                        ),
-                        const SizedBox(height: 10),
-
-                        buildStyledMediumTextBox(text: "Hair:"),
-                        const SizedBox(height: 10),
-                        buildStyledSmallTextField(
-                        hintText: "Describe your character's hair", 
-                        textController: hairEnterController, 
-                        onChanged:(characterHairEnteredValue) {
-                            setState(() {
-                              character.characterDescription.hair = characterHairEnteredValue;
-                            });
-                          }
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-
-                // Character Backstory
-                buildStyledHugeTextBox(text: "Backstory:"),
-                const SizedBox(height: 5),
-                buildStyledLargeTextField(
-                  hintText: 
-                    "Write out your character's backstory. This should be a description of their past, including but not limited to: Who raised them/ how were they raised, any serious traumas or achievements in their life and then linking to justify your/ having another, reason for being in the campaign.",
-                  textController: backstoryEnterController,
-                  onChanged: (backstoryEnteredValue) {
-                    setState(() {
-                      character.characterDescription.backstory = backstoryEnteredValue;
-                    });
-                  }
-                ),
-
-                // Additional Features
-                buildStyledHugeTextBox(text: "Additional Features:"),
-                const SizedBox(height: 5),
-                buildStyledLargeTextField(
-                  hintText: 
-                    "Write any additional features, skills or abilities which are not a part of the character's race/class/background etc. These should have been agreed apon by your DM or whoever is running the game.",
-                  textController: additionalFeaturesEnterController,
-                  onChanged: (extraFeaturesEnteredValue) {
-                    setState(() {
-                      character.extraFeatures = extraFeaturesEnteredValue;
-                    });
-                  }
-                ),
-              ])),
+          BackstoryTab(
+            character: character,
+            onCharacterChanged: () {
+              setState(() {
+                // This will trigger a rebuild if other tabs need to reflect backstory changes
+                // For example, if character name changes and affects other tabs
+              });
+            },
+          ),
           
           // Finishing Up Tab
           Scaffold(
