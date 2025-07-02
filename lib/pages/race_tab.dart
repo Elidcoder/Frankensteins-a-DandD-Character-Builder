@@ -126,9 +126,9 @@ class _RaceTabState extends State<RaceTab> {
             onPressed:(int choiceNumber, int index, bool isSelected) {
               setState(() {
                 if (widget.character.optionalTwosStates![choiceNumber][index]) {
-                  widget.character.raceAbilityScoreIncreases[index] -= 1;
+                  widget.character.raceAbilityScoreIncreases[index] -= 2;
                 } else {
-                  widget.character.raceAbilityScoreIncreases[index] += 1;
+                  widget.character.raceAbilityScoreIncreases[index] += 2;
                   for (
                     int buttonIndex = choiceNumber;
                     buttonIndex < widget.character.optionalTwosStates![choiceNumber].length;
