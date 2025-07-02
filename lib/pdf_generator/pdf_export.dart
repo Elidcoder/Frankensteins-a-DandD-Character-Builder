@@ -2194,7 +2194,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                     [],
                                                 ...userCharacter
                                                     .mainToolProficiencies
-                                              ].join(", ")}\nLanguages Known - ${userCharacter.languagesKnown.join(", ")}",
+                                              ].join(", ")}\nLanguages Known - ${<dynamic>{...userCharacter.languagesKnown, ...userCharacter.languageChoices}.join(", ")}",
                                               style:
                                                   const TextStyle(fontSize: 8)))
                                     ]))
