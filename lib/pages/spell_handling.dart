@@ -1,5 +1,6 @@
 // External Imports
 import "package:flutter/material.dart";
+import "package:frankenstein/utils/style_utils.dart";
 
 // Project Imports
 import "create_a_character.dart";
@@ -45,7 +46,7 @@ class SpellSelectionsState extends State<SpellSelections> {
             height: 140,
             width: 300,
             decoration: BoxDecoration(
-              color: MainCreateCharacter.unavailableColor,
+              color: unavailableColor,
               border: Border.all(color: Colors.black, width: 3),
               borderRadius: const BorderRadius.all(Radius.circular(10)),
             ),
@@ -59,9 +60,9 @@ class SpellSelectionsState extends State<SpellSelections> {
                 return OutlinedButton(
                   style: OutlinedButton.styleFrom(
                     backgroundColor: (thisDescription[1].contains(allAvailableSpells[index])
-                      ? MainCreateCharacter.positiveColor
+                      ? positiveColor
                       : (allSpellsSelected.contains(allAvailableSpells[index])
-                        ? MainCreateCharacter.unavailableColor
+                        ? unavailableColor
                         : Colors.white))),
                   onPressed: () {
                     setState(
