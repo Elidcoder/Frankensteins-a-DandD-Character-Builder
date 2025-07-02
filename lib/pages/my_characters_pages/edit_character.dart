@@ -3,7 +3,7 @@ import "dart:math";
 import "package:flutter/material.dart";
 
 // Project Imports
-import "../spell_handling.dart";
+import "../create_a_character_pages/spell_handling.dart";
 import "../../content_classes/all_content_classes.dart";
 import "../../pdf_generator/pdf_final_display.dart";
 import "../../main.dart" show InitialTop, InitialTopKey;

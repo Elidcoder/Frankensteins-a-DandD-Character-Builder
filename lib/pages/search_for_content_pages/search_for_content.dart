@@ -2,8 +2,8 @@
 import "package:flutter/material.dart";
 
 // Project Imports
-import "../main.dart";
-import "../content_classes/all_content_classes.dart";
+import "../../main.dart";
+import "../../content_classes/all_content_classes.dart";
 
 /* This page allows users to view and delete their downloaded content. */
 class SearchForContent extends StatefulWidget {

@@ -2,12 +2,12 @@
 import "package:flutter/material.dart";
 
 // Project Imports
-import "../top_bar.dart";
-import "../file_manager/file_manager.dart";
-import "../main.dart" show InitialTop;
-import "my_character_pages/edit_character.dart";
-import "../pdf_generator/pdf_final_display.dart";
-import "../content_classes/all_content_classes.dart";
+import "../../top_bar.dart";
+import "../../file_manager/file_manager.dart";
+import "../../main.dart" show InitialTop;
+import "edit_character.dart";
+import "../../pdf_generator/pdf_final_display.dart";
+import "../../content_classes/all_content_classes.dart";
 
 /* This is a page where all characters created are displayed to be edited, viewed, deleted etc. */
 class MyCharacters extends StatefulWidget {

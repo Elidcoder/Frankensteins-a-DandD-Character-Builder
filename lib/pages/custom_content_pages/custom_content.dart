@@ -2,8 +2,8 @@
 import "package:flutter/material.dart";
 
 // Project Imports
-import "../main.dart" show InitialTop;
-import "../top_bar.dart";
+import "../../main.dart" show InitialTop;
+import "../../top_bar.dart";
 
 /* Serves as a linker page between the main page and the users choice of content to create. */
 class CustomContent extends StatelessWidget {

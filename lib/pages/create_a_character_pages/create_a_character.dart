@@ -4,11 +4,11 @@ import "dart:math";
 
 // Project Imports
 import "spell_handling.dart";
-import "../main.dart";
-import "../content_classes/all_content_classes.dart";
-import "../file_manager/file_manager.dart";
-import "../pdf_generator/pdf_final_display.dart";
-import "../utils/style_utils.dart";
+import "../../main.dart";
+import "../../content_classes/all_content_classes.dart";
+import "../../file_manager/file_manager.dart";
+import "../../pdf_generator/pdf_final_display.dart";
+import "../../utils/style_utils.dart";
 import "backstory_tab.dart";
 import "race_tab.dart";
 

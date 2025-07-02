@@ -4,8 +4,8 @@ import "package:frankenstein/utils/style_utils.dart";
 
 // Project Imports
 import "create_a_character.dart";
-import "../content_classes/all_content_classes.dart";
-import "../../main.dart" show InitialTop;
+import "../../content_classes/all_content_classes.dart";
+import "../../../main.dart" show InitialTop;
 
 /* This creates a widget that represents a classes ability to gain spells. */
 class SpellSelections extends StatefulWidget {
