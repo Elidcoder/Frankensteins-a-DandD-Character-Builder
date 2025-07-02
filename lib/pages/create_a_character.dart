@@ -10,6 +10,7 @@ import "../file_manager/file_manager.dart";
 import "../pdf_generator/pdf_final_display.dart";
 import "../utils/style_utils.dart";
 import "backstory_tab.dart";
+import "race_tab.dart";
 
 /* Notifier for when settings changes colour to rebuild. */
 final ValueNotifier<int> tabRebuildNotifier = ValueNotifier<int>(0);
@@ -443,128 +444,11 @@ class MainCreateCharacter extends State<CreateACharacter>
           ),
           
           // Race Tab
-          Column(
-            children: [
-              const SizedBox(height: 24),
-              StyleUtils.buildStyledMediumTextBox(text: "Select a race:"),
-              StyleUtils.buildStyledDropDown(
-                initialValue: character.race.name, 
-                items: RACELIST, 
-                onChanged: (String? value) {
-                  setState(() {
-                    character.raceAbilityScoreIncreases = [0, 0, 0, 0, 0, 0];
-                    character.race = RACELIST.singleWhere((x) => x.name == value);
-                    character.subrace = character.race.subRaces?.first;
-                    
-                    for (int i = 0; i < abilityScores.length; i++) {
-                      character.raceAbilityScoreIncreases[i] += 
-                        character.race.raceScoreIncrease[i] + ((character.subrace?.subRaceScoreIncrease[i]) ?? 0);
-
-                      character.optionalOnesStates = [
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false]
-                      ];
-                      character.optionalTwosStates = [
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false]
-                      ];
-                  }});
-                }
-              ),
-              const SizedBox(height: 10),
-              if (character.race.subRaces != null) ...[
-                StyleUtils.buildStyledSmallTextBox(text: "Select a subrace:"),
-                const SizedBox(height: 10),
-                StyleUtils.buildStyledDropDown(
-                  initialValue: character.subrace?.name,
-                  items: character.race.subRaces,
-                  onChanged: (String? value) {
-                    setState(() {
-                      character.raceAbilityScoreIncreases = [0, 0, 0, 0, 0, 0];
-
-                      character.subrace = character.race.subRaces?.singleWhere((x) => x.name == value);
-                      for (int i = 0; i < abilityScores.length; i++) {
-                        character.raceAbilityScoreIncreases[i] +=
-                          (character.subrace?.subRaceScoreIncrease[i] ?? 0) + character.race.raceScoreIncrease[i];
-                      }
-                      character.optionalOnesStates = [
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false]
-                      ];
-                      character.optionalTwosStates = [
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false],
-                        [false, false, false, false, false, false]
-                      ];
-                    });
-                  },
-                ),
-                const SizedBox(height: 10),
-              ],
-              if (character.race.mystery1S + (character.subrace?.mystery1S ?? 0) != 0) ...[
-                StyleUtils.buildStyledSmallTextBox(text: "Choose which score(s) to increase by 1"),
-                StyleUtils.buildNStyledAsiSelectors(
-                  numbItems: (character.race.mystery1S + (character.subrace?.mystery1S ?? 0)), 
-                  optionalStates: character.optionalOnesStates!, 
-                  onPressed:(int choiceNumber, int index, bool isSelected) {
-                    setState(() {
-                      if (character.optionalOnesStates![choiceNumber][index]) {
-                        character.raceAbilityScoreIncreases[index] -= 1;
-                      } else {
-                        character.raceAbilityScoreIncreases[index] += 1;
-                        for (int buttonIndex = choiceNumber;
-                            buttonIndex < character.optionalOnesStates![choiceNumber].length;
-                            buttonIndex++) {
-                          if (character.optionalOnesStates![choiceNumber][buttonIndex]) {
-                            character.optionalOnesStates![choiceNumber][buttonIndex] = false;
-                            character.raceAbilityScoreIncreases[buttonIndex] -= 1;
-                          }
-                        }
-                      }
-                      character.optionalOnesStates![choiceNumber][index] = !character.optionalOnesStates![choiceNumber][index];
-                    });
-                  }
-                ),
-              ],
-              if (character.race.mystery2S + (character.subrace?.mystery2S ?? 0) != 0) ...[
-                StyleUtils.buildStyledSmallTextBox(text: "Choose which score(s) to increase by 2"),
-                StyleUtils.buildNStyledAsiSelectors(
-                  numbItems: (character.race.mystery2S + (character.subrace?.mystery2S ?? 0)), 
-                  optionalStates: character.optionalTwosStates!,
-                  onPressed:(int choiceNumber, int index, bool isSelected) {
-                    setState(() {
-                      if (character.optionalTwosStates![choiceNumber][index]) {
-                        character.raceAbilityScoreIncreases[index] -= 1;
-                      } else {
-                        character.raceAbilityScoreIncreases[index] += 1;
-                        for (
-                          int buttonIndex = choiceNumber;
-                          buttonIndex < character.optionalTwosStates![choiceNumber].length;
-                          buttonIndex++
-                          ) {
-                            if (character.optionalTwosStates![choiceNumber][buttonIndex]) {
-                              character.optionalTwosStates![choiceNumber][buttonIndex] = false;
-                              character.raceAbilityScoreIncreases[buttonIndex] -= 1;
-                            }
-                        }
-                      }
-                      character.optionalTwosStates![choiceNumber][index] = !character.optionalTwosStates![choiceNumber][index];
-                    });
-                  }
-                )
-              ]                
-            ],
+          RaceTab(
+            character: character,
+            onCharacterChanged: () {
+              setState(() {});
+            },
           ),
 
           // Class Tab
