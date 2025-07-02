@@ -11,6 +11,7 @@ import "../../pdf_generator/pdf_final_display.dart";
 import "../../utils/style_utils.dart";
 import "backstory_tab.dart";
 import "race_tab.dart";
+import "../ability_score_tab.dart";
 
 /* Notifier for when settings changes colour to rebuild. */
 final ValueNotifier<int> tabRebuildNotifier = ValueNotifier<int>(0);
@@ -826,35 +827,15 @@ class MainCreateCharacter extends State<CreateACharacter>
               )),
           
           // Ability Score Tab
-          SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(children: [
-              const SizedBox(height: 29),
-              Text(
-                textAlign: TextAlign.center,
-                "Points remaining: $pointsRemaining",
-                style: TextStyle(fontSize: 50, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.backingColour),
-              ),
-              const SizedBox(height: 35),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    const SizedBox(width: 20),
-                    buildAbilityScoreBlock(score: character.strength),
-                    const SizedBox(width: 10),
-                    buildAbilityScoreBlock(score: character.dexterity),
-                    const SizedBox(width: 10),
-                    buildAbilityScoreBlock(score: character.constitution),
-                    const SizedBox(width: 10),
-                    buildAbilityScoreBlock(score: character.intelligence),
-                    const SizedBox(width: 10),
-                    buildAbilityScoreBlock(score: character.wisdom),
-                    const SizedBox(width: 10),
-                    buildAbilityScoreBlock(score: character.charisma)
-                  ],
-              ))
-          ])),
+          AbilityScoreTab(
+            character: character,
+            pointsRemaining: pointsRemaining,
+            onPointsRemainingChanged: (newPoints) {
+              setState(() {
+                pointsRemaining = newPoints;
+              });
+            },
+          ),
                     
           // Ability Score Improvement & Feat selection tab
           SingleChildScrollView(
@@ -1829,169 +1810,6 @@ class MainCreateCharacter extends State<CreateACharacter>
         ]),
       ),
     );});
-  }
-
-  /* Used in: Ability score */
-  Column buildAbilityScoreBlock({
-    required AbilityScore score,
-  }) {
-    
-    // Increment/decrement logic helper methods
-    void decrementScore() {
-      if (score.value > 8) {
-        score.value--;
-        pointsRemaining += score.abilityScoreCost;
-      }
-    }
-
-    void incrementScore() {
-      if (score.value < 15) {
-        final cost = score.abilityScoreCost;
-        if (cost <= pointsRemaining) {
-          pointsRemaining -= cost;
-          score.value ++;
-        }
-      }
-    }
-
-    bool canAdd = score.value < 15;
-    bool canRemove = 8 < score.value;
-    int index = abilityScores.indexOf(score.name);
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        // Name
-        StyleUtils.buildStyledHugeTextBox(text: score.name),
-        const SizedBox(height: 25),
-
-        // Base value & increment/decrement buttons
-        Container(
-          height: 128.2,
-          width: 135.2,
-          decoration: BoxDecoration(
-            color: InitialTop.colourScheme.backingColour,
-            border: Border.all(color: Colors.black, width: 1.6),
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
-          ),
-          child: Column(
-            children: [
-              // Current Value
-              Text(
-                textAlign: TextAlign.center,
-                "${score.value}",
-                style: TextStyle(
-                    fontSize: 65,
-                    fontWeight: FontWeight.w700,
-                    color: InitialTop.colourScheme.textColour),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // If only one button available, centre it
-                  if (!canAdd || !canRemove)
-                    const SizedBox(height: 20, width: 33.8),
-
-                  // Decrement Button
-                  if (canRemove)
-                    OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: InitialTop.colourScheme.backingColour,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(4)),
-                        ),
-                        side: const BorderSide(
-                          width: 3,
-                          color: negativeColor,
-                        ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          decrementScore();
-                        });
-                      },
-                      child: const Icon(Icons.remove, color: Colors.white),
-                    ),
-
-                  // Increment Button
-                  if (canAdd)
-                    OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor:
-                            (score.abilityScoreCost > pointsRemaining)
-                                ? unavailableColor 
-                                : InitialTop.colourScheme.backingColour,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(4)),
-                        ),
-                        side: const BorderSide(
-                          width: 3,
-                          color: positiveColor,
-                        ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          incrementScore();
-                        });
-                      },
-                      child: const Icon(Icons.add, color: Colors.white),
-                    )
-                ],
-              ),
-            ],
-          ),
-        ),
-
-        const SizedBox(height: 10),
-
-        // Race and Feat Increases
-        Row(
-        crossAxisAlignment: CrossAxisAlignment.center, 
-        children: [
-          const SizedBox(width: 19),
-          Text(
-            textAlign: TextAlign.center,
-            " (+${character.raceAbilityScoreIncreases[index]}) ",
-            style: const TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.w700,
-              color: Colors.black,
-            ),
-          ),
-          Text(
-            textAlign: TextAlign.center,
-            " (+${character.featsASIScoreIncreases[index]}) ",
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.w700,
-              color: InitialTop.colourScheme.backingColour,
-            ),
-          ),
-        ]),
-
-        const SizedBox(height: 10),
-
-        // Final displayed total
-        Container(
-          width: 90,
-          height: 80,
-          decoration: BoxDecoration(
-            color: InitialTop.colourScheme.backingColour,
-            border: Border.all(color: Colors.black, width: 1.6),
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
-          ),
-          child: Text(
-            (score.value + character.raceAbilityScoreIncreases[index] + character.featsASIScoreIncreases[index]).toString(),
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 50,
-              fontWeight: FontWeight.w700,
-              color: InitialTop.colourScheme.textColour,
-            ),
-          ),
-        ),
-      ],
-    );
   }
 
   Container buildAsiBlock({
