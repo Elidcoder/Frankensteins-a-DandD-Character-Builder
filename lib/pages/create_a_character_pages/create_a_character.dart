@@ -6,10 +6,9 @@ import "dart:math";
 import "spell_handling.dart";
 import "../../main.dart";
 import "../../content_classes/all_content_classes.dart";
-import "../../file_manager/file_manager.dart";
-import "../../pdf_generator/pdf_final_display.dart";
 import "creation_tabs.dart";
 import "../../utils/style_utils.dart";
+import "finishing_up_tab.dart";
 
 /* Notifier for when settings changes colour to rebuild. */
 final ValueNotifier<int> tabRebuildNotifier = ValueNotifier<int>(0);
@@ -477,155 +476,22 @@ class MainCreateCharacter extends State<CreateACharacter>
           ),
           
           // Finishing Up Tab
-          Scaffold(
-              backgroundColor: InitialTop.colourScheme.backgroundColour,
-              // Floating pdf generator button
-              floatingActionButton: FloatingActionButton(
-                tooltip: "Generate a PDF",
-                foregroundColor: InitialTop.colourScheme.textColour,
-                backgroundColor: InitialTop.colourScheme.backingColour,
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => PdfPreviewPage(
-                          character: character),
-                    ),
-                  );
-                },
-                child: const Icon(Icons.picture_as_pdf),
-              ),
-              body:
-                Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                  const Expanded(child: SizedBox()),
-                  Expanded(
-                      flex: 5,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          spacing: 20,
-                          children: [
-                            const SizedBox(height: 20),
-                            StyleUtils.buildStyledHugeTextBox(text: "Add your character to a group:"),
-                            StyleUtils.buildStyledMediumTextBox(text: "Select an existing group:"),
-                            // Group selection dropdown and input field
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(5)),
-                                color: (GROUPLIST.isNotEmpty)
-                                    ? InitialTop.colourScheme.backingColour
-                                    : const Color.fromARGB(247, 56, 53, 52),
-                              ),
-                              height: 45,
-                              child: StyleUtils.buildBaseDropdownButton(
-                                value: GROUPLIST.contains(character.group) ? character.group : null, 
-                                items: GROUPLIST.isNotEmpty ? GROUPLIST : null, 
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    character.group = value!;
-                                  });
-                                },
-                                hintText: (GROUPLIST.isNotEmpty) ? " No matching group selected " : " No groups available "
-                            )),
-                            StyleUtils.buildStyledMediumTextBox(text: "Or create a new one:"),
-                            StyleUtils.buildStyledSmallTextField(
-                              width: 300,
-                              hintText: "Enter a group",
-                              textController: groupEnterController,
-                              onChanged: (groupNameEnteredValue) {
-                                setState(() {
-                                  character.group = groupNameEnteredValue;
-                                });
-                              }
-                            ),
-                            // Character save button
-                            Tooltip(
-                                message: canCreateCharacter? "This button will save your character putting it into the Json and then send you back to the main menu.": "You must complete the required tabs before saving your character",
-                                child: ElevatedButton(
-                                  style: OutlinedButton.styleFrom(
-                                    backgroundColor: canCreateCharacter ? InitialTop.colourScheme.backingColour : unavailableColor,
-                                    padding: const EdgeInsets.fromLTRB(45, 20, 45, 20),
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10))),
-                                    side: const BorderSide(width: 3, color: Colors.black),
-                                  ),
-                                  child: StyleUtils.buildStyledHugeTextBox(text: "Save Character", color: InitialTop.colourScheme.textColour),
-                                  onPressed: () {
-                                    if (canCreateCharacter) {
-                                      setState(() {
-                                        CHARACTERLIST.add(character);
-                                        if ((!GROUPLIST.contains(character.group)) &&
-                                            character.group != null &&
-                                            character.group!.replaceAll(" ", "") != "") {
-                                          GROUPLIST.add(character.group!);
-                                        }
-                                        saveChanges();
-                                        Navigator.pop(context);
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => InitialTop()),
-                                        );
-                                        showCongratulationsDialog(context);
-                                      });
-                                    }
-                                  },
-                                ))
-                          ])),
-                Expanded(
-                    flex: 7,
-                    child: Column(
-                      spacing: 20,
-                      children: [
-                        const SizedBox(height: 20),
-                        StyleUtils.buildStyledHugeTextBox(text: "Build checklist:"),
-                        
-                        //Basics
-                        StyleUtils.makeOptionalText(condition: character.basicsComplete, trueText: "Filled in all basic information", falseText: "Haven't filled in all necessary basics"),
-
-                        //Ability Scores
-                        StyleUtils.makeRequiredText(condition: (pointsRemaining == 0), trueText: "Used all ability score points", falseText: "$pointsRemaining unspent ability score points"),
-                        
-                        //ASI+feats
-                        (numberOfRemainingFeatOrASIs == 0)
-                          ? StyleUtils.makeRequiredText(
-                              condition: !remainingAsi, 
-                              trueText: "Made all ASI/Feats selections", 
-                              falseText: "You have an unused ASI"
-                            )
-                          : StyleUtils.buildStyledMediumTextBox(
-                            text: "You have $numberOfRemainingFeatOrASIs ASI/Feat (s) remaining", 
-                            color: negativeColor
-                            ),
-
-                        //Class
-                        StyleUtils.makeRequiredText(
-                          condition: (charLevel <= character.classList.length),
-                          trueText: "Made all level selections", 
-                          falseText: "${charLevel - character.classList.length} unused level${(charLevel > 1)? "s":""}"
-                        ),
-
-                        //Equipment
-                        StyleUtils.makeRequiredText(
-                          condition: character.chosenAllEqipment,
-                          trueText: "Made all equipment selections", 
-                          falseText: "Missed ${character.equipmentSelectedFromChoices.where((element) => element.length == 2).toList().length} equipment choice(s)"
-                        ),
-                        
-                        // Spells
-                        StyleUtils.makeRequiredText(
-                          condition: character.chosenAllSpells,
-                          trueText: "Made all spells selections", 
-                          falseText: "Missed ${(character.allSpellsSelectedAsListsOfThings.fold(0, (a, b) => a + (b[2] as int)))} spells"),                            
-
-                        // Backstory
-                        StyleUtils.makeOptionalText(
-                          condition: character.backstoryComplete,
-                          trueText: "Completed backstory", 
-                          falseText: "Haven't filled in all backstory information"
-                        )
-                ]))
-              ])),
+          FinishingUpTab(
+            character: character,
+            groupEnterController: groupEnterController,
+            canCreateCharacter: canCreateCharacter,
+            pointsRemaining: pointsRemaining,
+            numberOfRemainingFeatOrASIs: numberOfRemainingFeatOrASIs,
+            remainingAsi: remainingAsi,
+            charLevel: charLevel,
+            onCharacterChanged: () {
+              setState(() {});
+            },
+            onSaveCharacter: () {
+              setState(() {});
+            },
+            showCongratulationsDialog: showCongratulationsDialog,
+          ),
         ]),
       ),
     );});
