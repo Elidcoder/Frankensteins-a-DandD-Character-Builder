@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
-import "../main.dart";
-import "../content_classes/all_content_classes.dart";
-import "../utils/style_utils.dart";
+import "../../main.dart";
+import "../../content_classes/all_content_classes.dart";
+import "../../utils/style_utils.dart";
 
 /// Ability Score tab widget for character creation
 /// Handles ability score point allocation using the point-buy system
