@@ -1,10 +1,10 @@
 // External Imports
-import "dart:math";
 import "package:flutter/material.dart";
 
 // Project Imports
 import "../create_a_character_pages/spell_handling.dart";
 import "../create_a_character_pages/equipment_tab.dart";
+import "../create_a_character_pages/class_tab.dart";
 import "../../content_classes/all_content_classes.dart";
 import "../../pdf_generator/pdf_final_display.dart";
 import "../../main.dart" show InitialTop, InitialTopKey;
@@ -79,18 +79,23 @@ class EditCharacter extends State<EditACharacter> {
   bool fullFeats = true;
   String? coinTypeSelected = "Gold Pieces";
   String? group;
-  int level = 1;
-  List<String> classList = [];
+  String? characterLevel = "1";
   List<dynamic> equipmentSelectedFromChoices = [];
   List<String> featuresAndTraits = [];
   List<List<dynamic>> ACList = [];
   Map<String, List<dynamic>> speedBonusMap = {};
-  List<int> levelsPerClass = [];
+  ValueNotifier<int> tabRebuildNotifier = ValueNotifier<int>(0);
   TextEditingController groupEnterController = TextEditingController();
+
+  int get charLevel {
+    return int.parse(characterLevel ?? "1");
+  }
   @override
   void initState() {
     super.initState();
     editableCharacter = character.getCopy();
+    characterLevel = editableCharacter.classList.length.toString();
+    tabRebuildNotifier = ValueNotifier<int>(0);
   }
 
   @override
@@ -244,300 +249,31 @@ class EditCharacter extends State<EditACharacter> {
             ],
           ),
           //class - updated to color scheme
-          DefaultTabController(
-            length: 2,
-            child: Scaffold(
-              backgroundColor: InitialTop.colourScheme.backgroundColour,
-              floatingActionButton: FloatingActionButton(
-                tooltip: "Increase character level by 1",
-                foregroundColor: InitialTop.colourScheme.textColour,
-                backgroundColor: (editableCharacter.classList.length < 20)
-                    ? InitialTop.colourScheme.backingColour
-                    : const Color.fromARGB(247, 56, 53, 52),
-                onPressed: () {
-                  if (editableCharacter.classList.length < 20) {
-                    setState(() {
-                      editableCharacter.classList.add("");
-                    });
-                  }
-                },
-                child: const Icon(
-                  Icons.exposure_plus_1,
-                ),
-              ),
-              appBar: AppBar(
-                foregroundColor: InitialTop.colourScheme.textColour,
-                backgroundColor: InitialTop.colourScheme.backingColour,
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Center(
-                        child: Text(
-                            '${editableCharacter.classList.length - editableCharacter.levelsPerClass.reduce((value, element) => value + element)} class level(s) available but unselected', //and ${widgetsInPlay.length - editableCharacter.levelsPerClass.reduce((value, element) => value + element) - editableCharacter.allSelected.length} choice(s)
-                            style: TextStyle(
-                                fontSize: 21,
-                                fontWeight: FontWeight.w600,
-                                color: InitialTop.colourScheme.textColour),
-                            textAlign: TextAlign.center)),
-                    editableCharacter.classList.isNotEmpty
-                        ? Text(
-                            "Classes and your levels in them: ${CLASSLIST.asMap().entries.where((entry) => editableCharacter.levelsPerClass[entry.key] != 0).map((entry) => "${entry.value.name} - ${editableCharacter.levelsPerClass[entry.key]}").join(", ")}",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: InitialTop.colourScheme.textColour),
-                            textAlign: TextAlign.center)
-                        : Text("You have no levels in any class",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: InitialTop.colourScheme.textColour),
-                            textAlign: TextAlign.center)
-                  ],
-                ),
-                bottom: TabBar(
-                  tabs: [
-                    Tab(
-                        child: Text("Choose your classes",
-                            style: TextStyle(color: InitialTop.colourScheme.textColour))),
-                    Tab(
-                        child: Text(
-                            "Make your selections for each level in your class",
-                            style: TextStyle(color: InitialTop.colourScheme.textColour))),
-                  ],
-                  indicatorColor: InitialTop.colourScheme.textColour,
-                ),
-              ),
-              body: TabBarView(children: [
-                Container(
-                    padding: const EdgeInsets.only(top: 17),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Wrap(
-                        spacing: 8.0,
-                        runSpacing: 8.0,
-                        alignment: WrapAlignment.center,
-                        children:
-                            // This is the list of buttons
-                            List.generate(CLASSLIST.length, (index) {
-                          return Container(
-                              width: (["Martial", "Third Caster"]
-                                      .contains(CLASSLIST[index].classType))
-                                  ? 210
-                                  : 225,
-                              height: 170,
-                              decoration: BoxDecoration(
-                                color: InitialTop.colourScheme.backingColour,
-                                border: Border.all(
-                                  color: Colors.black,
-                                  width: 1.8,
-                                ),
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(5)),
-                              ),
-                              child: Column(
-                                children: [
-                                  Text(CLASSLIST[index].name,
-                                      style: TextStyle(
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.w700,
-                                          color: InitialTop.colourScheme.textColour)),
-                                  Text(
-                                      "Class type: ${CLASSLIST[index].classType}",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: InitialTop.colourScheme.textColour)),
-                                  (["Martial", "Third Caster"]
-                                          .contains(CLASSLIST[index].classType))
-                                      ? Text(
-                                          "Main ability: ${CLASSLIST[index].mainOrSpellcastingAbility}",
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600,
-                                              color: InitialTop.colourScheme.textColour))
-                                      : Text(
-                                          "Spellcasting ability: ${CLASSLIST[index].mainOrSpellcastingAbility}",
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600,
-                                              color: InitialTop.colourScheme.textColour)),
-                                  Text(
-                                      "Hit die: D${CLASSLIST[index].maxHitDiceRoll}",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: InitialTop.colourScheme.textColour)),
-                                  Text(
-                                      "Saves: ${CLASSLIST[index].savingThrowProficiencies.join(",")}",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: InitialTop.colourScheme.textColour)),
-                                  const SizedBox(height: 7),
-                                  ElevatedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        backgroundColor: (editableCharacter.classList.length <=
-                                                    editableCharacter.levelsPerClass.reduce(
-                                                        (value, element) =>
-                                                            value + element) ||
-                                                (!multiclassingPossible(
-                                                    CLASSLIST[index])))
-                                            ? const Color.fromARGB(
-                                                247, 56, 53, 52)
-                                            : InitialTop.colourScheme.backingColour,
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(4))),
-                                        side: const BorderSide(
-                                            width: 3,
-                                            color: Color.fromARGB(
-                                                255, 10, 126, 54)),
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          if (editableCharacter.classList.length > editableCharacter.classList.length &&
-                                              (multiclassingPossible(
-                                                  CLASSLIST[index]))) {
-                                            editableCharacter.classList
-                                                .add(CLASSLIST[index].name);
-
-                                            if ((CLASSLIST[index]
-                                                    .gainAtEachLevel[
-                                                        editableCharacter.levelsPerClass[index]]
-                                                    .where((element) =>
-                                                        element[0] == "Choice")
-                                                    .toList())
-                                                .isEmpty) {
-                                              widgetsInPlay.add(Text(
-                                                "No choices needed for ${CLASSLIST[index].name} level ${CLASSLIST[index].gainAtEachLevel[editableCharacter.levelsPerClass[index]][0][1]}",
-                                                style: const TextStyle(
-                                                    fontSize: 25,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: Color.fromARGB(
-                                                        255, 0, 168, 252)),
-                                              ));
-                                            } else {
-                                              widgetsInPlay.add(Text(
-                                                "${CLASSLIST[index].name} Level ${CLASSLIST[index].gainAtEachLevel[editableCharacter.levelsPerClass[index]][0][1]} choice(s):",
-                                                style: const TextStyle(
-                                                    fontSize: 25,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: Color.fromARGB(
-                                                        255, 0, 168, 252)),
-                                              ));
-                                            }
-                                            for (List<dynamic> x
-                                                in CLASSLIST[index]
-                                                        .gainAtEachLevel[
-                                                    editableCharacter.levelsPerClass[index]]) {
-                                              if (x[0] == "Choice") {
-                                                widgetsInPlay.add(SizedBox(
-                                                    height: 80,
-                                                    child: ChoiceRow(
-                                                      x: x.sublist(1),
-                                                      allSelected: editableCharacter.allSelected,
-                                                    )));
-                                              } else {
-                                                levelGainParser(
-                                                    x, CLASSLIST[index]);
-                                              }
-                                            }
-
-                                            //No level 1 bonuses
-
-                                            if (character.averageHitPoints ??
-                                                false) {
-                                              editableCharacter.maxHealth += ((CLASSLIST[index]
-                                                          .maxHitDiceRoll) /
-                                                      2)
-                                                  .ceil();
-                                            } else {
-                                              editableCharacter.maxHealth += 1 +
-                                                  (Random().nextDouble() *
-                                                          CLASSLIST[index]
-                                                              .maxHitDiceRoll)
-                                                      .floor();
-                                            }
-
-                                            //check if it's a spellcaster
-                                            if (CLASSLIST[index].classType !=
-                                                "Martial") {
-                                              if (editableCharacter.classList
-                                                      .where((element) =>
-                                                          element ==
-                                                          CLASSLIST[index].name)
-                                                      .length ==
-                                                  1) {
-                                                editableCharacter.allSpellsSelectedAsListsOfThings
-                                                    .add([
-                                                  CLASSLIST[index].name,
-                                                  [],
-                                                  levelZeroGetSpellsKnown(
-                                                      index),
-                                                  CLASSLIST[index]
-                                                          .spellsKnownFormula ??
-                                                      CLASSLIST[index]
-                                                          .spellsKnownPerLevel
-                                                ]);
-                                              } else {
-                                                var a = editableCharacter.classSubclassMapper[
-                                                    CLASSLIST[index].name];
-                                                for (var x = 0;
-                                                    x <
-                                                        editableCharacter.allSpellsSelectedAsListsOfThings
-                                                            .length;
-                                                    x++) {
-                                                  if (editableCharacter.allSpellsSelectedAsListsOfThings[
-                                                          x][0] ==
-                                                      CLASSLIST[index].name) {
-                                                    editableCharacter.allSpellsSelectedAsListsOfThings[
-                                                            x][2] =
-                                                        getSpellsKnown(
-                                                            index,
-                                                            editableCharacter.allSpellsSelectedAsListsOfThings[
-                                                                x]);
-                                                  } else if (a != null) {
-                                                    if (editableCharacter.allSpellsSelectedAsListsOfThings[
-                                                            x][0] ==
-                                                        a) {
-                                                      editableCharacter.allSpellsSelectedAsListsOfThings[
-                                                              x][2] =
-                                                          getSpellsKnown(
-                                                              index,
-                                                              editableCharacter.allSpellsSelectedAsListsOfThings[
-                                                                  x]);
-                                                    }
-                                                  }
-                                                }
-
-                                                /*editableCharacter.allSpellsSelectedAsListsOfThings
-                                                .add([
-                                              CLASSLIST[index].name,
-                                              [],
-                                              levelZeroGetSpellsKnown(index),
-                                              CLASSLIST[index]
-                                                      .spellsKnownFormula ??
-                                                  CLASSLIST[index]
-                                                      .spellsKnownPerLevel
-                                            ]);*/
-                                              }
-                                            }
-
-                                            editableCharacter.levelsPerClass[index]++;
-                                          }
-                                        });
-                                      },
-                                      child: Icon(Icons.add,
-                                          color: InitialTop.colourScheme.textColour, size: 35))
-                                ],
-                              ));
-                        }),
-                      ),
-                    )),
-                Column(children: widgetsInPlay)
-              ]),
-            ),
+          ClassTab(
+            character: editableCharacter,
+            charLevel: charLevel,
+            characterLevel: characterLevel,
+            widgetsInPlay: widgetsInPlay,
+            numberOfRemainingFeatOrASIs: numberOfRemainingFeatOrASIs,
+            tabRebuildNotifier: tabRebuildNotifier,
+            onCharacterChanged: () {
+              setState(() {});
+            },
+            onCharacterLevelChanged: (newLevel) {
+              setState(() {
+                characterLevel = newLevel;
+              });
+            },
+            onWidgetsInPlayChanged: (newWidgets) {
+              setState(() {
+                widgetsInPlay = newWidgets;
+              });
+            },
+            onNumberOfRemainingFeatOrASIsChanged: (newCount) {
+              setState(() {
+                numberOfRemainingFeatOrASIs = newCount;
+              });
+            },
           ),
           //ASI + FEAT- updated to new color Scheme
           SingleChildScrollView(
@@ -1184,10 +920,14 @@ class EditCharacter extends State<EditACharacter> {
                                                                               editableCharacter.allSelected,
                                                                         )));
                                                               } else {
-                                                                levelGainParser(
-                                                                    x,
-                                                                    CLASSLIST[
-                                                                        index]);
+                                                                // Process non-choice feat abilities here
+                                                                // Note: Complex level gain logic now handled by ClassTab widget
+                                                                if (x[0] == "ASI") {
+                                                                  numberOfRemainingFeatOrASIs++;
+                                                                } else if (x[0] == "Bonus") {
+                                                                  editableCharacter.featuresAndTraits.add("${x[1]}: ${x[2]}");
+                                                                }
+                                                                // Add other feat-specific processing as needed
                                                               }
                                                             }
                                                           }
@@ -1678,7 +1418,7 @@ class EditCharacter extends State<EditACharacter> {
                                       (numberOfRemainingFeatOrASIs ==
                                                   0 &&
                                               !ASIRemaining &&
-                                              level <= classList.length &&
+                                              charLevel <= editableCharacter.classList.length &&
                                               (equipmentSelectedFromChoices ==
                                                       [] ||
                                                   equipmentSelectedFromChoices
@@ -1711,7 +1451,7 @@ class EditCharacter extends State<EditACharacter> {
                                 onPressed: () {
                                   if (numberOfRemainingFeatOrASIs == 0 &&
                                       !ASIRemaining &&
-                                      level <= classList.length &&
+                                      charLevel <= editableCharacter.classList.length &&
                                       (equipmentSelectedFromChoices == [] ||
                                           equipmentSelectedFromChoices
                                               .where((element) =>
@@ -1881,13 +1621,13 @@ class EditCharacter extends State<EditACharacter> {
                                   fontWeight: FontWeight.w700)),
                       //Class
                       const SizedBox(height: 20),
-                      (level <= classList.length)
+                      (charLevel <= editableCharacter.classList.length)
                           ? const Text("Made all level selections",
                               style: TextStyle(
                                   color: Colors.green,
                                   fontSize: 22,
                                   fontWeight: FontWeight.w700))
-                          : Text("${level - classList.length} unused levels",
+                          : Text("${charLevel - editableCharacter.classList.length} unused levels",
                               style: const TextStyle(
                                   color: Colors.red,
                                   fontSize: 22,
@@ -1970,120 +1710,6 @@ class EditCharacter extends State<EditACharacter> {
         ],
       ),
     );
-  }
-
-  bool scoresFailRequirement(Character character, List<int> requirements) {
-    int count = 0;
-    if (editableCharacter.strength.value + editableCharacter.raceAbilityScoreIncreases[0] + editableCharacter.featsASIScoreIncreases[0] >= requirements[0]) count++;
-    if (editableCharacter.dexterity.value + editableCharacter.raceAbilityScoreIncreases[1] + editableCharacter.featsASIScoreIncreases[1] >= requirements[1]) count++;
-    if (editableCharacter.constitution.value + editableCharacter.raceAbilityScoreIncreases[2] + editableCharacter.featsASIScoreIncreases[2] >= requirements[2]) count++;
-    if (editableCharacter.intelligence.value + editableCharacter.raceAbilityScoreIncreases[3] + editableCharacter.featsASIScoreIncreases[3] >= requirements[3]) count++;
-    if (editableCharacter.wisdom.value + editableCharacter.raceAbilityScoreIncreases[4] + editableCharacter.featsASIScoreIncreases[4] >= requirements[4]) count++;
-    if (editableCharacter.charisma.value + editableCharacter.raceAbilityScoreIncreases[5] + editableCharacter.featsASIScoreIncreases[5] >= requirements[5]) count++;
-
-    return count >= requirements[6];
-  }
-  
-  bool multiclassingPossible(Class selectedClass) {
-    // Check if it is their first class or they already have a level in the class
-    if (character.classList.isEmpty || character.classList.contains(selectedClass.name)) {
-      return true;
-    }
-
-    // Check if multiclassing is allowed
-    if (!(character.multiclassing ?? false)) {
-      return false;
-    }
-
-    // Check they satisfy the class they want to take
-    if (scoresFailRequirement(character, selectedClass.multiclassingRequirements)) {
-      return false;
-    }
-
-    // Check they satisfy their last added class's requirements
-    return scoresFailRequirement(character, CLASSLIST.last.multiclassingRequirements);
-  }
-
-  Widget? levelGainParser(List<dynamic> x, Class selectedClass) {
-    //Levelup(class?)
-    if (x[0] == "Level") {
-      // ("Level", "numb")
-      return Text(
-        "${selectedClass.name} Level ${x[1]} choice(s):",
-        style: const TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.w700,
-            color: Color.fromARGB(255, 0, 168, 252)),
-      );
-    } else if (x[0] == "Nothing") {
-      // ("Nothing", "numb")
-      return Text(
-        "No choices needed for ${selectedClass.name} level ${x[1]}",
-        style: const TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.w700,
-            color: Color.fromARGB(255, 0, 168, 252)),
-      );
-    } else if (x[0] == "Bonus") {
-      // ("Bonus","String description")
-      featuresAndTraits.add("${x[1]}: ${x[2]}");
-    } else if (x[0] == "AC") {
-      // ("AC","intelligence + 2", "RQUIREMENT")
-      ACList.add([x[1], x[2]]);
-    } else if (x[0] == "Speed") {
-      //note base speed is given by race
-      //("speed", (w/s/c/f/h), numb/expression")
-      speedBonusMap[x[1]]?.add(x[2]);
-    } else if (x[0] == "AttributeBoost") {
-      if (x[1] == "Intelligence") {
-        editableCharacter.intelligence.value += int.parse(x[2]);
-      } else if (x[1] == "Strength") {
-        editableCharacter.strength.value += int.parse(x[2]);
-      } else if (x[1] == "Constitution") {
-        editableCharacter.constitution.value += int.parse(x[2]);
-      } else if (x[1] == "Dexterity") {
-        editableCharacter.dexterity.value += int.parse(x[2]);
-      } else if (x[1] == "Wisdom") {
-        editableCharacter.wisdom.value += int.parse(x[2]);
-      } else if (x[1] == "charisma") {
-        editableCharacter.charisma.value += int.parse(x[2]);
-      }
-      //do this later
-    } else if (x[0] == "Gained") {
-      character.skillBonusMap[x[1]] =
-          character.skillBonusMap[x[1]]! + int.parse(x[2]);
-      //do this later
-    } else if (x[0] == "ASI") {
-      numberOfRemainingFeatOrASIs++;
-    }
-
-    /*else if (x[0] == "Equipment") {
-    //note base speed is given by race
-    //("speed", "10", "(w/s/c/f)")
-    SPEEDLIST.append([x[1], x[2]]);
-  }*/
-    else if (x[0] == "Money") {
-      //("Money", "Copper Pieces", "10")
-      editableCharacter.currency[x[1]] = editableCharacter.currency[x[1]]! + int.parse(x[2]);
-    } //deal
-    return null;
-  }
-
-  int levelZeroGetSpellsKnown(int index) {
-    if (CLASSLIST[index].spellsKnownFormula == null) {
-      return CLASSLIST[index].spellsKnownPerLevel![levelsPerClass[index]];
-    }
-    //decode as zero
-    return 3;
-  }
-
-  int getSpellsKnown(int index, List<dynamic> thisStuff) {
-    if (CLASSLIST[index].spellsKnownFormula == null) {
-      return (CLASSLIST[index].spellsKnownPerLevel![levelsPerClass[index]] -
-          thisStuff[1].length) as int;
-    }
-    //decode as level + 1 and then take away [1].length
-    return 3;
   }
 
   String produceEquipmentOptionDescription(List list) {
