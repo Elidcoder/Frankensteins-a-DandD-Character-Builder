@@ -3,8 +3,8 @@ import "package:flutter/material.dart";
 
 // Project Imports
 import "../create_a_character_pages/edit_tabs.dart";
+import "../create_a_character_pages/finishing_up_tab.dart";
 import "../../content_classes/all_content_classes.dart";
-import "../../pdf_generator/pdf_final_display.dart";
 import "../../main.dart" show InitialTop, InitialTopKey;
 import "../../top_bar.dart";
 import "../../file_manager/file_manager.dart";
@@ -68,18 +68,10 @@ class EditCharacter extends State<EditACharacter> {
 
   EditCharacter({required this.character});
   String? experienceIncrease;
-  String? levellingMethod;
   List<Widget> widgetsInPlay = [];
-  Map<String, List<dynamic>> selections = {};
   bool remainingAsi = false;
   int numberOfRemainingFeatOrASIs = 0;
-  String? coinTypeSelected = "Gold Pieces";
-  String? group;
   String? characterLevel = "1";
-  List<dynamic> equipmentSelectedFromChoices = [];
-  List<String> featuresAndTraits = [];
-  List<List<dynamic>> ACList = [];
-  Map<String, List<dynamic>> speedBonusMap = {};
   ValueNotifier<int> tabRebuildNotifier = ValueNotifier<int>(0);
   TextEditingController groupEnterController = TextEditingController();
 
@@ -92,6 +84,9 @@ class EditCharacter extends State<EditACharacter> {
     editableCharacter = character.getCopy();
     characterLevel = editableCharacter.classList.length.toString();
     tabRebuildNotifier = ValueNotifier<int>(0);
+    
+    // Initialize group text controller with character's existing group
+    groupEnterController.text = editableCharacter.group ?? "";
     
     // Initialize ASI/Feats state based on character level and existing selections
     // Calculate how many ASI/Feats the character should have based on their class levels
@@ -177,11 +172,21 @@ class EditCharacter extends State<EditACharacter> {
             children: [
               const SizedBox(height: 50),
               Text(
-                  "${character.characterDescription.name} is level ${editableCharacter.classList.length} with ${editableCharacter.characterExperience} experience",
+                  "${character.characterDescription.name} is level ${int.parse(characterLevel ?? "1")} with ${editableCharacter.characterExperience} experience",
                   style: TextStyle(
                       fontSize: 27,
                       fontWeight: FontWeight.w700,
                       color: InitialTop.colourScheme.backingColour)),
+              // The = check accounts for the OBO of length
+              if (int.parse(characterLevel ?? "1") >= character.classLevels.length) ...[
+                const SizedBox(height: 16),
+                Text("${character.characterDescription.name} has at least one unused level!!",
+                    style: TextStyle(
+                        fontSize: 23,
+                        fontWeight: FontWeight.w700,
+                        color: InitialTop.colourScheme.backingColour)),
+              ],
+
               const SizedBox(height: 16),
               Text("Increase level by 1:  ",
                   style: TextStyle(
@@ -191,7 +196,7 @@ class EditCharacter extends State<EditACharacter> {
               const SizedBox(height: 8),
               OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                    backgroundColor: (editableCharacter.classList.length < 20)
+                    backgroundColor: (int.parse(characterLevel ?? "1") < 20)
                         ? InitialTop.colourScheme.backingColour
                         : const Color.fromARGB(247, 56, 53, 52),
                     shape: const RoundedRectangleBorder(
@@ -201,8 +206,8 @@ class EditCharacter extends State<EditACharacter> {
                   ),
                   onPressed: () {
                     setState(() {
-                      if (editableCharacter.classList.length < 20) {
-                        editableCharacter.classList.add("");
+                      if (int.parse(characterLevel ?? "1") < 20) {
+                        characterLevel = (int.parse(characterLevel ?? "1") + 1).toString();
                       }
                     });
                   },
@@ -351,404 +356,129 @@ class EditCharacter extends State<EditACharacter> {
           //Boons and magic items- updated to new color Scheme
           const Icon(Icons.directions_bike),
           //Finishing up
-          Scaffold(
-              backgroundColor: InitialTop.colourScheme.backgroundColour,
-              floatingActionButton: FloatingActionButton(
-                tooltip: "Generate a PDF",
-                foregroundColor: InitialTop.colourScheme.textColour,
-                backgroundColor: InitialTop.colourScheme.backingColour,
-                onPressed: () {
-                  editableCharacter.uniqueID = character.uniqueID;
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => PdfPreviewPage(
-                          character: editableCharacter),
-                    ),
-                  );
-                },
-                child: const Icon(Icons.picture_as_pdf),
-              ),
-              body:
-                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                const Expanded(child: SizedBox()),
-                Expanded(
-                    flex: 5,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const SizedBox(height: 40),
-                          Text("Add your character to a group:",
-                              style: TextStyle(
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.w800,
-                                  color: InitialTop.colourScheme.backingColour)),
-                          const SizedBox(height: 20),
-                          Text("Select an existing group:",
-                              style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w800,
-                                  color: InitialTop.colourScheme.backingColour)),
-                          const SizedBox(height: 20),
-                          Container(
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(5)),
-                                color: (GROUPLIST.isNotEmpty)
-                                    ? InitialTop.colourScheme.backingColour
-                                    : const Color.fromARGB(247, 56, 53, 52),
-                              ),
-                              height: 45,
-                              child: DropdownButton<String>(
-                                hint: Text(
-                                    (GROUPLIST.isNotEmpty)
-                                        ? " No matching group selected "
-                                        : " No groups available ",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: InitialTop.colourScheme.textColour,
-                                      decoration: TextDecoration.underline,
-                                    )),
-                                alignment: Alignment.center,
-                                onChanged: (String? value) {
-                                  // This is called when the user selects an item.
-                                  setState(() {
-                                    group = value!;
-                                  });
-                                },
-                                value: GROUPLIST.contains(group) ? group : null,
-                                icon: Icon(Icons.arrow_drop_down,
-                                    color: InitialTop.colourScheme.textColour),
-                                items: (GROUPLIST != [])
-                                    ? GROUPLIST.map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Align(
-                                              child: Text(value,
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    color: InitialTop.colourScheme.textColour,
-                                                    decoration: TextDecoration
-                                                        .underline,
-                                                  ))),
-                                        );
-                                      }).toList()
-                                    : null,
-                                dropdownColor: InitialTop.colourScheme.backingColour,
-                                elevation: 2,
-                                style: TextStyle(
-                                    color: InitialTop.colourScheme.textColour,
-                                    fontWeight: FontWeight.w700),
-                                underline: const SizedBox(),
-                              )),
-                          const SizedBox(height: 20),
-                          Text("Or create a new one:",
-                              style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w800,
-                                  color: InitialTop.colourScheme.backingColour)),
-                          const SizedBox(height: 20),
-                          SizedBox(
-                            width: 300,
-                            child: TextField(
-                                controller: groupEnterController,
-                                cursorColor: InitialTop.colourScheme.textColour,
-                                style: TextStyle(color: InitialTop.colourScheme.textColour),
-                                decoration: InputDecoration(
-                                    hintText: "Enter a group",
-                                    hintStyle: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        color: InitialTop.colourScheme.textColour),
-                                    filled: true,
-                                    fillColor: InitialTop.colourScheme.backingColour,
-                                    border: const OutlineInputBorder(
-                                        borderSide: BorderSide.none,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(12)))),
-                                onChanged: (groupNameEnteredValue) {
-                                  setState(() {
-                                    group = groupNameEnteredValue;
-                                  });
-                                }),
-                          ),
-                          const SizedBox(height: 30),
-                          Tooltip(
-                              message:
-                                  "This button will save your character putting it into the Json and then send you back to the main menu.",
-                              child: ElevatedButton(
-                                style: OutlinedButton.styleFrom(
-                                  backgroundColor:
-                                      (numberOfRemainingFeatOrASIs ==
-                                                  0 &&
-                                              !remainingAsi &&
-                                              charLevel <= editableCharacter.classList.length &&
-                                              (equipmentSelectedFromChoices ==
-                                                      [] ||
-                                                  equipmentSelectedFromChoices
-                                                      .where((element) =>
-                                                          element.length == 2)
-                                                      .toList()
-                                                      .isEmpty) &&
-                                              (editableCharacter.allSpellsSelectedAsListsOfThings
-                                                  .where(
-                                                      (element) =>
-                                                          element[2] != 0)
-                                                  .isEmpty))
-                                          ? InitialTop.colourScheme.backingColour
-                                          : const Color.fromARGB(
-                                              247, 56, 53, 52),
-                                  padding:
-                                      const EdgeInsets.fromLTRB(45, 20, 45, 20),
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10))),
-                                  side: const BorderSide(
-                                      width: 3, color: Colors.black),
-                                ),
-                                child: Text("Save Character",
-                                    style: TextStyle(
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.w800,
-                                      color: InitialTop.colourScheme.textColour,
-                                    )),
-                                onPressed: () {
-                                  if (numberOfRemainingFeatOrASIs == 0 &&
-                                      !remainingAsi &&
-                                      charLevel <= editableCharacter.classList.length &&
-                                      (equipmentSelectedFromChoices == [] ||
-                                          equipmentSelectedFromChoices
-                                              .where((element) =>
-                                                  element.length == 2)
-                                              .toList()
-                                              .isEmpty) &&
-                                      (editableCharacter.allSpellsSelectedAsListsOfThings
-                                          .where((element) => element[2] != 0)
-                                          .isEmpty)) {
-                                    Character char = Character(
-                                      languageChoices: character.languageChoices,
-                                            characterDescription: CharacterDescription(age: character.characterDescription.age, height: character.characterDescription.height, weight: character.characterDescription.weight, eyes: character.characterDescription.eyes, skin: character.characterDescription.skin, hair: character.characterDescription.hair, backstory: character.characterDescription.backstory, name: character.characterDescription.name, gender: character.characterDescription.gender),
-                                            skillBonusMap:
-                                                character.skillBonusMap,
-                                            extraFeatures:
-                                                character.extraFeatures,
-                                            group: group,
-                                            levelsPerClass: editableCharacter.levelsPerClass,
-                                            allSelected: editableCharacter.allSelected,
-                                            classSubclassMapper:
-                                                editableCharacter.classSubclassMapper,
-                                            ACList: editableCharacter.ACList,
-                                            allSpellsSelected:
-                                                editableCharacter.allSpellsSelected,
-                                            allSpellsSelectedAsListsOfThings:
-                                                editableCharacter.allSpellsSelectedAsListsOfThings,
-                                            armourList: editableCharacter.armourList,
-                                            playerName: character.playerName,
-                                            characterExperience: editableCharacter.characterExperience,
-                                            //bools representing the states of the checkboxes (basics)
-                                            featsAllowed:
-                                                character.featsAllowed,
-                                            averageHitPoints:
-                                                character.averageHitPoints,
-                                            multiclassing:
-                                                character.multiclassing,
-                                            milestoneLevelling:
-                                                character.milestoneLevelling,
-                                            useCustomContent:
-                                                character.useCustomContent,
-                                            optionalClassFeatures:
-                                                character.optionalClassFeatures,
-                                            criticalRoleContent:
-                                                character.criticalRoleContent,
-                                            encumberanceRules:
-                                                character.encumberanceRules,
-                                            includeCoinsForWeight:
-                                                character.includeCoinsForWeight,
-                                            unearthedArcanaContent: character
-                                                .unearthedArcanaContent,
-                                            firearmsUsable:
-                                                character.firearmsUsable,
-                                            extraFeatAtLevel1:
-                                                character.extraFeatAtLevel1,
-                                            featsSelected: editableCharacter.featsSelected,
-                                            itemList: editableCharacter.itemList,
-                                            equipmentSelectedFromChoices:
-                                                editableCharacter.equipmentSelectedFromChoices,
-                                            optionalOnesStates:
-                                                character.optionalOnesStates,
-                                            optionalTwosStates:
-                                                character.optionalTwosStates,
-                                            speedBonuses: editableCharacter.speedBonuses,
-                                            weaponList: editableCharacter.weaponList,
-                                            classList: editableCharacter.classList,
-                                            stackableEquipmentSelected:
-                                                editableCharacter.stackableEquipmentSelected,
-                                            unstackableEquipmentSelected:
-                                                editableCharacter.unstackableEquipmentSelected,
-                                            classSkillsSelected:
-                                                editableCharacter.classSkillsSelected,
-                                            skillsSelected:
-                                                character.skillsSelected,
-                                            subrace: character.subrace,
-                                            mainToolProficiencies:
-                                                editableCharacter.mainToolProficiencies,
-                                            savingThrowProficiencies:
-                                                editableCharacter.savingThrowProficiencies,
-                                            languagesKnown:
-                                                character.languagesKnown,
-                                            featuresAndTraits:
-                                                editableCharacter.featuresAndTraits,
-                                            inspired: editableCharacter.inspired,
-                                            skillProficiencies:
-                                                editableCharacter.skillProficiencies,
-                                            maxHealth: editableCharacter.maxHealth,
-                                            background: character.background,
-                                            classLevels: editableCharacter.levelsPerClass,
-                                            race: character.race,
-                                            currency: editableCharacter.currency,
-                                            backgroundPersonalityTrait:
-                                                character
-                                                    .backgroundPersonalityTrait,
-                                            backgroundIdeal:
-                                                character.backgroundIdeal,
-                                            backgroundBond:
-                                                character.backgroundBond,
-                                            backgroundFlaw:
-                                                character.backgroundFlaw,
-                                            raceAbilityScoreIncreases: character
-                                                .raceAbilityScoreIncreases,
-                                            featsASIScoreIncreases: editableCharacter.featsASIScoreIncreases,
-                                            strength: editableCharacter.strength,
-                                            dexterity: editableCharacter.dexterity,
-                                            constitution: editableCharacter.constitution,
-                                            intelligence: editableCharacter.intelligence,
-                                            wisdom: editableCharacter.wisdom,
-                                            charisma: editableCharacter.charisma);
-                                    char.uniqueID = character.uniqueID;
-                                    CHARACTERLIST.add(char);
-                                    GROUPLIST = GROUPLIST
-                                        .where((element) => [
-                                              for (var x in CHARACTERLIST)
-                                                x.group
-                                            ].contains(element))
-                                        .toList();
-                                    if ((!GROUPLIST.contains(group)) &&
-                                        group != null &&
-                                        group!.replaceAll(" ", "") != "") {
-                                      GROUPLIST.add(group!);
-                                    }
-                                    saveChanges();
-                                    setState(() {
-                                      Navigator.pop(context);
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => InitialTop()),
-                                      );
-
-                                      showCongratulationsDialog(context);
-
-                                      //Navigator.pop(context);
-                                    });
-                                  }
-                                },
-                              ))
-                        ])),
-                Expanded(
-                    flex: 7,
-                    child: Column(children: [
-                      const SizedBox(height: 40),
-                      Text("Build checklist:",
-                          style: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.w800,
-                              color: InitialTop.colourScheme.backingColour)),
-                      //ASI+feats
-                      const SizedBox(height: 20),
-                      (numberOfRemainingFeatOrASIs == 0)
-                          ? (remainingAsi == false)
-                              ? const Text("Made all ASI/Feats choices",
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w700))
-                              : const Text("You have an ASI remaining",
-                                  style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w700))
-                          : Text(
-                              "You have $numberOfRemainingFeatOrASIs ASI/Feat (s) remaining",
-                              style: const TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700)),
-                      //Class
-                      const SizedBox(height: 20),
-                      (charLevel <= editableCharacter.classList.length)
-                          ? const Text("Made all level selections",
-                              style: TextStyle(
-                                  color: Colors.green,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700))
-                          : Text("${charLevel - editableCharacter.classList.length} unused levels",
-                              style: const TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700)),
-
-                      const SizedBox(height: 20),
-                      //Equipment
-                      (equipmentSelectedFromChoices == [] ||
-                              equipmentSelectedFromChoices
-                                  .where((element) => element.length == 2)
-                                  .toList()
-                                  .isEmpty)
-                          ? const Text("Made all equipment selections",
-                              style: TextStyle(
-                                  color: Colors.green,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700))
-                          : Text(
-                              "Missed ${equipmentSelectedFromChoices.where((element) => element.length == 2).toList().length} equipment choice(s)",
-                              style: const TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700)),
-                      const SizedBox(height: 20),
-                      //spells
-                      //if the user has multiple classes with spells
-
-                      //All spell sections have 0 remaining options (all spells selected)
-                      (editableCharacter.allSpellsSelectedAsListsOfThings
-                              .where((element) => element[2] != 0)
-                              .isEmpty)
-                          ?
-                          //if they selected every spell available
-                          const Text("Chose all spells",
-                              style: TextStyle(
-                                  color: Colors.green,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700))
-                          //if not
-                          : (editableCharacter.allSpellsSelectedAsListsOfThings.length == 1)
-                              //if they only have 1 way to choose spells (as the reduce only works on lists of length >1,
-                              // otherwise it just returns the whole element which would break the code)
-                              ? Text(
-                                  //number remaining
-                                  "Missed ${(editableCharacter.allSpellsSelectedAsListsOfThings[0][2])} spells",
-                                  style: const TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w700))
-                              : Text(
-                                  //number remaining with multiple ways to choose spells
-                                  "Missed ${(editableCharacter.allSpellsSelectedAsListsOfThings.reduce((a, b) => a[2] + b[2]) as int)} spells",
-                                  style: const TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w700)),
-                    ]))
-              ])),
+          FinishingUpTab(
+            character: editableCharacter,
+            groupEnterController: groupEnterController,
+            canCreateCharacter: (numberOfRemainingFeatOrASIs == 0 &&
+                !remainingAsi &&
+                charLevel <= editableCharacter.classList.length &&
+                editableCharacter.chosenAllEqipment &&
+                editableCharacter.chosenAllSpells),
+            pointsRemaining: 0, // Edit mode doesn't have point buy
+            numberOfRemainingFeatOrASIs: numberOfRemainingFeatOrASIs,
+            remainingAsi: remainingAsi,
+            charLevel: charLevel,
+            isEditMode: true, // This is edit mode
+            onCharacterChanged: () {
+              setState(() {
+                // Group changes are handled by the FinishingUpTab internally
+              });
+            },
+            onSaveCharacter: () {
+              // Custom save logic for edit mode
+              Character char = Character(
+                languageChoices: character.languageChoices,
+                characterDescription: CharacterDescription(
+                  age: character.characterDescription.age,
+                  height: character.characterDescription.height,
+                  weight: character.characterDescription.weight,
+                  eyes: character.characterDescription.eyes,
+                  skin: character.characterDescription.skin,
+                  hair: character.characterDescription.hair,
+                  backstory: character.characterDescription.backstory,
+                  name: character.characterDescription.name,
+                  gender: character.characterDescription.gender
+                ),
+                skillBonusMap: character.skillBonusMap,
+                extraFeatures: character.extraFeatures,
+                group: editableCharacter.group,
+                levelsPerClass: editableCharacter.levelsPerClass,
+                allSelected: editableCharacter.allSelected,
+                classSubclassMapper: editableCharacter.classSubclassMapper,
+                ACList: editableCharacter.ACList,
+                allSpellsSelected: editableCharacter.allSpellsSelected,
+                allSpellsSelectedAsListsOfThings: editableCharacter.allSpellsSelectedAsListsOfThings,
+                armourList: editableCharacter.armourList,
+                playerName: character.playerName,
+                characterExperience: editableCharacter.characterExperience,
+                featsAllowed: character.featsAllowed,
+                averageHitPoints: character.averageHitPoints,
+                multiclassing: character.multiclassing,
+                milestoneLevelling: character.milestoneLevelling,
+                useCustomContent: character.useCustomContent,
+                optionalClassFeatures: character.optionalClassFeatures,
+                criticalRoleContent: character.criticalRoleContent,
+                encumberanceRules: character.encumberanceRules,
+                includeCoinsForWeight: character.includeCoinsForWeight,
+                unearthedArcanaContent: character.unearthedArcanaContent,
+                firearmsUsable: character.firearmsUsable,
+                extraFeatAtLevel1: character.extraFeatAtLevel1,
+                featsSelected: editableCharacter.featsSelected,
+                itemList: editableCharacter.itemList,
+                equipmentSelectedFromChoices: editableCharacter.equipmentSelectedFromChoices,
+                optionalOnesStates: character.optionalOnesStates,
+                optionalTwosStates: character.optionalTwosStates,
+                speedBonuses: editableCharacter.speedBonuses,
+                weaponList: editableCharacter.weaponList,
+                classList: editableCharacter.classList,
+                stackableEquipmentSelected: editableCharacter.stackableEquipmentSelected,
+                unstackableEquipmentSelected: editableCharacter.unstackableEquipmentSelected,
+                classSkillsSelected: editableCharacter.classSkillsSelected,
+                skillsSelected: character.skillsSelected,
+                subrace: character.subrace,
+                mainToolProficiencies: editableCharacter.mainToolProficiencies,
+                savingThrowProficiencies: editableCharacter.savingThrowProficiencies,
+                languagesKnown: character.languagesKnown,
+                featuresAndTraits: editableCharacter.featuresAndTraits,
+                inspired: editableCharacter.inspired,
+                skillProficiencies: editableCharacter.skillProficiencies,
+                maxHealth: editableCharacter.maxHealth,
+                background: character.background,
+                classLevels: editableCharacter.levelsPerClass,
+                race: character.race,
+                currency: editableCharacter.currency,
+                backgroundPersonalityTrait: character.backgroundPersonalityTrait,
+                backgroundIdeal: character.backgroundIdeal,
+                backgroundBond: character.backgroundBond,
+                backgroundFlaw: character.backgroundFlaw,
+                raceAbilityScoreIncreases: character.raceAbilityScoreIncreases,
+                featsASIScoreIncreases: editableCharacter.featsASIScoreIncreases,
+                strength: editableCharacter.strength,
+                dexterity: editableCharacter.dexterity,
+                constitution: editableCharacter.constitution,
+                intelligence: editableCharacter.intelligence,
+                wisdom: editableCharacter.wisdom,
+                charisma: editableCharacter.charisma
+              );
+              char.uniqueID = character.uniqueID;
+              
+              // Update the character in the list
+              int characterIndex = CHARACTERLIST.indexWhere((c) => c.uniqueID == character.uniqueID);
+              if (characterIndex != -1) {
+                CHARACTERLIST[characterIndex] = char;
+              } else {
+                CHARACTERLIST.add(char);
+              }
+              
+              // Update group list
+              GROUPLIST = GROUPLIST.where((element) => [
+                for (var x in CHARACTERLIST) x.group
+              ].contains(element)).toList();
+              if ((!GROUPLIST.contains(editableCharacter.group)) &&
+                  editableCharacter.group != null &&
+                  editableCharacter.group!.replaceAll(" ", "") != "") {
+                GROUPLIST.add(editableCharacter.group!);
+              }
+              saveChanges();
+              
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => InitialTop()),
+              );
+            },
+            showCongratulationsDialog: showCongratulationsDialog,
+          ),
         ]),
       ),
     );
@@ -773,31 +503,5 @@ class EditCharacter extends State<EditACharacter> {
         ],
       ),
     );
-  }
-
-  String produceEquipmentOptionDescription(List list) {
-    // Initialize an empty string to store the result
-    String result = '';
-
-    // Iterate through the list
-    for (int i = 0; i < list.length; i++) {
-      // Check if the current element is a number
-      if (list[i] is num) {
-        // Append the current number and string pair to the result string
-        result += '${list[i]}x${list[i + 1]}';
-
-        // Skip over the next element (the string)
-        i++;
-      } else {
-        // Append just the current string to the result string
-        result += '${list[i]}';
-      }
-
-      // If this is not the last element, add a comma and space separator
-      if (i != list.length - 1) result += ', ';
-    }
-
-    // Return the final formatted string
-    return result;
   }
 }

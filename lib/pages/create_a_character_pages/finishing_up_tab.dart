@@ -18,6 +18,7 @@ class FinishingUpTab extends StatefulWidget {
   final VoidCallback onCharacterChanged;
   final VoidCallback onSaveCharacter;
   final void Function(BuildContext) showCongratulationsDialog;
+  final bool isEditMode;
 
   const FinishingUpTab({
     super.key,
@@ -31,6 +32,7 @@ class FinishingUpTab extends StatefulWidget {
     required this.onCharacterChanged,
     required this.onSaveCharacter,
     required this.showCongratulationsDialog,
+    this.isEditMode = false,
   });
 
   @override
@@ -104,7 +106,9 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
                   ),
                   // Character save button
                   Tooltip(
-                      message: widget.canCreateCharacter? "This button will save your character putting it into the Json and then send you back to the main menu.": "You must complete the required tabs before saving your character",
+                      message: widget.canCreateCharacter? 
+                        (widget.isEditMode ? "This button will save your character edits and return you to the main menu." : "This button will save your character putting it into the Json and then send you back to the main menu.") : 
+                        (widget.isEditMode ? "You must complete the required tabs before saving your character edits" : "You must complete the required tabs before saving your character"),
                       child: ElevatedButton(
                         style: OutlinedButton.styleFrom(
                           backgroundColor: widget.canCreateCharacter ? InitialTop.colourScheme.backingColour : unavailableColor,
@@ -114,7 +118,10 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
                                   Radius.circular(10))),
                           side: const BorderSide(width: 3, color: Colors.black),
                         ),
-                        child: StyleUtils.buildStyledHugeTextBox(text: "Save Character", color: InitialTop.colourScheme.textColour),
+                        child: StyleUtils.buildStyledHugeTextBox(
+                          text: widget.isEditMode ? "Save Changes" : "Save Character", 
+                          color: InitialTop.colourScheme.textColour
+                        ),
                         onPressed: () {
                           if (widget.canCreateCharacter) {
                             setState(() {
@@ -145,11 +152,13 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
                 const SizedBox(height: 20),
                 StyleUtils.buildStyledHugeTextBox(text: "Build checklist:"),
                 
-                //Basics
-                StyleUtils.makeOptionalText(condition: widget.character.basicsComplete, trueText: "Filled in all basic information", falseText: "Haven't filled in all necessary basics"),
+                // Show basics check only in creation mode
+                if (!widget.isEditMode)
+                  StyleUtils.makeOptionalText(condition: widget.character.basicsComplete, trueText: "Filled in all basic information", falseText: "Haven't filled in all necessary basics"),
 
-                //Ability Scores
-                StyleUtils.makeRequiredText(condition: (widget.pointsRemaining == 0), trueText: "Used all ability score points", falseText: "${widget.pointsRemaining} unspent ability score points"),
+                // Show ability scores check only in creation mode
+                if (!widget.isEditMode)
+                  StyleUtils.makeRequiredText(condition: (widget.pointsRemaining == 0), trueText: "Used all ability score points", falseText: "${widget.pointsRemaining} unspent ability score points"),
                 
                 //ASI+feats
                 (widget.numberOfRemainingFeatOrASIs == 0)
@@ -183,12 +192,13 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
                   trueText: "Made all spells selections", 
                   falseText: "Missed ${(widget.character.allSpellsSelectedAsListsOfThings.fold(0, (a, b) => a + (b[2] as int)))} spells"),                            
 
-                // Backstory
-                StyleUtils.makeOptionalText(
-                  condition: widget.character.backstoryComplete,
-                  trueText: "Completed backstory", 
-                  falseText: "Haven't filled in all backstory information"
-                )
+                // Show backstory check only in creation mode
+                if (!widget.isEditMode)
+                  StyleUtils.makeOptionalText(
+                    condition: widget.character.backstoryComplete,
+                    trueText: "Completed backstory", 
+                    falseText: "Haven't filled in all backstory information"
+                  )
         ]))
       ]),
     );
