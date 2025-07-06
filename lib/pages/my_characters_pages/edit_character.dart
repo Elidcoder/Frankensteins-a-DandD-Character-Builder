@@ -5,6 +5,7 @@ import "package:flutter/material.dart";
 import "../create_a_character_pages/edit_tabs.dart";
 import "../create_a_character_pages/finishing_up_tab.dart";
 import "../create_a_character_pages/backstory_tab.dart";
+import "quick_edits_tab.dart";
 import "../../content_classes/all_content_classes.dart";
 import "../../main.dart" show InitialTop, InitialTopKey;
 import "../../top_bar.dart";
@@ -68,7 +69,6 @@ class EditCharacter extends State<EditACharacter> {
   List<String> coinTypesSelected = ["Gold Pieces"];
 
   EditCharacter({required this.character});
-  String? experienceIncrease;
   List<Widget> widgetsInPlay = [];
   bool remainingAsi = false;
   int numberOfRemainingFeatOrASIs = 0;
@@ -173,116 +173,19 @@ class EditCharacter extends State<EditACharacter> {
         ),
         body: TabBarView(children: [
           //Quick edits
-
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(height: 50),
-              Text(
-                  "${character.characterDescription.name} is level ${int.parse(characterLevel ?? "1")} with ${editableCharacter.characterExperience} experience",
-                  style: TextStyle(
-                      fontSize: 27,
-                      fontWeight: FontWeight.w700,
-                      color: InitialTop.colourScheme.backingColour)),
-              if (int.parse(characterLevel ?? "1") > character.classLevels.fold(0, (val, acc) => val + acc)) ...[
-                const SizedBox(height: 16),
-                Text("${character.characterDescription.name} has at least one unused level!!",
-                    style: TextStyle(
-                        fontSize: 23,
-                        fontWeight: FontWeight.w700,
-                        color: InitialTop.colourScheme.backingColour)),
-              ],
-
-              const SizedBox(height: 16),
-              Text("Increase level by 1:  ",
-                  style: TextStyle(
-                      fontSize: 23,
-                      fontWeight: FontWeight.w600,
-                      color: InitialTop.colourScheme.backingColour)),
-              const SizedBox(height: 8),
-              OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: (int.parse(characterLevel ?? "1") < 20)
-                        ? InitialTop.colourScheme.backingColour
-                        : const Color.fromARGB(247, 56, 53, 52),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(4))),
-                    side: const BorderSide(
-                        width: 3, color: Color.fromARGB(255, 27, 155, 10)),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      if (int.parse(characterLevel ?? "1") < 20) {
-                        characterLevel = (int.parse(characterLevel ?? "1") + 1).toString();
-                      }
-                    });
-                  },
-                  child: Icon(Icons.add, color: InitialTop.colourScheme.textColour, size: 37)),
-              const SizedBox(height: 16),
-              Text("Experience amount to add:  ",
-                  style: TextStyle(
-                      fontSize: 23,
-                      fontWeight: FontWeight.w600,
-                      color: InitialTop.colourScheme.backingColour)),
-              const SizedBox(height: 8),
-              SizedBox(
-                width: 320,
-                height: 50,
-                child: TextField(
-                    cursorColor: InitialTop.colourScheme.backingColour,
-                    style: TextStyle(
-                      color: InitialTop.colourScheme.textColour,
-                    ),
-                    decoration: InputDecoration(
-                        hintText: "Amount of experience to add (number)",
-                        hintStyle: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            color: InitialTop.colourScheme.textColour),
-                        filled: true,
-                        fillColor: InitialTop.colourScheme.backingColour,
-                        border: const OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(12)))),
-                    onChanged: (experienceIncreaseEnteredValue) {
-                      setState(() {
-                        experienceIncrease = experienceIncreaseEnteredValue;
-                      });
-                    }),
-              ),
-              const SizedBox(height: 20),
-              Text("Confirm adding experience",
-                  style: TextStyle(
-                      fontSize: 23,
-                      fontWeight: FontWeight.w600,
-                      color: InitialTop.colourScheme.backingColour)),
-              const SizedBox(height: 8),
-              OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor:
-                        (double.tryParse(experienceIncrease ?? "NOT NUMBER") !=
-                                null)
-                            ? InitialTop.colourScheme.backingColour
-                            : const Color.fromARGB(247, 56, 53, 52),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(4))),
-                    side: const BorderSide(
-                        width: 3, color: Color.fromARGB(255, 27, 155, 10)),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      if (double.tryParse(experienceIncrease ?? "NOT NUMBER") !=
-                          null) {
-                        editableCharacter.characterExperience += double.tryParse(
-                                experienceIncrease ?? "NOT NUMBER") ??
-                            0;
-                        //validate level
-                      }
-                    });
-                  },
-                  child: Icon(Icons.add, color: InitialTop.colourScheme.textColour, size: 37))
-            ],
+          QuickEditsTab(
+            character: editableCharacter,
+            characterLevel: characterLevel ?? "1",
+            onCharacterChanged: () {
+              setState(() {
+                // Character changes are handled by the QuickEditsTab internally
+              });
+            },
+            onCharacterLevelChanged: (newLevel) {
+              setState(() {
+                characterLevel = newLevel;
+              });
+            },
           ),
           //class - updated to color scheme
           ClassTab(
