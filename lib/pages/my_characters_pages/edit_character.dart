@@ -9,7 +9,6 @@ import "quick_edits_tab.dart";
 import "../../content_classes/all_content_classes.dart";
 import "../../main.dart" show InitialTop, InitialTopKey;
 import "../../top_bar.dart";
-import "../../file_manager/file_manager.dart";
 import "../../utils/style_utils.dart";
 
 class EditTop extends StatelessWidget {
@@ -84,6 +83,8 @@ class EditCharacter extends State<EditACharacter> {
   void initState() {
     super.initState();
     editableCharacter = character.getCopy();
+    // Preserve the original character's uniqueID for edit mode
+    editableCharacter.uniqueID = character.uniqueID;
     characterLevel = editableCharacter.classList.length.toString();
     tabRebuildNotifier = ValueNotifier<int>(0);
     
@@ -277,109 +278,6 @@ class EditCharacter extends State<EditACharacter> {
               setState(() {
                 // Group changes are handled by the FinishingUpTab internally
               });
-            },
-            onSaveCharacter: () {
-              // Custom save logic for edit mode
-              Character char = Character(
-                languageChoices: character.languageChoices,
-                characterDescription: CharacterDescription(
-                  age: editableCharacter.characterDescription.age,
-                  height: editableCharacter.characterDescription.height,
-                  weight: editableCharacter.characterDescription.weight,
-                  eyes: editableCharacter.characterDescription.eyes,
-                  skin: editableCharacter.characterDescription.skin,
-                  hair: editableCharacter.characterDescription.hair,
-                  backstory: editableCharacter.characterDescription.backstory,
-                  name: editableCharacter.characterDescription.name,
-                  gender: editableCharacter.characterDescription.gender
-                ),
-                skillBonusMap: character.skillBonusMap,
-                extraFeatures: editableCharacter.extraFeatures,
-                group: editableCharacter.group,
-                levelsPerClass: editableCharacter.levelsPerClass,
-                allSelected: editableCharacter.allSelected,
-                classSubclassMapper: editableCharacter.classSubclassMapper,
-                ACList: editableCharacter.ACList,
-                allSpellsSelected: editableCharacter.allSpellsSelected,
-                allSpellsSelectedAsListsOfThings: editableCharacter.allSpellsSelectedAsListsOfThings,
-                armourList: editableCharacter.armourList,
-                playerName: character.playerName,
-                characterExperience: editableCharacter.characterExperience,
-                featsAllowed: character.featsAllowed,
-                averageHitPoints: character.averageHitPoints,
-                multiclassing: character.multiclassing,
-                milestoneLevelling: character.milestoneLevelling,
-                useCustomContent: character.useCustomContent,
-                optionalClassFeatures: character.optionalClassFeatures,
-                criticalRoleContent: character.criticalRoleContent,
-                encumberanceRules: character.encumberanceRules,
-                includeCoinsForWeight: character.includeCoinsForWeight,
-                unearthedArcanaContent: character.unearthedArcanaContent,
-                firearmsUsable: character.firearmsUsable,
-                extraFeatAtLevel1: character.extraFeatAtLevel1,
-                featsSelected: editableCharacter.featsSelected,
-                itemList: editableCharacter.itemList,
-                equipmentSelectedFromChoices: editableCharacter.equipmentSelectedFromChoices,
-                optionalOnesStates: character.optionalOnesStates,
-                optionalTwosStates: character.optionalTwosStates,
-                speedBonuses: editableCharacter.speedBonuses,
-                weaponList: editableCharacter.weaponList,
-                classList: editableCharacter.classList,
-                stackableEquipmentSelected: editableCharacter.stackableEquipmentSelected,
-                unstackableEquipmentSelected: editableCharacter.unstackableEquipmentSelected,
-                classSkillsSelected: editableCharacter.classSkillsSelected,
-                skillsSelected: character.skillsSelected,
-                subrace: character.subrace,
-                mainToolProficiencies: editableCharacter.mainToolProficiencies,
-                savingThrowProficiencies: editableCharacter.savingThrowProficiencies,
-                languagesKnown: character.languagesKnown,
-                featuresAndTraits: editableCharacter.featuresAndTraits,
-                inspired: editableCharacter.inspired,
-                skillProficiencies: editableCharacter.skillProficiencies,
-                maxHealth: editableCharacter.maxHealth,
-                background: character.background,
-                classLevels: editableCharacter.levelsPerClass,
-                race: character.race,
-                currency: editableCharacter.currency,
-                backgroundPersonalityTrait: character.backgroundPersonalityTrait,
-                backgroundIdeal: character.backgroundIdeal,
-                backgroundBond: character.backgroundBond,
-                backgroundFlaw: character.backgroundFlaw,
-                raceAbilityScoreIncreases: character.raceAbilityScoreIncreases,
-                featsASIScoreIncreases: editableCharacter.featsASIScoreIncreases,
-                strength: editableCharacter.strength,
-                dexterity: editableCharacter.dexterity,
-                constitution: editableCharacter.constitution,
-                intelligence: editableCharacter.intelligence,
-                wisdom: editableCharacter.wisdom,
-                charisma: editableCharacter.charisma
-              );
-              char.uniqueID = character.uniqueID;
-              
-              // Update the character in the list
-              int characterIndex = CHARACTERLIST.indexWhere((c) => c.uniqueID == character.uniqueID);
-              if (characterIndex != -1) {
-                CHARACTERLIST[characterIndex] = char;
-              } else {
-                CHARACTERLIST.add(char);
-              }
-              
-              // Update group list
-              GROUPLIST = GROUPLIST.where((element) => [
-                for (var x in CHARACTERLIST) x.group
-              ].contains(element)).toList();
-              if ((!GROUPLIST.contains(editableCharacter.group)) &&
-                  editableCharacter.group != null &&
-                  editableCharacter.group!.replaceAll(" ", "") != "") {
-                GROUPLIST.add(editableCharacter.group!);
-              }
-              saveChanges();
-              
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => InitialTop()),
-              );
             },
             showCongratulationsDialog: showCongratulationsDialog,
           ),

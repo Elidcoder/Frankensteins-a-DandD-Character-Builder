@@ -272,9 +272,6 @@ class MainCreateCharacter extends State<CreateACharacter>
             onCharacterChanged: () {
               setState(() {});
             },
-            onSaveCharacter: () {
-              setState(() {});
-            },
             showCongratulationsDialog: showCongratulationsDialog,
           ),
         ]),

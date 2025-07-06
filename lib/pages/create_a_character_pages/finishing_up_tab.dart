@@ -16,7 +16,6 @@ class FinishingUpTab extends StatefulWidget {
   final bool remainingAsi;
   final int charLevel;
   final VoidCallback onCharacterChanged;
-  final VoidCallback onSaveCharacter;
   final void Function(BuildContext) showCongratulationsDialog;
   final bool isEditMode;
 
@@ -30,7 +29,6 @@ class FinishingUpTab extends StatefulWidget {
     required this.remainingAsi,
     required this.charLevel,
     required this.onCharacterChanged,
-    required this.onSaveCharacter,
     required this.showCongratulationsDialog,
     this.isEditMode = false,
   });
@@ -125,12 +123,30 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
                         onPressed: () {
                           if (widget.canCreateCharacter) {
                             setState(() {
-                              CHARACTERLIST.add(widget.character);
+                              if (widget.isEditMode) {
+                                // Update existing character in the list
+                                int characterIndex = CHARACTERLIST.indexWhere((c) => c.uniqueID == widget.character.uniqueID);
+                                if (characterIndex != -1) {
+                                  CHARACTERLIST[characterIndex] = widget.character;
+                                } else {
+                                  // Fallback: add if not found (shouldn't happen in normal edit flow)
+                                  CHARACTERLIST.add(widget.character);
+                                }
+                              } else {
+                                // Create new character
+                                CHARACTERLIST.add(widget.character);
+                              }
+                              
+                              // Update group list
+                              GROUPLIST = GROUPLIST.where((element) => [
+                                for (var x in CHARACTERLIST) x.group
+                              ].contains(element)).toList();
                               if ((!GROUPLIST.contains(widget.character.group)) &&
                                   widget.character.group != null &&
                                   widget.character.group!.replaceAll(" ", "") != "") {
                                 GROUPLIST.add(widget.character.group!);
                               }
+                              
                               saveChanges();
                               Navigator.pop(context);
                               Navigator.push(
