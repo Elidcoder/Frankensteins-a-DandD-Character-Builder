@@ -101,8 +101,9 @@ class EditCharacter extends State<EditACharacter> {
           if (CLASSLIST[classIndex].gainAtEachLevel[level].any((advancement) => advancement[0] == "ASI")) {
             expectedFeatOrASIs++;
           }
-          count ++;
         }
+        count ++;
+        classNames.add(editableCharacter.classList[i]);
       }
     }
     
@@ -184,8 +185,7 @@ class EditCharacter extends State<EditACharacter> {
                       fontSize: 27,
                       fontWeight: FontWeight.w700,
                       color: InitialTop.colourScheme.backingColour)),
-              // The = check accounts for the OBO of length
-              if (int.parse(characterLevel ?? "1") >= character.classLevels.length) ...[
+              if (int.parse(characterLevel ?? "1") > character.classLevels.fold(0, (val, acc) => val + acc)) ...[
                 const SizedBox(height: 16),
                 Text("${character.characterDescription.name} has at least one unused level!!",
                     style: TextStyle(
