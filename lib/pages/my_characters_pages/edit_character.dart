@@ -92,13 +92,16 @@ class EditCharacter extends State<EditACharacter> {
     // Initialize ASI/Feats state based on character level and existing selections
     // Calculate how many ASI/Feats the character should have based on their class levels
     int expectedFeatOrASIs = 0;
+    int count = 0;
+    Set<String> classNames = {};
     for (int i = 0; i < editableCharacter.classList.length; i++) {
       int classIndex = CLASSLIST.indexWhere((cls) => cls.name == editableCharacter.classList[i]);
-      if (classIndex != -1) {
-        for (int level = 1; level <= editableCharacter.levelsPerClass[i]; level++) {
+      if (classIndex != -1 && !classNames.contains(editableCharacter.classList[i])) {
+        for (int level = 0; level < editableCharacter.levelsPerClass[count]; level++) {
           if (CLASSLIST[classIndex].gainAtEachLevel[level].any((advancement) => advancement[0] == "ASI")) {
             expectedFeatOrASIs++;
           }
+          count ++;
         }
       }
     }
