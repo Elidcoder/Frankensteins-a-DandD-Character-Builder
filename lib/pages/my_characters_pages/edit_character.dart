@@ -2,10 +2,7 @@
 import "package:flutter/material.dart";
 
 // Project Imports
-import "../create_a_character_pages/equipment_tab.dart";
-import "../create_a_character_pages/class_tab.dart";
-import "../create_a_character_pages/asi_feat_tab.dart";
-import "../create_a_character_pages/spells_tab.dart";
+import "../create_a_character_pages/edit_tabs.dart";
 import "../../content_classes/all_content_classes.dart";
 import "../../pdf_generator/pdf_final_display.dart";
 import "../../main.dart" show InitialTop, InitialTopKey;

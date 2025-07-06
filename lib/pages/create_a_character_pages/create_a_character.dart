@@ -6,8 +6,6 @@ import "../../main.dart";
 import "../../content_classes/all_content_classes.dart";
 import "creation_tabs.dart";
 import "../../utils/style_utils.dart";
-import "finishing_up_tab.dart";
-import "class_tab.dart";
 
 /* Notifier for when settings changes colour to rebuild. */
 final ValueNotifier<int> tabRebuildNotifier = ValueNotifier<int>(0);
