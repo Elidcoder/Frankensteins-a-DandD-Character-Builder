@@ -2,9 +2,10 @@
 import "package:flutter/material.dart";
 
 // Project Imports
-import "../create_a_character_pages/spell_handling.dart";
 import "../create_a_character_pages/equipment_tab.dart";
 import "../create_a_character_pages/class_tab.dart";
+import "../create_a_character_pages/asi_feat_tab.dart";
+import "../create_a_character_pages/spells_tab.dart";
 import "../../content_classes/all_content_classes.dart";
 import "../../pdf_generator/pdf_final_display.dart";
 import "../../main.dart" show InitialTop, InitialTopKey;
@@ -73,10 +74,8 @@ class EditCharacter extends State<EditACharacter> {
   String? levellingMethod;
   List<Widget> widgetsInPlay = [];
   Map<String, List<dynamic>> selections = {};
-  bool ASIRemaining = false;
+  bool remainingAsi = false;
   int numberOfRemainingFeatOrASIs = 0;
-  bool halfFeats = true;
-  bool fullFeats = true;
   String? coinTypeSelected = "Gold Pieces";
   String? group;
   String? characterLevel = "1";
@@ -96,6 +95,34 @@ class EditCharacter extends State<EditACharacter> {
     editableCharacter = character.getCopy();
     characterLevel = editableCharacter.classList.length.toString();
     tabRebuildNotifier = ValueNotifier<int>(0);
+    
+    // Initialize ASI/Feats state based on character level and existing selections
+    // Calculate how many ASI/Feats the character should have based on their class levels
+    int expectedFeatOrASIs = 0;
+    for (int i = 0; i < editableCharacter.classList.length; i++) {
+      int classIndex = CLASSLIST.indexWhere((cls) => cls.name == editableCharacter.classList[i]);
+      if (classIndex != -1) {
+        for (int level = 1; level <= editableCharacter.levelsPerClass[i]; level++) {
+          if (CLASSLIST[classIndex].gainAtEachLevel[level].any((advancement) => advancement[0] == "ASI")) {
+            expectedFeatOrASIs++;
+          }
+        }
+      }
+    }
+    
+    // Add extra feat at level 1 if enabled
+    if (editableCharacter.extraFeatAtLevel1 == true) {
+      expectedFeatOrASIs++;
+    }
+    
+    // Calculate how many have been used
+    int usedFeatOrASIs = editableCharacter.featsSelected.length;
+    int asiPointsUsed = editableCharacter.featsASIScoreIncreases.fold(0, (sum, increment) => sum + increment) ~/ 2; // Each ASI gives 2 points
+    usedFeatOrASIs += asiPointsUsed;
+    
+    // Set remaining counts
+    numberOfRemainingFeatOrASIs = (expectedFeatOrASIs - usedFeatOrASIs).clamp(0, expectedFeatOrASIs);
+    remainingAsi = false; // Start with no pending ASI
   }
 
   @override
@@ -275,1001 +302,40 @@ class EditCharacter extends State<EditACharacter> {
               });
             },
           ),
-          //ASI + FEAT- updated to new color Scheme
-          SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  const SizedBox(height: 24),
-                  Text("$numberOfRemainingFeatOrASIs options remaining",
-                      style: TextStyle(
-                          color: InitialTop.colourScheme.backingColour,
-                          fontSize: 35,
-                          fontWeight: FontWeight.w900)),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      Expanded(
-                          child: SizedBox(
-                              height: 550,
-                              child: Column(
-                                children: [
-                                  Text("ASI's",
-                                      style: TextStyle(
-                                          color: InitialTop.colourScheme.backingColour,
-                                          fontSize: 33,
-                                          fontWeight: FontWeight.w800)),
-                                  const SizedBox(height: 8),
-                                  if (ASIRemaining)
-                                    Text("You have an unspent ASI",
-                                        style: TextStyle(
-                                            color: InitialTop.colourScheme.backingColour,
-                                            fontSize: 27,
-                                            fontWeight: FontWeight.w800)),
-                                  SizedBox(
-                                      child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        height: 132,
-                                        width: 160,
-                                        decoration: BoxDecoration(
-                                          color: InitialTop.colourScheme.backingColour,
-                                          border: Border.all(
-                                            color: Colors.black,
-                                            width: 1.6,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(5)),
-                                        ),
-                                        child: Column(children: [
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "Strength",
-                                            style: TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w800,
-                                                color: InitialTop.colourScheme.textColour),
-                                          ),
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "+${editableCharacter.featsASIScoreIncreases[0]}",
-                                            style: TextStyle(
-                                                fontSize: 45,
-                                                fontWeight: FontWeight.w700,
-                                                color: InitialTop.colourScheme.textColour),
-                                          ),
-                                          OutlinedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                backgroundColor: (!ASIRemaining &&
-                                                            numberOfRemainingFeatOrASIs ==
-                                                                0 ||
-                                                        !(editableCharacter.strength.value +
-                                                                editableCharacter.featsASIScoreIncreases[0] <
-                                                            20))
-                                                    ? const Color.fromARGB(
-                                                        247, 56, 53, 52)
-                                                    : InitialTop.colourScheme.backingColour,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    4))),
-                                                side: const BorderSide(
-                                                    width: 3,
-                                                    color: Color.fromARGB(
-                                                        255, 10, 126, 54)),
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (editableCharacter.strength.value +
-                                                          editableCharacter.featsASIScoreIncreases[0] <
-                                                      20) {
-                                                    if (ASIRemaining) {
-                                                      ASIRemaining = false;
-                                                      editableCharacter.featsASIScoreIncreases[0]++;
-                                                    } else if (numberOfRemainingFeatOrASIs >
-                                                        0) {
-                                                      numberOfRemainingFeatOrASIs--;
-                                                      ASIRemaining = true;
-                                                      editableCharacter.featsASIScoreIncreases[0]++;
-                                                    }
-                                                  }
-                                                });
-                                              },
-                                              child: const Icon(Icons.add,
-                                                  color: Colors.white,
-                                                  size: 32)),
-                                        ]),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Container(
-                                        height: 132,
-                                        width: 160,
-                                        decoration: BoxDecoration(
-                                          color: InitialTop.colourScheme.backingColour,
-                                          border: Border.all(
-                                            color: Colors.black,
-                                            width: 1.6,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(5)),
-                                        ),
-                                        child: Column(children: [
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "Intelligence",
-                                            style: TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w800,
-                                                color: InitialTop.colourScheme.textColour),
-                                          ),
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "+${editableCharacter.featsASIScoreIncreases[3]}",
-                                            style: TextStyle(
-                                                fontSize: 45,
-                                                fontWeight: FontWeight.w700,
-                                                color: InitialTop.colourScheme.textColour),
-                                          ),
-                                          OutlinedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                backgroundColor: (!ASIRemaining &&
-                                                            numberOfRemainingFeatOrASIs ==
-                                                                0 ||
-                                                        !(editableCharacter.intelligence.value +
-                                                                editableCharacter.featsASIScoreIncreases[3] <
-                                                            20))
-                                                    ? const Color.fromARGB(
-                                                        247, 56, 53, 52)
-                                                    : InitialTop.colourScheme.backingColour,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    4))),
-                                                side: const BorderSide(
-                                                    width: 3,
-                                                    color: Color.fromARGB(
-                                                        255, 10, 126, 54)),
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (editableCharacter.intelligence.value +
-                                                          editableCharacter.featsASIScoreIncreases[3] <
-                                                      20) {
-                                                    if (ASIRemaining) {
-                                                      ASIRemaining = false;
-                                                      editableCharacter.featsASIScoreIncreases[3]++;
-                                                    } else if (numberOfRemainingFeatOrASIs >
-                                                        0) {
-                                                      numberOfRemainingFeatOrASIs--;
-                                                      ASIRemaining = true;
-                                                      editableCharacter.featsASIScoreIncreases[3]++;
-                                                    }
-                                                  }
-                                                });
-                                              },
-                                              child: const Icon(Icons.add,
-                                                  color: Colors.white,
-                                                  size: 32)),
-                                        ]),
-                                      )
-                                    ],
-                                  )),
-                                  const SizedBox(height: 10),
-                                  SizedBox(
-                                      child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        height: 132,
-                                        width: 160,
-                                        decoration: BoxDecoration(
-                                          color: InitialTop.colourScheme.backingColour,
-                                          border: Border.all(
-                                            color: Colors.black,
-                                            width: 1.6,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(5)),
-                                        ),
-                                        child: Column(children: [
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "Dexterity",
-                                            style: TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w800,
-                                                color: InitialTop.colourScheme.textColour),
-                                          ),
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "+${editableCharacter.featsASIScoreIncreases[1]}",
-                                            style: TextStyle(
-                                                fontSize: 45,
-                                                fontWeight: FontWeight.w700,
-                                                color: InitialTop.colourScheme.textColour),
-                                          ),
-                                          OutlinedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                backgroundColor: ((!ASIRemaining &&
-                                                            numberOfRemainingFeatOrASIs ==
-                                                                0) ||
-                                                        !(editableCharacter.dexterity.value +
-                                                                editableCharacter.featsASIScoreIncreases[1] <
-                                                            20))
-                                                    ? const Color.fromARGB(
-                                                        247, 56, 53, 52)
-                                                    : InitialTop.colourScheme.backingColour,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    4))),
-                                                side: const BorderSide(
-                                                    width: 3,
-                                                    color: Color.fromARGB(
-                                                        255, 10, 126, 54)),
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (editableCharacter.dexterity.value +
-                                                          editableCharacter.featsASIScoreIncreases[1] <
-                                                      20) {
-                                                    if (ASIRemaining) {
-                                                      ASIRemaining = false;
-                                                      editableCharacter.featsASIScoreIncreases[1]++;
-                                                    } else if (numberOfRemainingFeatOrASIs >
-                                                        0) {
-                                                      numberOfRemainingFeatOrASIs--;
-                                                      ASIRemaining = true;
-                                                      editableCharacter.featsASIScoreIncreases[1]++;
-                                                    }
-                                                  }
-                                                });
-                                              },
-                                              child: const Icon(Icons.add,
-                                                  color: Colors.white,
-                                                  size: 32)),
-                                        ]),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Container(
-                                        height: 132,
-                                        width: 160,
-                                        decoration: BoxDecoration(
-                                          color: InitialTop.colourScheme.backingColour,
-                                          border: Border.all(
-                                            color: Colors.black,
-                                            width: 1.6,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(5)),
-                                        ),
-                                        child: Column(children: [
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "Wisdom",
-                                            style: TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w800,
-                                                color: InitialTop.colourScheme.textColour),
-                                          ),
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "+${editableCharacter.featsASIScoreIncreases[4]}",
-                                            style: TextStyle(
-                                                fontSize: 45,
-                                                fontWeight: FontWeight.w700,
-                                                color: InitialTop.colourScheme.textColour),
-                                          ),
-                                          OutlinedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                backgroundColor: (!ASIRemaining &&
-                                                            numberOfRemainingFeatOrASIs ==
-                                                                0 ||
-                                                        !(editableCharacter.wisdom.value +
-                                                                editableCharacter.featsASIScoreIncreases[4] <
-                                                            20))
-                                                    ? const Color.fromARGB(
-                                                        247, 56, 53, 52)
-                                                    : InitialTop.colourScheme.backingColour,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    4))),
-                                                side: const BorderSide(
-                                                    width: 3,
-                                                    color: Color.fromARGB(
-                                                        255, 10, 126, 54)),
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (editableCharacter.wisdom.value +
-                                                          editableCharacter.featsASIScoreIncreases[4] <
-                                                      20) {
-                                                    if (ASIRemaining) {
-                                                      ASIRemaining = false;
-                                                      editableCharacter.featsASIScoreIncreases[4]++;
-                                                    } else if (numberOfRemainingFeatOrASIs >
-                                                        0) {
-                                                      numberOfRemainingFeatOrASIs--;
-                                                      ASIRemaining = true;
-                                                      editableCharacter.featsASIScoreIncreases[4]++;
-                                                    }
-                                                  }
-                                                });
-                                              },
-                                              child: const Icon(Icons.add,
-                                                  color: Colors.white,
-                                                  size: 32)),
-                                        ]),
-                                      )
-                                    ],
-                                  )),
-                                  const SizedBox(height: 10),
-                                  SizedBox(
-                                      child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        height: 132,
-                                        width: 160,
-                                        decoration: BoxDecoration(
-                                          color: InitialTop.colourScheme.backingColour,
-                                          border: Border.all(
-                                            color: Colors.black,
-                                            width: 1.6,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(5)),
-                                        ),
-                                        child: Column(children: [
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "Constitution",
-                                            style: TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w800,
-                                                color: InitialTop.colourScheme.textColour),
-                                          ),
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "+${editableCharacter.featsASIScoreIncreases[2]}",
-                                            style: TextStyle(
-                                                fontSize: 45,
-                                                fontWeight: FontWeight.w700,
-                                                color: InitialTop.colourScheme.textColour),
-                                          ),
-                                          OutlinedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                backgroundColor: (!ASIRemaining &&
-                                                            numberOfRemainingFeatOrASIs ==
-                                                                0 ||
-                                                        !(editableCharacter.constitution.value +
-                                                                editableCharacter.featsASIScoreIncreases[2] <
-                                                            20))
-                                                    ? const Color.fromARGB(
-                                                        247, 56, 53, 52)
-                                                    : InitialTop.colourScheme.backingColour,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    4))),
-                                                side: const BorderSide(
-                                                    width: 3,
-                                                    color: Color.fromARGB(
-                                                        255, 10, 126, 54)),
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (editableCharacter.constitution.value +
-                                                          editableCharacter.featsASIScoreIncreases[2] <
-                                                      20) {
-                                                    if (ASIRemaining) {
-                                                      ASIRemaining = false;
-                                                      editableCharacter.featsASIScoreIncreases[2]++;
-                                                    } else if (numberOfRemainingFeatOrASIs >
-                                                        0) {
-                                                      numberOfRemainingFeatOrASIs--;
-                                                      ASIRemaining = true;
-                                                      editableCharacter.featsASIScoreIncreases[2]++;
-                                                    }
-                                                  }
-                                                });
-                                              },
-                                              child: const Icon(Icons.add,
-                                                  color: Colors.white,
-                                                  size: 32)),
-                                        ]),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Container(
-                                        height: 132,
-                                        width: 160,
-                                        decoration: BoxDecoration(
-                                          color: InitialTop.colourScheme.backingColour,
-                                          border: Border.all(
-                                            color: Colors.black,
-                                            width: 1.6,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(5)),
-                                        ),
-                                        child: Column(children: [
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "Charisma",
-                                            style: TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w800,
-                                                color: InitialTop.colourScheme.textColour),
-                                          ),
-                                          Text(
-                                            textAlign: TextAlign.center,
-                                            "+${editableCharacter.featsASIScoreIncreases[5]}",
-                                            style: TextStyle(
-                                                fontSize: 45,
-                                                fontWeight: FontWeight.w700,
-                                                color: InitialTop.colourScheme.textColour),
-                                          ),
-                                          OutlinedButton(
-                                              style: OutlinedButton.styleFrom(
-                                                backgroundColor: (!ASIRemaining &&
-                                                            numberOfRemainingFeatOrASIs ==
-                                                                0 ||
-                                                        !(editableCharacter.charisma.value +
-                                                                editableCharacter.featsASIScoreIncreases[5] <
-                                                            20))
-                                                    ? const Color.fromARGB(
-                                                        247, 56, 53, 52)
-                                                    : InitialTop.colourScheme.backingColour,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    4))),
-                                                side: const BorderSide(
-                                                    width: 3,
-                                                    color: Color.fromARGB(
-                                                        255, 10, 126, 54)),
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (editableCharacter.charisma.value +
-                                                          editableCharacter.featsASIScoreIncreases[5] <
-                                                      20) {
-                                                    if (ASIRemaining) {
-                                                      ASIRemaining = false;
-                                                      editableCharacter.featsASIScoreIncreases[5]++;
-                                                    } else if (numberOfRemainingFeatOrASIs >
-                                                        0) {
-                                                      numberOfRemainingFeatOrASIs--;
-                                                      ASIRemaining = true;
-                                                      editableCharacter.featsASIScoreIncreases[5]++;
-                                                    }
-                                                  }
-                                                });
-                                              },
-                                              child: const Icon(Icons.add,
-                                                  color: Colors.white,
-                                                  size: 32)),
-                                        ]),
-                                      )
-                                    ],
-                                  )),
-                                ],
-                              ))),
-                      if (character.featsAllowed ?? false)
-                        Expanded(
-                            child: SizedBox(
-                                height: 550,
-                                child: Column(
-                                  children: [
-                                    if (editableCharacter.featsSelected.isNotEmpty)
-                                      Text(
-                                          "${editableCharacter.featsSelected.length} Feats selected:",
-                                          style: TextStyle(
-                                              color: InitialTop.colourScheme.backingColour,
-                                              fontSize: 33,
-                                              fontWeight: FontWeight.w800)),
-                                    if (editableCharacter.featsSelected.isNotEmpty)
-                                      SizedBox(
-                                          height: 50,
-                                          child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            shrinkWrap: true,
-                                            itemCount: editableCharacter.featsSelected.length,
-                                            itemBuilder: (context, index) {
-                                              return OutlinedButton(
-                                                style: OutlinedButton.styleFrom(
-                                                    backgroundColor:
-                                                        Colors.white),
-                                                onPressed: () {},
-                                                child: Text(
-                                                    editableCharacter.featsSelected[index][0]
-                                                        .name,
-                                                    style: TextStyle(
-                                                        color: InitialTop.colourScheme.backingColour)),
-                                              );
-                                            },
-                                          )),
-                                    Text("Select Feats:",
-                                        style: TextStyle(
-                                            color: InitialTop.colourScheme.backingColour,
-                                            fontSize: 33,
-                                            fontWeight: FontWeight.w800)),
-                                    const SizedBox(height: 8),
-                                    SizedBox(
-                                        child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                          OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                                backgroundColor: (fullFeats)
-                                                    ? InitialTop.colourScheme.backingColour
-                                                    : const Color.fromARGB(
-                                                        247, 56, 53, 52)),
-                                            onPressed: () {
-                                              setState(() {
-                                                fullFeats = !fullFeats;
-                                              });
-                                            },
-                                            child: Text("Full Feats",
-                                                style: TextStyle(
-                                                    color: InitialTop.colourScheme.textColour)),
-                                          ),
-                                          //text for search
-                                          OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                                backgroundColor: (halfFeats)
-                                                    ? InitialTop.colourScheme.backingColour
-                                                    : const Color.fromARGB(
-                                                        247, 56, 53, 52)),
-                                            onPressed: () {
-                                              setState(() {
-                                                halfFeats = !halfFeats;
-                                              });
-                                            },
-                                            child: Text("Half Feats",
-                                                style: TextStyle(
-                                                    color: InitialTop.colourScheme.textColour)),
-                                          ),
-                                        ])),
-                                    const SizedBox(height: 10),
-                                    Container(
-                                      height: 140,
-                                      width: 300,
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            247, 56, 53, 52),
-                                        border: Border.all(
-                                          color: Colors.black,
-                                          width: 3,
-                                        ),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(8)),
-                                      ),
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.vertical,
-                                        shrinkWrap: true,
-                                        itemCount: FEATLIST.length,
-                                        itemBuilder: (context, index) {
-                                          return Tooltip(
-                                              message:
-                                                  "${FEATLIST[index].name}: \n •  ${FEATLIST[index].abilities.where((element) => element[0] == "Bonus").toList().map((sublist) => sublist[2]).toList().join('\n • ')}",
-                                              child: OutlinedButton(
-                                                  style: OutlinedButton.styleFrom(
-                                                      backgroundColor: (editableCharacter.featsSelected
-                                                              .where((element) =>
-                                                                  element[0].name ==
-                                                                  FEATLIST[index]
-                                                                      .name)
-                                                              .isNotEmpty)
-                                                          ? Color.fromARGB(
-                                                              100 + (((editableCharacter.featsSelected.where((element) => element[0].name == FEATLIST[index].name).length) / FEATLIST[index].numberOfTimesTakeable) * 155).ceil(),
-                                                              0,
-                                                              50 + (((editableCharacter.featsSelected.where((element) => element[0].name == FEATLIST[index].name).length) / FEATLIST[index].numberOfTimesTakeable) * 205).ceil(),
-                                                              0)
-                                                          : Colors.white),
-                                                  onPressed: () {
-                                                    setState(
-                                                      () {
-                                                        if (numberOfRemainingFeatOrASIs >
-                                                            0) {
-                                                          if (editableCharacter.featsSelected
-                                                                  .where((element) =>
-                                                                      element[0]
-                                                                          .name ==
-                                                                      FEATLIST[
-                                                                              index]
-                                                                          .name)
-                                                                  .length <
-                                                              FEATLIST[index]
-                                                                  .numberOfTimesTakeable) {
-                                                            numberOfRemainingFeatOrASIs--;
-                                                            //call up the selection page
-                                                            editableCharacter.featsSelected.add([
-                                                              FEATLIST[index]
-                                                            ]);
-                                                            for (List<dynamic> x
-                                                                in FEATLIST[
-                                                                        index]
-                                                                    .abilities) {
-                                                              if (x[0] ==
-                                                                  "Choice") {
-                                                                widgetsInPlay.add(
-                                                                    SizedBox(
-                                                                        height:
-                                                                            80,
-                                                                        child:
-                                                                            ChoiceRow(
-                                                                          x: x.sublist(
-                                                                              1),
-                                                                          allSelected:
-                                                                              editableCharacter.allSelected,
-                                                                        )));
-                                                              } else {
-                                                                // Process non-choice feat abilities here
-                                                                // Note: Complex level gain logic now handled by ClassTab widget
-                                                                if (x[0] == "ASI") {
-                                                                  numberOfRemainingFeatOrASIs++;
-                                                                } else if (x[0] == "Bonus") {
-                                                                  editableCharacter.featuresAndTraits.add("${x[1]}: ${x[2]}");
-                                                                }
-                                                                // Add other feat-specific processing as needed
-                                                              }
-                                                            }
-                                                          }
-                                                        }
-                                                      },
-                                                    );
-                                                    // Code to handle button press
-                                                  },
-                                                  child: Text(FEATLIST[index].name,
-                                                      style: TextStyle(
-                                                          color: InitialTop.colourScheme.backingColour,
-                                                          fontWeight: FontWeight.w900))));
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ))),
-                    ],
-                  )
-                ],
-              )),
+          //ASI + FEAT- updated to use AsiFeatTab widget
+          AsiFeatTab(
+            character: editableCharacter,
+            numberOfRemainingFeatOrASIs: numberOfRemainingFeatOrASIs,
+            remainingAsi: remainingAsi,
+            widgetsInPlay: widgetsInPlay,
+            onCharacterChanged: () {
+              setState(() {});
+            },
+            onRemainingFeatOrASIsChanged: (newCount) {
+              setState(() {
+                numberOfRemainingFeatOrASIs = newCount;
+              });
+            },
+            onRemainingAsiChanged: (newRemainingAsi) {
+              setState(() {
+                remainingAsi = newRemainingAsi;
+              });
+            },
+            onWidgetsInPlayChanged: (newWidgets) {
+              setState(() {
+                widgetsInPlay = newWidgets;
+              });
+            },
+          ),
           //spells - updated to new color Scheme
-          Column(children: [
-            Text("Choose your spells from regular progression",
-                style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w700,
-                    color: InitialTop.colourScheme.backingColour)),
-            Row(children: [
-              Expanded(
-                  child: Column(children: [
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 0)
-                    .toList()
-                    .isNotEmpty)
-                  const Text("Cantrips:"),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 0)
-                    .toList()
-                    .isNotEmpty)
-                  SizedBox(
-                      height: 50,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: editableCharacter.allSpellsSelected
-                            .where((element) => element.level == 0)
-                            .toList()
-                            .length,
-                        itemBuilder: (context, index) {
-                          return OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                backgroundColor: Colors.white),
-                            onPressed: () {},
-                            child: Text(editableCharacter.allSpellsSelected
-                                .where((element) => element.level == 0)
-                                .toList()[index]
-                                .name),
-                          );
-                        },
-                      )),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 1)
-                    .toList()
-                    .isNotEmpty)
-                  const Text("Level 1 Spells:"),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 1)
-                    .toList()
-                    .isNotEmpty)
-                  SizedBox(
-                      height: 50,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: editableCharacter.allSpellsSelected
-                            .where((element) => element.level == 1)
-                            .toList()
-                            .length,
-                        itemBuilder: (context, index) {
-                          return OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                backgroundColor: Colors.white),
-                            onPressed: () {},
-                            child: Text(editableCharacter.allSpellsSelected
-                                .where((element) => element.level == 1)
-                                .toList()[index]
-                                .name),
-                          );
-                        },
-                      )),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 2)
-                    .toList()
-                    .isNotEmpty)
-                  const Text("Level 2 Spells:"),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 2)
-                    .toList()
-                    .isNotEmpty)
-                  SizedBox(
-                      height: 50,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: editableCharacter.allSpellsSelected
-                            .where((element) => element.level == 2)
-                            .toList()
-                            .length,
-                        itemBuilder: (context, index) {
-                          return OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                backgroundColor: Colors.white),
-                            onPressed: () {},
-                            child: Text(editableCharacter.allSpellsSelected
-                                .where((element) => element.level == 2)
-                                .toList()[index]
-                                .name),
-                          );
-                        },
-                      )),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 3)
-                    .toList()
-                    .isNotEmpty)
-                  const Text("Level 3 Spells:"),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 3)
-                    .toList()
-                    .isNotEmpty)
-                  SizedBox(
-                      height: 50,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: editableCharacter.allSpellsSelected
-                            .where((element) => element.level == 3)
-                            .toList()
-                            .length,
-                        itemBuilder: (context, index) {
-                          return OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                backgroundColor: Colors.white),
-                            onPressed: () {},
-                            child: Text(editableCharacter.allSpellsSelected
-                                .where((element) => element.level == 3)
-                                .toList()[index]
-                                .name),
-                          );
-                        },
-                      )),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 4)
-                    .toList()
-                    .isNotEmpty)
-                  const Text("Level 4 Spells:"),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 4)
-                    .toList()
-                    .isNotEmpty)
-                  SizedBox(
-                      height: 50,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: editableCharacter.allSpellsSelected
-                            .where((element) => element.level == 4)
-                            .toList()
-                            .length,
-                        itemBuilder: (context, index) {
-                          return OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                backgroundColor: Colors.white),
-                            onPressed: () {},
-                            child: Text(editableCharacter.allSpellsSelected
-                                .where((element) => element.level == 4)
-                                .toList()[index]
-                                .name),
-                          );
-                        },
-                      )),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 5)
-                    .toList()
-                    .isNotEmpty)
-                  const Text("Level 5 Spells:"),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 5)
-                    .toList()
-                    .isNotEmpty)
-                  SizedBox(
-                      height: 50,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: editableCharacter.allSpellsSelected
-                            .where((element) => element.level == 5)
-                            .toList()
-                            .length,
-                        itemBuilder: (context, index) {
-                          return OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                backgroundColor: Colors.white),
-                            onPressed: () {},
-                            child: Text(editableCharacter.allSpellsSelected
-                                .where((element) => element.level == 5)
-                                .toList()[index]
-                                .name),
-                          );
-                        },
-                      )),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 6)
-                    .toList()
-                    .isNotEmpty)
-                  const Text("Level 6 Spells:"),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 6)
-                    .toList()
-                    .isNotEmpty)
-                  SizedBox(
-                      height: 50,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: editableCharacter.allSpellsSelected
-                            .where((element) => element.level == 6)
-                            .toList()
-                            .length,
-                        itemBuilder: (context, index) {
-                          return OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                backgroundColor: Colors.white),
-                            onPressed: () {},
-                            child: Text(editableCharacter.allSpellsSelected
-                                .where((element) => element.level == 6)
-                                .toList()[index]
-                                .name),
-                          );
-                        },
-                      )),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 7)
-                    .toList()
-                    .isNotEmpty)
-                  const Text("Level 7 Spells:"),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 7)
-                    .toList()
-                    .isNotEmpty)
-                  SizedBox(
-                      height: 50,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: editableCharacter.allSpellsSelected
-                            .where((element) => element.level == 7)
-                            .toList()
-                            .length,
-                        itemBuilder: (context, index) {
-                          return OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                backgroundColor: Colors.white),
-                            onPressed: () {},
-                            child: Text(editableCharacter.allSpellsSelected
-                                .where((element) => element.level == 7)
-                                .toList()[index]
-                                .name),
-                          );
-                        },
-                      )),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 8)
-                    .toList()
-                    .isNotEmpty)
-                  const Text("Level 8 Spells:"),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 8)
-                    .toList()
-                    .isNotEmpty)
-                  SizedBox(
-                      height: 50,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: editableCharacter.allSpellsSelected
-                            .where((element) => element.level == 8)
-                            .toList()
-                            .length,
-                        itemBuilder: (context, index) {
-                          return OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                backgroundColor: Colors.white),
-                            onPressed: () {},
-                            child: Text(editableCharacter.allSpellsSelected
-                                .where((element) => element.level == 8)
-                                .toList()[index]
-                                .name),
-                          );
-                        },
-                      )),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 9)
-                    .toList()
-                    .isNotEmpty)
-                  const Text("Level 9 Spells:"),
-                if (editableCharacter.allSpellsSelected
-                    .where((element) => element.level == 9)
-                    .toList()
-                    .isNotEmpty)
-                  SizedBox(
-                      height: 50,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: editableCharacter.allSpellsSelected
-                            .where((element) => element.level == 9)
-                            .toList()
-                            .length,
-                        itemBuilder: (context, index) {
-                          return OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                backgroundColor: Colors.white),
-                            onPressed: () {},
-                            child: Text(editableCharacter.allSpellsSelected
-                                .where((element) => element.level == 9)
-                                .toList()[index]
-                                .name),
-                          );
-                        },
-                      )),
-              ])),
-              Expanded(
-                child: SingleChildScrollView(
-                    child: Column(
-                  children: editableCharacter.allSpellsSelectedAsListsOfThings
-                      .map((s) => SpellSelections(editableCharacter.allSpellsSelected, s))
-                      .toList(),
-                )),
-              )
-            ]),
-          ]),
+          SpellsTab(
+            character: editableCharacter,
+            onCharacterChanged: () {
+              setState(() {
+                // Character changes are handled by the SpellsTab internally
+              });
+            },
+          ),
           //Equipment- updated to new color Scheme
           EquipmentTab(
             character: editableCharacter,
@@ -1417,7 +483,7 @@ class EditCharacter extends State<EditACharacter> {
                                   backgroundColor:
                                       (numberOfRemainingFeatOrASIs ==
                                                   0 &&
-                                              !ASIRemaining &&
+                                              !remainingAsi &&
                                               charLevel <= editableCharacter.classList.length &&
                                               (equipmentSelectedFromChoices ==
                                                       [] ||
@@ -1450,7 +516,7 @@ class EditCharacter extends State<EditACharacter> {
                                     )),
                                 onPressed: () {
                                   if (numberOfRemainingFeatOrASIs == 0 &&
-                                      !ASIRemaining &&
+                                      !remainingAsi &&
                                       charLevel <= editableCharacter.classList.length &&
                                       (equipmentSelectedFromChoices == [] ||
                                           equipmentSelectedFromChoices
@@ -1602,7 +668,7 @@ class EditCharacter extends State<EditACharacter> {
                       //ASI+feats
                       const SizedBox(height: 20),
                       (numberOfRemainingFeatOrASIs == 0)
-                          ? (ASIRemaining == false)
+                          ? (remainingAsi == false)
                               ? const Text("Made all ASI/Feats choices",
                                   style: TextStyle(
                                       color: Colors.green,
