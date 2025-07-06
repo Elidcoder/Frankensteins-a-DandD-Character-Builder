@@ -417,6 +417,32 @@ class StyleUtils {
     );
   }
 
+  static OutlinedButton buildStyledButton({
+    required Widget child,
+    required VoidCallback? onPressed,
+    bool enabled = true,
+    Color? backgroundColor,
+    Color? borderColor,
+    double borderWidth = 3.0,
+  }) {
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        backgroundColor: enabled 
+          ? (backgroundColor ?? InitialTop.colourScheme.backingColour)
+          : unavailableColor,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(4))
+        ),
+        side: BorderSide(
+          width: borderWidth, 
+          color: borderColor ?? const Color.fromARGB(255, 27, 155, 10)
+        ),
+      ),
+      onPressed: enabled ? onPressed : null,
+      child: child,
+    );
+  }
+
   static String produceEquipmentOptionDescription(List list) {
     // Initialize an empty string to store the result
     String result = '';

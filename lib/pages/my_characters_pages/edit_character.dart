@@ -10,6 +10,7 @@ import "../../content_classes/all_content_classes.dart";
 import "../../main.dart" show InitialTop, InitialTopKey;
 import "../../top_bar.dart";
 import "../../file_manager/file_manager.dart";
+import "../../utils/style_utils.dart";
 
 class EditTop extends StatelessWidget {
   final Character character;
@@ -143,30 +144,14 @@ class EditCharacter extends State<EditACharacter> {
           ),
           bottom: TabBar(
             tabs: [
-              Tab(
-                  child: Text("Quick edits",
-                      style: TextStyle(color: InitialTop.colourScheme.textColour))),
-              Tab(
-                  child: Text("Class",
-                      style: TextStyle(color: InitialTop.colourScheme.textColour))),
-              Tab(
-                  child: Text("ASI's and Feats",
-                      style: TextStyle(color: InitialTop.colourScheme.textColour))),
-              Tab(
-                  child: Text("Spells",
-                      style: TextStyle(color: InitialTop.colourScheme.textColour))),
-              Tab(
-                  child: Text("Equipment",
-                      style: TextStyle(color: InitialTop.colourScheme.textColour))),
-              Tab(
-                  child: Text("Boons and magic items",
-                      style: TextStyle(color: InitialTop.colourScheme.textColour))),
-              Tab(
-                  child: Text("Backstory",
-                      style: TextStyle(color: InitialTop.colourScheme.textColour))),
-              Tab(
-                  child: Text("Finishing up",
-                      style: TextStyle(color: InitialTop.colourScheme.textColour))),
+              StyleUtils.tabLabel("Quick edits"),
+              StyleUtils.tabLabel("Class"),
+              StyleUtils.tabLabel("ASI's and Feats"),
+              StyleUtils.tabLabel("Spells"),
+              StyleUtils.tabLabel("Equipment"),
+              StyleUtils.tabLabel("Boons and magic items"),
+              StyleUtils.tabLabel("Backstory"),
+              StyleUtils.tabLabel("Finishing up"),
             ],
             indicatorColor: InitialTop.colourScheme.textColour,
           ),
