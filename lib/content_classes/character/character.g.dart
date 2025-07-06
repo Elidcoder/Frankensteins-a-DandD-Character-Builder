@@ -27,9 +27,7 @@ Character _$CharacterFromJson(Map<String, dynamic> json) => Character(
       armourList: (json['armourList'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      featsSelected: (json['featsSelected'] as List<dynamic>)
-          .map((e) => e as List<dynamic>)
-          .toList(),
+      featsSelected: _featsSelectedFromJson(json['featsSelected'] as List?),
       itemList:
           (json['itemList'] as List<dynamic>).map((e) => e as String).toList(),
       equipmentSelectedFromChoices:
@@ -181,7 +179,7 @@ Map<String, dynamic> _$CharacterToJson(Character instance) => <String, dynamic>{
       'allSelected': instance.allSelected,
       'classSubclassMapper': instance.classSubclassMapper,
       'featsASIScoreIncreases': instance.featsASIScoreIncreases,
-      'featsSelected': instance.featsSelected,
+      'featsSelected': _featsSelectedToJson(instance.featsSelected),
       'allSpellsSelected': instance.allSpellsSelected,
       'allSpellsSelectedAsListsOfThings':
           instance.allSpellsSelectedAsListsOfThings,

@@ -217,10 +217,10 @@ class _AsiFeatTabState extends State<AsiFeatTab> {
                                 child: OutlinedButton(
                                   style: OutlinedButton.styleFrom(
                                     /* Create a colouring gradient for feats that can be selected multiple times */
-                                    backgroundColor: (widget.character.featsSelected.where((feat) => feat[0].name == filteredFeats[index].name).isNotEmpty) ? Color.fromARGB(
-                                      100 + (((widget.character.featsSelected.where((feat) => feat[0].name == filteredFeats[index].name).length) / filteredFeats[index].numberOfTimesTakeable) * 155).ceil(),
+                                    backgroundColor: (widget.character.featsSelected.containsKey(filteredFeats[index])) ? Color.fromARGB(
+                                      100 + (((widget.character.featsSelected[filteredFeats[index]] ?? 0) / filteredFeats[index].numberOfTimesTakeable) * 155).ceil(),
                                       0,
-                                      50 + (((widget.character.featsSelected.where((feat) => feat[0].name == filteredFeats[index].name).length) / filteredFeats[index].numberOfTimesTakeable) * 205).ceil(),
+                                      50 + (((widget.character.featsSelected[filteredFeats[index]] ?? 0) / filteredFeats[index].numberOfTimesTakeable) * 205).ceil(),
                                       0
                                     )
                                     : Colors.white,
@@ -228,20 +228,23 @@ class _AsiFeatTabState extends State<AsiFeatTab> {
                                   ),
                                   onPressed: () {
                                     setState(() {
+                                      Feat selectedFeat = filteredFeats[index];
                                       /* Check there are choices available for the feat. */
                                       if (widget.numberOfRemainingFeatOrASIs > 0) {
                                         /* Check the feat hasn't been chosen its maximum amount of times. */
-                                        if (widget.character.featsSelected.where(
-                                          (element) => element[0].name == filteredFeats[index].name
-                                        ).length < filteredFeats[index].numberOfTimesTakeable) {
+                                        if ((widget.character.featsSelected[selectedFeat] ?? 0) < selectedFeat.numberOfTimesTakeable) {
 
                                           /* Select the feat */
                                           widget.onRemainingFeatOrASIsChanged(widget.numberOfRemainingFeatOrASIs - 1);
-                                          widget.character.featsSelected.add([filteredFeats[index]]);
+                                          if (widget.character.featsSelected.containsKey(selectedFeat)) {
+                                            widget.character.featsSelected[selectedFeat] = widget.character.featsSelected[selectedFeat]! + 1;
+                                          } else {
+                                            widget.character.featsSelected[selectedFeat] = 1;
+                                          }
 
                                           /* Add any necessary choices to the widgetsInPlay */
                                           List<Widget> newWidgets = List.from(widget.widgetsInPlay);
-                                          for (List<dynamic> x in filteredFeats[index].abilities) {
+                                          for (List<dynamic> x in selectedFeat.abilities) {
                                             if (x.first == "Choice") {
                                               newWidgets.add(SizedBox(height: 80, child: ChoiceRow(x: x.sublist(1), allSelected: widget.character.allSelected)));
                                             } else {
@@ -263,7 +266,7 @@ class _AsiFeatTabState extends State<AsiFeatTab> {
 
                         /* Display the feats the character already has */
                         if (widget.character.featsSelected.isNotEmpty) ...[
-                          StyleUtils.buildStyledLargeTextBox(text: "Selected Feat${displayPlural(widget.character.featsSelected)}:"),
+                          StyleUtils.buildStyledLargeTextBox(text: "Selected Feat${displayPlural(widget.character.featsSelected.keys.toList())}:"),
                           SizedBox(
                             height: 50,
                             child: ListView.builder(
@@ -272,7 +275,7 @@ class _AsiFeatTabState extends State<AsiFeatTab> {
                               itemCount: widget.character.featsSelected.length,
                               itemBuilder: (context, index) {
                                 return Tooltip(
-                                  message: FEATLIST.singleWhere((feat) => feat.name == widget.character.featsSelected[index][0].name).display,
+                                  message: FEATLIST.singleWhere((feat) => feat == widget.character.featsSelected.keys.toList()[index]).display,
                                   child: OutlinedButton(
                                     style: OutlinedButton.styleFrom(
                                       backgroundColor: InitialTop.colourScheme.backingColour,
@@ -282,7 +285,7 @@ class _AsiFeatTabState extends State<AsiFeatTab> {
                                       side: BorderSide(color: Colors.black, width: 2),
                                     ),
                                     onPressed: () {},
-                                    child: StyleUtils.buildStyledSmallTextBox(text: widget.character.featsSelected[index][0].name, color: InitialTop.colourScheme.textColour)
+                                    child: StyleUtils.buildStyledSmallTextBox(text: widget.character.featsSelected.keys.toList()[index].name, color: InitialTop.colourScheme.textColour)
                                   )
                                 );
                               },

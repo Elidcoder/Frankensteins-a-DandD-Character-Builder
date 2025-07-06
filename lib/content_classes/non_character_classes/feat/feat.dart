@@ -32,6 +32,30 @@ class Feat implements Content {
 
   String get display => "$name: \n •  ${abilities.where((element) => element[0] == "Bonus").toList().map((sublist) => sublist[2]).toList().join('\n •  ')}";
   
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! Feat) return false;
+    return name == other.name &&
+           sourceBook == other.sourceBook &&
+           isHalfFeat == other.isHalfFeat &&
+           description == other.description &&
+           abilities.toString() == other.abilities.toString() &&
+           numberOfTimesTakeable == other.numberOfTimesTakeable;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      name,
+      sourceBook,
+      isHalfFeat,
+      description,
+      abilities.toString(),
+      numberOfTimesTakeable,
+    );
+  }
+  
   factory Feat.fromJson(Map<String, dynamic> json) => _$FeatFromJson(json);
 
   Map<String, dynamic> toJson() => _$FeatToJson(this);

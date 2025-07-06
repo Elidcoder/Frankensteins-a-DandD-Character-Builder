@@ -12,8 +12,33 @@ part 'character.g.dart';
 Queue<String> _queueFromJson(List<dynamic>? json) => Queue<String>.from((json ?? []).cast<String>());
 List<String> _queueToJson(Queue<String> queue) => queue.toList();
 
-@JsonSerializable()
+// Helper functions for Map<Feat, int> serialization
+Map<Feat, int> _featsSelectedFromJson(List<dynamic>? json) {
+  if (json == null) return {};
+  Map<Feat, int> result = {};
+  for (var item in json) {
+    if (item is Map<String, dynamic> && item.containsKey('feat') && item.containsKey('count')) {
+      try {
+        Feat feat = Feat.fromJson(item['feat']);
+        int count = item['count'] as int;
+        result[feat] = count;
+      } catch (e) {
+        // Skip invalid entries
+        continue;
+      }
+    }
+  }
+  return result;
+}
 
+List<Map<String, dynamic>> _featsSelectedToJson(Map<Feat, int> featsSelected) {
+  return featsSelected.entries.map((entry) => {
+    'feat': entry.key.toJson(),
+    'count': entry.value,
+  }).toList();
+}
+
+@JsonSerializable()
 class Character {
   String get name => characterDescription.name;
   // make this final after removing the change UID in edit character
@@ -93,9 +118,8 @@ class Character {
   Map<String, String> classSubclassMapper;
   //ASI feats
   List<int> featsASIScoreIncreases;
-  //FUTUREPLAN(Replace this with List<Pair<Feat, int>>, (feat, numbTimesTaken)) 
-  List<List<dynamic>> featsSelected;
-
+  @JsonKey(fromJson: _featsSelectedFromJson, toJson: _featsSelectedToJson)
+  Map<Feat, int> featsSelected;
   //Spells
   List<Spell> allSpellsSelected;
   List<List<dynamic>> allSpellsSelectedAsListsOfThings;
@@ -303,7 +327,7 @@ class Character {
       allSpellsSelected: [],
       allSpellsSelectedAsListsOfThings: [],
       armourList: [],
-      featsSelected: [],
+      featsSelected: {},
       itemList: [],
       equipmentSelectedFromChoices: [],
       optionalOnesStates: [
