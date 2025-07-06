@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 // Project Imports
 import "../create_a_character_pages/edit_tabs.dart";
 import "../create_a_character_pages/finishing_up_tab.dart";
+import "../create_a_character_pages/backstory_tab.dart";
 import "../../content_classes/all_content_classes.dart";
 import "../../main.dart" show InitialTop, InitialTopKey;
 import "../../top_bar.dart";
@@ -123,7 +124,7 @@ class EditCharacter extends State<EditACharacter> {
   ) {
     //super.build(context);
     return DefaultTabController(
-      length: 7,
+      length: 8,
       child: Scaffold(
         backgroundColor: InitialTop.colourScheme.backgroundColour,
         appBar: AppBar(
@@ -155,6 +156,9 @@ class EditCharacter extends State<EditACharacter> {
                       style: TextStyle(color: InitialTop.colourScheme.textColour))),
               Tab(
                   child: Text("Boons and magic items",
+                      style: TextStyle(color: InitialTop.colourScheme.textColour))),
+              Tab(
+                  child: Text("Backstory",
                       style: TextStyle(color: InitialTop.colourScheme.textColour))),
               Tab(
                   child: Text("Finishing up",
@@ -355,6 +359,15 @@ class EditCharacter extends State<EditACharacter> {
           ),
           //Boons and magic items- updated to new color Scheme
           const Icon(Icons.directions_bike),
+          //Backstory
+          BackstoryTab(
+            character: editableCharacter,
+            onCharacterChanged: () {
+              setState(() {
+                // Character changes are handled by the BackstoryTab internally
+              });
+            },
+          ),
           //Finishing up
           FinishingUpTab(
             character: editableCharacter,
@@ -379,18 +392,18 @@ class EditCharacter extends State<EditACharacter> {
               Character char = Character(
                 languageChoices: character.languageChoices,
                 characterDescription: CharacterDescription(
-                  age: character.characterDescription.age,
-                  height: character.characterDescription.height,
-                  weight: character.characterDescription.weight,
-                  eyes: character.characterDescription.eyes,
-                  skin: character.characterDescription.skin,
-                  hair: character.characterDescription.hair,
-                  backstory: character.characterDescription.backstory,
-                  name: character.characterDescription.name,
-                  gender: character.characterDescription.gender
+                  age: editableCharacter.characterDescription.age,
+                  height: editableCharacter.characterDescription.height,
+                  weight: editableCharacter.characterDescription.weight,
+                  eyes: editableCharacter.characterDescription.eyes,
+                  skin: editableCharacter.characterDescription.skin,
+                  hair: editableCharacter.characterDescription.hair,
+                  backstory: editableCharacter.characterDescription.backstory,
+                  name: editableCharacter.characterDescription.name,
+                  gender: editableCharacter.characterDescription.gender
                 ),
                 skillBonusMap: character.skillBonusMap,
-                extraFeatures: character.extraFeatures,
+                extraFeatures: editableCharacter.extraFeatures,
                 group: editableCharacter.group,
                 levelsPerClass: editableCharacter.levelsPerClass,
                 allSelected: editableCharacter.allSelected,

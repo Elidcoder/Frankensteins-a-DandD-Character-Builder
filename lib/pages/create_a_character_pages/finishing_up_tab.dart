@@ -192,13 +192,12 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
                   trueText: "Made all spells selections", 
                   falseText: "Missed ${(widget.character.allSpellsSelectedAsListsOfThings.fold(0, (a, b) => a + (b[2] as int)))} spells"),                            
 
-                // Show backstory check only in creation mode
-                if (!widget.isEditMode)
-                  StyleUtils.makeOptionalText(
-                    condition: widget.character.backstoryComplete,
-                    trueText: "Completed backstory", 
-                    falseText: "Haven't filled in all backstory information"
-                  )
+                // Show backstory check - in edit mode, users can edit backstory via the backstory tab
+                StyleUtils.makeOptionalText(
+                  condition: widget.character.backstoryComplete,
+                  trueText: "Completed backstory", 
+                  falseText: "Haven't filled in all backstory information"
+                )
         ]))
       ]),
     );
