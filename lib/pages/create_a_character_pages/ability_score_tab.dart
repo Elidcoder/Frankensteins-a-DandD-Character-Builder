@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "../../main.dart";
+import "package:frankenstein/theme/theme_manager.dart";
 import "../../content_classes/all_content_classes.dart";
 import "../../utils/style_utils.dart";
 
@@ -31,7 +31,7 @@ class _AbilityScoreTabState extends State<AbilityScoreTab> {
         Text(
           textAlign: TextAlign.center,
           "Points remaining: ${widget.pointsRemaining}",
-          style: TextStyle(fontSize: 50, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.backingColour),
+          style: TextStyle(fontSize: 50, fontWeight: FontWeight.w700, color: ThemeManager.instance.currentScheme.backingColour),
         ),
         const SizedBox(height: 35),
         SingleChildScrollView(
@@ -90,7 +90,7 @@ class _AbilityScoreTabState extends State<AbilityScoreTab> {
           height: 128.2,
           width: 135.2,
           decoration: BoxDecoration(
-            color: InitialTop.colourScheme.backingColour,
+            color: ThemeManager.instance.currentScheme.backingColour,
             border: Border.all(color: Colors.black, width: 1.6),
             borderRadius: const BorderRadius.all(Radius.circular(5)),
           ),
@@ -103,7 +103,7 @@ class _AbilityScoreTabState extends State<AbilityScoreTab> {
                 style: TextStyle(
                     fontSize: 65,
                     fontWeight: FontWeight.w700,
-                    color: InitialTop.colourScheme.textColour),
+                    color: ThemeManager.instance.currentScheme.textColour),
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -116,7 +116,7 @@ class _AbilityScoreTabState extends State<AbilityScoreTab> {
                   if (canRemove)
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                        backgroundColor: InitialTop.colourScheme.backingColour,
+                        backgroundColor: ThemeManager.instance.currentScheme.backingColour,
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(4)),
                         ),
@@ -140,7 +140,7 @@ class _AbilityScoreTabState extends State<AbilityScoreTab> {
                         backgroundColor:
                             (score.abilityScoreCost > widget.pointsRemaining)
                                 ? unavailableColor 
-                                : InitialTop.colourScheme.backingColour,
+                                : ThemeManager.instance.currentScheme.backingColour,
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(4)),
                         ),
@@ -184,7 +184,7 @@ class _AbilityScoreTabState extends State<AbilityScoreTab> {
             style: TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.w700,
-              color: InitialTop.colourScheme.backingColour,
+              color: ThemeManager.instance.currentScheme.backingColour,
             ),
           ),
         ]),
@@ -196,7 +196,7 @@ class _AbilityScoreTabState extends State<AbilityScoreTab> {
           width: 90,
           height: 80,
           decoration: BoxDecoration(
-            color: InitialTop.colourScheme.backingColour,
+            color: ThemeManager.instance.currentScheme.backingColour,
             border: Border.all(color: Colors.black, width: 1.6),
             borderRadius: const BorderRadius.all(Radius.circular(5)),
           ),
@@ -206,7 +206,7 @@ class _AbilityScoreTabState extends State<AbilityScoreTab> {
             style: TextStyle(
               fontSize: 50,
               fontWeight: FontWeight.w700,
-              color: InitialTop.colourScheme.textColour,
+              color: ThemeManager.instance.currentScheme.textColour,
             ),
           ),
         ),

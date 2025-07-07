@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
+import "package:frankenstein/theme/theme_manager.dart";
 import "../../content_classes/all_content_classes.dart";
 import "../../utils/style_utils.dart";
-import "../../main.dart";
 import "spell_handling.dart"; // For ChoiceRow
 
 /// ASI and Feats tab widget for character creation
@@ -58,20 +58,20 @@ class _AsiFeatTabState extends State<AsiFeatTab> {
       height: 136,
       width: 160,
       decoration: BoxDecoration(
-        color: InitialTop.colourScheme.backingColour,
+        color: ThemeManager.instance.currentScheme.backingColour,
         border: Border.all(color: Colors.black, width: 1.6),
         borderRadius: const BorderRadius.all(
           Radius.circular(5)
         ),
       ),
       child: Column(children: [
-        StyleUtils.buildStyledMediumTextBox(text: score.name, color: InitialTop.colourScheme.textColour),
-        StyleUtils.buildStyledTextBox(text: "+${widget.character.featsASIScoreIncreases[index]}", size: 45, color: InitialTop.colourScheme.textColour),
+        StyleUtils.buildStyledMediumTextBox(text: score.name, color: ThemeManager.instance.currentScheme.textColour),
+        StyleUtils.buildStyledTextBox(text: "+${widget.character.featsASIScoreIncreases[index]}", size: 45, color: ThemeManager.instance.currentScheme.textColour),
         OutlinedButton(
             style: OutlinedButton.styleFrom(
               backgroundColor: ((!widget.remainingAsi && widget.numberOfRemainingFeatOrASIs == 0) || !(scoreBelowMax))
                 ? unavailableColor
-                : InitialTop.colourScheme.backingColour,
+                : ThemeManager.instance.currentScheme.backingColour,
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(4))
                 ),
@@ -113,17 +113,18 @@ class _AsiFeatTabState extends State<AsiFeatTab> {
     );
   }
 
-  OutlinedButton buildBinarySelectorButton({
+  Widget buildBinarySelectorButton({
     required String key
   }) {
     return StyleUtils.buildBinarySelectorButton(
-      key: key, 
-      filterMap: featFilters, 
-      onToggle: () {
+      text: key,
+      isSelected: featFilters[key] ?? false,
+      onPressed: () {
         setState(() {
           featFilters[key] = !featFilters[key]!;
         });
-      });
+      },
+    );
   }
 
   Widget? levelGainParser(List<dynamic> x, Class selectedClass) {
@@ -278,14 +279,14 @@ class _AsiFeatTabState extends State<AsiFeatTab> {
                                   message: FEATLIST.singleWhere((feat) => feat == widget.character.featsSelected.keys.toList()[index]).display,
                                   child: OutlinedButton(
                                     style: OutlinedButton.styleFrom(
-                                      backgroundColor: InitialTop.colourScheme.backingColour,
+                                      backgroundColor: ThemeManager.instance.currentScheme.backingColour,
                                       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                                       side: BorderSide(color: Colors.black, width: 2),
                                     ),
                                     onPressed: () {},
-                                    child: StyleUtils.buildStyledSmallTextBox(text: widget.character.featsSelected.keys.toList()[index].name, color: InitialTop.colourScheme.textColour)
+                                    child: StyleUtils.buildStyledSmallTextBox(text: widget.character.featsSelected.keys.toList()[index].name, color: ThemeManager.instance.currentScheme.textColour)
                                   )
                                 );
                               },

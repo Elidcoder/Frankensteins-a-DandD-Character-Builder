@@ -40,8 +40,9 @@ class _BackgroundTabState extends State<BackgroundTab> {
           StyleUtils.buildStyledMediumTextBox(text: "Select your character's background"),
           const SizedBox(height: 8),
           StyleUtils.buildStyledDropDown(
-            initialValue: widget.character.background.name, 
-            items: BACKGROUNDLIST, 
+            selectedValue: widget.character.background.name, 
+            options: BACKGROUNDLIST.map((bg) => bg.name).toList(), 
+            hintText: "Select background",
             onChanged: (String? value) {                            
               setState(() {
                 widget.character.background = BACKGROUNDLIST.singleWhere((x) => x.name == value);
@@ -59,8 +60,8 @@ class _BackgroundTabState extends State<BackgroundTab> {
           
           //Personality Trait
           StyleUtils.buildLabeledDropdown(
-            labelText: "Select your character's personality trait",
-            items: widget.character.background.personalityTrait, 
+            label: "Select your character's personality trait",
+            options: widget.character.background.personalityTrait, 
             selectedValue: widget.character.backgroundPersonalityTrait,
             onChanged: (String? value) {
               setState(() {
@@ -74,8 +75,8 @@ class _BackgroundTabState extends State<BackgroundTab> {
           
           //Ideal
           StyleUtils.buildLabeledDropdown(
-            labelText: "Select your character's ideal",
-            items: widget.character.background.ideal,
+            label: "Select your character's ideal",
+            options: widget.character.background.ideal,
             selectedValue: widget.character.backgroundIdeal,
             onChanged: (String? value) {
               setState(() {
@@ -88,8 +89,8 @@ class _BackgroundTabState extends State<BackgroundTab> {
           
           //Bond
           StyleUtils.buildLabeledDropdown(
-            labelText: "Select your character's bond",
-            items: widget.character.background.bond, 
+            label: "Select your character's bond",
+            options: widget.character.background.bond, 
             selectedValue: widget.character.backgroundBond,
             onChanged: (String? value) {
               setState(() {
@@ -102,8 +103,8 @@ class _BackgroundTabState extends State<BackgroundTab> {
           
           //Flaw
           StyleUtils.buildLabeledDropdown(
-            labelText: "Select your character's flaw",
-            items: widget.character.background.flaw, 
+            label: "Select your character's flaw",
+            options: widget.character.background.flaw, 
             selectedValue: widget.character.backgroundFlaw,
             onChanged: (String? value) {
               setState(() {
@@ -119,14 +120,10 @@ class _BackgroundTabState extends State<BackgroundTab> {
             StyleUtils.buildStyledSmallTextBox(text: "Pick ${(widget.character.background.numberOfSkillChoices)} skill(s) to gain proficiency in"),
             const SizedBox(height: 7),
             StyleUtils.buildStyledToggleSelector(
-              isSelected: backgroundSelectedSkills,
-              itemLabels: widget.character.background.optionalSkillProficiencies, 
-              onPressed: (int index, bool _) {
+              options: widget.character.background.optionalSkillProficiencies,
+              selectedValues: widget.character.skillsSelected.toList(),
+              onToggle: (String skill) {
                 setState(() {
-                  List<String> skillOptions = widget.character.background.optionalSkillProficiencies;
-                  assert(skillOptions.length > index, "Index out of bounds");
-
-                  String skill = skillOptions[index];
                   if (widget.character.skillsSelected.contains(skill)) {
                     widget.character.skillsSelected.remove(skill);
                   } else {
@@ -147,14 +144,10 @@ class _BackgroundTabState extends State<BackgroundTab> {
             StyleUtils.buildStyledSmallTextBox(text: "Pick ${(widget.character.background.numberOfLanguageChoices)} language(s) to learn"),
             const SizedBox(height: 7),
             StyleUtils.buildStyledToggleSelector(
-              isSelected: backgroundSelectedLanguages,
-              itemLabels: widget.character.background.getLanguageOptions(), 
-              onPressed: (int index, bool _) {
+              options: widget.character.background.getLanguageOptions(),
+              selectedValues: widget.character.languageChoices.toList(),
+              onToggle: (String language) {
                 setState(() {
-                  List<String> langOptions = widget.character.background.getLanguageOptions();
-                  assert(langOptions.length > index, "Index out of bounds");
-
-                  String language = langOptions[index];
                   if (widget.character.languageChoices.contains(language)) {
                     widget.character.languageChoices.remove(language);
                   } else {

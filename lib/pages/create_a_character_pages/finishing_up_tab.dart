@@ -4,6 +4,7 @@ import "../../utils/style_utils.dart";
 import "../../main.dart";
 import "../../file_manager/file_manager.dart";
 import "../../pdf_generator/pdf_final_display.dart";
+import "../../theme/theme_manager.dart";
 
 /// Finishing Up tab widget for character creation
 /// Handles group selection, character saving, and build checklist
@@ -42,12 +43,12 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: InitialTop.colourScheme.backgroundColour,
+      backgroundColor: ThemeManager.instance.currentScheme.backgroundColour,
       // Floating pdf generator button
       floatingActionButton: FloatingActionButton(
         tooltip: "Generate a PDF",
-        foregroundColor: InitialTop.colourScheme.textColour,
-        backgroundColor: InitialTop.colourScheme.backingColour,
+        foregroundColor: ThemeManager.instance.currentScheme.textColour,
+        backgroundColor: ThemeManager.instance.currentScheme.backingColour,
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
@@ -75,7 +76,7 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
                       borderRadius:
                           const BorderRadius.all(Radius.circular(5)),
                       color: (GROUPLIST.isNotEmpty)
-                          ? InitialTop.colourScheme.backingColour
+                          ? ThemeManager.instance.currentScheme.backingColour
                           : const Color.fromARGB(247, 56, 53, 52),
                     ),
                     height: 45,
@@ -109,7 +110,7 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
                         (widget.isEditMode ? "You must complete the required tabs before saving your character edits" : "You must complete the required tabs before saving your character"),
                       child: ElevatedButton(
                         style: OutlinedButton.styleFrom(
-                          backgroundColor: widget.canCreateCharacter ? InitialTop.colourScheme.backingColour : unavailableColor,
+                          backgroundColor: widget.canCreateCharacter ? ThemeManager.instance.currentScheme.backingColour : const Color.fromARGB(247, 56, 53, 52),
                           padding: const EdgeInsets.fromLTRB(45, 20, 45, 20),
                           shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
@@ -118,7 +119,7 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
                         ),
                         child: StyleUtils.buildStyledHugeTextBox(
                           text: widget.isEditMode ? "Save Changes" : "Save Character", 
-                          color: InitialTop.colourScheme.textColour
+                          color: ThemeManager.instance.currentScheme.textColour
                         ),
                         onPressed: () {
                           if (widget.canCreateCharacter) {

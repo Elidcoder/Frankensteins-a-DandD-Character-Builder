@@ -5,7 +5,7 @@ import "package:frankenstein/utils/style_utils.dart";
 // Project Imports
 import "create_a_character.dart";
 import "../../content_classes/all_content_classes.dart";
-import "../../../main.dart" show InitialTop;
+import "../../theme/theme_manager.dart";
 
 /* This creates a widget that represents a classes ability to gain spells. */
 class SpellSelections extends StatefulWidget {
@@ -38,7 +38,7 @@ class SpellSelectionsState extends State<SpellSelections> {
           /* Number of choices remaining */
           Text(
             "${thisDescription[2]} remaining ${thisDescription[0]} spell choices",
-            style: TextStyle(color: InitialTop.colourScheme.backingColour, fontSize: 22, fontWeight: FontWeight.w700)
+            style: TextStyle(color: ThemeManager.instance.currentScheme.backingColour, fontSize: 22, fontWeight: FontWeight.w700)
           ),
           
           /* List of spells */
@@ -129,13 +129,13 @@ class ChoiceRowState extends State<ChoiceRow> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: InitialTop.colourScheme.backgroundColour,
+      backgroundColor: ThemeManager.instance.currentScheme.backgroundColour,
       body: SizedBox(
       height: 110,
       child: Column(children: [
         Text(
           x![0],
-          style: TextStyle(color: InitialTop.colourScheme.backingColour, fontSize: 18, fontWeight: FontWeight.w700)
+          style: TextStyle(color: ThemeManager.instance.currentScheme.backingColour, fontSize: 18, fontWeight: FontWeight.w700)
         ),
         SizedBox(
           height: 57,
@@ -194,7 +194,7 @@ class ChoiceRowState extends State<ChoiceRow> {
           child: Column(children: [
             Text(input[1],
               style: TextStyle(
-                color: InitialTop.colourScheme.backingColour,
+                color: ThemeManager.instance.currentScheme.backingColour,
                 fontSize: 15,
                 fontWeight: FontWeight.w700)),
             Row(children: [...buildRows(context, input.sublist(2))])

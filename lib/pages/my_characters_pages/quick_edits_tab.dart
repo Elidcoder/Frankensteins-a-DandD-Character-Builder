@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../content_classes/character/character.dart';
-import '../../main.dart';
+import '../../theme/theme_manager.dart';
 
 /// Quick Edits tab widget for character editing
 /// Handles level increases and experience adjustments
@@ -37,14 +37,14 @@ class _QuickEditsTabState extends State<QuickEditsTab> {
             style: TextStyle(
                 fontSize: 27,
                 fontWeight: FontWeight.w700,
-                color: InitialTop.colourScheme.backingColour)),
+                color: ThemeManager.instance.currentScheme.backingColour)),
         if (int.parse(widget.characterLevel) > widget.character.classLevels.fold(0, (val, acc) => val + acc)) ...[
           const SizedBox(height: 16),
           Text("${widget.character.characterDescription.name} has at least one unused level!!",
               style: TextStyle(
                   fontSize: 23,
                   fontWeight: FontWeight.w700,
-                  color: InitialTop.colourScheme.backingColour)),
+                  color: ThemeManager.instance.currentScheme.backingColour)),
         ],
 
         const SizedBox(height: 16),
@@ -52,12 +52,12 @@ class _QuickEditsTabState extends State<QuickEditsTab> {
             style: TextStyle(
                 fontSize: 23,
                 fontWeight: FontWeight.w600,
-                color: InitialTop.colourScheme.backingColour)),
+                color: ThemeManager.instance.currentScheme.backingColour)),
         const SizedBox(height: 8),
         OutlinedButton(
             style: OutlinedButton.styleFrom(
               backgroundColor: (int.parse(widget.characterLevel) < 20)
-                  ? InitialTop.colourScheme.backingColour
+                  ? ThemeManager.instance.currentScheme.backingColour
                   : const Color.fromARGB(247, 56, 53, 52),
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(4))),
@@ -69,29 +69,29 @@ class _QuickEditsTabState extends State<QuickEditsTab> {
                 widget.onCharacterLevelChanged((int.parse(widget.characterLevel) + 1).toString());
               }
             },
-            child: Icon(Icons.add, color: InitialTop.colourScheme.textColour, size: 37)),
+            child: Icon(Icons.add, color: ThemeManager.instance.currentScheme.textColour, size: 37)),
         const SizedBox(height: 16),
         Text("Experience amount to add:  ",
             style: TextStyle(
                 fontSize: 23,
                 fontWeight: FontWeight.w600,
-                color: InitialTop.colourScheme.backingColour)),
+                color: ThemeManager.instance.currentScheme.backingColour)),
         const SizedBox(height: 8),
         SizedBox(
           width: 320,
           height: 50,
           child: TextField(
-              cursorColor: InitialTop.colourScheme.backingColour,
+              cursorColor: ThemeManager.instance.currentScheme.backingColour,
               style: TextStyle(
-                color: InitialTop.colourScheme.textColour,
+                color: ThemeManager.instance.currentScheme.textColour,
               ),
               decoration: InputDecoration(
                   hintText: "Amount of experience to add (number)",
                   hintStyle: TextStyle(
                       fontWeight: FontWeight.w700,
-                      color: InitialTop.colourScheme.textColour),
+                      color: ThemeManager.instance.currentScheme.textColour),
                   filled: true,
-                  fillColor: InitialTop.colourScheme.backingColour,
+                  fillColor: ThemeManager.instance.currentScheme.backingColour,
                   border: const OutlineInputBorder(
                       borderSide: BorderSide.none,
                       borderRadius:
@@ -107,14 +107,14 @@ class _QuickEditsTabState extends State<QuickEditsTab> {
             style: TextStyle(
                 fontSize: 23,
                 fontWeight: FontWeight.w600,
-                color: InitialTop.colourScheme.backingColour)),
+                color: ThemeManager.instance.currentScheme.backingColour)),
         const SizedBox(height: 8),
         OutlinedButton(
             style: OutlinedButton.styleFrom(
               backgroundColor:
                   (double.tryParse(experienceIncrease ?? "NOT NUMBER") !=
                           null)
-                      ? InitialTop.colourScheme.backingColour
+                      ? ThemeManager.instance.currentScheme.backingColour
                       : const Color.fromARGB(247, 56, 53, 52),
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(4))),
@@ -130,7 +130,7 @@ class _QuickEditsTabState extends State<QuickEditsTab> {
                 //validate level
               }
             },
-            child: Icon(Icons.add, color: InitialTop.colourScheme.textColour, size: 37))
+            child: Icon(Icons.add, color: ThemeManager.instance.currentScheme.textColour, size: 37))
       ],
     );
   }

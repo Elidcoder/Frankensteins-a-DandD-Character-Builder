@@ -2,8 +2,8 @@
 import "package:flutter/material.dart";
 
 // Project Imports
-import "../../main.dart" show InitialTop;
 import "../../top_bar.dart";
+import "../../theme/theme_manager.dart";
 
 /* Serves as a linker page between the main page and the users choice of content to create. */
 class CustomContent extends StatelessWidget {
@@ -14,14 +14,14 @@ class CustomContent extends StatelessWidget {
       /* Page title (Create content) */
       appBar: AppBar(
         centerTitle: true,
-        foregroundColor: InitialTop.colourScheme.textColour,
-        backgroundColor: InitialTop.colourScheme.backingColour,
+        foregroundColor: ThemeManager.instance.currentScheme.textColour,
+        backgroundColor: ThemeManager.instance.currentScheme.backingColour,
         title: Text(
           textAlign: TextAlign.center,
           "Create content",
-          style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.textColour),
+          style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700, color: ThemeManager.instance.currentScheme.textColour),
       )),
-      backgroundColor: InitialTop.colourScheme.backgroundColour,
+      backgroundColor: ThemeManager.instance.currentScheme.backgroundColour,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -33,7 +33,7 @@ class CustomContent extends StatelessWidget {
               /* Button taking the user to the create custom spells page */
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                  backgroundColor: InitialTop.colourScheme.backingColour,
+                  backgroundColor: ThemeManager.instance.currentScheme.backingColour,
                   padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
                   shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
                   side: const BorderSide(width: 3, color: Colors.black),
@@ -47,7 +47,7 @@ class CustomContent extends StatelessWidget {
                 child: Text(
                   textAlign: TextAlign.center,
                   "Create a\nspell",
-                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.textColour),
+                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: ThemeManager.instance.currentScheme.textColour),
                 ),
               ),
             ],

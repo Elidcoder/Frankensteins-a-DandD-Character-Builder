@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "../../content_classes/all_content_classes.dart";
 import "../../utils/style_utils.dart";
-import "../../main.dart";
+import "../../theme/theme_manager.dart";
 
 /// Basics tab widget for character creation
 /// Handles character info, leveling method, and build parameters
@@ -150,16 +150,16 @@ class _BasicsTabState extends State<BasicsTab> {
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: const BorderRadius.all(Radius.circular(5)),
-                              color: InitialTop.colourScheme.backingColour,
+                              color: ThemeManager.instance.currentScheme.backingColour,
                             ),
                             height: 45,
                             child: DropdownButton<String>(
                               alignment: Alignment.center,
                               value: widget.characterLevel,
-                              icon: Icon(Icons.arrow_drop_down, color: InitialTop.colourScheme.textColour),
+                              icon: Icon(Icons.arrow_drop_down, color: ThemeManager.instance.currentScheme.textColour),
                               elevation: 16,
                               style: TextStyle(
-                                color: InitialTop.colourScheme.textColour,
+                                color: ThemeManager.instance.currentScheme.textColour,
                                 fontWeight: FontWeight.w800,
                                 fontSize: 20),
                               underline: const SizedBox(),
@@ -176,12 +176,12 @@ class _BasicsTabState extends State<BasicsTab> {
                                       child: Text(value,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          color: InitialTop.colourScheme.textColour,
+                                          color: ThemeManager.instance.currentScheme.textColour,
                                           decoration: TextDecoration.underline,
                                         ))),
                                   );
                                 }).toList(),
-                              dropdownColor:InitialTop.colourScheme.backingColour
+                              dropdownColor:ThemeManager.instance.currentScheme.backingColour
                             ),
                           ),
                       ),
@@ -199,7 +199,7 @@ class _BasicsTabState extends State<BasicsTab> {
                       children: [
                         StyleUtils.buildStyledCheckboxListTile(
                           title: "Feats in use", 
-                          value: widget.character.featsAllowed, 
+                          value: widget.character.featsAllowed ?? false, 
                           onChanged: (bool? value) {
                             setState(() {
                               widget.character.featsAllowed = value;
@@ -210,7 +210,7 @@ class _BasicsTabState extends State<BasicsTab> {
                         const SizedBox(height: 15),
                         StyleUtils.buildStyledCheckboxListTile(
                           title: "Use average for hit dice", 
-                          value: widget.character.averageHitPoints, 
+                          value: widget.character.averageHitPoints ?? false, 
                           onChanged: (bool? value) {
                             setState(() {
                               widget.character.averageHitPoints = value;
@@ -221,7 +221,7 @@ class _BasicsTabState extends State<BasicsTab> {
                         const SizedBox(height: 15),
                         StyleUtils.buildStyledCheckboxListTile(
                           title: "Allow multiclassing", 
-                          value: widget.character.multiclassing, 
+                          value: widget.character.multiclassing ?? false, 
                           onChanged: (bool? value) {
                             setState(() {
                               widget.character.multiclassing = value;
@@ -232,7 +232,7 @@ class _BasicsTabState extends State<BasicsTab> {
                         const SizedBox(height: 15),
                         StyleUtils.buildStyledCheckboxListTile(
                           title: "Use milestone levelling", 
-                          value: widget.character.milestoneLevelling, 
+                          value: widget.character.milestoneLevelling ?? false, 
                           onChanged: (bool? value) {
                             setState(() {
                               widget.character.milestoneLevelling = value;
@@ -243,7 +243,7 @@ class _BasicsTabState extends State<BasicsTab> {
                         const SizedBox(height: 15),
                         StyleUtils.buildStyledCheckboxListTile(
                           title: "Use created content", 
-                          value: widget.character.useCustomContent, 
+                          value: widget.character.useCustomContent ?? false, 
                           onChanged: (bool? value) {
                             setState(() {
                               widget.character.useCustomContent = value;
@@ -254,7 +254,7 @@ class _BasicsTabState extends State<BasicsTab> {
                         const SizedBox(height: 15),
                         StyleUtils.buildStyledCheckboxListTile(
                           title: "Use optional class features", 
-                          value: widget.character.optionalClassFeatures, 
+                          value: widget.character.optionalClassFeatures ?? false, 
                           onChanged: (bool? value) {
                             setState(() {
                               widget.character.optionalClassFeatures = value;
@@ -279,7 +279,7 @@ class _BasicsTabState extends State<BasicsTab> {
                       children: [
                         StyleUtils.buildStyledCheckboxListTile(
                           title: "Use critical role content", 
-                          value: widget.character.criticalRoleContent, 
+                          value: widget.character.criticalRoleContent ?? false, 
                           onChanged: (bool? value) {
                             setState(() {
                               widget.character.criticalRoleContent = value;
@@ -290,7 +290,7 @@ class _BasicsTabState extends State<BasicsTab> {
                         const SizedBox(height: 15),
                         StyleUtils.buildStyledCheckboxListTile(
                           title: "Use encumberance rules", 
-                          value: widget.character.encumberanceRules, 
+                          value: widget.character.encumberanceRules ?? false, 
                           onChanged: (bool? value) {
                             setState(() {
                               widget.character.encumberanceRules = value;
@@ -301,7 +301,7 @@ class _BasicsTabState extends State<BasicsTab> {
                         const SizedBox(height: 15),
                         StyleUtils.buildStyledCheckboxListTile(
                           title: "Incude coins' weights", 
-                          value: widget.character.includeCoinsForWeight, 
+                          value: widget.character.includeCoinsForWeight ?? false, 
                           onChanged: (bool? value) {
                             setState(() {
                               widget.character.includeCoinsForWeight = value;
@@ -312,7 +312,7 @@ class _BasicsTabState extends State<BasicsTab> {
                         const SizedBox(height: 15),
                         StyleUtils.buildStyledCheckboxListTile(
                           title: "Use UA content", 
-                          value:  widget.character.unearthedArcanaContent, 
+                          value:  widget.character.unearthedArcanaContent ?? false, 
                           onChanged: (bool? value) {
                             setState(() {
                                widget.character.unearthedArcanaContent = value;
@@ -323,7 +323,7 @@ class _BasicsTabState extends State<BasicsTab> {
                         const SizedBox(height: 15),
                         StyleUtils.buildStyledCheckboxListTile(
                           title: "Allow firearms", 
-                          value:  widget.character.firearmsUsable, 
+                          value:  widget.character.firearmsUsable ?? false, 
                           onChanged: (bool? value) {
                             setState(() {
                                widget.character.firearmsUsable = value;
@@ -334,7 +334,7 @@ class _BasicsTabState extends State<BasicsTab> {
                         const SizedBox(height: 15),
                         StyleUtils.buildStyledCheckboxListTile(
                           title: "Give an extra feat at lvl 1", 
-                          value:  widget.character.extraFeatAtLevel1, 
+                          value:  widget.character.extraFeatAtLevel1 ?? false, 
                           onChanged: (bool? value) {
                             setState(() {
                               if (widget.character.classList.isNotEmpty) {
@@ -368,3 +368,4 @@ class _BasicsTabState extends State<BasicsTab> {
     );
   }
 }
+

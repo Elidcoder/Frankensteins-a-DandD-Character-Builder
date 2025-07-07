@@ -7,7 +7,7 @@ import "../create_a_character_pages/finishing_up_tab.dart";
 import "../create_a_character_pages/backstory_tab.dart";
 import "quick_edits_tab.dart";
 import "../../content_classes/all_content_classes.dart";
-import "../../main.dart" show InitialTop, InitialTopKey;
+import "../../main.dart" show InitialTopKey;
 import "../../top_bar.dart";
 import "../../utils/style_utils.dart";
 
@@ -22,8 +22,6 @@ class EditTop extends StatelessWidget {
       title: title,
       home: Scaffold(
         appBar: AppBar(
-          foregroundColor: InitialTop.colourScheme.textColour,
-          backgroundColor: InitialTop.colourScheme.backingColour,
           leading: IconButton(
             icon: const Icon(Icons.home),
             tooltip: "Return to the main menu",
@@ -132,10 +130,8 @@ class EditCharacter extends State<EditACharacter> {
     return DefaultTabController(
       length: 8,
       child: Scaffold(
-        backgroundColor: InitialTop.colourScheme.backgroundColour,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
-          foregroundColor: InitialTop.colourScheme.textColour,
-          backgroundColor: InitialTop.colourScheme.backingColour,
           title: Center(
             child: Text(
               textAlign: TextAlign.center,
@@ -154,7 +150,6 @@ class EditCharacter extends State<EditACharacter> {
               StyleUtils.tabLabel("Backstory"),
               StyleUtils.tabLabel("Finishing up"),
             ],
-            indicatorColor: InitialTop.colourScheme.textColour,
           ),
         ),
         body: TabBarView(children: [

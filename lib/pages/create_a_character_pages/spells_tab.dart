@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
 import "../../content_classes/all_content_classes.dart";
 import "../../utils/style_utils.dart";
-import "../../main.dart";
 import "spell_handling.dart";
+import "../../theme/theme_manager.dart";
 
 /// Spells tab widget for character creation
 /// Displays spell selections organized by spell level and spell selection options
@@ -70,7 +70,7 @@ class _SpellsTabState extends State<SpellsTab> {
             style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.w700,
-                color: InitialTop.colourScheme.backingColour)),
+                color: ThemeManager.instance.currentScheme.backingColour)),
         Row(children: [
           Expanded(child: Column(children: [
             (widget.character.allSpellsSelected.isNotEmpty) 

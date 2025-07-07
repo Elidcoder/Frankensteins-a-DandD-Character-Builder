@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "../../content_classes/all_content_classes.dart";
 import "../../utils/style_utils.dart";
-import "../../main.dart";
+import "../../theme/theme_manager.dart";
 
 /// Equipment tab widget for character creation
 /// Handles equipment purchasing, filtering, and selection from background/class choices
@@ -34,7 +34,7 @@ class _EquipmentTabState extends State<EquipmentTab> {
       ).toList();
   }
 
-  ElevatedButton makeStyledFilterToggle(String label, List<String> filters) {
+  Widget makeStyledFilterToggle(String label, List<String> filters) {
     return StyleUtils.makeStyledFilterToggle(
       label,
       filters,
@@ -51,7 +51,7 @@ class _EquipmentTabState extends State<EquipmentTab> {
     );
   }
 
-  ElevatedButton makeCoinFilterToggle(String label) {
+  Widget makeCoinFilterToggle(String label) {
     return StyleUtils.makeStyledFilterToggle(
       label,
       widget.coinTypesSelected,
@@ -115,7 +115,7 @@ class _EquipmentTabState extends State<EquipmentTab> {
                 const SizedBox(height: 6),
                 Text(
                   "You have ${widget.character.currency["Platinum Pieces"]} platinum, ${widget.character.currency["Gold Pieces"]} gold, ${widget.character.currency["Electrum Pieces"]} electrum, ${widget.character.currency["Silver Pieces"]} silver and ${widget.character.currency["Copper Pieces"]} copper pieces to spend",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.backingColour)
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: ThemeManager.instance.currentScheme.backingColour)
                 ),
                 
                 /* Row of buttons for Armour, Weapons & Items */
@@ -128,7 +128,7 @@ class _EquipmentTabState extends State<EquipmentTab> {
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(
                         backgroundColor: (widget.character.armourList.length == 4)
-                          ? InitialTop.colourScheme.backingColour
+                          ? ThemeManager.instance.currentScheme.backingColour
                           : unavailableColor),
                       onPressed: () {
                         setState(() {
@@ -155,7 +155,7 @@ class _EquipmentTabState extends State<EquipmentTab> {
                         child: Column(
                           children: [
                             /* Title */
-                            Text("Armour", style: TextStyle(color: InitialTop.colourScheme.textColour,fontSize: 22)),
+                            Text("Armour", style: TextStyle(color: ThemeManager.instance.currentScheme.textColour,fontSize: 22)),
                             Row(
                               children: [
 
@@ -181,7 +181,7 @@ class _EquipmentTabState extends State<EquipmentTab> {
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(
                         backgroundColor: (widget.character.weaponList.length == 2)
-                          ? InitialTop.colourScheme.backingColour
+                          ? ThemeManager.instance.currentScheme.backingColour
                           : unavailableColor),
                       onPressed: () {
                         setState(() {
@@ -199,7 +199,7 @@ class _EquipmentTabState extends State<EquipmentTab> {
                         child: Column(
                           children: [
                             /* Title */
-                            Text("Weapon", style: TextStyle(color: InitialTop.colourScheme.textColour, fontSize: 22)),
+                            Text("Weapon", style: TextStyle(color: ThemeManager.instance.currentScheme.textColour, fontSize: 22)),
                             Row(
                               children: [
 
@@ -220,7 +220,7 @@ class _EquipmentTabState extends State<EquipmentTab> {
                       style: OutlinedButton.styleFrom(
                         backgroundColor:
                           (widget.character.itemList.length == 2)
-                            ? InitialTop.colourScheme.backingColour
+                            ? ThemeManager.instance.currentScheme.backingColour
                             : unavailableColor),
                       onPressed: () {
                         setState(() {
@@ -240,7 +240,7 @@ class _EquipmentTabState extends State<EquipmentTab> {
                         height: 63,
                         child: Column(
                           children: [
-                            Text("Items", style: TextStyle(color: InitialTop.colourScheme.textColour, fontSize: 22)),
+                            Text("Items", style: TextStyle(color: ThemeManager.instance.currentScheme.textColour, fontSize: 22)),
                             Row(
                               children: [
 
@@ -262,7 +262,7 @@ class _EquipmentTabState extends State<EquipmentTab> {
                 OutlinedButton(
                   style: OutlinedButton.styleFrom(
                     backgroundColor: (widget.coinTypesSelected.length == 5)
-                      ? InitialTop.colourScheme.backingColour
+                      ? ThemeManager.instance.currentScheme.backingColour
                       : unavailableColor),
                   onPressed: () {
                     setState(() {
@@ -287,7 +287,7 @@ class _EquipmentTabState extends State<EquipmentTab> {
                     child: Column(
                       children: [
                         /* Title */
-                        Text("Coin types", style: TextStyle(color: InitialTop.colourScheme.textColour, fontSize: 22)),
+                        Text("Coin types", style: TextStyle(color: ThemeManager.instance.currentScheme.textColour, fontSize: 22)),
                         Row(
                           children: [
 
@@ -316,7 +316,7 @@ class _EquipmentTabState extends State<EquipmentTab> {
                 Container(
                     padding: const EdgeInsets.only(top: 10),
                     decoration: BoxDecoration(
-                      color: InitialTop.colourScheme.backgroundColour,
+                      color: ThemeManager.instance.currentScheme.backgroundColour,
                       border: Border.all(color: Colors.black, width: 1.6),
                       borderRadius: const BorderRadius.all(Radius.circular(5))
                     ),
@@ -330,7 +330,7 @@ class _EquipmentTabState extends State<EquipmentTab> {
                         alignment: WrapAlignment.center,
                         children: List.generate(filteredItems.length, (index) {
                           return OutlinedButton(
-                            style: OutlinedButton.styleFrom(backgroundColor: InitialTop.colourScheme.backingColour),
+                            style: OutlinedButton.styleFrom(backgroundColor: ThemeManager.instance.currentScheme.backingColour),
 
                             /* If the character has enough money of the correct denomination than the purchase is made. */
                             onPressed: () {
@@ -356,7 +356,7 @@ class _EquipmentTabState extends State<EquipmentTab> {
                             /* Item name and price. */
                             child: Text(
                               "${filteredItems[index].name}: ${filteredItems[index].cost[0]}x${filteredItems[index].cost[1]}",
-                              style: TextStyle(color: InitialTop.colourScheme.textColour)),
+                              style: TextStyle(color: ThemeManager.instance.currentScheme.textColour)),
                           );
                         }),
                       )))
@@ -389,7 +389,7 @@ class _EquipmentTabState extends State<EquipmentTab> {
 
                                         /* Button for the first option */
                                         ElevatedButton(
-                                          style: OutlinedButton.styleFrom(backgroundColor: InitialTop.colourScheme.backingColour),
+                                          style: OutlinedButton.styleFrom(backgroundColor: ThemeManager.instance.currentScheme.backingColour),
                                           onPressed: () {
                                             setState(() {
                                               widget.character.equipmentSelectedFromChoices[i] = [widget.character.equipmentSelectedFromChoices[i][0]];
@@ -398,13 +398,13 @@ class _EquipmentTabState extends State<EquipmentTab> {
                                           },
                                           child: Text(
                                             produceEquipmentOptionDescription(widget.character.equipmentSelectedFromChoices[i][0]),
-                                            style: TextStyle(color: InitialTop.colourScheme.textColour)
+                                            style: TextStyle(color: ThemeManager.instance.currentScheme.textColour)
                                           ),
                                         ),
 
                                         /* Button for the second option */
                                         ElevatedButton(
-                                          style: OutlinedButton.styleFrom(backgroundColor: InitialTop.colourScheme.backingColour),
+                                          style: OutlinedButton.styleFrom(backgroundColor: ThemeManager.instance.currentScheme.backingColour),
                                           onPressed: () {
                                             setState(() {
                                               widget.character.equipmentSelectedFromChoices[i] = [widget.character.equipmentSelectedFromChoices[i][1]];
@@ -413,7 +413,7 @@ class _EquipmentTabState extends State<EquipmentTab> {
                                           },
                                           child: Text(
                                             produceEquipmentOptionDescription(widget.character.equipmentSelectedFromChoices[i][1]),
-                                            style: TextStyle(color: InitialTop.colourScheme.textColour)
+                                            style: TextStyle(color: ThemeManager.instance.currentScheme.textColour)
                                           ),
                                         )
                                       ],
@@ -421,7 +421,7 @@ class _EquipmentTabState extends State<EquipmentTab> {
                                   )
                                 : Text(
                                     produceEquipmentOptionDescription(widget.character.equipmentSelectedFromChoices[i][0]),
-                                    style: TextStyle(color: InitialTop.colourScheme.backingColour, fontWeight: FontWeight.w700)
+                                    style: TextStyle(color: ThemeManager.instance.currentScheme.backingColour, fontWeight: FontWeight.w700)
                                   ),
                             ],
                           ),

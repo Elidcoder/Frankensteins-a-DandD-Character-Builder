@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
-import "../main.dart";
-import "../content_classes/non_character_classes/content.dart";
+import "../theme/theme_manager.dart";
 
 /* Define colours that will be used a lot. */
 const Color unavailableColor = Color.fromARGB(247, 56, 53, 52);
@@ -66,8 +65,8 @@ class StyleUtils {
       width: width,
       height: 50,
       child: buildStyledTextField(
-        backingColor: InitialTop.colourScheme.backingColour,
-        textColor: InitialTop.colourScheme.textColour, 
+        backingColor: ThemeManager.instance.currentScheme.backingColour,
+        textColor: ThemeManager.instance.currentScheme.textColour, 
         textController: textController, 
         hintText: hintText, 
         onChanged: onChanged, 
@@ -89,8 +88,8 @@ class StyleUtils {
         hintText: hintText, 
         textController: textController, 
         onChanged: onChanged,
-        textColor: InitialTop.colourScheme.backingColour, 
-        backingColor: InitialTop.colourScheme.backingColour,
+        textColor: ThemeManager.instance.currentScheme.backingColour, 
+        backingColor: ThemeManager.instance.currentScheme.backingColour,
         lineMax: 100,
         lineMin: 4
       )
@@ -105,7 +104,7 @@ class StyleUtils {
   }) {
     return Text(text,
       style: TextStyle(
-        color: color ?? InitialTop.colourScheme.backingColour,
+        color: color ?? ThemeManager.instance.currentScheme.backingColour,
         fontSize: size,
         fontWeight: FontWeight.w700));
   }
@@ -150,102 +149,100 @@ class StyleUtils {
     return buildStyledTextBox(text: text, size: 35, color: color);
   }
 
-  /* Used in: Basics */
-  static Container buildSectionHeader(String title) {
-    return Container(
-      width: 330,
-      height: 65,
-      decoration: BoxDecoration(
-        color: InitialTop.colourScheme.backingColour,
-        border: Border.all(color: Colors.black, width: 2.1),
-        borderRadius: const BorderRadius.all(Radius.circular(5)),
-      ),
-      child: Center(
+  /* Used in: */
+  static SizedBox buildStyledElevatedButton({
+    required String text,
+    required Color backingColor,
+    required Color textColor,
+    required VoidCallback onPressed,
+  }) {
+    return SizedBox(
+      width: 300,
+      height: 50,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: backingColor,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(4))
+          ),
+          side: BorderSide(
+            width: 2,
+            color: textColor,
+          ),
+        ),
+        onPressed: onPressed,
         child: Text(
-          title,
-          textAlign: TextAlign.center,
+          text,
           style: TextStyle(
-            fontSize: 35,
+            fontSize: 20,
             fontWeight: FontWeight.w700,
-            color: InitialTop.colourScheme.textColour,
+            color: textColor,
           ),
         ),
       ),
     );
   }
 
-  /* Used in: Basics */
-  static CheckboxListTile buildStyledCheckboxListTile({
+  /* Used in: Race */
+  static SwitchListTile buildStyledSwitchListTile({
     required String title,
-    required bool? value,
-    required ValueChanged<bool?> onChanged,
+    required bool value,
+    required ValueChanged<bool> onChanged,
   }) {
-    return CheckboxListTile(
-      title: Text(title, style: TextStyle(color: InitialTop.colourScheme.backingColour)),
+    return SwitchListTile(
+      title: Text(title, style: TextStyle(color: ThemeManager.instance.currentScheme.backingColour)),
       value: value,
       onChanged: onChanged,
-      activeColor: InitialTop.colourScheme.backingColour,
-      secondary: Icon(Icons.insert_photo, color: InitialTop.colourScheme.backingColour),
+      activeColor: ThemeManager.instance.currentScheme.backingColour,
+      secondary: Icon(Icons.insert_photo, color: ThemeManager.instance.currentScheme.backingColour),
     );
   }
 
-  /* Used in: Basics */
-  static RadioListTile buildStyledRadioListTile({
+  /* Used in:  */
+  static SwitchListTile buildStyledSwitchListTileWithCallback({
     required String title,
-    required String value,
-    required String? groupValue,
-    required ValueChanged<dynamic> onChanged,
+    required bool value,
+    required ValueChanged<bool> onChanged,
   }) {
-    return RadioListTile(
-      activeColor: InitialTop.colourScheme.backingColour,
-      title: Text(title,
-          style: TextStyle(
-              color:
-                  InitialTop.colourScheme.backingColour)),
+    return SwitchListTile(
+      title: Text(title, style: TextStyle(color: ThemeManager.instance.currentScheme.backingColour)),
       value: value,
-      groupValue: groupValue,
       onChanged: onChanged,
+      activeColor: ThemeManager.instance.currentScheme.backingColour,
+      secondary: Icon(Icons.insert_photo, color: ThemeManager.instance.currentScheme.backingColour),
     );
   }
 
-  /* Helper function */
-  static DropdownButton<String> buildBaseDropdownButton({
-  required String? value,
-  required List<String>? items,
-  required ValueChanged<String?> onChanged,
-  String hintText = "Select an option"
+  /* Used in: Background */
+  static DropdownButton<String> buildStyledDropdownButton({
+    required String? selectedValue,
+    required List<String> options,
+    required ValueChanged<String?> onChanged,
+    required String hintText,
   }) {
     return DropdownButton<String>(
-      alignment: Alignment.center,
-      dropdownColor: InitialTop.colourScheme.backingColour,
-      hint: Center(
-        child: Text(
-          hintText,
-          textAlign: TextAlign.center,
-            style: TextStyle(
-              color: InitialTop.colourScheme.textColour,
-              decoration: TextDecoration.underline,
-            ),
-      )),
-      value: value,
-      underline: SizedBox(),
-      icon: Icon(Icons.arrow_drop_down, color: InitialTop.colourScheme.textColour,),
-      style: TextStyle(
-        color: InitialTop.colourScheme.textColour,
-        fontWeight: FontWeight.w700,
+      value: selectedValue,
+      dropdownColor: ThemeManager.instance.currentScheme.backingColour,
+      hint: Text(
+        hintText,
+        style: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w700,
+          color: ThemeManager.instance.currentScheme.textColour,
+        ),
       ),
+      icon: Icon(Icons.arrow_drop_down, color: ThemeManager.instance.currentScheme.textColour),
+      underline: Container(height: 2, color: ThemeManager.instance.currentScheme.textColour),
       onChanged: onChanged,
-      items: items?.map<DropdownMenuItem<String>>((String itemValue) {
+      items: options.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
-          value: itemValue,
-          child: Align(
-            child: Text(
-              itemValue,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: InitialTop.colourScheme.textColour,
-                decoration: TextDecoration.underline,
-              ),
+          value: value,
+          child: Text(
+            value,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+              color: ThemeManager.instance.currentScheme.textColour,
             ),
           ),
         );
@@ -253,199 +250,192 @@ class StyleUtils {
     );
   }
 
-  /* Used in: Races, Background */
-  static Container buildStyledDropDown({
-    required String? initialValue,
-    required List<Content>? items,
-    required ValueChanged<String?> onChanged,
+  /* Used in: Ability Scores */
+  static Text buildStyledAbilityScoreText({
+    required int score,
+    required String label,
+    Color? color
   }) {
-    final itemNames = items?.map((e) => e.name).toList() ?? [];
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(5)),
-        color: InitialTop.colourScheme.backingColour,
+    return Text(
+      "$label: $score",
+      style: TextStyle(
+        fontSize: 23,
+        fontWeight: FontWeight.w700,
+        color: color ?? ThemeManager.instance.currentScheme.backingColour,
       ),
-      height: 45,
-      child: buildBaseDropdownButton(value: initialValue, items: itemNames, onChanged: onChanged)
     );
   }
 
-  /*Used in Background
-  Takes a title and items (List<String>) and creates a dropdown of the items with the title given */
-  static Widget buildLabeledDropdown({
-    required String labelText,
-    required String? selectedValue,
-    required List<String> items,
-    required ValueChanged<String?> onChanged,
+  /* Used in: Create A Character */
+  static ElevatedButton buildStyledMainButton({
+    required String text,
+    required VoidCallback onPressed,
+    Color? backgroundColor,
+    Color? textColor,
   }) {
-    return Column(
-      children: [
-        const SizedBox(height: 10),
-        buildStyledSmallTextBox(text: labelText),
-        const SizedBox(height: 8),
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
-            color: InitialTop.colourScheme.backingColour,
-          ),
-          height: 45,
-          child: buildBaseDropdownButton(value: selectedValue, items: items, onChanged: onChanged),
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: backgroundColor ?? ThemeManager.instance.currentScheme.backingColour,
+        padding: const EdgeInsets.fromLTRB(35, 15, 35, 15),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(4))
         ),
+      ),
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+          color: textColor ?? ThemeManager.instance.currentScheme.textColour,
+        ),
+      ),
+    );
+  }
+
+  /* Used in: Multiple */
+  static CheckboxListTile buildStyledCheckboxListTile({
+    required String title,
+    required bool value,
+    required ValueChanged<bool?> onChanged,
+  }) {
+    return CheckboxListTile(
+      title: Text(title, style: TextStyle(color: ThemeManager.instance.currentScheme.backingColour)),
+      value: value,
+      onChanged: onChanged,
+      fillColor: WidgetStateProperty.all(ThemeManager.instance.currentScheme.backingColour),
+      side: BorderSide(
+        width: 2,
+        color: ThemeManager.instance.currentScheme.backingColour,
+      ),
+    );
+  }
+
+  /* Used in: Multiple */
+  static List<Widget> buildStyledSeperatedText(String text){
+    return [
+      Text(
+        text,
+        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+      ),
+      const SizedBox(height: 9),
+    ];
+  }
+
+  /* Used in: Multiple */
+  static Widget buildStyledSeperatedTextWithDivider({required String text}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+            color: ThemeManager.instance.currentScheme.backingColour,
+          ),
+        ),
+        const SizedBox(height: 9),
+        Divider(height: 10.0, color: ThemeManager.instance.currentScheme.backgroundColour),
       ],
     );
   }
 
-  /* Used in: Races, Background */
-  static ToggleButtons buildStyledToggleSelector({
-  required List<bool> isSelected,
-  required void Function(int index, bool currentlySelected) onPressed,
-  required List<String> itemLabels,
+  /* Used in: Multiple */
+  static Widget buildStyledFilterButton({
+    required String label,
+    required bool isSelected,
+    required VoidCallback onPressed,
   }) {
-    return ToggleButtons(
-      selectedColor: InitialTop.colourScheme.textColour,
-      color: InitialTop.colourScheme.backingColour,
-      fillColor: InitialTop.colourScheme.backingColour,
-      textStyle: const TextStyle(
-      fontSize: 22,
-      fontWeight: FontWeight.w700,
-    ),
-      borderColor: InitialTop.colourScheme.backingColour,
-      borderRadius: const BorderRadius.all(Radius.circular(20)),
-      borderWidth: 1.5,
-      onPressed: (int index) {
-        bool currentlySelected = isSelected[index];
-        onPressed(index, currentlySelected);
-      },
-      isSelected: isSelected,
-      children: itemLabels.map((label) => Text(" $label ")).toList(),
-    );
-        
-  }
-
-  /* Used in: Races */
-  static SizedBox buildNStyledAsiSelectors({
-    required int numbItems,
-    required void Function(int choiceNumber, int index, bool isSelected) onPressed,
-    required List<List<bool>> optionalStates,
-  }) {
-    assert(numbItems <= optionalStates.length, 
-    "itemCount should not exceed the length of optionalStates");
-    assert(numbItems >= 0, 
-    "itemCount should not be negative");
-    return SizedBox(
-      height:  numbItems * 62 - 10,
-      child: ListView.separated(
-        itemCount: numbItems,
-        separatorBuilder: (BuildContext context, int index) =>
-          Divider(height: 10.0, color: InitialTop.colourScheme.backgroundColour),
-        itemBuilder: (BuildContext context, int choiceNumber) {
-          return Align(
-            alignment: Alignment.center,
-            child: buildStyledToggleSelector(
-              isSelected: optionalStates[choiceNumber],
-              onPressed: (index, currentlySelected) {
-                onPressed(choiceNumber, index, currentlySelected);
-              },
-              itemLabels: abilityScores
-            )  
-          );
-        },
-      )
-    );
-  }
-
-  /* Helper function for text with conditional coloring */
-  static Text makePossibleText({
-    required Color colorFalse,
-    required bool condition,
-    required String trueText,
-    required String falseText,
-  }) {
-    return buildStyledMediumTextBox(
-      text: condition ? trueText : falseText, 
-      color: condition ? positiveColor : colorFalse
-    );
-  }
-
-  static Text makeRequiredText({
-    required bool condition,
-    required String trueText,
-    required String falseText,
-  }) {
-    return makePossibleText(
-      colorFalse: negativeColor, 
-      condition: condition, 
-      trueText: trueText, 
-      falseText: falseText
-    );
-  }
-
-  static Text makeOptionalText({
-    required bool condition,
-    required String trueText,
-    required String falseText,
-  }) {
-    return makePossibleText(
-      colorFalse: notIdealColor, 
-      condition: condition, 
-      trueText: trueText, 
-      falseText: falseText
-    );
-  }
-
-  static ElevatedButton makeStyledFilterToggle(String label, List<String> filters, VoidCallback onToggle) {
     return ElevatedButton(
-      style: OutlinedButton.styleFrom(
-        backgroundColor: (filters.contains(label)) ? InitialTop.colourScheme.backingColour : unavailableColor
+      style: ElevatedButton.styleFrom(
+        backgroundColor: isSelected ? positiveColor : unavailableColor,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
       ),
-      onPressed: onToggle,
-      child: Text(label, style: TextStyle(color: InitialTop.colourScheme.textColour, fontSize: 15))
+      onPressed: onPressed,
+      child: Text(
+        label,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
     );
   }
 
-  static OutlinedButton buildBinarySelectorButton({
+  /* Used in: Multiple */
+  static Widget buildStyledFilterOption({
+    required String label,
+    required List<String> filters,
+    required ValueChanged<String> onToggle,
+  }) {
+    return SizedBox(
+      height: 30,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: (filters.contains(label)) ? ThemeManager.instance.currentScheme.backingColour : unavailableColor
+        ),
+        onPressed: () => onToggle(label),
+        child: Text(label, style: TextStyle(color: ThemeManager.instance.currentScheme.textColour, fontSize: 15))
+      ),
+    );
+  }
+
+  /* Used in: Multiple */
+  static Widget buildStyledFilterOptionWithMap({
     required String key,
     required Map<String, bool> filterMap,
-    required VoidCallback onToggle
+    required ValueChanged<String> onToggle,
   }) {
-    assert(filterMap.containsKey(key), "Key must be a valid key in filterMap");
-    return OutlinedButton(
-      style: OutlinedButton.styleFrom(
-        backgroundColor: (filterMap[key]!) ? InitialTop.colourScheme.backingColour : unavailableColor),
-      onPressed: onToggle,
-      child: buildStyledTinyTextBox(text: key, color: InitialTop.colourScheme.textColour)
+    return SizedBox(
+      height: 30,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: (filterMap[key]!) ? ThemeManager.instance.currentScheme.backingColour : unavailableColor
+        ),
+        onPressed: () => onToggle(key),
+        child: buildStyledTinyTextBox(text: key, color: ThemeManager.instance.currentScheme.textColour)
+      ),
     );
   }
 
-  static OutlinedButton buildStyledButton({
-    required Widget child,
-    required VoidCallback? onPressed,
-    bool enabled = true,
+  /* Used in: Multiple */
+  static Widget buildStyledCounterButton({
+    required String text,
+    required VoidCallback onPressed,
+    required bool isEnabled,
     Color? backgroundColor,
-    Color? borderColor,
-    double borderWidth = 3.0,
+    Color? textColor,
   }) {
-    return OutlinedButton(
-      style: OutlinedButton.styleFrom(
-        backgroundColor: enabled 
-          ? (backgroundColor ?? InitialTop.colourScheme.backingColour)
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: isEnabled
+          ? (backgroundColor ?? ThemeManager.instance.currentScheme.backingColour)
           : unavailableColor,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(4))
-        ),
-        side: BorderSide(
-          width: borderWidth, 
-          color: borderColor ?? const Color.fromARGB(255, 27, 155, 10)
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
         ),
       ),
-      onPressed: enabled ? onPressed : null,
-      child: child,
+      onPressed: isEnabled ? onPressed : null,
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: textColor ?? ThemeManager.instance.currentScheme.textColour,
+        ),
+      ),
     );
   }
 
-  static String produceEquipmentOptionDescription(List list) {
+  /* Used in: Multiple */
+  static String formatList(List<dynamic> list) {
     // Initialize an empty string to store the result
-    String result = '';
+    String result = "";
 
     // Iterate through the list
     for (int i = 0; i < list.length; i++) {
@@ -470,6 +460,333 @@ class StyleUtils {
   }
 
   static Tab tabLabel(String label) {
-    return Tab(child: Text(label, style: TextStyle(color: InitialTop.colourScheme.textColour)));
+    return Tab(child: Text(label, style: TextStyle(color: ThemeManager.instance.currentScheme.textColour)));
+  }
+
+  /// Creates a dropdown button with consistent styling
+  static Widget buildBaseDropdownButton({
+    required String? value,
+    required List<String>? items,
+    required ValueChanged<String?> onChanged,
+    required String hintText,
+  }) {
+    return DropdownButton<String>(
+      value: value,
+      hint: Text(
+        hintText,
+        style: TextStyle(
+          color: ThemeManager.instance.currentScheme.textColour,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      dropdownColor: ThemeManager.instance.currentScheme.backingColour,
+      style: TextStyle(
+        color: ThemeManager.instance.currentScheme.textColour,
+        fontWeight: FontWeight.w700,
+      ),
+      items: items?.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      onChanged: onChanged,
+    );
+  }
+
+  /// Creates text with optional styling (green if true, orange if false)
+  static Widget makeOptionalText({
+    required bool condition,
+    required String trueText,
+    required String falseText,
+  }) {
+    return buildStyledMediumTextBox(
+      text: condition ? trueText : falseText,
+      color: condition ? positiveColor : notIdealColor,
+    );
+  }
+
+  /// Creates text with required styling (green if true, red if false)
+  static Widget makeRequiredText({
+    required bool condition,
+    required String trueText,
+    required String falseText,
+  }) {
+    return buildStyledMediumTextBox(
+      text: condition ? trueText : falseText,
+      color: condition ? positiveColor : negativeColor,
+    );
+  }
+
+  // Now let me add the missing methods that are still needed
+  
+  /// Creates a section header with consistent styling
+  static Widget buildSectionHeader(String text) {
+    return buildStyledLargeTextBox(text: text, color: ThemeManager.instance.currentScheme.backingColour);
+  }
+
+  /// Creates a styled radio list tile
+  static Widget buildStyledRadioListTile<T>({
+    required String title,
+    required T value,
+    required T groupValue,
+    required ValueChanged<T?> onChanged,
+  }) {
+    return RadioListTile<T>(
+      title: Text(title, style: TextStyle(color: ThemeManager.instance.currentScheme.backingColour)),
+      value: value,
+      groupValue: groupValue,
+      onChanged: onChanged,
+      activeColor: ThemeManager.instance.currentScheme.backingColour,
+    );
+  }
+
+  /// Creates a labeled dropdown
+  static Widget buildLabeledDropdown({
+    required String label,
+    required String? selectedValue,
+    required List<String> options,
+    required ValueChanged<String?> onChanged,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        buildStyledSmallTextBox(text: label),
+        const SizedBox(height: 5),
+        buildStyledDropDown(
+          selectedValue: selectedValue,
+          options: options,
+          onChanged: onChanged,
+          hintText: "Select $label",
+        ),
+      ],
+    );
+  }
+
+  /// Creates a binary selector button
+  static Widget buildBinarySelectorButton({
+    required String text,
+    required bool isSelected,
+    required VoidCallback onPressed,
+  }) {
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        backgroundColor: isSelected ? ThemeManager.instance.currentScheme.backingColour : unavailableColor,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: TextStyle(
+          color: ThemeManager.instance.currentScheme.textColour,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  /// Creates a styled filter toggle - now supporting old calling pattern
+  static Widget makeStyledFilterToggle(
+    String label,
+    List<String> filters,
+    VoidCallback onToggle,
+  ) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: filters.contains(label) ? ThemeManager.instance.currentScheme.backingColour : unavailableColor,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      ),
+      onPressed: onToggle,
+      child: Text(
+        label,
+        style: TextStyle(
+          color: ThemeManager.instance.currentScheme.textColour,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  /// Original version with named parameters (keeping both for compatibility)
+  static Widget makeStyledFilterToggleNamed({
+    required String label,
+    required bool isActive,
+    required VoidCallback onToggle,
+  }) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: isActive ? ThemeManager.instance.currentScheme.backingColour : unavailableColor,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      ),
+      onPressed: onToggle,
+      child: Text(
+        label,
+        style: TextStyle(
+          color: ThemeManager.instance.currentScheme.textColour,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  /// Creates a styled dropdown - supporting old parameter names
+  static Widget buildStyledDropDown({
+    String? selectedValue,
+    String? initialValue, // alias for selectedValue
+    List<String>? options,
+    List<dynamic>? items, // alias for options  
+    required ValueChanged<String?> onChanged,
+    String? hintText,
+  }) {
+    // Handle parameter aliases
+    String? actualSelectedValue = selectedValue ?? initialValue;
+    List<String> actualOptions = options ?? (items?.map((e) => e is String ? e : e.name.toString()).toList() ?? []);
+    
+    return buildStyledDropdownButton(
+      selectedValue: actualSelectedValue,
+      options: actualOptions,
+      onChanged: onChanged,
+      hintText: hintText ?? "Select option",
+    );
+  }
+
+  /// Creates multiple styled ASI selectors - supporting old parameter names
+  static Widget buildNStyledAsiSelectors({
+    int? count,
+    int? numbItems, // alias for count
+    List<String>? selectedValues,
+    List<bool>? optionalStates, // for compatibility - single list
+    List<List<bool>>? optionalStatesList, // for compatibility - nested list
+    ValueChanged<String>? onToggle,
+    Function? onPressed, // for compatibility with (int choiceNumber, int index, bool isSelected)
+  }) {
+    // Handle the old pattern with nested lists and complex callback
+    if (optionalStatesList != null && onPressed != null) {
+      int actualCount = numbItems ?? count ?? 1;
+      List<Widget> widgets = [];
+      
+      for (int choiceNumber = 0; choiceNumber < actualCount; choiceNumber++) {
+        widgets.add(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              for (int index = 0; index < abilityScores.length; index++)
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: (choiceNumber < optionalStatesList.length && 
+                                       index < optionalStatesList[choiceNumber].length &&
+                                       optionalStatesList[choiceNumber][index]) 
+                        ? ThemeManager.instance.currentScheme.backingColour 
+                        : unavailableColor,
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    ),
+                    onPressed: () => onPressed(choiceNumber, index, 
+                                               choiceNumber < optionalStatesList.length && 
+                                               index < optionalStatesList[choiceNumber].length &&
+                                               optionalStatesList[choiceNumber][index]),
+                    child: Text(
+                      abilityScores[index],
+                      style: TextStyle(
+                        color: ThemeManager.instance.currentScheme.textColour,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        );
+        if (choiceNumber < actualCount - 1) {
+          widgets.add(const SizedBox(height: 8));
+        }
+      }
+      
+      return Column(children: widgets);
+    }
+    
+    // Handle the new pattern with string list and simple callback
+    if (selectedValues != null && onToggle != null) {
+      return buildStyledToggleSelector(
+        options: abilityScores,
+        selectedValues: selectedValues,
+        onToggle: onToggle,
+      );
+    }
+    
+    // Fallback
+    return const SizedBox.shrink();
+  }
+
+  /// Creates a styled toggle selector - supporting old parameter names  
+  static Widget buildStyledToggleSelector({
+    List<String>? options,
+    List<String>? itemLabels, // alias for options
+    List<String>? selectedValues,
+    List<bool>? isSelected, // for compatibility
+    ValueChanged<String>? onToggle,
+    Function? onPressed, // for compatibility with (int index, bool isSelected)
+  }) {
+    // Handle parameter aliases
+    List<String> actualOptions = itemLabels ?? options ?? [];
+    
+    // Handle the old pattern with List<bool> and onPressed callback
+    if (isSelected != null && onPressed != null) {
+      return Wrap(
+        spacing: 8,
+        children: actualOptions.asMap().entries.map((entry) {
+          int index = entry.key;
+          String option = entry.value;
+          bool isOptionSelected = index < isSelected.length ? isSelected[index] : false;
+          
+          return ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: isOptionSelected ? ThemeManager.instance.currentScheme.backingColour : unavailableColor,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            ),
+            onPressed: () => onPressed(index, isOptionSelected),
+            child: Text(
+              option,
+              style: TextStyle(
+                color: ThemeManager.instance.currentScheme.textColour,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          );
+        }).toList(),
+      );
+    }
+    
+    // Handle the new pattern with List<String> and onToggle callback
+    if (selectedValues != null && onToggle != null) {
+      return Wrap(
+        spacing: 8,
+        children: actualOptions.map((option) {
+          final isOptionSelected = selectedValues.contains(option);
+          return ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: isOptionSelected ? ThemeManager.instance.currentScheme.backingColour : unavailableColor,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            ),
+            onPressed: () => onToggle(option),
+            child: Text(
+              option,
+              style: TextStyle(
+                color: ThemeManager.instance.currentScheme.textColour,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          );
+        }).toList(),
+      );
+    }
+    
+    // Fallback
+    return const SizedBox.shrink();
   }
 }

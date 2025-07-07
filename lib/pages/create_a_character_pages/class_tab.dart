@@ -3,8 +3,8 @@ import "dart:math";
 import "../../content_classes/all_content_classes.dart";
 import "../../content_classes/srd_globals.dart"; // For sum function
 import "../../utils/style_utils.dart";
-import "../../main.dart";
 import "spell_handling.dart"; // For ChoiceRow
+import "../../theme/theme_manager.dart";
 
 /// Class tab widget for character creation
 /// Handles class selection, level progression, and level-based choices
@@ -159,12 +159,12 @@ class _ClassTabState extends State<ClassTab> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: InitialTop.colourScheme.backgroundColour,
+        backgroundColor: ThemeManager.instance.currentScheme.backgroundColour,
         floatingActionButton: FloatingActionButton(
           tooltip: "Increase character level by 1",
-          foregroundColor: InitialTop.colourScheme.textColour,
+          foregroundColor: ThemeManager.instance.currentScheme.textColour,
           backgroundColor: (widget.charLevel < 20)
-            ? InitialTop.colourScheme.backingColour
+            ? ThemeManager.instance.currentScheme.backingColour
             : unavailableColor,
           onPressed: () {
             if (widget.charLevel < 20) {
@@ -174,12 +174,12 @@ class _ClassTabState extends State<ClassTab> {
           child: const Icon(Icons.exposure_plus_1),
         ),
         appBar: AppBar(
-          foregroundColor: InitialTop.colourScheme.textColour,
-          backgroundColor: InitialTop.colourScheme.backingColour,
+          foregroundColor: ThemeManager.instance.currentScheme.textColour,
+          backgroundColor: ThemeManager.instance.currentScheme.backingColour,
 
           /* Remove default back button */
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: InitialTop.colourScheme.backingColour),
+            icon: Icon(Icons.arrow_back, color: ThemeManager.instance.currentScheme.backingColour),
             onPressed: () {},
           ),
 
@@ -191,15 +191,15 @@ class _ClassTabState extends State<ClassTab> {
               Center(
                 child: StyleUtils.buildStyledMediumTextBox(
                   text: "${widget.charLevel - widget.character.classLevels.reduce(sum)} class level(s) unselected",
-                  color: InitialTop.colourScheme.textColour)
+                  color: ThemeManager.instance.currentScheme.textColour)
                 ),
               widget.character.classList.isNotEmpty
                 ? StyleUtils.buildStyledSmallTextBox(
                   text: "Levels in Classes: ${CLASSLIST.asMap().entries.where((entry) => widget.character.classLevels[entry.key] != 0).map((entry) => "${entry.value.name} - ${widget.character.classLevels[entry.key]}").join(", ")}",
-                  color: InitialTop.colourScheme.textColour)                        
+                  color: ThemeManager.instance.currentScheme.textColour)                        
                 :  StyleUtils.buildStyledSmallTextBox(
                   text: "No levels selected in any class",
-                  color: InitialTop.colourScheme.textColour),
+                  color: ThemeManager.instance.currentScheme.textColour),
               const SizedBox(height: 3)
             ],
           ),
@@ -208,7 +208,7 @@ class _ClassTabState extends State<ClassTab> {
               StyleUtils.tabLabel("Choose your classes"),
               StyleUtils.tabLabel("Make your selections for each level in your class")
             ],
-            indicatorColor: InitialTop.colourScheme.textColour,
+            indicatorColor: ThemeManager.instance.currentScheme.textColour,
           ),
         ),
         body: TabBarView(children: [
@@ -227,7 +227,7 @@ class _ClassTabState extends State<ClassTab> {
                       width: 240,
                       height: 175,
                       decoration: BoxDecoration(
-                        color: InitialTop.colourScheme.backingColour,
+                        color: ThemeManager.instance.currentScheme.backingColour,
                         border: Border.all(color: Colors.black, width: 1.8),
                         borderRadius: const BorderRadius.all(Radius.circular(5)),
                       ),
@@ -238,24 +238,24 @@ class _ClassTabState extends State<ClassTab> {
                             style: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.w700,
-                              color: InitialTop.colourScheme.textColour)),
+                              color: ThemeManager.instance.currentScheme.textColour)),
                           StyleUtils.buildStyledTinyTextBox(
                             text: "Class type: ${CLASSLIST[index].classType}", 
-                            color: InitialTop.colourScheme.textColour
+                            color: ThemeManager.instance.currentScheme.textColour
                           ),
                           StyleUtils.buildStyledTinyTextBox(
                             text: (["Martial", "Third Caster"].contains(CLASSLIST[index].classType))
                               ? "Main ability: ${CLASSLIST[index].mainOrSpellcastingAbility}"
                               : "Spellcasting ability: ${CLASSLIST[index].mainOrSpellcastingAbility}", 
-                            color: InitialTop.colourScheme.textColour
+                            color: ThemeManager.instance.currentScheme.textColour
                           ),
                           StyleUtils.buildStyledTinyTextBox(
                             text: "Hit die: D${CLASSLIST[index].maxHitDiceRoll}", 
-                            color: InitialTop.colourScheme.textColour
+                            color: ThemeManager.instance.currentScheme.textColour
                           ),
                           StyleUtils.buildStyledTinyTextBox(
                             text: "Saves: ${CLASSLIST[index].savingThrowProficiencies.join(", ")}", 
-                            color: InitialTop.colourScheme.textColour
+                            color: ThemeManager.instance.currentScheme.textColour
                           ),
                           const SizedBox(height: 7),
 
@@ -264,7 +264,7 @@ class _ClassTabState extends State<ClassTab> {
                             style: OutlinedButton.styleFrom(
                               backgroundColor: (widget.charLevel <= widget.character.classLevels.reduce(sum) || (!multiclassingPossible(CLASSLIST[index])))
                                 ? unavailableColor
-                                : InitialTop.colourScheme.backingColour,
+                                : ThemeManager.instance.currentScheme.backingColour,
                               shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
                               side: const BorderSide(width: 3, color: positiveColor)
                             ),
@@ -387,7 +387,7 @@ class _ClassTabState extends State<ClassTab> {
                               });
                               widget.onCharacterChanged();
                             },
-                            child: Icon(Icons.add, color: InitialTop.colourScheme.textColour, size: 35))
+                            child: Icon(Icons.add, color: ThemeManager.instance.currentScheme.textColour, size: 35))
                         ],
                       ));
                   }),

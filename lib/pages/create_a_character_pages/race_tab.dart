@@ -96,7 +96,7 @@ class _RaceTabState extends State<RaceTab> {
           StyleUtils.buildStyledSmallTextBox(text: "Choose which score(s) to increase by 1"),
           StyleUtils.buildNStyledAsiSelectors(
             numbItems: (widget.character.race.mystery1S + (widget.character.subrace?.mystery1S ?? 0)), 
-            optionalStates: widget.character.optionalOnesStates!, 
+            optionalStatesList: widget.character.optionalOnesStates!, 
             onPressed:(int choiceNumber, int index, bool isSelected) {
               setState(() {
                 if (widget.character.optionalOnesStates![choiceNumber][index]) {
@@ -122,7 +122,7 @@ class _RaceTabState extends State<RaceTab> {
           StyleUtils.buildStyledSmallTextBox(text: "Choose which score(s) to increase by 2"),
           StyleUtils.buildNStyledAsiSelectors(
             numbItems: (widget.character.race.mystery2S + (widget.character.subrace?.mystery2S ?? 0)), 
-            optionalStates: widget.character.optionalTwosStates!,
+            optionalStatesList: widget.character.optionalTwosStates!,
             onPressed:(int choiceNumber, int index, bool isSelected) {
               setState(() {
                 if (widget.character.optionalTwosStates![choiceNumber][index]) {

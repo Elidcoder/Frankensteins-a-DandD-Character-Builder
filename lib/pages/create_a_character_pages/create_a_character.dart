@@ -2,10 +2,10 @@
 import "package:flutter/material.dart";
 
 // Project Imports
-import "../../main.dart";
 import "../../content_classes/all_content_classes.dart";
 import "creation_tabs.dart";
 import "../../utils/style_utils.dart";
+import "../../theme/theme_manager.dart";
 
 /* Notifier for when settings changes colour to rebuild. */
 final ValueNotifier<int> tabRebuildNotifier = ValueNotifier<int>(0);
@@ -99,10 +99,10 @@ class MainCreateCharacter extends State<CreateACharacter>
       builder: (context, value, child) {return DefaultTabController(
       length: tabLabels.length,
       child: Scaffold(
-        backgroundColor: InitialTop.colourScheme.backgroundColour,
+        backgroundColor: ThemeManager.instance.currentScheme.backgroundColour,
         appBar: AppBar(
-          foregroundColor: InitialTop.colourScheme.textColour,
-          backgroundColor: InitialTop.colourScheme.backingColour,
+          foregroundColor: ThemeManager.instance.currentScheme.textColour,
+          backgroundColor: ThemeManager.instance.currentScheme.backingColour,
           title: const Center(
             child: Text(
               textAlign: TextAlign.center,
@@ -112,7 +112,7 @@ class MainCreateCharacter extends State<CreateACharacter>
           ),
           bottom: TabBar(
             tabs: tabLabels.map((e) => StyleUtils.tabLabel(e)).toList(),
-            indicatorColor: InitialTop.colourScheme.textColour,
+            indicatorColor: ThemeManager.instance.currentScheme.textColour,
           ),
         ),
         body: TabBarView(children: [

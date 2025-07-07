@@ -4,10 +4,10 @@ import "package:flutter/material.dart";
 // Project Imports
 import "../../top_bar.dart";
 import "../../file_manager/file_manager.dart";
-import "../../main.dart" show InitialTop;
 import "edit_character.dart";
 import "../../pdf_generator/pdf_final_display.dart";
 import "../../content_classes/all_content_classes.dart";
+import "../../theme/theme_manager.dart";
 
 /* This is a page where all characters created are displayed to be edited, viewed, deleted etc. */
 class MyCharacters extends StatefulWidget {
@@ -26,11 +26,11 @@ class MainMyCharacters extends State<MyCharacters> {
       (element) => element.characterDescription.name.toLowerCase().contains(searchTerm.toLowerCase())
     ).toList();
     return Scaffold(
-      backgroundColor: InitialTop.colourScheme.backgroundColour,
+      backgroundColor: ThemeManager.instance.currentScheme.backgroundColour,
       floatingActionButton: FloatingActionButton(
         tooltip: "Create a character",
-        foregroundColor: InitialTop.colourScheme.textColour,
-        backgroundColor: InitialTop.colourScheme.backingColour,
+        foregroundColor: ThemeManager.instance.currentScheme.textColour,
+        backgroundColor: ThemeManager.instance.currentScheme.backingColour,
         onPressed: () {
           setState(() {
             Navigator.push(
@@ -44,8 +44,8 @@ class MainMyCharacters extends State<MyCharacters> {
         child: const Icon(Icons.person_add),
       ),
       appBar: AppBar(
-        foregroundColor: InitialTop.colourScheme.textColour,
-        backgroundColor: InitialTop.colourScheme.backingColour,
+        foregroundColor: ThemeManager.instance.currentScheme.textColour,
+        backgroundColor: ThemeManager.instance.currentScheme.backingColour,
         title: const Center(
           child: Text(
             textAlign: TextAlign.center,
@@ -79,7 +79,7 @@ class MainMyCharacters extends State<MyCharacters> {
         /* Display users characters with action buttons. */
         Expanded(
           child: (CHARACTERLIST.isEmpty)
-            ? Center(child: Text("You have no created characters to view", style: TextStyle(color: InitialTop.colourScheme.backingColour, fontSize: 25, fontWeight: FontWeight.w700)))
+            ? Center(child: Text("You have no created characters to view", style: TextStyle(color: ThemeManager.instance.currentScheme.backingColour, fontSize: 25, fontWeight: FontWeight.w700)))
           : SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Wrap(
@@ -91,8 +91,8 @@ class MainMyCharacters extends State<MyCharacters> {
                     width: 190,
                     height: 247,
                     decoration: BoxDecoration(
-                      color: InitialTop.colourScheme.backingColour,
-                      border: Border.all(color: InitialTop.colourScheme.textColour, width: 2),
+                      color: ThemeManager.instance.currentScheme.backingColour,
+                      border: Border.all(color: ThemeManager.instance.currentScheme.textColour, width: 2),
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
                     ),
                     child: Column(
@@ -104,13 +104,13 @@ class MainMyCharacters extends State<MyCharacters> {
                             fit: BoxFit.scaleDown,
                             child: Text(
                               filteredCharacters[index].characterDescription.name,
-                              style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700,color: InitialTop.colourScheme.textColour)
+                              style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700,color: ThemeManager.instance.currentScheme.textColour)
                         ))),
 
                         /* Character's Level */
                         Text(
                           "Level: ${filteredCharacters[index].classList.length}",
-                          style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: InitialTop.colourScheme.textColour)
+                          style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: ThemeManager.instance.currentScheme.textColour)
                         ),
 
                         /* Character's level in each class */
@@ -128,20 +128,20 @@ class MainMyCharacters extends State<MyCharacters> {
                                 ).map(
                                   (entry) =>"${entry.value.name}: ${filteredCharacters[index].classLevels[entry.key]}"
                                 ).join(", "),
-                                style: TextStyle(fontWeight: FontWeight.w700,color: InitialTop.colourScheme.textColour)
+                                style: TextStyle(fontWeight: FontWeight.w700,color: ThemeManager.instance.currentScheme.textColour)
                             )
 
                             /* If the character has levels in no classes. */
                             : Text(
                               "No Classes to display",
-                              style: TextStyle(fontWeight: FontWeight.w700,color: InitialTop.colourScheme.textColour)
+                              style: TextStyle(fontWeight: FontWeight.w700,color: ThemeManager.instance.currentScheme.textColour)
                             ),
                           )),
 
                         /* Character's Health */
                         Text(
                           "Health: ${filteredCharacters[index].maxHealth}",
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.textColour)
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: ThemeManager.instance.currentScheme.textColour)
                         ),
 
                         /* Character's Group */
@@ -152,7 +152,7 @@ class MainMyCharacters extends State<MyCharacters> {
                             fit: BoxFit.scaleDown,
                             child: Text(
                               "Group: ${filteredCharacters[index].group ?? "Not a part of a group"}",
-                              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: InitialTop.colourScheme.textColour)
+                              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: ThemeManager.instance.currentScheme.textColour)
                         ))),
 
                         /* Open as PDF button */
@@ -218,7 +218,7 @@ class MainMyCharacters extends State<MyCharacters> {
   Widget buildCharacterActionButton(String label, Color backgroundColour, VoidCallback onPressed) {
   return OutlinedButton(
     style: OutlinedButton.styleFrom(
-      side: BorderSide(color: InitialTop.colourScheme.textColour, width: 0.6),
+      side: BorderSide(color: ThemeManager.instance.currentScheme.textColour, width: 0.6),
       backgroundColor: backgroundColour,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     ),

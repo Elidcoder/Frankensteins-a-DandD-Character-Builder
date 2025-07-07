@@ -8,109 +8,184 @@ import "package:flutter_colorpicker/flutter_colorpicker.dart" show ColorPicker;
 import "colour_scheme_class/colour_scheme.dart";
 import "file_manager/file_manager.dart";
 import "top_bar.dart" show RegularTop;
-
-
+import "theme/theme_manager.dart";
 
 void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: InitialTop(key: InitialTopKey)
-  ));
+  runApp(const FrankensteinApp());
 }
 
-/* Notifier for when settings changes colour to rebuild. */
-final ValueNotifier<int> themeNotifier = ValueNotifier<int>(0);
+class FrankensteinApp extends StatefulWidget {
+  const FrankensteinApp({super.key});
+
+  @override
+  State<FrankensteinApp> createState() => _FrankensteinAppState();
+}
+
+class _FrankensteinAppState extends State<FrankensteinApp> {
+  late Future<void> _initializationFuture;
+  
+  @override
+  void initState() {
+    super.initState();
+    _initializationFuture = _initializeApp();
+  }
+  
+  Future<void> _initializeApp() async {
+    await initialiseGlobals();
+    ThemeManager.instance.initialize();
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<void>(
+      future: _initializationFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return ThemeManagerWidget(
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: "Frankenstein's - a D&D 5e character builder",
+              theme: ThemeManager.instance.themeData,
+              home: const InitialTop(),
+            ),
+          );
+        } else {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: Scaffold(
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const CircularProgressIndicator(),
+                    const SizedBox(height: 20),
+                    Text(
+                      "Please wait while the application saves or loads data",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 30,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
+}
+
+/// Widget that manages theme changes and rebuilds the widget tree
+class ThemeManagerWidget extends StatefulWidget {
+  final Widget child;
+  
+  const ThemeManagerWidget({super.key, required this.child});
+  
+  @override
+  State<ThemeManagerWidget> createState() => _ThemeManagerWidgetState();
+}
+
+class _ThemeManagerWidgetState extends State<ThemeManagerWidget> {
+  @override
+  void initState() {
+    super.initState();
+    ThemeManager.instance.addListener(_onThemeChanged);
+  }
+  
+  @override
+  void dispose() {
+    ThemeManager.instance.removeListener(_onThemeChanged);
+    super.dispose();
+  }
+  
+  void _onThemeChanged() {
+    setState(() {
+      // Rebuild with new theme
+    });
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "Frankenstein's - a D&D 5e character builder",
+      theme: ThemeManager.instance.themeData,
+      home: widget.child,
+    );
+  }
+}
 
 /* Create a GlobalKey for the state of InitialTop. */
 final GlobalKey<InitialTopState> InitialTopKey = GlobalKey<InitialTopState>();
 
 class InitialTop extends StatefulWidget {
-  static ColourScheme colourScheme = THEMELIST.isEmpty 
-    ? ColourScheme(textColour: Colors.white, backingColour: Colors.blue, backgroundColour: Colors.white) 
-    : THEMELIST.last;
-
   const InitialTop({super.key});
   @override
   InitialTopState createState() => InitialTopState();
 }
 
 class InitialTopState extends State<InitialTop> {
-  ColourScheme currentScheme = InitialTop.colourScheme;
   static const String appTitle = "Frankenstein's - a D&D 5e character builder";
-  late Future<void> globalsLoaded;
 
   @override
   void initState() {
     super.initState();
-    globalsLoaded = initialiseGlobals();
+    ThemeManager.instance.addListener(_onThemeChanged);
+  }
+  
+  @override
+  void dispose() {
+    ThemeManager.instance.removeListener(_onThemeChanged);
+    super.dispose();
+  }
+  
+  void _onThemeChanged() {
+    setState(() {
+      // Rebuild when theme changes
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<int>(
-      valueListenable: themeNotifier,
-      builder: (context, value, child) {return  FutureBuilder<void>(
-        /* Load all required global variables */
-        future: globalsLoaded,
-
-        /* keep running until the app is built successfully (globals loaded) */
-        builder: (context, snapshot) {
-
-          /* If initialiseGlobals is done (connection state is an enum), return MaterialApp */
-          if (snapshot.connectionState == ConnectionState.done) {
-
-            /* Load up the previously used colour scheme. */
-            if (THEMELIST.isNotEmpty) {
-              InitialTop.colourScheme = THEMELIST.last;
-              currentScheme = THEMELIST.last;
-            }
-
-            /* Create the bar at the top with app name, settings and logo.*/
-            return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              theme: ThemeData(primaryColor: InitialTop.colourScheme.textColour),
-              title: appTitle,
-              home: Scaffold(
-                appBar: AppBar(
-                  foregroundColor: InitialTop.colourScheme.textColour,
-                  backgroundColor: InitialTop.colourScheme.backingColour,
-                  leading: IconButton(
-                    icon: const Icon(Icons.image),
-                    tooltip: "Put logo here",
-                    onPressed: () {}),
-                  title: const Center(child: Text(appTitle)),
-                  actions: <Widget>[
-                    IconButton(
-                      icon: const Icon(Icons.settings),
-                      tooltip: "Settings",
-                      onPressed: () {
-                        showColorPicker(context);
-                      },
-                    ),
-                  ],
-                ),
-
-                /* Create the main menu as the body */
-                body: MainMenu(),
-              ),
-            );
-
-          /* if saveChanges is still running, output some text to let the user know */
-          } else {
-            return const Center(
-              child: Text(
-                "Please wait while the application saves or loads data",
-                style: TextStyle(color: Colors.blue, fontSize: 30),
-              ),
-            );
-          }
-        },
-      );});
+    final colourScheme = ThemeManager.instance.currentScheme;
+    
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: colourScheme.backingColour,
+        foregroundColor: colourScheme.textColour,
+        leading: IconButton(
+          icon: const Icon(Icons.image),
+          tooltip: "Put logo here",
+          onPressed: () {}
+        ),
+        title: Center(
+          child: Text(
+            appTitle,
+            style: TextStyle(color: colourScheme.textColour),
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.settings),
+            tooltip: "Settings",
+            onPressed: () {
+              showColorPicker(context);
+            },
+          ),
+        ],
+      ),
+      body: const MainMenu(),
+    );
   }
 
   /* Returns a popup that allows the user to change the app's colour scheme. */ 
   void showColorPicker(BuildContext context) {
     int? selectedIndex;
+    ColourScheme currentScheme = ThemeManager.instance.currentScheme;
+    
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -255,15 +330,8 @@ class InitialTopState extends State<InitialTop> {
                 ),
                 TextButton(
                   onPressed: () {
-                    InitialTop.colourScheme = currentScheme;
-                    
-                    // Put current colour scheme at the top of the list
-                    THEMELIST.removeWhere((theme) => currentScheme.isSameColourScheme(theme));
-                    THEMELIST.add(currentScheme);
-                    saveChanges();
-
-                    // Increment notifier to trigger rebuilds and remove popup.
-                    themeNotifier.value++;
+                    // Update the theme using the theme manager
+                    ThemeManager.instance.updateScheme(currentScheme);
                     Navigator.of(context).pop();
                   },
                   child: const Text("Save settings"),
@@ -317,28 +385,47 @@ class MainMenu extends StatefulWidget {
 }
 class MainMenuState extends State<MainMenu> {
   @override
+  void initState() {
+    super.initState();
+    ThemeManager.instance.addListener(_onThemeChanged);
+  }
+  
+  @override
+  void dispose() {
+    ThemeManager.instance.removeListener(_onThemeChanged);
+    super.dispose();
+  }
+  
+  void _onThemeChanged() {
+    setState(() {
+      // Rebuild when theme changes
+    });
+  }
+  
+  @override
   Widget build(BuildContext context) {
+    final colourScheme = ThemeManager.instance.currentScheme;
+    
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        foregroundColor: InitialTop.colourScheme.textColour,
-        backgroundColor: InitialTop.colourScheme.backingColour,
+        backgroundColor: colourScheme.backingColour,
+        foregroundColor: colourScheme.textColour,
         title: Text(
           textAlign: TextAlign.center,
           "Main Menu",
-          style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.textColour),
-      )),
-      backgroundColor: InitialTop.colourScheme.backgroundColour,
+          style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700, color: colourScheme.textColour),
+        ),
+      ),
+      backgroundColor: colourScheme.backgroundColour,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: colourScheme.backingColour,
+        foregroundColor: colourScheme.textColour,
         tooltip: "Help and guidance",
-        foregroundColor: InitialTop.colourScheme.textColour,
-        backgroundColor: InitialTop.colourScheme.backingColour,
         onPressed: () {
           _showInfoAndHelp(context);
         },
-        child: const Icon(
-          Icons.info,
-        ),
+        child: const Icon(Icons.info),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -370,7 +457,7 @@ class MainMenuState extends State<MainMenu> {
               /* Download content button */
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                  backgroundColor: InitialTop.colourScheme.backingColour,
+                  backgroundColor: ThemeManager.instance.currentScheme.backingColour,
                   padding: const EdgeInsets.fromLTRB(45, 25, 45, 25),
                   shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
                   side: const BorderSide(width: 3.3, color: Colors.black),
@@ -402,7 +489,7 @@ class MainMenuState extends State<MainMenu> {
                 },
                 child: Text(
                   "Download\n Content",
-                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.textColour),
+                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: ThemeManager.instance.currentScheme.textColour),
                 ),
               ),
               const SizedBox(width: 100),
@@ -417,9 +504,11 @@ class MainMenuState extends State<MainMenu> {
 
   /* Builds a button that takes the user to another page. */
   OutlinedButton buildStyledButton(String text, String pagechoice, BuildContext context){
+    final colourScheme = ThemeManager.instance.currentScheme;
+    
     return OutlinedButton(
     style: OutlinedButton.styleFrom(
-      backgroundColor: InitialTop.colourScheme.backingColour,
+      backgroundColor: colourScheme.backingColour,
       padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
       side: const BorderSide(width: 3.3, color: Colors.black),
@@ -433,7 +522,7 @@ class MainMenuState extends State<MainMenu> {
     child: Text(
       textAlign: TextAlign.center,
       text,
-      style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: InitialTop.colourScheme.textColour),
+      style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: colourScheme.textColour),
     )
   );
   }

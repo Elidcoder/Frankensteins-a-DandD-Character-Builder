@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../content_classes/character/character.dart';
-import '../../main.dart';
 import '../../utils/style_utils.dart';
+import '../../theme/theme_manager.dart';
 
 /// Quick Edits tab widget for character editing
 /// Handles level increases and experience adjustments
@@ -53,29 +53,30 @@ class _QuickEditsTabState extends State<QuickEditsTab> {
           const SizedBox(height: 16),
           StyleUtils.buildStyledSmallTextBox(
             text: "${widget.character.characterDescription.name} has at least one unused level!!",
-            color: InitialTop.colourScheme.backingColour
+            color: ThemeManager.instance.currentScheme.backingColour
           ),
         ],
 
         const SizedBox(height: 16),
         StyleUtils.buildStyledSmallTextBox(
           text: "Increase level by 1:",
-          color: InitialTop.colourScheme.backingColour
+          color: ThemeManager.instance.currentScheme.backingColour
         ),
         const SizedBox(height: 8),
-        StyleUtils.buildStyledButton(
-          enabled: int.parse(widget.characterLevel) < 20,
-          onPressed: () {
-            if (int.parse(widget.characterLevel) < 20) {
-              widget.onCharacterLevelChanged((int.parse(widget.characterLevel) + 1).toString());
-            }
-          },
-          child: Icon(Icons.add, color: InitialTop.colourScheme.textColour, size: 37),
+        ElevatedButton(
+          onPressed: int.parse(widget.characterLevel) < 20 ? () {
+            widget.onCharacterLevelChanged((int.parse(widget.characterLevel) + 1).toString());
+          } : null,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: ThemeManager.instance.currentScheme.backingColour,
+            foregroundColor: ThemeManager.instance.currentScheme.textColour,
+          ),
+          child: Icon(Icons.add, color: ThemeManager.instance.currentScheme.textColour, size: 37),
         ),
         const SizedBox(height: 16),
         StyleUtils.buildStyledSmallTextBox(
           text: "Experience amount to add:",
-          color: InitialTop.colourScheme.backingColour
+          color: ThemeManager.instance.currentScheme.backingColour
         ),
         const SizedBox(height: 8),
         StyleUtils.buildStyledSmallTextField(
@@ -91,21 +92,22 @@ class _QuickEditsTabState extends State<QuickEditsTab> {
         const SizedBox(height: 20),
         StyleUtils.buildStyledSmallTextBox(
           text: "Confirm adding experience",
-          color: InitialTop.colourScheme.backingColour
+          color: ThemeManager.instance.currentScheme.backingColour
         ),
         const SizedBox(height: 8),
-        StyleUtils.buildStyledButton(
-          enabled: double.tryParse(experienceIncrease ?? "NOT NUMBER") != null,
-          onPressed: () {
-            if (double.tryParse(experienceIncrease ?? "NOT NUMBER") != null) {
-              widget.character.characterExperience += double.tryParse(
-                      experienceIncrease ?? "NOT NUMBER") ??
-                  0;
-              widget.onCharacterChanged();
-              //validate level
-            }
-          },
-          child: Icon(Icons.add, color: InitialTop.colourScheme.textColour, size: 37),
+        ElevatedButton(
+          onPressed: double.tryParse(experienceIncrease ?? "NOT NUMBER") != null ? () {
+            widget.character.characterExperience += double.tryParse(
+                    experienceIncrease ?? "NOT NUMBER") ??
+                0;
+            widget.onCharacterChanged();
+            //validate level
+          } : null,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: ThemeManager.instance.currentScheme.backingColour,
+            foregroundColor: ThemeManager.instance.currentScheme.textColour,
+          ),
+          child: Icon(Icons.add, color: ThemeManager.instance.currentScheme.textColour, size: 37),
         )
       ],
     );

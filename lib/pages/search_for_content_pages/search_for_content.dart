@@ -2,8 +2,8 @@
 import "package:flutter/material.dart";
 
 // Project Imports
-import "../../main.dart";
 import "../../content_classes/all_content_classes.dart";
+import "../../theme/theme_manager.dart";
 
 /* This page allows users to view and delete their downloaded content. */
 class SearchForContent extends StatefulWidget {
@@ -21,17 +21,17 @@ class SearchForContentState extends State<SearchForContent> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        foregroundColor: InitialTop.colourScheme.textColour,
-        backgroundColor: InitialTop.colourScheme.backingColour,
+        foregroundColor: ThemeManager.instance.currentScheme.textColour,
+        backgroundColor: ThemeManager.instance.currentScheme.backingColour,
         title: Text(
           textAlign: TextAlign.center,
           "Search for content",
           style: TextStyle(
             fontSize: 45,
             fontWeight: FontWeight.w700,
-            color: InitialTop.colourScheme.textColour),
+            color: ThemeManager.instance.currentScheme.textColour),
         )),
-      backgroundColor: InitialTop.colourScheme.backgroundColour,
+      backgroundColor: ThemeManager.instance.currentScheme.backgroundColour,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -98,13 +98,13 @@ class SearchForContentState extends State<SearchForContent> {
           margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
           padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
-            color: InitialTop.colourScheme.backingColour,
-            border: Border.all(color: InitialTop.colourScheme.textColour, width: 4),
+            color: ThemeManager.instance.currentScheme.backingColour,
+            border: Border.all(color: ThemeManager.instance.currentScheme.textColour, width: 4),
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: Center(child:Text(
             listType,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: InitialTop.colourScheme.textColour),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: ThemeManager.instance.currentScheme.textColour),
           )),
         ),
       ),
@@ -130,8 +130,8 @@ class SearchForContentState extends State<SearchForContent> {
         margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-          color: InitialTop.colourScheme.backingColour,
-          border: Border.all(color: InitialTop.colourScheme.textColour, width: 1.5),
+          color: ThemeManager.instance.currentScheme.backingColour,
+          border: Border.all(color: ThemeManager.instance.currentScheme.textColour, width: 1.5),
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Row(
