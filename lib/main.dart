@@ -9,6 +9,7 @@ import "colour_scheme_class/colour_scheme.dart";
 import "file_manager/file_manager.dart";
 import "top_bar.dart" show RegularTop;
 import "theme/theme_manager.dart";
+import "utils/style_utils.dart";
 
 void main() {
   runApp(const FrankensteinApp());
@@ -150,22 +151,14 @@ class InitialTopState extends State<InitialTop> {
 
   @override
   Widget build(BuildContext context) {
-    final colourScheme = ThemeManager.instance.currentScheme;
-    
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: colourScheme.backingColour,
-        foregroundColor: colourScheme.textColour,
+    return StyleUtils.buildStyledScaffold(
+      appBar: StyleUtils.buildStyledAppBar(
+        title: appTitle,
+        centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.image),
           tooltip: "Put logo here",
           onPressed: () {}
-        ),
-        title: Center(
-          child: Text(
-            appTitle,
-            style: TextStyle(color: colourScheme.textColour),
-          ),
         ),
         actions: <Widget>[
           IconButton(
@@ -404,27 +397,12 @@ class MainMenuState extends State<MainMenu> {
   
   @override
   Widget build(BuildContext context) {
-    final colourScheme = ThemeManager.instance.currentScheme;
-    
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: colourScheme.backingColour,
-        foregroundColor: colourScheme.textColour,
-        title: Text(
-          textAlign: TextAlign.center,
-          "Main Menu",
-          style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700, color: colourScheme.textColour),
-        ),
-      ),
-      backgroundColor: colourScheme.backgroundColour,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: colourScheme.backingColour,
-        foregroundColor: colourScheme.textColour,
-        tooltip: "Help and guidance",
+    return StyleUtils.buildStyledScaffold(
+      floatingActionButton: StyleUtils.buildStyledFloatingActionButton(
         onPressed: () {
           _showInfoAndHelp(context);
         },
+        tooltip: "Help and guidance",
         child: const Icon(Icons.info),
       ),
       body: Column(
@@ -455,14 +433,9 @@ class MainMenuState extends State<MainMenu> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               /* Download content button */
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: ThemeManager.instance.currentScheme.backingColour,
-                  padding: const EdgeInsets.fromLTRB(45, 25, 45, 25),
-                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-                  side: const BorderSide(width: 3.3, color: Colors.black),
-                ),
-                /* Get the target file. */
+              StyleUtils.buildStyledOutlinedButton(
+                text: "Download\nContent",
+                padding: const EdgeInsets.fromLTRB(45, 25, 45, 25),
                 onPressed: () async {
                   final result = await FilePicker.platform.pickFiles(
                     dialogTitle: "Navigate to and select a Json file to download the contents from, this content can then be used in your characters",
@@ -487,10 +460,6 @@ class MainMenuState extends State<MainMenu> {
                     }
                   }
                 },
-                child: Text(
-                  "Download\n Content",
-                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: ThemeManager.instance.currentScheme.textColour),
-                ),
               ),
               const SizedBox(width: 100),
 
@@ -503,28 +472,16 @@ class MainMenuState extends State<MainMenu> {
   }
 
   /* Builds a button that takes the user to another page. */
-  OutlinedButton buildStyledButton(String text, String pagechoice, BuildContext context){
-    final colourScheme = ThemeManager.instance.currentScheme;
-    
-    return OutlinedButton(
-    style: OutlinedButton.styleFrom(
-      backgroundColor: colourScheme.backingColour,
-      padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-      side: const BorderSide(width: 3.3, color: Colors.black),
-    ),
-    onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => RegularTop(pagechoice: pagechoice)),
-      );
-    },
-    child: Text(
-      textAlign: TextAlign.center,
-      text,
-      style: TextStyle(fontSize: 35, fontWeight: FontWeight.w700, color: colourScheme.textColour),
-    )
-  );
+  Widget buildStyledButton(String text, String pagechoice, BuildContext context){
+    return StyleUtils.buildStyledOutlinedButton(
+      text: text,
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => RegularTop(pagechoice: pagechoice)),
+        );
+      },
+    );
   }
 
   /* Displays a popup with helpfull information for new users. */

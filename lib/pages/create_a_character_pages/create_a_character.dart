@@ -282,18 +282,19 @@ class MainCreateCharacter extends State<CreateACharacter>
   void showCongratulationsDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        content: const Text('Character created!',
-            style: TextStyle(
-                color: Colors.green,
-                fontSize: 50,
-                fontWeight: FontWeight.w800)),
+      builder: (context) => StyleUtils.buildStyledAlertDialog(
+        title: 'Character Created!',
+        content: '',
+        titleWidget: StyleUtils.buildStyledHugeTextBox(
+          text: 'Character created!',
+          color: positiveColor,
+        ),
         actions: [
-          TextButton(
+          StyleUtils.buildStyledTextButton(
+            text: 'Continue',
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: const Text('Continue'),
           ),
         ],
       ),

@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import "../../content_classes/all_content_classes.dart";
 import "../../utils/style_utils.dart";
-import "../../theme/theme_manager.dart";
 
 /// Basics tab widget for character creation
 /// Handles character info, leveling method, and build parameters
@@ -146,20 +145,19 @@ class _BasicsTabState extends State<BasicsTab> {
                             onChanged: (value) {
                               widget.onLevellingMethodChanged(value.toString());
                             },
-                          ) : 
-                          Container(
+                          ) : Container(
                             decoration: BoxDecoration(
                               borderRadius: const BorderRadius.all(Radius.circular(5)),
-                              color: ThemeManager.instance.currentScheme.backingColour,
+                              color: StyleUtils.backingColor,
                             ),
                             height: 45,
                             child: DropdownButton<String>(
                               alignment: Alignment.center,
                               value: widget.characterLevel,
-                              icon: Icon(Icons.arrow_drop_down, color: ThemeManager.instance.currentScheme.textColour),
+                              icon: Icon(Icons.arrow_drop_down, color: StyleUtils.textColor),
                               elevation: 16,
                               style: TextStyle(
-                                color: ThemeManager.instance.currentScheme.textColour,
+                                color: StyleUtils.textColor,
                                 fontWeight: FontWeight.w800,
                                 fontSize: 20),
                               underline: const SizedBox(),
@@ -176,12 +174,12 @@ class _BasicsTabState extends State<BasicsTab> {
                                       child: Text(value,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          color: ThemeManager.instance.currentScheme.textColour,
+                                          color: StyleUtils.textColor,
                                           decoration: TextDecoration.underline,
                                         ))),
                                   );
                                 }).toList(),
-                              dropdownColor:ThemeManager.instance.currentScheme.backingColour
+                              dropdownColor: StyleUtils.backingColor
                             ),
                           ),
                       ),

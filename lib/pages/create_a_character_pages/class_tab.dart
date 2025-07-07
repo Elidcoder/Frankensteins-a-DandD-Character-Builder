@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import "dart:math";
 import "../../content_classes/all_content_classes.dart";
-import "../../content_classes/srd_globals.dart"; // For sum function
 import "../../utils/style_utils.dart";
 import "spell_handling.dart"; // For ChoiceRow
 import "../../theme/theme_manager.dart";

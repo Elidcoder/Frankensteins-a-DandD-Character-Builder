@@ -7,7 +7,7 @@ import "../../file_manager/file_manager.dart";
 import "edit_character.dart";
 import "../../pdf_generator/pdf_final_display.dart";
 import "../../content_classes/all_content_classes.dart";
-import "../../theme/theme_manager.dart";
+import "../../utils/style_utils.dart";
 
 /* This is a page where all characters created are displayed to be edited, viewed, deleted etc. */
 class MyCharacters extends StatefulWidget {
@@ -25,12 +25,10 @@ class MainMyCharacters extends State<MyCharacters> {
     final filteredCharacters = CHARACTERLIST.where(
       (element) => element.characterDescription.name.toLowerCase().contains(searchTerm.toLowerCase())
     ).toList();
-    return Scaffold(
-      backgroundColor: ThemeManager.instance.currentScheme.backgroundColour,
-      floatingActionButton: FloatingActionButton(
+    return StyleUtils.buildStyledScaffold(
+      floatingActionButton: StyleUtils.buildStyledFloatingActionButton(
         tooltip: "Create a character",
-        foregroundColor: ThemeManager.instance.currentScheme.textColour,
-        backgroundColor: ThemeManager.instance.currentScheme.backingColour,
+        child: const Icon(Icons.person_add),
         onPressed: () {
           setState(() {
             Navigator.push(
@@ -41,21 +39,9 @@ class MainMyCharacters extends State<MyCharacters> {
             );
           });
         },
-        child: const Icon(Icons.person_add),
       ),
-      appBar: AppBar(
-        foregroundColor: ThemeManager.instance.currentScheme.textColour,
-        backgroundColor: ThemeManager.instance.currentScheme.backingColour,
-        title: const Center(
-          child: Text(
-            textAlign: TextAlign.center,
-            "My Characters",
-            style: TextStyle(
-              fontSize: 40,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
+      appBar: StyleUtils.buildStyledAppBar(
+        title: "My Characters",
       ),
       body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
         /* Character name search bar */
@@ -79,7 +65,7 @@ class MainMyCharacters extends State<MyCharacters> {
         /* Display users characters with action buttons. */
         Expanded(
           child: (CHARACTERLIST.isEmpty)
-            ? Center(child: Text("You have no created characters to view", style: TextStyle(color: ThemeManager.instance.currentScheme.backingColour, fontSize: 25, fontWeight: FontWeight.w700)))
+            ? Center(child: StyleUtils.buildStyledLargeTextBox(text: "You have no created characters to view"))
           : SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Wrap(
@@ -87,14 +73,9 @@ class MainMyCharacters extends State<MyCharacters> {
                 runSpacing: 8.0,
                 alignment: WrapAlignment.center,
                 children: List.generate(filteredCharacters.length, (index) {
-                  return Container(
+                  return StyleUtils.buildStyledContainer(
                     width: 190,
                     height: 247,
-                    decoration: BoxDecoration(
-                      color: ThemeManager.instance.currentScheme.backingColour,
-                      border: Border.all(color: ThemeManager.instance.currentScheme.textColour, width: 2),
-                      borderRadius: const BorderRadius.all(Radius.circular(5)),
-                    ),
                     child: Column(
                       children: [
                         SizedBox(
@@ -102,16 +83,11 @@ class MainMyCharacters extends State<MyCharacters> {
                           height: 29,
                           child: FittedBox(
                             fit: BoxFit.scaleDown,
-                            child: Text(
-                              filteredCharacters[index].characterDescription.name,
-                              style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700,color: ThemeManager.instance.currentScheme.textColour)
-                        ))),
+                            child: StyleUtils.buildStyledMediumTextBox(text: filteredCharacters[index].characterDescription.name)
+                        )),
 
                         /* Character's Level */
-                        Text(
-                          "Level: ${filteredCharacters[index].classList.length}",
-                          style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: ThemeManager.instance.currentScheme.textColour)
-                        ),
+                        StyleUtils.buildStyledSmallTextBox(text: "Level: ${filteredCharacters[index].classList.length}"),
 
                         /* Character's level in each class */
                         SizedBox(
@@ -122,27 +98,20 @@ class MainMyCharacters extends State<MyCharacters> {
                             child: (filteredCharacters[index].classList.isNotEmpty) 
 
                             /* If the character has levels in >= 1 class, mach each class to its levels (if > 0) and pretty print them. */
-                            ? Text(
-                                CLASSLIST.asMap().entries.where(
+                            ? StyleUtils.buildStyledTinyTextBox(
+                                text: CLASSLIST.asMap().entries.where(
                                   (entry) => filteredCharacters[index].classLevels[entry.key] != 0
                                 ).map(
                                   (entry) =>"${entry.value.name}: ${filteredCharacters[index].classLevels[entry.key]}"
-                                ).join(", "),
-                                style: TextStyle(fontWeight: FontWeight.w700,color: ThemeManager.instance.currentScheme.textColour)
+                                ).join(", ")
                             )
 
                             /* If the character has levels in no classes. */
-                            : Text(
-                              "No Classes to display",
-                              style: TextStyle(fontWeight: FontWeight.w700,color: ThemeManager.instance.currentScheme.textColour)
-                            ),
+                            : StyleUtils.buildStyledTinyTextBox(text: "No Classes to display"),
                           )),
 
                         /* Character's Health */
-                        Text(
-                          "Health: ${filteredCharacters[index].maxHealth}",
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: ThemeManager.instance.currentScheme.textColour)
-                        ),
+                        StyleUtils.buildStyledSmallTextBox(text: "Health: ${filteredCharacters[index].maxHealth}"),
 
                         /* Character's Group */
                         SizedBox(
@@ -150,10 +119,8 @@ class MainMyCharacters extends State<MyCharacters> {
                           height: 20,
                           child: FittedBox(
                             fit: BoxFit.scaleDown,
-                            child: Text(
-                              "Group: ${filteredCharacters[index].group ?? "Not a part of a group"}",
-                              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: ThemeManager.instance.currentScheme.textColour)
-                        ))),
+                            child: StyleUtils.buildStyledSmallTextBox(text: "Group: ${filteredCharacters[index].group ?? "Not a part of a group"}")
+                        )),
 
                         /* Open as PDF button */
                         buildCharacterActionButton("Open PDF", Colors.grey, () {
@@ -218,7 +185,7 @@ class MainMyCharacters extends State<MyCharacters> {
   Widget buildCharacterActionButton(String label, Color backgroundColour, VoidCallback onPressed) {
   return OutlinedButton(
     style: OutlinedButton.styleFrom(
-      side: BorderSide(color: ThemeManager.instance.currentScheme.textColour, width: 0.6),
+      side: BorderSide(color: StyleUtils.textColor, width: 0.6),
       backgroundColor: backgroundColour,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     ),

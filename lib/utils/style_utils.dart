@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "../theme/theme_manager.dart";
+import "../colour_scheme_class/colour_scheme.dart";
 
 /* Define colours that will be used a lot. */
 const Color unavailableColor = Color.fromARGB(247, 56, 53, 52);
@@ -272,11 +273,13 @@ class StyleUtils {
     required VoidCallback onPressed,
     Color? backgroundColor,
     Color? textColor,
+    EdgeInsetsGeometry? padding,
+    double? fontSize,
   }) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor ?? ThemeManager.instance.currentScheme.backingColour,
-        padding: const EdgeInsets.fromLTRB(35, 15, 35, 15),
+        padding: padding ?? const EdgeInsets.fromLTRB(35, 15, 35, 15),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(4))
         ),
@@ -284,8 +287,9 @@ class StyleUtils {
       onPressed: onPressed,
       child: Text(
         text,
+        textAlign: TextAlign.center,
         style: TextStyle(
-          fontSize: 20,
+          fontSize: fontSize ?? 20,
           fontWeight: FontWeight.w700,
           color: textColor ?? ThemeManager.instance.currentScheme.textColour,
         ),
@@ -662,7 +666,12 @@ class StyleUtils {
     List<List<bool>>? optionalStatesList, // for compatibility - nested list
     ValueChanged<String>? onToggle,
     Function? onPressed, // for compatibility with (int choiceNumber, int index, bool isSelected)
+    EdgeInsetsGeometry? padding, // optional padding override
+    double? fontSize, // optional font size override
   }) {
+    EdgeInsetsGeometry actualPadding = padding ?? const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
+    double actualFontSize = fontSize ?? 16;
+    
     // Handle the old pattern with nested lists and complex callback
     if (optionalStatesList != null && onPressed != null) {
       int actualCount = numbItems ?? count ?? 1;
@@ -683,7 +692,7 @@ class StyleUtils {
                                        optionalStatesList[choiceNumber][index]) 
                         ? ThemeManager.instance.currentScheme.backingColour 
                         : unavailableColor,
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: actualPadding,
                     ),
                     onPressed: () => onPressed(choiceNumber, index, 
                                                choiceNumber < optionalStatesList.length && 
@@ -694,7 +703,7 @@ class StyleUtils {
                       style: TextStyle(
                         color: ThemeManager.instance.currentScheme.textColour,
                         fontWeight: FontWeight.w600,
-                        fontSize: 12,
+                        fontSize: actualFontSize,
                       ),
                     ),
                   ),
@@ -731,9 +740,13 @@ class StyleUtils {
     List<bool>? isSelected, // for compatibility
     ValueChanged<String>? onToggle,
     Function? onPressed, // for compatibility with (int index, bool isSelected)
+    EdgeInsetsGeometry? padding, // optional padding override
+    double? fontSize, // optional font size override
   }) {
     // Handle parameter aliases
     List<String> actualOptions = itemLabels ?? options ?? [];
+    EdgeInsetsGeometry actualPadding = padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 10);
+    double actualFontSize = fontSize ?? 14;
     
     // Handle the old pattern with List<bool> and onPressed callback
     if (isSelected != null && onPressed != null) {
@@ -747,7 +760,7 @@ class StyleUtils {
           return ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: isOptionSelected ? ThemeManager.instance.currentScheme.backingColour : unavailableColor,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              padding: actualPadding,
             ),
             onPressed: () => onPressed(index, isOptionSelected),
             child: Text(
@@ -755,6 +768,7 @@ class StyleUtils {
               style: TextStyle(
                 color: ThemeManager.instance.currentScheme.textColour,
                 fontWeight: FontWeight.w600,
+                fontSize: actualFontSize,
               ),
             ),
           );
@@ -771,7 +785,7 @@ class StyleUtils {
           return ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: isOptionSelected ? ThemeManager.instance.currentScheme.backingColour : unavailableColor,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              padding: actualPadding,
             ),
             onPressed: () => onToggle(option),
             child: Text(
@@ -779,6 +793,7 @@ class StyleUtils {
               style: TextStyle(
                 color: ThemeManager.instance.currentScheme.textColour,
                 fontWeight: FontWeight.w600,
+                fontSize: actualFontSize,
               ),
             ),
           );
@@ -789,4 +804,476 @@ class StyleUtils {
     // Fallback
     return const SizedBox.shrink();
   }
+
+  // High-level UI widget builders to abstract theme access
+  
+  /// Creates a styled AppBar with consistent theming
+  static AppBar buildStyledAppBar({
+    required String title,
+    List<Widget>? actions,
+    Widget? leading,
+    bool automaticallyImplyLeading = true,
+    double? elevation,
+    bool centerTitle = false,
+    PreferredSizeWidget? bottom,
+    TextStyle? titleStyle,
+  }) {
+    return AppBar(
+      title: Text(
+        title,
+        style: titleStyle ?? TextStyle(
+          color: ThemeManager.instance.currentScheme.textColour,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      backgroundColor: ThemeManager.instance.currentScheme.backingColour,
+      foregroundColor: ThemeManager.instance.currentScheme.textColour,
+      elevation: elevation,
+      centerTitle: centerTitle,
+      leading: leading,
+      automaticallyImplyLeading: automaticallyImplyLeading,
+      actions: actions,
+      bottom: bottom,
+      iconTheme: IconThemeData(
+        color: ThemeManager.instance.currentScheme.textColour,
+      ),
+    );
+  }
+
+  /// Creates a styled FloatingActionButton with consistent theming
+  static FloatingActionButton buildStyledFloatingActionButton({
+    required VoidCallback onPressed,
+    required Widget child,
+    String? tooltip,
+    Color? backgroundColor,
+    Color? foregroundColor,
+    bool mini = false,
+  }) {
+    return FloatingActionButton(
+      onPressed: onPressed,
+      backgroundColor: backgroundColor ?? ThemeManager.instance.currentScheme.backingColour,
+      foregroundColor: foregroundColor ?? ThemeManager.instance.currentScheme.textColour,
+      tooltip: tooltip,
+      mini: mini,
+      child: child,
+    );
+  }
+
+  /// Creates a styled Scaffold with consistent theming
+  static Scaffold buildStyledScaffold({
+    required Widget body,
+    AppBar? appBar,
+    Widget? floatingActionButton,
+    Widget? drawer,
+    Widget? endDrawer,
+    Widget? bottomNavigationBar,
+    Color? backgroundColor,
+    FloatingActionButtonLocation? floatingActionButtonLocation,
+    bool resizeToAvoidBottomInset = true,
+  }) {
+    return Scaffold(
+      backgroundColor: backgroundColor ?? ThemeManager.instance.currentScheme.backgroundColour,
+      appBar: appBar,
+      body: body,
+      floatingActionButton: floatingActionButton,
+      drawer: drawer,
+      endDrawer: endDrawer,
+      bottomNavigationBar: bottomNavigationBar,
+      floatingActionButtonLocation: floatingActionButtonLocation,
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+    );
+  }
+
+  /// Creates a styled Container with consistent theming
+  static Container buildStyledContainer({
+    Widget? child,
+    double? width,
+    double? height,
+    EdgeInsetsGeometry? padding,
+    EdgeInsetsGeometry? margin,
+    Color? backgroundColor,
+    BoxBorder? border,
+    BorderRadiusGeometry? borderRadius,
+    BoxDecoration? decoration,
+  }) {
+    return Container(
+      width: width,
+      height: height,
+      padding: padding,
+      margin: margin,
+      decoration: decoration ?? BoxDecoration(
+        color: backgroundColor ?? ThemeManager.instance.currentScheme.backingColour,
+        border: border ?? Border.all(color: ThemeManager.instance.currentScheme.textColour),
+        borderRadius: borderRadius ?? BorderRadius.circular(8),
+      ),
+      child: child,
+    );
+  }
+
+  /// Creates a styled Card with consistent theming
+  static Card buildStyledCard({
+    required Widget child,
+    EdgeInsetsGeometry? margin,
+    EdgeInsetsGeometry? padding,
+    Color? backgroundColor,
+    double? elevation,
+    double? borderRadius,
+    VoidCallback? onTap,
+  }) {
+    return Card(
+      margin: margin ?? const EdgeInsets.all(8.0),
+      color: backgroundColor ?? ThemeManager.instance.currentScheme.backgroundColour,
+      elevation: elevation ?? 2.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(borderRadius ?? 8.0),
+      ),
+      child: onTap != null
+          ? InkWell(
+              onTap: onTap,
+              borderRadius: BorderRadius.circular(borderRadius ?? 8.0),
+              child: Container(
+                padding: padding ?? const EdgeInsets.all(16.0),
+                child: child,
+              ),
+            )
+          : Container(
+              padding: padding ?? const EdgeInsets.all(16.0),
+              child: child,
+            ),
+    );
+  }
+
+  /// Creates a styled Divider with consistent theming
+  static Divider buildStyledDivider({
+    double? height,
+    double? thickness,
+    Color? color,
+    double? indent,
+    double? endIndent,
+  }) {
+    return Divider(
+      height: height ?? 1.0,
+      thickness: thickness ?? 1.0,
+      color: color ?? ThemeManager.instance.currentScheme.textColour.withOpacity(0.3),
+      indent: indent,
+      endIndent: endIndent,
+    );
+  }
+
+  /// Creates a styled ListTile with consistent theming
+  static ListTile buildStyledListTile({
+    Widget? leading,
+    required Widget title,
+    Widget? subtitle,
+    Widget? trailing,
+    VoidCallback? onTap,
+    bool selected = false,
+    Color? selectedColor,
+    Color? textColor,
+  }) {
+    return ListTile(
+      leading: leading,
+      title: title,
+      subtitle: subtitle,
+      trailing: trailing,
+      onTap: onTap,
+      selected: selected,
+      selectedColor: selectedColor ?? ThemeManager.instance.currentScheme.backingColour,
+      textColor: textColor ?? ThemeManager.instance.currentScheme.textColour,
+    );
+  }
+
+  /// Creates a styled TextButton with consistent theming
+  static TextButton buildStyledTextButton({
+    required String text,
+    required VoidCallback onPressed,
+    Color? textColor,
+    Color? backgroundColor,
+    double? fontSize,
+    FontWeight? fontWeight,
+    EdgeInsetsGeometry? padding,
+  }) {
+    return TextButton(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        foregroundColor: textColor ?? ThemeManager.instance.currentScheme.textColour,
+        backgroundColor: backgroundColor,
+        padding: padding ?? const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4.0),
+        ),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: fontSize ?? 16.0,
+          fontWeight: fontWeight ?? FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  /// Creates a styled IconButton with consistent theming
+  static IconButton buildStyledIconButton({
+    required IconData icon,
+    required VoidCallback onPressed,
+    Color? iconColor,
+    Color? backgroundColor,
+    double? iconSize,
+    String? tooltip,
+  }) {
+    return IconButton(
+      onPressed: onPressed,
+      icon: Icon(
+        icon,
+        color: iconColor ?? ThemeManager.instance.currentScheme.textColour,
+        size: iconSize ?? 24.0,
+      ),
+      style: IconButton.styleFrom(
+        backgroundColor: backgroundColor,
+      ),
+      tooltip: tooltip,
+    );
+  }
+
+  /// Creates a styled Chip with consistent theming
+  static Chip buildStyledChip({
+    required Widget label,
+    Widget? avatar,
+    VoidCallback? onDeleted,
+    Color? backgroundColor,
+    Color? deleteIconColor,
+    EdgeInsetsGeometry? padding,
+  }) {
+    return Chip(
+      label: label,
+      avatar: avatar,
+      onDeleted: onDeleted,
+      backgroundColor: backgroundColor ?? ThemeManager.instance.currentScheme.backingColour,
+      deleteIconColor: deleteIconColor ?? ThemeManager.instance.currentScheme.textColour,
+      padding: padding ?? const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+    );
+  }
+
+  /// Creates a styled FilterChip with consistent theming
+  static FilterChip buildStyledFilterChip({
+    required Widget label,
+    required bool selected,
+    required ValueChanged<bool> onSelected,
+    Color? backgroundColor,
+    Color? selectedColor,
+    Color? checkmarkColor,
+    EdgeInsetsGeometry? padding,
+  }) {
+    return FilterChip(
+      label: label,
+      selected: selected,
+      onSelected: onSelected,
+      backgroundColor: backgroundColor ?? ThemeManager.instance.currentScheme.backgroundColour,
+      selectedColor: selectedColor ?? ThemeManager.instance.currentScheme.backingColour,
+      checkmarkColor: checkmarkColor ?? ThemeManager.instance.currentScheme.textColour,
+      padding: padding ?? const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+    );
+  }
+
+  /// Creates a styled ExpansionTile with consistent theming
+  static ExpansionTile buildStyledExpansionTile({
+    required Widget title,
+    List<Widget>? children,
+    Widget? leading,
+    Widget? trailing,
+    Color? backgroundColor,
+    Color? collapsedBackgroundColor,
+    Color? textColor,
+    Color? iconColor,
+    bool initiallyExpanded = false,
+  }) {
+    return ExpansionTile(
+      title: title,
+      leading: leading,
+      trailing: trailing,
+      children: children ?? [],
+      backgroundColor: backgroundColor ?? ThemeManager.instance.currentScheme.backgroundColour,
+      collapsedBackgroundColor: collapsedBackgroundColor ?? ThemeManager.instance.currentScheme.backgroundColour,
+      textColor: textColor ?? ThemeManager.instance.currentScheme.textColour,
+      iconColor: iconColor ?? ThemeManager.instance.currentScheme.textColour,
+      initiallyExpanded: initiallyExpanded,
+    );
+  }
+
+  /// Creates a styled Dialog with consistent theming
+  static Dialog buildStyledDialog({
+    required Widget child,
+    Color? backgroundColor,
+    double? elevation,
+    EdgeInsetsGeometry? padding,
+  }) {
+    return Dialog(
+      backgroundColor: backgroundColor ?? ThemeManager.instance.currentScheme.backgroundColour,
+      elevation: elevation ?? 8.0,
+      child: Container(
+        padding: padding ?? const EdgeInsets.all(24.0),
+        child: child,
+      ),
+    );
+  }
+
+  /// Creates a styled AlertDialog with consistent theming
+  static AlertDialog buildStyledAlertDialog({
+    required String title,
+    required String content,
+    List<Widget>? actions,
+    Widget? titleWidget,
+    Widget? contentWidget,
+    Color? backgroundColor,
+    Color? titleColor,
+    Color? contentColor,
+  }) {
+    return AlertDialog(
+      backgroundColor: backgroundColor ?? ThemeManager.instance.currentScheme.backgroundColour,
+      title: titleWidget ?? Text(
+        title,
+        style: TextStyle(
+          color: titleColor ?? ThemeManager.instance.currentScheme.textColour,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      content: contentWidget ?? Text(
+        content,
+        style: TextStyle(
+          color: contentColor ?? ThemeManager.instance.currentScheme.textColour,
+        ),
+      ),
+      actions: actions,
+    );
+  }
+
+  /// Utility method to listen to theme changes
+  static void addThemeListener(VoidCallback listener) {
+    ThemeManager.instance.addListener(listener);
+  }
+
+  /// Utility method to remove theme listener
+  static void removeThemeListener(VoidCallback listener) {
+    ThemeManager.instance.removeListener(listener);
+  }
+
+  /// Utility method to set a new theme
+  static void setTheme(ColourScheme newScheme) {
+    ThemeManager.instance.updateScheme(newScheme);
+  }
+
+  /// Utility method to get available themes
+  static List<ColourScheme> getAvailableThemes() {
+    return THEMELIST;
+  }
+
+  /// Helper method to get current theme colors without importing ThemeManager
+  static ColourScheme get currentColors => ThemeManager.instance.currentScheme;
+  
+  /// Helper method to get text color without importing ThemeManager
+  static Color get textColor => ThemeManager.instance.currentScheme.textColour;
+  
+  /// Helper method to get background color without importing ThemeManager
+  static Color get backgroundColor => ThemeManager.instance.currentScheme.backgroundColour;
+  
+  /// Helper method to get backing color without importing ThemeManager
+  static Color get backingColor => ThemeManager.instance.currentScheme.backingColour;
+
+  /// Helper method to create a default TextStyle with theme colors
+  static TextStyle buildDefaultTextStyle({
+    Color? color,
+    double? fontSize,
+    FontWeight? fontWeight,
+  }) {
+    return TextStyle(
+      color: color ?? ThemeManager.instance.currentScheme.textColour,
+      fontSize: fontSize ?? 16.0,
+      fontWeight: fontWeight ?? FontWeight.normal,
+    );
+  }
+
+  /// Helper method to create a themed decoration for input fields
+  static InputDecoration buildDefaultInputDecoration({
+    String? hintText,
+    String? labelText,
+    Widget? suffixIcon,
+    Widget? prefixIcon,
+    Color? fillColor,
+    Color? borderColor,
+    bool filled = true,
+  }) {
+    return InputDecoration(
+      hintText: hintText,
+      labelText: labelText,
+      suffixIcon: suffixIcon,
+      prefixIcon: prefixIcon,
+      filled: filled,
+      fillColor: fillColor ?? ThemeManager.instance.currentScheme.backgroundColour,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0),
+        borderSide: BorderSide(
+          color: borderColor ?? ThemeManager.instance.currentScheme.textColour,
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0),
+        borderSide: BorderSide(
+          color: borderColor ?? ThemeManager.instance.currentScheme.textColour.withOpacity(0.5),
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0),
+        borderSide: BorderSide(
+          color: borderColor ?? ThemeManager.instance.currentScheme.backingColour,
+          width: 2.0,
+        ),
+      ),
+      hintStyle: TextStyle(
+        color: ThemeManager.instance.currentScheme.textColour.withOpacity(0.7),
+      ),
+      labelStyle: TextStyle(
+        color: ThemeManager.instance.currentScheme.textColour,
+      ),
+    );
+  }
+
+  /* Used in: Main Menu and other navigation buttons */
+  static OutlinedButton buildStyledOutlinedButton({
+    required String text,
+    required VoidCallback onPressed,
+    Color? backgroundColor,
+    Color? textColor,
+    EdgeInsetsGeometry? padding,
+    double? fontSize,
+    Color? borderColor,
+    double? borderWidth,
+    BorderRadius? borderRadius,
+  }) {
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        backgroundColor: backgroundColor ?? ThemeManager.instance.currentScheme.backingColour,
+        padding: padding ?? const EdgeInsets.fromLTRB(55, 25, 55, 25),
+        shape: RoundedRectangleBorder(
+          borderRadius: borderRadius ?? const BorderRadius.all(Radius.circular(10))
+        ),
+        side: BorderSide(
+          width: borderWidth ?? 3.3, 
+          color: borderColor ?? Colors.black
+        ),
+      ),
+      onPressed: onPressed,
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: fontSize ?? 35,
+          fontWeight: FontWeight.w700,
+          color: textColor ?? ThemeManager.instance.currentScheme.textColour,
+        ),
+      ),
+    );
+  }
+
+  /* Used in: Multiple */
 }

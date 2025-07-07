@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "package:frankenstein/theme/theme_manager.dart";
 import "../../content_classes/all_content_classes.dart";
 import "../../utils/style_utils.dart";
 import "spell_handling.dart"; // For ChoiceRow
@@ -34,12 +33,10 @@ class AsiFeatTab extends StatefulWidget {
 
 class _AsiFeatTabState extends State<AsiFeatTab> {
   
-  Map<String, bool> get featFilters {
-    return {
-      "Half Feats": true,
-      "Full Feats": true
-    };
-  }
+  Map<String, bool> featFilters = {
+    "Half Feats": true,
+    "Full Feats": true
+  };
 
   List<Feat> get filteredFeats {
     List<Feat> feats = FEATLIST.where((feat) => 
@@ -54,45 +51,39 @@ class _AsiFeatTabState extends State<AsiFeatTab> {
   }) {
     int index = abilityScores.indexOf(score.name);
     bool scoreBelowMax = (score.value + widget.character.featsASIScoreIncreases[index] < 20);
-    return Container(
+    return StyleUtils.buildStyledContainer(
       height: 136,
       width: 160,
-      decoration: BoxDecoration(
-        color: ThemeManager.instance.currentScheme.backingColour,
-        border: Border.all(color: Colors.black, width: 1.6),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(5)
-        ),
-      ),
       child: Column(children: [
-        StyleUtils.buildStyledMediumTextBox(text: score.name, color: ThemeManager.instance.currentScheme.textColour),
-        StyleUtils.buildStyledTextBox(text: "+${widget.character.featsASIScoreIncreases[index]}", size: 45, color: ThemeManager.instance.currentScheme.textColour),
+        StyleUtils.buildStyledMediumTextBox(text: score.name, color: StyleUtils.textColor),
+        StyleUtils.buildStyledTextBox(text: "+${widget.character.featsASIScoreIncreases[index]}", size: 45, color: StyleUtils.textColor),
         OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              backgroundColor: ((!widget.remainingAsi && widget.numberOfRemainingFeatOrASIs == 0) || !(scoreBelowMax))
+          style: OutlinedButton.styleFrom(
+            backgroundColor: ((!widget.remainingAsi && widget.numberOfRemainingFeatOrASIs == 0) || !(scoreBelowMax))
                 ? unavailableColor
-                : ThemeManager.instance.currentScheme.backingColour,
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(4))
-                ),
-              side: const BorderSide(width: 3, color: positiveColor),
-            ),
-            onPressed: () {
-              setState(() {
-                if (scoreBelowMax) {
-                  if (widget.remainingAsi) {
-                    widget.onRemainingAsiChanged(false);
-                    widget.character.featsASIScoreIncreases[index]++;
-                  } else if (widget.numberOfRemainingFeatOrASIs > 0) {
-                    widget.onRemainingFeatOrASIsChanged(widget.numberOfRemainingFeatOrASIs - 1);
-                    widget.onRemainingAsiChanged(true);
-                    widget.character.featsASIScoreIncreases[index]++;
-                  }
+                : StyleUtils.backingColor,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(4))
+              ),
+            side: const BorderSide(width: 3, color: positiveColor),
+          ),
+          onPressed: () {
+            setState(() {
+              if (scoreBelowMax) {
+                if (widget.remainingAsi) {
+                  widget.onRemainingAsiChanged(false);
+                  widget.character.featsASIScoreIncreases[index]++;
+                } else if (widget.numberOfRemainingFeatOrASIs > 0) {
+                  widget.onRemainingFeatOrASIsChanged(widget.numberOfRemainingFeatOrASIs - 1);
+                  widget.onRemainingAsiChanged(true);
+                  widget.character.featsASIScoreIncreases[index]++;
                 }
-              });
-              widget.onCharacterChanged();
-            },
-            child: const Icon(Icons.add, color: Colors.white, size: 32)),
+              }
+            });
+            widget.onCharacterChanged();
+          },
+          child: const Icon(Icons.add, color: Colors.white, size: 32),
+        ),
       ]),
     );
   }
@@ -164,9 +155,9 @@ class _AsiFeatTabState extends State<AsiFeatTab> {
                   child: Column(
                     children: [
                       if (widget.remainingAsi)
-                        StyleUtils.buildStyledLargeTextBox(text: "You have an unused ASI")
+                        StyleUtils.buildStyledLargeTextBox(text: "You have an unused ASI", color: StyleUtils.textColor)
                       else  
-                        StyleUtils.buildStyledHugeTextBox(text: "ASI's"),
+                        StyleUtils.buildStyledHugeTextBox(text: "ASI's", color: StyleUtils.textColor),
                       const SizedBox(height: 8),
                       buildAsiBlockRow(scoreLeft: widget.character.strength, scoreRight: widget.character.intelligence),
                       const SizedBox(height: 10),
@@ -186,7 +177,7 @@ class _AsiFeatTabState extends State<AsiFeatTab> {
                     child: Column(
                       children: [
                         /* Title */
-                        StyleUtils.buildStyledLargeTextBox(text: "Select Feats:"),
+                        StyleUtils.buildStyledLargeTextBox(text: "Select Feats:", color: StyleUtils.textColor),
                         const SizedBox(height: 8),
 
                         /* Filters for the feat selection box */
@@ -267,7 +258,7 @@ class _AsiFeatTabState extends State<AsiFeatTab> {
 
                         /* Display the feats the character already has */
                         if (widget.character.featsSelected.isNotEmpty) ...[
-                          StyleUtils.buildStyledLargeTextBox(text: "Selected Feat${displayPlural(widget.character.featsSelected.keys.toList())}:"),
+                          StyleUtils.buildStyledLargeTextBox(text: "Selected Feat${displayPlural(widget.character.featsSelected.keys.toList())}:", color: StyleUtils.textColor),
                           SizedBox(
                             height: 50,
                             child: ListView.builder(
@@ -279,14 +270,14 @@ class _AsiFeatTabState extends State<AsiFeatTab> {
                                   message: FEATLIST.singleWhere((feat) => feat == widget.character.featsSelected.keys.toList()[index]).display,
                                   child: OutlinedButton(
                                     style: OutlinedButton.styleFrom(
-                                      backgroundColor: ThemeManager.instance.currentScheme.backingColour,
+                                      backgroundColor: StyleUtils.backingColor,
                                       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                                       side: BorderSide(color: Colors.black, width: 2),
                                     ),
                                     onPressed: () {},
-                                    child: StyleUtils.buildStyledSmallTextBox(text: widget.character.featsSelected.keys.toList()[index].name, color: ThemeManager.instance.currentScheme.textColour)
+                                    child: StyleUtils.buildStyledSmallTextBox(text: widget.character.featsSelected.keys.toList()[index].name, color: StyleUtils.textColor)
                                   )
                                 );
                               },

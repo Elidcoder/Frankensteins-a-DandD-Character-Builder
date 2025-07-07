@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 
 // Project Imports
 import "../../content_classes/all_content_classes.dart";
-import "../../theme/theme_manager.dart";
+import "../../utils/style_utils.dart";
 
 /* This page allows users to view and delete their downloaded content. */
 class SearchForContent extends StatefulWidget {
@@ -18,20 +18,16 @@ class SearchForContentState extends State<SearchForContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return StyleUtils.buildStyledScaffold(
+      appBar: StyleUtils.buildStyledAppBar(
+        title: "Search for content",
         centerTitle: true,
-        foregroundColor: ThemeManager.instance.currentScheme.textColour,
-        backgroundColor: ThemeManager.instance.currentScheme.backingColour,
-        title: Text(
-          textAlign: TextAlign.center,
-          "Search for content",
-          style: TextStyle(
-            fontSize: 45,
-            fontWeight: FontWeight.w700,
-            color: ThemeManager.instance.currentScheme.textColour),
-        )),
-      backgroundColor: ThemeManager.instance.currentScheme.backgroundColour,
+        titleStyle: TextStyle(
+          fontSize: 45,
+          fontWeight: FontWeight.w700,
+          color: StyleUtils.textColor,
+        ),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -44,10 +40,9 @@ class SearchForContentState extends State<SearchForContent> {
                   searchTerm = value;
                 });
               },
-              decoration: InputDecoration(
-                hintText:  "Search for content using its names",
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.search),
+              decoration: StyleUtils.buildDefaultInputDecoration(
+                hintText: "Search for content using its names",
+                prefixIcon: Icon(Icons.search, color: StyleUtils.textColor),
               ),
             ),
           ),
@@ -93,18 +88,17 @@ class SearchForContentState extends State<SearchForContent> {
     return Center(
       child: FractionallySizedBox(
         widthFactor: 0.5,
-        child: Container(
-          width: double.infinity,
+        child: StyleUtils.buildStyledContainer(
           margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
           padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
-            color: ThemeManager.instance.currentScheme.backingColour,
-            border: Border.all(color: ThemeManager.instance.currentScheme.textColour, width: 4),
+            color: StyleUtils.backingColor,
+            border: Border.all(color: StyleUtils.textColor, width: 4),
             borderRadius: BorderRadius.circular(8.0),
           ),
-          child: Center(child:Text(
-            listType,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: ThemeManager.instance.currentScheme.textColour),
+          child: Center(child: StyleUtils.buildStyledLargeTextBox(
+            text: listType,
+            color: StyleUtils.textColor,
           )),
         ),
       ),
@@ -123,15 +117,14 @@ class SearchForContentState extends State<SearchForContent> {
 
   /* Build a card for a piece of content that allows for viewing and deletion. */
   Center buildContentCard(Content content, List<Content> list) {
-    return Center(child:FractionallySizedBox(
+    return Center(child: FractionallySizedBox(
       widthFactor: 0.5, 
-      child: Container(
-        width: double.infinity,
+      child: StyleUtils.buildStyledContainer(
         margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-          color: ThemeManager.instance.currentScheme.backingColour,
-          border: Border.all(color: ThemeManager.instance.currentScheme.textColour, width: 1.5),
+          color: StyleUtils.backingColor,
+          border: Border.all(color: StyleUtils.textColor, width: 1.5),
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Row(
@@ -141,9 +134,9 @@ class SearchForContentState extends State<SearchForContent> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(content.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                Text(content.name, style: StyleUtils.buildDefaultTextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 const SizedBox(height: 4),
-                Text(content.sourceBook, style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
+                Text(content.sourceBook, style: StyleUtils.buildDefaultTextStyle(fontSize: 14).copyWith(fontStyle: FontStyle.italic)),
               ],
             ),
 
