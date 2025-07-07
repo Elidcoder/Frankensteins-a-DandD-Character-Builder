@@ -35,7 +35,7 @@ class _RaceTabState extends State<RaceTab> {
               widget.character.subrace = widget.character.race.subRaces?.first;
               
               for (int i = 0; i < abilityScores.length; i++) {
-                widget.character.raceAbilityScoreIncreases[i] += 
+                widget.character.raceAbilityScoreIncreases[i] = 
                   widget.character.race.raceScoreIncrease[i] + ((widget.character.subrace?.subRaceScoreIncrease[i]) ?? 0);
 
                 widget.character.optionalOnesStates = [
@@ -69,7 +69,7 @@ class _RaceTabState extends State<RaceTab> {
 
                 widget.character.subrace = widget.character.race.subRaces?.singleWhere((x) => x.name == value);
                 for (int i = 0; i < abilityScores.length; i++) {
-                  widget.character.raceAbilityScoreIncreases[i] +=
+                  widget.character.raceAbilityScoreIncreases[i] =
                     (widget.character.subrace?.subRaceScoreIncrease[i] ?? 0) + widget.character.race.raceScoreIncrease[i];
                 }
                 widget.character.optionalOnesStates = [
