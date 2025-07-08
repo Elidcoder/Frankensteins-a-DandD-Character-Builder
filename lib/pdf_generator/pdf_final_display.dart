@@ -4,6 +4,7 @@ import "package:printing/printing.dart" show PdfPreview;
 
 // Project imports:
 import "../content_classes/character/character.dart";
+import "../utils/style_utils.dart";
 import "pdf_export.dart";
 
 class PdfPreviewPage extends StatelessWidget {
@@ -13,8 +14,8 @@ class PdfPreviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("PDF Preview"),
+      appBar: StyleUtils.buildStyledAppBar(
+        title: "PDF Preview",
       ),
       body: PdfPreview(
         build: (context) => makePdf(character),

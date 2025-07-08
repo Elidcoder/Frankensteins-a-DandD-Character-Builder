@@ -9,6 +9,7 @@ import "quick_edits_tab.dart";
 import "../../content_classes/all_content_classes.dart";
 import "../../main.dart" show InitialTopKey;
 import "../../top_bar.dart";
+import "../../theme/theme_manager.dart";
 import "../../utils/style_utils.dart";
 
 class EditTop extends StatelessWidget {
@@ -21,7 +22,9 @@ class EditTop extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: title,
       home: Scaffold(
-        appBar: AppBar(
+        appBar: StyleUtils.buildStyledAppBar(
+          title: title,
+          centerTitle: true,
           leading: IconButton(
             icon: const Icon(Icons.home),
             tooltip: "Return to the main menu",
@@ -30,7 +33,6 @@ class EditTop extends StatelessWidget {
                 context,
                 MaterialPageRoute(builder: (context) => const RegularTop(pagechoice: "Main Menu")));
             }),
-          title: const Center(child: Text(title)),
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.arrow_back),
@@ -80,6 +82,7 @@ class EditCharacter extends State<EditACharacter> {
   @override
   void initState() {
     super.initState();
+    ThemeManager.instance.addListener(_onThemeChanged);
     editableCharacter = character.getCopy();
     // Preserve the original character's uniqueID for edit mode
     editableCharacter.uniqueID = character.uniqueID;
@@ -121,6 +124,18 @@ class EditCharacter extends State<EditACharacter> {
     numberOfRemainingFeatOrASIs = (expectedFeatOrASIs - usedFeatOrASIs).clamp(0, expectedFeatOrASIs);
     remainingAsi = false; // Start with no pending ASI
   }
+  
+  @override
+  void dispose() {
+    ThemeManager.instance.removeListener(_onThemeChanged);
+    super.dispose();
+  }
+  
+  void _onThemeChanged() {
+    setState(() {
+      // Rebuild when theme changes
+    });
+  }
 
   @override
   Widget build(
@@ -131,13 +146,13 @@ class EditCharacter extends State<EditACharacter> {
       length: 8,
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        appBar: AppBar(
-          title: Center(
-            child: Text(
-              textAlign: TextAlign.center,
-              'Edit ${character.characterDescription.name}',
-              style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w700),
-            ),
+        appBar: StyleUtils.buildStyledAppBar(
+          title: 'Edit ${character.characterDescription.name}',
+          centerTitle: true,
+          titleStyle: TextStyle(
+            fontSize: 40, 
+            fontWeight: FontWeight.w700,
+            color: ThemeManager.instance.currentScheme.textColour,
           ),
           bottom: TabBar(
             tabs: [

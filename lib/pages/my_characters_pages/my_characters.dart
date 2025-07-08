@@ -185,7 +185,7 @@ class MainMyCharacters extends State<MyCharacters> {
   Widget buildCharacterActionButton(String label, Color backgroundColour, VoidCallback onPressed) {
   return OutlinedButton(
     style: OutlinedButton.styleFrom(
-      side: BorderSide(color: StyleUtils.textColor, width: 0.6),
+      side: BorderSide(color: StyleUtils.currentTextColor, width: 0.6),
       backgroundColor: backgroundColour,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     ),

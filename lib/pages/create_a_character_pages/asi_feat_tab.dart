@@ -4,7 +4,7 @@ import "../../utils/style_utils.dart";
 import "spell_handling.dart"; // For ChoiceRow
 
 /// ASI and Feats tab widget for character creation
-/// Handles ability score improvements and feat selection
+/// Handles abilit                          StyleUtils.buildStyledLargeTextBox(text: "Selected Feat${displayPlural(widget.character.featsSelected.keys.toList())}:", color: StyleUtils.currentTextColor), score improvements and feat selection
 class AsiFeatTab extends StatefulWidget {
   final Character character;
   final int numberOfRemainingFeatOrASIs;
@@ -55,8 +55,8 @@ class _AsiFeatTabState extends State<AsiFeatTab> {
       height: 136,
       width: 160,
       child: Column(children: [
-        StyleUtils.buildStyledMediumTextBox(text: score.name, color: StyleUtils.textColor),
-        StyleUtils.buildStyledTextBox(text: "+${widget.character.featsASIScoreIncreases[index]}", size: 45, color: StyleUtils.textColor),
+        StyleUtils.buildStyledMediumTextBox(text: score.name, color: StyleUtils.currentTextColor),
+        StyleUtils.buildStyledTextBox(text: "+${widget.character.featsASIScoreIncreases[index]}", size: 45, color: StyleUtils.currentTextColor),
         OutlinedButton(
           style: OutlinedButton.styleFrom(
             backgroundColor: ((!widget.remainingAsi && widget.numberOfRemainingFeatOrASIs == 0) || !(scoreBelowMax))
@@ -155,9 +155,9 @@ class _AsiFeatTabState extends State<AsiFeatTab> {
                   child: Column(
                     children: [
                       if (widget.remainingAsi)
-                        StyleUtils.buildStyledLargeTextBox(text: "You have an unused ASI", color: StyleUtils.textColor)
+                        StyleUtils.buildStyledLargeTextBox(text: "You have an unused ASI", color: StyleUtils.currentTextColor)
                       else  
-                        StyleUtils.buildStyledHugeTextBox(text: "ASI's", color: StyleUtils.textColor),
+                        StyleUtils.buildStyledHugeTextBox(text: "ASI's", color: StyleUtils.currentTextColor),
                       const SizedBox(height: 8),
                       buildAsiBlockRow(scoreLeft: widget.character.strength, scoreRight: widget.character.intelligence),
                       const SizedBox(height: 10),
@@ -177,7 +177,7 @@ class _AsiFeatTabState extends State<AsiFeatTab> {
                     child: Column(
                       children: [
                         /* Title */
-                        StyleUtils.buildStyledLargeTextBox(text: "Select Feats:", color: StyleUtils.textColor),
+                        StyleUtils.buildStyledLargeTextBox(text: "Select Feats:", color: StyleUtils.currentTextColor),
                         const SizedBox(height: 8),
 
                         /* Filters for the feat selection box */
@@ -258,7 +258,7 @@ class _AsiFeatTabState extends State<AsiFeatTab> {
 
                         /* Display the feats the character already has */
                         if (widget.character.featsSelected.isNotEmpty) ...[
-                          StyleUtils.buildStyledLargeTextBox(text: "Selected Feat${displayPlural(widget.character.featsSelected.keys.toList())}:", color: StyleUtils.textColor),
+                          StyleUtils.buildStyledLargeTextBox(text: "Selected Feat${displayPlural(widget.character.featsSelected.keys.toList())}:", color: StyleUtils.currentTextColor),
                           SizedBox(
                             height: 50,
                             child: ListView.builder(
@@ -277,7 +277,7 @@ class _AsiFeatTabState extends State<AsiFeatTab> {
                                       side: BorderSide(color: Colors.black, width: 2),
                                     ),
                                     onPressed: () {},
-                                    child: StyleUtils.buildStyledSmallTextBox(text: widget.character.featsSelected.keys.toList()[index].name, color: StyleUtils.textColor)
+                                    child: StyleUtils.buildStyledSmallTextBox(text: widget.character.featsSelected.keys.toList()[index].name, color: StyleUtils.currentTextColor)
                                   )
                                 );
                               },

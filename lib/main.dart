@@ -189,7 +189,8 @@ class InitialTopState extends State<InitialTop> {
             const Opacity(opacity: 0.5, child: ModalBarrier(dismissible: false, color: Colors.grey)),
             /* Settings menu (choosing colours). */
             AlertDialog(
-              title: const Text("Settings", style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700)),
+              backgroundColor: ThemeManager.instance.currentScheme.backgroundColour,
+              title: Text("Settings", style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700, color: ThemeManager.instance.currentScheme.textColour)),
               content: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -319,7 +320,7 @@ class InitialTopState extends State<InitialTop> {
               actions: [
                 TextButton(
                   onPressed: () {Navigator.of(context).pop();},
-                  child: const Text("Cancel"),
+                  child: Text("Cancel", style: TextStyle(color: ThemeManager.instance.currentScheme.textColour)),
                 ),
                 TextButton(
                   onPressed: () {
@@ -327,7 +328,7 @@ class InitialTopState extends State<InitialTop> {
                     ThemeManager.instance.updateScheme(currentScheme);
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Save settings"),
+                  child: Text("Save settings", style: TextStyle(color: ThemeManager.instance.currentScheme.textColour)),
                 ),
               ],
             ),
@@ -362,7 +363,7 @@ class InitialTopState extends State<InitialTop> {
     return [
       Text(
         text,
-        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+        style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: ThemeManager.instance.currentScheme.textColour),
       ),
       const SizedBox(height: 9),
   ];}

@@ -154,10 +154,10 @@ class _BasicsTabState extends State<BasicsTab> {
                             child: DropdownButton<String>(
                               alignment: Alignment.center,
                               value: widget.characterLevel,
-                              icon: Icon(Icons.arrow_drop_down, color: StyleUtils.textColor),
+                              icon: Icon(Icons.arrow_drop_down, color: StyleUtils.currentTextColor),
                               elevation: 16,
                               style: TextStyle(
-                                color: StyleUtils.textColor,
+                                color: StyleUtils.currentTextColor,
                                 fontWeight: FontWeight.w800,
                                 fontSize: 20),
                               underline: const SizedBox(),
@@ -174,7 +174,7 @@ class _BasicsTabState extends State<BasicsTab> {
                                       child: Text(value,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          color: StyleUtils.textColor,
+                                          color: StyleUtils.currentTextColor,
                                           decoration: TextDecoration.underline,
                                         ))),
                                   );

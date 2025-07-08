@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 // Project Imports
 import "../../top_bar.dart";
 import "../../theme/theme_manager.dart";
+import "../../utils/style_utils.dart";
 
 /* Serves as a linker page between the main page and the users choice of content to create. */
 class CustomContent extends StatelessWidget {
@@ -12,15 +13,15 @@ class CustomContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       /* Page title (Create content) */
-      appBar: AppBar(
+      appBar: StyleUtils.buildStyledAppBar(
+        title: "Create content",
         centerTitle: true,
-        foregroundColor: ThemeManager.instance.currentScheme.textColour,
-        backgroundColor: ThemeManager.instance.currentScheme.backingColour,
-        title: Text(
-          textAlign: TextAlign.center,
-          "Create content",
-          style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700, color: ThemeManager.instance.currentScheme.textColour),
-      )),
+        titleStyle: TextStyle(
+          fontSize: 45, 
+          fontWeight: FontWeight.w700,
+          color: ThemeManager.instance.currentScheme.textColour,
+        ),
+      ),
       backgroundColor: ThemeManager.instance.currentScheme.backgroundColour,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -172,42 +172,44 @@ class _ClassTabState extends State<ClassTab> {
           },
           child: const Icon(Icons.exposure_plus_1),
         ),
-        appBar: AppBar(
-          foregroundColor: ThemeManager.instance.currentScheme.textColour,
-          backgroundColor: ThemeManager.instance.currentScheme.backingColour,
-
-          /* Remove default back button */
+        appBar: StyleUtils.buildStyledAppBar(
+          title: "",
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: ThemeManager.instance.currentScheme.backingColour),
             onPressed: () {},
           ),
-
-          
-          /* Class choices available and taken to/by the user. */
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Center(
-                child: StyleUtils.buildStyledMediumTextBox(
-                  text: "${widget.charLevel - widget.character.classLevels.reduce(sum)} class level(s) unselected",
-                  color: ThemeManager.instance.currentScheme.textColour)
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(120),
+            child: Column(
+              children: [
+                /* Class choices available and taken to/by the user. */
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: StyleUtils.buildStyledMediumTextBox(
+                        text: "${widget.charLevel - widget.character.classLevels.reduce(sum)} class level(s) unselected",
+                        color: ThemeManager.instance.currentScheme.textColour)
+                      ),
+                    widget.character.classList.isNotEmpty
+                      ? StyleUtils.buildStyledSmallTextBox(
+                        text: "Levels in Classes: ${CLASSLIST.asMap().entries.where((entry) => widget.character.classLevels[entry.key] != 0).map((entry) => "${entry.value.name} - ${widget.character.classLevels[entry.key]}").join(", ")}",
+                        color: ThemeManager.instance.currentScheme.textColour)                        
+                      :  StyleUtils.buildStyledSmallTextBox(
+                        text: "No levels selected in any class",
+                        color: ThemeManager.instance.currentScheme.textColour),
+                    const SizedBox(height: 3)
+                  ],
                 ),
-              widget.character.classList.isNotEmpty
-                ? StyleUtils.buildStyledSmallTextBox(
-                  text: "Levels in Classes: ${CLASSLIST.asMap().entries.where((entry) => widget.character.classLevels[entry.key] != 0).map((entry) => "${entry.value.name} - ${widget.character.classLevels[entry.key]}").join(", ")}",
-                  color: ThemeManager.instance.currentScheme.textColour)                        
-                :  StyleUtils.buildStyledSmallTextBox(
-                  text: "No levels selected in any class",
-                  color: ThemeManager.instance.currentScheme.textColour),
-              const SizedBox(height: 3)
-            ],
-          ),
-          bottom: TabBar(
-            tabs: [
-              StyleUtils.tabLabel("Choose your classes"),
-              StyleUtils.tabLabel("Make your selections for each level in your class")
-            ],
-            indicatorColor: ThemeManager.instance.currentScheme.textColour,
+                TabBar(
+                  tabs: [
+                    StyleUtils.tabLabel("Choose your classes"),
+                    StyleUtils.tabLabel("Make your selections for each level in your class")
+                  ],
+                  indicatorColor: ThemeManager.instance.currentScheme.textColour,
+                ),
+              ],
+            ),
           ),
         ),
         body: TabBarView(children: [

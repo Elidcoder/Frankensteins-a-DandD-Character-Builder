@@ -22,6 +22,24 @@ class MainCreateCharacter extends State<CreateACharacter>
   @override
   bool get wantKeepAlive => true;
 
+  @override
+  void initState() {
+    super.initState();
+    ThemeManager.instance.addListener(_onThemeChanged);
+  }
+  
+  @override
+  void dispose() {
+    ThemeManager.instance.removeListener(_onThemeChanged);
+    super.dispose();
+  }
+  
+  void _onThemeChanged() {
+    setState(() {
+      // Rebuild when theme changes
+    });
+  }
+
   // Text editing controllers
   /// Basics 
   TextEditingController nameEnterController = TextEditingController();
@@ -100,15 +118,13 @@ class MainCreateCharacter extends State<CreateACharacter>
       length: tabLabels.length,
       child: Scaffold(
         backgroundColor: ThemeManager.instance.currentScheme.backgroundColour,
-        appBar: AppBar(
-          foregroundColor: ThemeManager.instance.currentScheme.textColour,
-          backgroundColor: ThemeManager.instance.currentScheme.backingColour,
-          title: const Center(
-            child: Text(
-              textAlign: TextAlign.center,
-              "Create a character",
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.w700),
-            ),
+        appBar: StyleUtils.buildStyledAppBar(
+          title: "Create a character",
+          centerTitle: true,
+          titleStyle: TextStyle(
+            fontSize: 40, 
+            fontWeight: FontWeight.w700,
+            color: ThemeManager.instance.currentScheme.textColour,
           ),
           bottom: TabBar(
             tabs: tabLabels.map((e) => StyleUtils.tabLabel(e)).toList(),

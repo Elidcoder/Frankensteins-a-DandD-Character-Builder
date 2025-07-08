@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 // Project Imports
 import "../../content_classes/all_content_classes.dart";
 import "../../utils/style_utils.dart";
+import "../../theme/theme_manager.dart";
 
 /* This page allows users to view and delete their downloaded content. */
 class SearchForContent extends StatefulWidget {
@@ -17,6 +18,24 @@ class SearchForContentState extends State<SearchForContent> {
   String searchTerm = "";
 
   @override
+  void initState() {
+    super.initState();
+    ThemeManager.instance.addListener(_onThemeChanged);
+  }
+  
+  @override
+  void dispose() {
+    ThemeManager.instance.removeListener(_onThemeChanged);
+    super.dispose();
+  }
+  
+  void _onThemeChanged() {
+    setState(() {
+      // Rebuild when theme changes
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StyleUtils.buildStyledScaffold(
       appBar: StyleUtils.buildStyledAppBar(
@@ -25,7 +44,7 @@ class SearchForContentState extends State<SearchForContent> {
         titleStyle: TextStyle(
           fontSize: 45,
           fontWeight: FontWeight.w700,
-          color: StyleUtils.textColor,
+          color: ThemeManager.instance.currentScheme.textColour,
         ),
       ),
       body: Column(
@@ -42,7 +61,7 @@ class SearchForContentState extends State<SearchForContent> {
               },
               decoration: StyleUtils.buildDefaultInputDecoration(
                 hintText: "Search for content using its names",
-                prefixIcon: Icon(Icons.search, color: StyleUtils.textColor),
+                prefixIcon: Icon(Icons.search, color: ThemeManager.instance.currentScheme.textColour),
               ),
             ),
           ),
@@ -93,12 +112,12 @@ class SearchForContentState extends State<SearchForContent> {
           padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
             color: StyleUtils.backingColor,
-            border: Border.all(color: StyleUtils.textColor, width: 4),
+            border: Border.all(color: StyleUtils.currentTextColor, width: 4),
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: Center(child: StyleUtils.buildStyledLargeTextBox(
             text: listType,
-            color: StyleUtils.textColor,
+            color: StyleUtils.currentTextColor,
           )),
         ),
       ),
@@ -124,7 +143,7 @@ class SearchForContentState extends State<SearchForContent> {
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
           color: StyleUtils.backingColor,
-          border: Border.all(color: StyleUtils.textColor, width: 1.5),
+          border: Border.all(color: StyleUtils.currentTextColor, width: 1.5),
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Row(

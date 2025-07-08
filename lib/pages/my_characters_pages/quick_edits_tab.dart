@@ -58,7 +58,7 @@ class _QuickEditsTabState extends State<QuickEditsTab> {
                 widget.onCharacterLevelChanged((int.parse(widget.characterLevel) + 1).toString());
               }
             },
-            child: Icon(Icons.add, color: StyleUtils.textColor, size: 37)),
+            child: Icon(Icons.add, color: StyleUtils.currentTextColor, size: 37)),
         const SizedBox(height: 16),
         StyleUtils.buildStyledMediumTextBox(text: "Experience amount to add:"),
         const SizedBox(height: 8),
@@ -68,7 +68,7 @@ class _QuickEditsTabState extends State<QuickEditsTab> {
           child: StyleUtils.buildStyledTextField(
             hintText: "Amount of experience to add (number)",
             textController: TextEditingController(),
-            textColor: StyleUtils.textColor,
+            textColor: StyleUtils.currentTextColor,
             backingColor: StyleUtils.backingColor,
             filled: true,
             onChanged: (experienceIncreaseEnteredValue) {
@@ -102,7 +102,7 @@ class _QuickEditsTabState extends State<QuickEditsTab> {
                 //validate level
               }
             },
-            child: Icon(Icons.add, color: StyleUtils.textColor, size: 37))
+            child: Icon(Icons.add, color: StyleUtils.currentTextColor, size: 37))
       ],
     );
   }

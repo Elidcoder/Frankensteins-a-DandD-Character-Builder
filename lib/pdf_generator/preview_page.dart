@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 // Project Imports
 import "pdf_final_display.dart" show PdfPreviewPage;
 import "../content_classes/character/character.dart";
+import "../utils/style_utils.dart";
 
 class DetailPage extends StatelessWidget {
   final Character character;
@@ -25,7 +26,9 @@ class DetailPage extends StatelessWidget {
         },
         child: const Icon(Icons.picture_as_pdf),
       ),
-      appBar: AppBar(title: Text(character.characterDescription.name)),
+      appBar: StyleUtils.buildStyledAppBar(
+        title: character.characterDescription.name,
+      ),
     );
   }
 }

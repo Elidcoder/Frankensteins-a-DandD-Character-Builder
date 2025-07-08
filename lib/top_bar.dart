@@ -8,6 +8,7 @@ import "pages/custom_content_pages/create_spells.dart" show MakeASpell;
 import "main.dart";
 import "theme/theme_manager.dart";
 import "colour_scheme_class/colour_scheme.dart";
+import "utils/style_utils.dart";
 
 /* A map of all the pages that can be navigated to. */
 final Map<String, Widget Function()> PAGELINKER = {
@@ -51,13 +52,10 @@ class _RegularTopState extends State<RegularTop> {
 
   @override
   Widget build(BuildContext context) {
-    final colourScheme = ThemeManager.instance.currentScheme;
-    
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: colourScheme.backingColour,
-        foregroundColor: colourScheme.textColour,
-        /* Button taking the user back to the InitialTop */
+    return StyleUtils.buildStyledScaffold(
+      appBar: StyleUtils.buildStyledAppBar(
+        title: RegularTop.appTitle,
+        centerTitle: true,
         leading: IconButton(
           icon: (widget.pagechoice == "Main Menu") ? const Icon(Icons.image) : const Icon(Icons.home),
           tooltip: (widget.pagechoice == "Main Menu") ? "Put logo here" : "Return to the main menu",
@@ -69,12 +67,6 @@ class _RegularTopState extends State<RegularTop> {
               );
             }
           }),
-        title: Center(
-          child: Text(
-            RegularTop.appTitle,
-            style: TextStyle(color: colourScheme.textColour),
-          ),
-        ),
         actions: <Widget>[
           /* Presents a back button only if one isn't generated. */
           if (widget.pagechoice == "Main Menu") 
@@ -95,7 +87,7 @@ class _RegularTopState extends State<RegularTop> {
       ),
       
       /* Take the user to the page they chose. */
-      body: PAGELINKER[widget.pagechoice]?.call(),
+      body: PAGELINKER[widget.pagechoice]?.call() ?? const MainMenu(),
     );
   }
 
@@ -287,7 +279,11 @@ class _RegularTopState extends State<RegularTop> {
     return [
       Text(
         text,
-        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+        style: TextStyle(
+          fontSize: 22, 
+          fontWeight: FontWeight.w600,
+          color: ThemeManager.instance.currentScheme.textColour,
+        ),
       ),
       const SizedBox(height: 9),
     ];

@@ -20,6 +20,9 @@ const List<String> abilityScores = [
 /// Styling utility functions extracted from create_a_character.dart
 /// These functions provide consistent UI styling across all tabs
 class StyleUtils {
+  /// Gets the current theme text color
+  static Color get currentTextColor => ThemeManager.instance.currentScheme.textColour;
+  
   /* Helper function */
   static TextField buildStyledTextField({
     required String hintText,
@@ -320,7 +323,11 @@ class StyleUtils {
     return [
       Text(
         text,
-        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+        style: TextStyle(
+          fontSize: 22, 
+          fontWeight: FontWeight.w600,
+          color: ThemeManager.instance.currentScheme.textColour,
+        ),
       ),
       const SizedBox(height: 9),
     ];

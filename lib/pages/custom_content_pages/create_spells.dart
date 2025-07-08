@@ -5,6 +5,7 @@ import "package:flutter/material.dart";
 import "../../file_manager/file_manager.dart" show saveChanges;
 import "package:frankenstein/content_classes/all_content_classes.dart" show Spell, SPELLLIST;
 import "../../theme/theme_manager.dart";
+import "../../utils/style_utils.dart";
 import "../../main.dart" show InitialTop;
 
 class MakeASpell extends StatefulWidget {
@@ -35,18 +36,13 @@ class MainMakeASpell extends State<MakeASpell> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: ThemeManager.instance.currentScheme.backgroundColour,
-        appBar: AppBar(
-          foregroundColor: ThemeManager.instance.currentScheme.textColour,
-          backgroundColor: ThemeManager.instance.currentScheme.backingColour,
-          title: Center(
-            child: Text(
-              textAlign: TextAlign.center,
-              "Create a Spell",
-              style: TextStyle(
-                  fontSize: 45,
-                  fontWeight: FontWeight.w700,
-                  color: ThemeManager.instance.currentScheme.textColour),
-            ),
+        appBar: StyleUtils.buildStyledAppBar(
+          title: "Create a Spell",
+          centerTitle: true,
+          titleStyle: TextStyle(
+            fontSize: 45, 
+            fontWeight: FontWeight.w700,
+            color: ThemeManager.instance.currentScheme.textColour,
           ),
         ),
         body: Row(
