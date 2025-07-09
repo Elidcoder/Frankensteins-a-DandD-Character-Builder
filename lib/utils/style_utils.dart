@@ -108,7 +108,7 @@ class StyleUtils {
   }) {
     return Text(text,
       style: TextStyle(
-        color: color ?? ThemeManager.instance.currentScheme.backingColour,
+        color: color ?? ThemeManager.instance.currentScheme.textColour,
         fontSize: size,
         fontWeight: FontWeight.w700));
   }

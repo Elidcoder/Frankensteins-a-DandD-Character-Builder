@@ -8,6 +8,7 @@ import "edit_character.dart";
 import "../../pdf_generator/pdf_final_display.dart";
 import "../../content_classes/all_content_classes.dart";
 import "../../utils/style_utils.dart";
+import "../../theme/theme_manager.dart";
 
 /* This is a page where all characters created are displayed to be edited, viewed, deleted etc. */
 class MyCharacters extends StatefulWidget {
@@ -19,6 +20,24 @@ class MyCharacters extends StatefulWidget {
 
 class MainMyCharacters extends State<MyCharacters> {
   String searchTerm = "";
+
+  @override
+  void initState() {
+    super.initState();
+    ThemeManager.instance.addListener(_onThemeChanged);
+  }
+  
+  @override
+  void dispose() {
+    ThemeManager.instance.removeListener(_onThemeChanged);
+    super.dispose();
+  }
+  
+  void _onThemeChanged() {
+    setState(() {
+      // Rebuild when theme changes
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +94,7 @@ class MainMyCharacters extends State<MyCharacters> {
                 children: List.generate(filteredCharacters.length, (index) {
                   return StyleUtils.buildStyledContainer(
                     width: 190,
-                    height: 247,
+                    height: 257,
                     child: Column(
                       children: [
                         SizedBox(
