@@ -288,32 +288,10 @@ class MainCreateCharacter extends State<CreateACharacter>
             onCharacterChanged: () {
               setState(() {});
             },
-            showCongratulationsDialog: showCongratulationsDialog,
+            congratulationsTitle: 'Character Created!',
           ),
         ]),
       ),
     );});
-  }
-
-  void showCongratulationsDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => StyleUtils.buildStyledAlertDialog(
-        title: 'Character Created!',
-        content: '',
-        titleWidget: StyleUtils.buildStyledHugeTextBox(
-          text: 'Character created!',
-          color: positiveColor,
-        ),
-        actions: [
-          StyleUtils.buildStyledTextButton(
-            text: 'Continue',
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      ),
-    );
   }
 }

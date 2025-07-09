@@ -289,30 +289,9 @@ class EditCharacter extends State<EditACharacter> {
                 // Group changes are handled by the FinishingUpTab internally
               });
             },
-            showCongratulationsDialog: showCongratulationsDialog,
+            congratulationsTitle: 'Character edit saved!',
           ),
         ]),
-      ),
-    );
-  }
-
-  void showCongratulationsDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        content: const Text('Character edit saved!',
-            style: TextStyle(
-                color: Colors.green,
-                fontSize: 50,
-                fontWeight: FontWeight.w800)),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text('Continue'),
-          ),
-        ],
       ),
     );
   }

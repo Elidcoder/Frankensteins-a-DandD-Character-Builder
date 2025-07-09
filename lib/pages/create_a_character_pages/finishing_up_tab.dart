@@ -17,7 +17,7 @@ class FinishingUpTab extends StatefulWidget {
   final bool remainingAsi;
   final int charLevel;
   final VoidCallback onCharacterChanged;
-  final void Function(BuildContext) showCongratulationsDialog;
+  final String congratulationsTitle;
   final bool isEditMode;
 
   const FinishingUpTab({
@@ -30,7 +30,7 @@ class FinishingUpTab extends StatefulWidget {
     required this.remainingAsi,
     required this.charLevel,
     required this.onCharacterChanged,
-    required this.showCongratulationsDialog,
+    required this.congratulationsTitle,
     this.isEditMode = false,
   });
 
@@ -155,7 +155,7 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
                                 MaterialPageRoute(
                                     builder: (context) => InitialTop()),
                               );
-                              widget.showCongratulationsDialog(context);
+                              _showCongratulationsDialog(context);
                             });
                           }
                         },
@@ -217,6 +217,28 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
                 )
         ]))
       ]),
+    );
+  }
+
+  void _showCongratulationsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => StyleUtils.buildStyledAlertDialog(
+        title: widget.congratulationsTitle,
+        content: '',
+        titleWidget: StyleUtils.buildStyledHugeTextBox(
+          text: widget.congratulationsTitle,
+          color: positiveColor,
+        ),
+        actions: [
+          StyleUtils.buildStyledTextButton(
+            text: 'Continue',
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
     );
   }
 }
