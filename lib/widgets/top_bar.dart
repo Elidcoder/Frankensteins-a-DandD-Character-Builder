@@ -3,12 +3,12 @@ import "package:flutter/material.dart";
 import "package:flutter_colorpicker/flutter_colorpicker.dart" show ColorPicker;
 
 // Project imports
-import "pages/all_home_subpages.dart";
-import "pages/custom_content_pages/create_spells.dart" show MakeASpell;
-import "widgets/main_menu.dart" show MainMenu;
-import "theme/theme_manager.dart";
-import "colour_scheme_class/colour_scheme.dart";
-import "utils/style_utils.dart";
+import "../pages/all_home_subpages.dart";
+import "../pages/custom_content_pages/create_spells.dart" show MakeASpell;
+import "main_menu.dart" show MainMenu;
+import "../theme/theme_manager.dart";
+import "../colour_scheme_class/colour_scheme.dart";
+import "../utils/style_utils.dart";
 
 /* A map of all the pages that can be navigated to. */
 final Map<String, Widget Function()> PAGELINKER = {

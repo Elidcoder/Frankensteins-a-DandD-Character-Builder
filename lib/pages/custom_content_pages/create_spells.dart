@@ -6,7 +6,7 @@ import "../../file_manager/file_manager.dart" show saveChanges;
 import "package:frankenstein/content_classes/all_content_classes.dart" show Spell, SPELLLIST;
 import "../../theme/theme_manager.dart";
 import "../../utils/style_utils.dart";
-import "../../main.dart" show InitialTop;
+import "../../widgets/initial_top.dart" show InitialTop;
 
 class MakeASpell extends StatefulWidget {
   const MakeASpell({super.key});
@@ -34,16 +34,10 @@ class MainMakeASpell extends State<MakeASpell> {
   String availableTo = "";
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: ThemeManager.instance.currentScheme.backgroundColour,
+    return StyleUtils.buildStyledScaffold(
         appBar: StyleUtils.buildStyledAppBar(
           title: "Create a Spell",
           centerTitle: true,
-          titleStyle: TextStyle(
-            fontSize: 45, 
-            fontWeight: FontWeight.w700,
-            color: ThemeManager.instance.currentScheme.textColour,
-          ),
         ),
         body: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -62,27 +56,20 @@ class MainMakeASpell extends State<MakeASpell> {
                         SizedBox(
                           width: 450,
                           height: 50,
-                          child: TextField(
-                              cursorColor: Colors.blue,
-                              style: TextStyle(color: ThemeManager.instance.currentScheme.textColour),
-                              decoration: InputDecoration(
-                                  hintText: "Spell name here e.g. My Spell",
-                                  hintStyle: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: ThemeManager.instance.currentScheme.textColour),
-                                  filled: true,
-                                  fillColor: (name.replaceAll(" ", "") != "")
-                                      ? ThemeManager.instance.currentScheme.backingColour
-                                      : Colors.red,
-                                  border: const OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(12)))),
-                              onChanged: (groupNameEnteredValue) {
-                                setState(() {
-                                  name = groupNameEnteredValue;
-                                });
-                              }),
+                          child: StyleUtils.buildStyledTextField(
+                            hintText: "Spell name here e.g. My Spell",
+                            textController: TextEditingController(),
+                            textColor: StyleUtils.currentTextColor,
+                            backingColor: (name.replaceAll(" ", "") != "")
+                                ? StyleUtils.backingColor
+                                : Colors.red,
+                            filled: true,
+                            onChanged: (groupNameEnteredValue) {
+                              setState(() {
+                                name = groupNameEnteredValue;
+                              });
+                            },
+                          ),
                         ),
 
                         SizedBox(
@@ -457,18 +444,10 @@ class MainMakeASpell extends State<MakeASpell> {
                             )),
                           ],
                         )),
-                    OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: validateSpell()
-                            ? ThemeManager.instance.currentScheme.backingColour
-                            : Colors.grey,
-                        padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                        shape: const RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        side: const BorderSide(
-                            width: 5, color: Color.fromARGB(255, 7, 26, 239)),
-                      ),
+                    StyleUtils.buildStyledOutlinedButton(
+                      text: "Save Spell",
+                      backgroundColor: validateSpell() ? StyleUtils.backingColor : Colors.grey,
+                      padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
                       onPressed: () {
                         //check the spell is in an accepted form
                         if (validateSpell()) {
@@ -518,14 +497,6 @@ class MainMakeASpell extends State<MakeASpell> {
                           }
                         }
                       },
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        "Save Spell",
-                        style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w700,
-                            color: ThemeManager.instance.currentScheme.textColour),
-                      ),
                     ),
                     //const SizedBox(height: 100),
                   ])
@@ -535,18 +506,23 @@ class MainMakeASpell extends State<MakeASpell> {
   void showCreationDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        content: const Text('Spell created correctly!',
-            style: TextStyle(
-                color: Colors.green,
-                fontSize: 50,
-                fontWeight: FontWeight.w800)),
+      builder: (context) => StyleUtils.buildStyledAlertDialog(
+        title: 'Success!',
+        content: 'Spell created correctly!',
+        contentWidget: Text(
+          'Spell created correctly!',
+          style: StyleUtils.buildDefaultTextStyle(
+            color: Colors.green,
+            fontSize: 50,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
         actions: [
-          TextButton(
+          StyleUtils.buildStyledTextButton(
+            text: 'Continue',
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: const Text('Continue'),
           ),
         ],
       ),

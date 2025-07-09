@@ -2,7 +2,7 @@
 import "package:flutter/material.dart";
 
 // Project Imports
-import "../../top_bar.dart";
+import "../../widgets/top_bar.dart";
 import "../../theme/theme_manager.dart";
 import "../../utils/style_utils.dart";
 

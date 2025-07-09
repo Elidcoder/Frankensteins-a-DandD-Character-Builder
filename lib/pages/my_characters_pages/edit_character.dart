@@ -7,8 +7,8 @@ import "../create_a_character_pages/finishing_up_tab.dart";
 import "../create_a_character_pages/backstory_tab.dart";
 import "quick_edits_tab.dart";
 import "../../content_classes/all_content_classes.dart";
-import "../../main.dart" show InitialTopKey;
-import "../../top_bar.dart";
+import "../../widgets/initial_top.dart" show InitialTopKey;
+import "../../widgets/top_bar.dart";
 import "../../theme/theme_manager.dart";
 import "../../utils/style_utils.dart";
 
