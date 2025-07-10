@@ -34,7 +34,6 @@ dependencies:
   pdf: ^3.11.3
   printing: ^5.10.3
   path_provider: ^2.0.11
-  cupertino_icons: ^1.0.8
   flutter_colorpicker: ^1.1.0
   json_annotation: ^4.9.0
   path: ^1.9.1
