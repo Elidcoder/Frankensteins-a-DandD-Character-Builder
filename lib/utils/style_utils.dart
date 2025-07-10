@@ -1099,7 +1099,6 @@ class StyleUtils {
       title: title,
       leading: leading,
       trailing: trailing,
-      children: children ?? [],
       backgroundColor: backgroundColor ?? ThemeManager.instance.currentScheme.backgroundColour,
       collapsedBackgroundColor: collapsedBackgroundColor ?? ThemeManager.instance.currentScheme.backgroundColour,
       textColor: textColor ?? ThemeManager.instance.currentScheme.textColour,

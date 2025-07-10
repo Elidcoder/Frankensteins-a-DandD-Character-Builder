@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import '../content_classes/all_content_classes.dart';
-import 'storage/storage.dart';
+import 'storage/file_storage.dart' show StorageConfig;
+import 'storage/json_file_storage.dart' show JsonFileStorage;
 
 // Simple character storage service using the new storage system
 class CharacterStorageService {
