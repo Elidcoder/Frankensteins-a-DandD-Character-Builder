@@ -24,7 +24,7 @@ class JsonFileStorage implements FileStorage {
     if (_initialized) return true;
 
     try {
-      // Get the documents directory or use provided path
+      /* Get the directory location or use the provided one */
       final Directory documentsDir;
       if (path.isAbsolute(_config.basePath)) {
         documentsDir = Directory(_config.basePath);
@@ -33,6 +33,7 @@ class JsonFileStorage implements FileStorage {
         documentsDir = Directory(path.join(appDocsDir.path, _config.basePath));
       }
 
+      /* Ensure there is a directory in the location */
       _baseDirectory = documentsDir;
       if (!await _baseDirectory.exists()) {
         await _baseDirectory.create(recursive: true);
@@ -46,12 +47,14 @@ class JsonFileStorage implements FileStorage {
     }
   }
 
+  // Check if the storage is initialized and a file exists in the location provided
   @override
   Future<bool> exists(String filePath) async {
     if (!_initialized) return false;
     final file = File(_getFullPath(filePath));
     return await file.exists();
   }
+
 
   @override
   Future<String?> read(String filePath) async {
@@ -117,6 +120,7 @@ class JsonFileStorage implements FileStorage {
     }
   }
 
+  // Delete the file at the given path
   @override
   Future<bool> delete(String filePath) async {
     if (!_initialized) return false;
@@ -133,6 +137,7 @@ class JsonFileStorage implements FileStorage {
     }
   }
 
+  // Validate the content of the given file
   @override
   Future<bool> validateFile(String filePath) async {
     if (!_initialized) return false;
@@ -152,6 +157,7 @@ class JsonFileStorage implements FileStorage {
     }
   }
 
+  // Get the size of the file at the given path
   @override
   Future<int> getFileSize(String filePath) async {
     if (!_initialized) return -1;
@@ -166,6 +172,7 @@ class JsonFileStorage implements FileStorage {
     }
   }
 
+  // Get the modification time of the file at the given path
   @override
   Future<DateTime?> getModificationTime(String filePath) async {
     if (!_initialized) return null;
@@ -180,6 +187,7 @@ class JsonFileStorage implements FileStorage {
     }
   }
 
+  // Copy a file from source to destination
   @override
   Future<bool> copyFile(String sourcePath, String destinationPath) async {
     if (!_initialized) return false;
@@ -204,6 +212,7 @@ class JsonFileStorage implements FileStorage {
     }
   }
 
+  // Move a file from source to destination
   @override
   Future<bool> moveFile(String sourcePath, String destinationPath) async {
     if (!_initialized) return false;
@@ -226,18 +235,6 @@ class JsonFileStorage implements FileStorage {
     } catch (e) {
       // TODO: Add proper error handling - log move errors, handle cross-filesystem moves
       return false;
-    }
-  }
-
-  @override
-  Future<int> getAvailableSpace() async {
-    try {
-      // This is a simplified implementation
-      // In a real app, you might want to use platform-specific APIs
-      return 1000000000; // Return 1GB as default
-    } catch (e) {
-      // TODO: Add proper error handling - implement platform-specific space checking
-      return 0;
     }
   }
 

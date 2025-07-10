@@ -10,7 +10,6 @@ abstract interface class FileStorage {
   Future<DateTime?> getModificationTime(String filePath);
   Future<bool> copyFile(String sourcePath, String destinationPath);
   Future<bool> moveFile(String sourcePath, String destinationPath);
-  Future<int> getAvailableSpace();
 }
 
 class StorageConfig {
