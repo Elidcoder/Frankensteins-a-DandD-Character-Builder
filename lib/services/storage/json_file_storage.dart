@@ -69,6 +69,7 @@ class JsonFileStorage implements FileStorage {
       // Validate JSON if validation is enabled
       if (_config.enableValidation && content.isNotEmpty) {
         jsonDecode(content); // Will throw if invalid JSON
+        // TODO(Do further validation)
       }
       
       return content;
@@ -86,6 +87,7 @@ class JsonFileStorage implements FileStorage {
       // Validate JSON if validation is enabled
       if (validate && _config.enableValidation && data.isNotEmpty) {
         jsonDecode(data); // Will throw if invalid JSON
+        // TODO(Do further validation)
       }
 
       final fullPath = _getFullPath(filePath);
@@ -149,6 +151,7 @@ class JsonFileStorage implements FileStorage {
       // Try to parse as JSON
       if (content.isNotEmpty) {
         jsonDecode(content);
+        // TODO(Do further validation)
       }
       return true;
     } catch (e) {

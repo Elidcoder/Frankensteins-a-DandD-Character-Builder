@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 // Project imports
 import "file_manager/file_manager.dart";
 import "services/character_storage_service.dart";
+import "services/character_migration_helper.dart";
 import "theme/theme_manager.dart";
 import "theme/theme_manager_widget.dart";
 import "widgets/initial_top.dart" show InitialTop, InitialTopKey;
@@ -34,6 +35,9 @@ class _FrankensteinAppState extends State<FrankensteinApp> {
     
     // Initialize new storage system (for future migration)  
     await getCharacterStorageService();
+    
+    // Initialize character migration helper
+    await CharacterMigrationHelper.initialize();
     
     // Initialize theme manager
     ThemeManager.instance.initialize();

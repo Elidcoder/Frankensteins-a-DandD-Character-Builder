@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 // Project Imports
 import "../../widgets/top_bar.dart";
 import "../../file_manager/file_manager.dart";
+import "../../services/character_migration_helper.dart";
 import "edit_character.dart";
 import "../../pdf_generator/pdf_final_display.dart";
 import "../../content_classes/all_content_classes.dart";
@@ -20,11 +21,34 @@ class MyCharacters extends StatefulWidget {
 
 class MainMyCharacters extends State<MyCharacters> {
   String searchTerm = "";
+  List<Character> _characters = [];
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     ThemeManager.instance.addListener(_onThemeChanged);
+    _loadCharacters();
+  }
+  
+  Future<void> _loadCharacters() async {
+    setState(() {
+      _isLoading = true;
+    });
+    
+    try {
+      final characters = await CharacterMigrationHelper.getAllCharacters();
+      setState(() {
+        _characters = characters;
+        _isLoading = false;
+      });
+    } catch (e) {
+      // Fallback to legacy system if migration helper fails
+      setState(() {
+        _characters = List<Character>.from(CHARACTERLIST);
+        _isLoading = false;
+      });
+    }
   }
   
   @override
@@ -41,7 +65,18 @@ class MainMyCharacters extends State<MyCharacters> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredCharacters = CHARACTERLIST.where(
+    if (_isLoading) {
+      return StyleUtils.buildStyledScaffold(
+        appBar: StyleUtils.buildStyledAppBar(
+          title: "My Characters",
+        ),
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    final filteredCharacters = _characters.where(
       (element) => element.characterDescription.name.toLowerCase().contains(searchTerm.toLowerCase())
     ).toList();
     return StyleUtils.buildStyledScaffold(
@@ -83,7 +118,7 @@ class MainMyCharacters extends State<MyCharacters> {
         
         /* Display users characters with action buttons. */
         Expanded(
-          child: (CHARACTERLIST.isEmpty)
+          child: (_characters.isEmpty)
             ? Center(child: StyleUtils.buildStyledLargeTextBox(text: "You have no created characters to view"))
           : SingleChildScrollView(
               scrollDirection: Axis.vertical,
@@ -170,19 +205,14 @@ class MainMyCharacters extends State<MyCharacters> {
                         }),
 
                         /* Delete character button */
-                        buildCharacterActionButton("Delete character", Colors.red, () {
-                          setState(() {
-                            /* Locate the character being deleted. */
-                            final int charIndex = CHARACTERLIST.indexWhere(
-                              (character) => character.uniqueID == filteredCharacters[index].uniqueID
-                            );
-                            final String? charGroup = CHARACTERLIST[charIndex].group;
+                        buildCharacterActionButton("Delete character", Colors.red, () async {
+                          final characterToDelete = filteredCharacters[index];
+                          final String? charGroup = characterToDelete.group;
 
-                            /* Remove the character. */
-                            if (charIndex != -1) {
-                              CHARACTERLIST.removeAt(charIndex);
-                            }
-
+                          /* Delete the character using migration helper. */
+                          final success = await CharacterMigrationHelper.deleteCharacter(characterToDelete.uniqueID);
+                          
+                          if (success) {
                             /* Clean up unused groups. */
                             if (!CHARACTERLIST.any((character) => character.group == charGroup)) {
                               GROUPLIST.remove(charGroup);
@@ -190,7 +220,10 @@ class MainMyCharacters extends State<MyCharacters> {
                             
                             /* Save changes. */
                             saveChanges();
-                          });
+                            
+                            /* Reload the character list to reflect changes. */
+                            await _loadCharacters();
+                          }
                         }),
                       ],
                     ));

@@ -3,6 +3,7 @@ import "../../content_classes/all_content_classes.dart";
 import "../../utils/style_utils.dart";
 import "../../widgets/initial_top.dart";
 import "../../file_manager/file_manager.dart";
+import "../../services/character_migration_helper.dart";
 import "../../pdf_generator/pdf_final_display.dart";
 import "../../theme/theme_manager.dart";
 
@@ -121,42 +122,45 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
                           text: widget.isEditMode ? "Save Changes" : "Save Character", 
                           color: ThemeManager.instance.currentScheme.textColour
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           if (widget.canCreateCharacter) {
-                            setState(() {
-                              if (widget.isEditMode) {
-                                // Update existing character in the list
-                                int characterIndex = CHARACTERLIST.indexWhere((c) => c.uniqueID == widget.character.uniqueID);
-                                if (characterIndex != -1) {
-                                  CHARACTERLIST[characterIndex] = widget.character;
-                                } else {
-                                  // Fallback: add if not found (shouldn't happen in normal edit flow)
-                                  CHARACTERLIST.add(widget.character);
+                            // Capture ScaffoldMessenger before async operation
+                            final scaffoldMessenger = ScaffoldMessenger.of(context);
+                            
+                            // Save character using the migration helper
+                            final saveSuccess = await CharacterMigrationHelper.saveCharacter(widget.character);
+                            
+                            if (saveSuccess) {
+                              setState(() {
+                                // Update group list
+                                GROUPLIST = GROUPLIST.where((element) => [
+                                  for (var x in CHARACTERLIST) x.group
+                                ].contains(element)).toList();
+                                if ((!GROUPLIST.contains(widget.character.group)) &&
+                                    widget.character.group != null &&
+                                    widget.character.group!.replaceAll(" ", "") != "") {
+                                  GROUPLIST.add(widget.character.group!);
                                 }
-                              } else {
-                                // Create new character
-                                CHARACTERLIST.add(widget.character);
-                              }
-                              
-                              // Update group list
-                              GROUPLIST = GROUPLIST.where((element) => [
-                                for (var x in CHARACTERLIST) x.group
-                              ].contains(element)).toList();
-                              if ((!GROUPLIST.contains(widget.character.group)) &&
-                                  widget.character.group != null &&
-                                  widget.character.group!.replaceAll(" ", "") != "") {
-                                GROUPLIST.add(widget.character.group!);
-                              }
-                              
-                              saveChanges();
-                              Navigator.pop(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => InitialTop()),
+                                
+                                //legacy system
+                                saveChanges();
+                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => InitialTop()),
+                                );
+                                _showCongratulationsDialog(context);
+                              });
+                            } else {
+                              // Show error if save failed
+                              scaffoldMessenger.showSnackBar(
+                                SnackBar(
+                                  content: Text('Failed to save character. Please try again.'),
+                                  backgroundColor: Colors.red,
+                                ),
                               );
-                              _showCongratulationsDialog(context);
-                            });
+                            }
                           }
                         },
                       ))
