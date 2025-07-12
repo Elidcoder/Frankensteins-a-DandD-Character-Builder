@@ -186,7 +186,29 @@ class MainMyCharacters extends State<MyCharacters> {
                         }),
 
                         /* Duplicate character button */
-                        buildCharacterActionButton("Duplicate character", Colors.lightBlue, () {
+                        buildCharacterActionButton("Duplicate character", Colors.lightBlue, () async {
+                          try {
+                            Character selectedCharacter = filteredCharacters[index];
+                            Character duplicatedCharacter = selectedCharacter.getCopy();
+                            
+                            // Capture ScaffoldMessenger before async operation
+                            final scaffoldMessenger = ScaffoldMessenger.of(context);
+                            
+                            // Save using migration helper
+                            final saveSuccess = await CharacterMigrationHelper.saveCharacter(duplicatedCharacter);
+                            
+                            if (saveSuccess) {
+                              // Refresh the character list
+                              await _loadCharacters();
+                            } else {
+                              // Show error message using captured messenger
+                              scaffoldMessenger.showSnackBar(
+                                const SnackBar(content: Text('Failed to duplicate character')),
+                              );
+                            }
+                          } catch (e) {
+                            // Error handling with user feedback
+                          }
                           setState(() {
                             Character selectedCharacter = filteredCharacters[index];
                             CHARACTERLIST.add(selectedCharacter.getCopy());
@@ -195,13 +217,13 @@ class MainMyCharacters extends State<MyCharacters> {
                         }),
 
                         /* Edit character button */
-                        buildCharacterActionButton("Edit Character", Colors.green, () {
+                        buildCharacterActionButton("Edit Character", Colors.green, () async {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => EditTop(filteredCharacters[index]),
                             ),
-                          );
+                          ).then((_) => _loadCharacters());
                         }),
 
                         /* Delete character button */
