@@ -283,7 +283,7 @@ class Character {
       extraFeatures: extraFeatures,
       group: group,
       characterDescription: characterDescription,
-      uniqueID: uniqueID, // Preserve the original uniqueID
+      // Generate new unique ID for the copy automatically
     );
   }
 
