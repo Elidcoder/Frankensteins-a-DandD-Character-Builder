@@ -3,8 +3,8 @@ import "package:flutter/material.dart";
 
 // Project Imports
 import "../../widgets/top_bar.dart";
-import "../../file_manager/file_manager.dart";
 import "../../services/character_migration_helper.dart";
+import "../../file_manager/file_manager.dart" show updateGroupListFromNewSystem;
 import "edit_character.dart";
 import "../../pdf_generator/pdf_final_display.dart";
 import "../../content_classes/all_content_classes.dart";
@@ -38,14 +38,18 @@ class MainMyCharacters extends State<MyCharacters> {
     
     try {
       final characters = await CharacterMigrationHelper.getAllCharacters();
+      
+      // Update GROUPLIST only if not already initialized (efficient)
+      await updateGroupListFromNewSystem();
+      
       setState(() {
         _characters = characters;
         _isLoading = false;
       });
     } catch (e) {
-      // Fallback to legacy system if migration helper fails
+      debugPrint('Error loading characters: $e');
       setState(() {
-        _characters = List<Character>.from(CHARACTERLIST);
+        _characters = [];
         _isLoading = false;
       });
     }
@@ -187,18 +191,18 @@ class MainMyCharacters extends State<MyCharacters> {
 
                         /* Duplicate character button */
                         buildCharacterActionButton("Duplicate character", Colors.lightBlue, () async {
+                          // Capture ScaffoldMessenger before async operation
+                          final scaffoldMessenger = ScaffoldMessenger.of(context);
+                          
                           try {
                             Character selectedCharacter = filteredCharacters[index];
                             Character duplicatedCharacter = selectedCharacter.getCopy();
-                            
-                            // Capture ScaffoldMessenger before async operation
-                            final scaffoldMessenger = ScaffoldMessenger.of(context);
                             
                             // Save using migration helper
                             final saveSuccess = await CharacterMigrationHelper.saveCharacter(duplicatedCharacter);
                             
                             if (saveSuccess) {
-                              // Refresh the character list
+                              // Refresh the character list also reloads the grouplist
                               await _loadCharacters();
                             } else {
                               // Show error message using captured messenger
@@ -207,13 +211,12 @@ class MainMyCharacters extends State<MyCharacters> {
                               );
                             }
                           } catch (e) {
-                            // Error handling with user feedback
+                            debugPrint('Error duplicating character: $e');
+                            // Show error message using captured messenger
+                            scaffoldMessenger.showSnackBar(
+                              const SnackBar(content: Text('Error duplicating character')),
+                            );
                           }
-                          setState(() {
-                            Character selectedCharacter = filteredCharacters[index];
-                            CHARACTERLIST.add(selectedCharacter.getCopy());
-                            saveChanges();
-                          });
                         }),
 
                         /* Edit character button */
@@ -228,23 +231,22 @@ class MainMyCharacters extends State<MyCharacters> {
 
                         /* Delete character button */
                         buildCharacterActionButton("Delete character", Colors.red, () async {
-                          final characterToDelete = filteredCharacters[index];
-                          final String? charGroup = characterToDelete.group;
+                          // Capture ScaffoldMessenger before async operation
+                          final scaffoldMessenger = ScaffoldMessenger.of(context);
 
-                          /* Delete the character using migration helper. */
+                          final characterToDelete = filteredCharacters[index];
+
+                          /* Delete the character using the new system only. */
                           final success = await CharacterMigrationHelper.deleteCharacter(characterToDelete.uniqueID);
                           
                           if (success) {
-                            /* Clean up unused groups. */
-                            if (!CHARACTERLIST.any((character) => character.group == charGroup)) {
-                              GROUPLIST.remove(charGroup);
-                            }
-                            
-                            /* Save changes. */
-                            saveChanges();
-                            
-                            /* Reload the character list to reflect changes. */
+                            /* Reload the character list to reflect changes and updates the grouplist. */
                             await _loadCharacters();
+                          } else {
+                            // Show error message if deletion failed
+                            scaffoldMessenger.showSnackBar(
+                              const SnackBar(content: Text('Failed to delete character')),
+                            );
                           }
                         }),
                       ],
