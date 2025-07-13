@@ -30,14 +30,17 @@ class _FrankensteinAppState extends State<FrankensteinApp> {
   }
   
   Future<void> _initializeApp() async {
-    // Initialize legacy system (keep existing functionality)
+    // Initialize legacy system (for content only, characters use new system)
     await initialiseGlobals();
     
-    // Initialize new storage system (for future migration)  
+    // Initialize new character storage system
     await getCharacterStorageService();
     
-    // Initialize character migration helper
+    // Initialize character service wrapper
     await CharacterMigrationHelper.initialize();
+    
+    // Initialize GROUPLIST from current characters (efficient startup)
+    await updateGroupListFromNewSystem();
     
     // Initialize theme manager
     ThemeManager.instance.initialize();

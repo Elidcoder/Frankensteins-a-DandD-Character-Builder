@@ -1,12 +1,14 @@
 // External Imports
 import "dart:io" show File;
 import "dart:convert" show jsonDecode, jsonEncode;
+import "package:flutter/foundation.dart" show debugPrint;
 import "package:flutter/services.dart" show rootBundle;
 import "package:path_provider/path_provider.dart" show getApplicationDocumentsDirectory;
 
 // Project Import
 import "../colour_scheme_class/colour_scheme.dart";
 import "../content_classes/all_content_classes.dart";
+import "../services/character_migration_helper.dart";
 
 List<Character> CHARACTERLIST = [];
 List<String> GROUPLIST = [];
@@ -119,5 +121,32 @@ Future<void> saveChanges() async {
     THEMELIST.clear();
     PROFICIENCYLIST.clear();
     initialiseGlobals();
+  }
+}
+
+/* Update GROUPLIST from the new character storage system */
+Future<void> updateGroupListFromNewSystem() async {
+  try {
+    // Get all characters from the new system
+    final characters = await CharacterMigrationHelper.getAllCharacters();
+    
+    // Extract unique groups from characters efficiently
+    final groups = characters
+      .map((c) => c.group)
+      .where((group) => group != null && group.trim().isNotEmpty)
+      .cast<String>()
+      .toSet()
+      .toList()
+      ..sort();
+    
+    // Update the global GROUPLIST
+    GROUPLIST.clear();
+    GROUPLIST.addAll(groups);
+    
+    // Debug output for verification
+    debugPrint('Updated GROUPLIST with ${GROUPLIST.length} groups from ${characters.length} characters');
+  } catch (e) {
+    debugPrint('Error updating GROUPLIST from new system: $e');
+    // Keep existing GROUPLIST if update fails
   }
 }
