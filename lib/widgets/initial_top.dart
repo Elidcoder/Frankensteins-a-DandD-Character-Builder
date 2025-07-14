@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../colour_scheme_class/colour_scheme.dart';
 import '../theme/theme_manager.dart';
 import '../utils/style_utils.dart';
 import 'main_menu.dart';
+import 'simple_color_picker.dart';
 
 /// Global key for the InitialTop widget
 final GlobalKey<InitialTopState> InitialTopKey = GlobalKey<InitialTopState>();
@@ -83,28 +83,34 @@ class InitialTopState extends State<InitialTop> {
                       children: [
                         /* Selection of backing colour */
                         ...StyleUtils.buildStyledSeperatedText("Select box colours:"),
-                        ColorPicker(
-                          pickerColor: currentScheme.backingColour,
+                        SimpleColorPicker(
+                          currentColor: currentScheme.backingColour,
                           onColorChanged: (color) {
-                            currentScheme.backingColour = color;
+                            setState(() {
+                              currentScheme.backingColour = color;
+                            });
                           },
                         ),
 
                         /* Selection of text colour */
                         ...StyleUtils.buildStyledSeperatedText("Select text colour:"),
-                        ColorPicker(
-                          pickerColor: currentScheme.textColour,
+                        SimpleColorPicker(
+                          currentColor: currentScheme.textColour,
                           onColorChanged: (color) {
-                            currentScheme.textColour = color;
+                            setState(() {
+                              currentScheme.textColour = color;
+                            });
                           },
                         ),
 
                         /* Selection of background colour */
                         ...StyleUtils.buildStyledSeperatedText("Select background colour:"),
-                        ColorPicker(
-                          pickerColor: currentScheme.backgroundColour,
+                        SimpleColorPicker(
+                          currentColor: currentScheme.backgroundColour,
                           onColorChanged: (color) {
-                            currentScheme.backgroundColour = color;
+                            setState(() {
+                              currentScheme.backgroundColour = color;
+                            });
                           },
                         ),
 

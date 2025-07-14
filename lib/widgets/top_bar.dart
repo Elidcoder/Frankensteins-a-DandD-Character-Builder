@@ -1,6 +1,5 @@
 // External imports
 import "package:flutter/material.dart";
-import "package:flutter_colorpicker/flutter_colorpicker.dart" show ColorPicker;
 
 // Project imports
 import "../pages/all_home_subpages.dart";
@@ -9,6 +8,7 @@ import "main_menu.dart" show MainMenu;
 import "../theme/theme_manager.dart";
 import "../colour_scheme_class/colour_scheme.dart";
 import "../utils/style_utils.dart";
+import "simple_color_picker.dart";
 
 /* A map of all the pages that can be navigated to. */
 final Map<String, Widget Function()> PAGELINKER = {
@@ -112,28 +112,34 @@ class _RegularTopState extends State<RegularTop> {
                   children: [
                     /* Selection of backing colour */
                     ...styledSeperatedText("Select box colours:"),
-                    ColorPicker(
-                      pickerColor: currentScheme.backingColour,
+                    SimpleColorPicker(
+                      currentColor: currentScheme.backingColour,
                       onColorChanged: (color) {
-                        currentScheme.backingColour = color;
+                        setState(() {
+                          currentScheme.backingColour = color;
+                        });
                       },
                     ),
 
                     /* Selection of text colour */
                     ...styledSeperatedText("Select text colour:"),
-                    ColorPicker(
-                      pickerColor: currentScheme.textColour,
+                    SimpleColorPicker(
+                      currentColor: currentScheme.textColour,
                       onColorChanged: (color) {
-                        currentScheme.textColour = color;
+                        setState(() {
+                          currentScheme.textColour = color;
+                        });
                       },
                     ),
 
                     /* Selection of background colour */
                     ...styledSeperatedText("Select background colour:"),
-                    ColorPicker(
-                      pickerColor: currentScheme.backgroundColour,
+                    SimpleColorPicker(
+                      currentColor: currentScheme.backgroundColour,
                       onColorChanged: (color) {
-                        currentScheme.backgroundColour = color;
+                        setState(() {
+                          currentScheme.backgroundColour = color;
+                        });
                       },
                     ),
 
