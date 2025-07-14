@@ -23,6 +23,16 @@ class _SimpleColorPickerState extends State<SimpleColorPicker> {
     _currentColor = widget.currentColor;
   }
 
+  @override
+  void didUpdateWidget(SimpleColorPicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.currentColor != oldWidget.currentColor) {
+      setState(() {
+        _currentColor = widget.currentColor;
+      });
+    }
+  }
+
   // Predefined color palette
   static const List<Color> _colors = [
     Colors.red,
@@ -50,6 +60,10 @@ class _SimpleColorPickerState extends State<SimpleColorPicker> {
 
   // Helper method to build individual color boxes
   Widget _buildColorBox(Color color) {
+    // Check if this color should be highlighted based on the current color
+    Color closestToCurrentColor = _findClosestColor(_currentColor);
+    bool isSelected = color == closestToCurrentColor;
+    
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -63,13 +77,41 @@ class _SimpleColorPickerState extends State<SimpleColorPicker> {
         decoration: BoxDecoration(
           color: color,
           border: Border.all(
-            color: _currentColor == color ? Colors.yellow : Colors.grey,
-            width: _currentColor == color ? 3 : 1,
+            color: isSelected ? Colors.yellow : Colors.grey,
+            width: isSelected ? 3 : 1,
           ),
           borderRadius: BorderRadius.circular(8),
         ),
       ),
     );
+  }
+
+  // Helper method to find the closest color in the palette
+  Color _findClosestColor(Color targetColor) {
+    if (_colors.contains(targetColor)) {
+      return targetColor;
+    }
+
+    Color closestColor = _colors.first;
+    double minDistance = _colorDistance(targetColor, closestColor);
+
+    for (Color color in _colors) {
+      double distance = _colorDistance(targetColor, color);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestColor = color;
+      }
+    }
+
+    return closestColor;
+  }
+
+  // Calculate color distance using RGB values
+  double _colorDistance(Color color1, Color color2) {
+    double rDiff = (color1.red - color2.red).toDouble();
+    double gDiff = (color1.green - color2.green).toDouble();
+    double bDiff = (color1.blue - color2.blue).toDouble();
+    return rDiff * rDiff + gDiff * gDiff + bDiff * bDiff;
   }
 
   @override
