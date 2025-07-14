@@ -67,6 +67,13 @@ class InitialTopState extends State<InitialTop> {
     int? selectedIndex;
     ColourScheme currentScheme = ThemeManager.instance.currentScheme;
     
+    // Create a fixed color scheme for the dialog so it doesn't change as user picks colors
+    final dialogScheme = ColourScheme(
+      backingColour: Colors.grey[300]!,
+      textColour: Colors.black,
+      backgroundColour: Colors.white,
+    );
+    
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -75,14 +82,30 @@ class InitialTopState extends State<InitialTop> {
             return Stack(
               children: [
                 const Opacity(opacity: 0.5, child: ModalBarrier(dismissible: false, color: Colors.grey)),
-                StyleUtils.buildStyledAlertDialog(
-                  title: "Settings",
-                  content: '',
-                  contentWidget: SingleChildScrollView(
+                AlertDialog(
+                  backgroundColor: dialogScheme.backgroundColour,
+                  title: Text(
+                    "Settings",
+                    style: TextStyle(
+                      fontSize: 28, 
+                      fontWeight: FontWeight.w700,
+                      color: dialogScheme.textColour,
+                    ),
+                  ),
+                  content: SingleChildScrollView(
                     child: Column(
                       children: [
                         /* Selection of backing colour */
-                        ...StyleUtils.buildStyledSeperatedText("Select box colours:"),
+                        const SizedBox(height: 16),
+                        Text(
+                          "Select box colours:",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: dialogScheme.textColour,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
                         SimpleColorPicker(
                           currentColor: currentScheme.backingColour,
                           onColorChanged: (color) {
@@ -93,7 +116,16 @@ class InitialTopState extends State<InitialTop> {
                         ),
 
                         /* Selection of text colour */
-                        ...StyleUtils.buildStyledSeperatedText("Select text colour:"),
+                        const SizedBox(height: 16),
+                        Text(
+                          "Select text colour:",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: dialogScheme.textColour,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
                         SimpleColorPicker(
                           currentColor: currentScheme.textColour,
                           onColorChanged: (color) {
@@ -104,7 +136,16 @@ class InitialTopState extends State<InitialTop> {
                         ),
 
                         /* Selection of background colour */
-                        ...StyleUtils.buildStyledSeperatedText("Select background colour:"),
+                        const SizedBox(height: 16),
+                        Text(
+                          "Select background colour:",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: dialogScheme.textColour,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
                         SimpleColorPicker(
                           currentColor: currentScheme.backgroundColour,
                           onColorChanged: (color) {
@@ -115,7 +156,16 @@ class InitialTopState extends State<InitialTop> {
                         ),
 
                         /* User can instead make use of a previous colour combination. */
-                        ...StyleUtils.buildStyledSeperatedText("Or choose a theme:"),
+                        const SizedBox(height: 16),
+                        Text(
+                          "Or choose a theme:",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: dialogScheme.textColour,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
                         SizedBox(
                           height: 300,
                           width: 307,
@@ -133,17 +183,23 @@ class InitialTopState extends State<InitialTop> {
                     )
                   ),
                   actions: [
-                    StyleUtils.buildStyledTextButton(
-                      text: "Cancel",
+                    TextButton(
                       onPressed: () {Navigator.of(context).pop();},
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(color: dialogScheme.textColour),
+                      ),
                     ),
-                    StyleUtils.buildStyledTextButton(
-                      text: "Save settings",
+                    TextButton(
                       onPressed: () {
                         // Update the theme using the theme manager
                         ThemeManager.instance.updateScheme(currentScheme);
                         Navigator.of(context).pop();
                       },
+                      child: Text(
+                        "Save settings",
+                        style: TextStyle(color: dialogScheme.textColour),
+                      ),
                     ),
                   ],
                 ),

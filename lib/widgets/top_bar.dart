@@ -96,6 +96,13 @@ class _RegularTopState extends State<RegularTop> {
     int? selectedIndex;
     ColourScheme currentScheme = ThemeManager.instance.currentScheme;
     
+    // Create a fixed color scheme for the dialog so it doesn't change as user picks colors
+    final dialogScheme = ColourScheme(
+      backingColour: Colors.grey[300]!,
+      textColour: Colors.black,
+      backgroundColour: Colors.white,
+    );
+    
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -106,12 +113,29 @@ class _RegularTopState extends State<RegularTop> {
             const Opacity(opacity: 0.5, child: ModalBarrier(dismissible: false, color: Colors.grey)),
             /* Settings menu (choosing colours). */
             AlertDialog(
-              title: const Text("Settings", style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700)),
+              backgroundColor: dialogScheme.backgroundColour,
+              title: Text(
+                "Settings", 
+                style: TextStyle(
+                  fontSize: 28, 
+                  fontWeight: FontWeight.w700,
+                  color: dialogScheme.textColour,
+                ),
+              ),
               content: SingleChildScrollView(
                 child: Column(
                   children: [
                     /* Selection of backing colour */
-                    ...styledSeperatedText("Select box colours:"),
+                    const SizedBox(height: 16),
+                    Text(
+                      "Select box colours:",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        color: dialogScheme.textColour,
+                      ),
+                    ),
+                    const SizedBox(height: 9),
                     SimpleColorPicker(
                       currentColor: currentScheme.backingColour,
                       onColorChanged: (color) {
@@ -122,7 +146,16 @@ class _RegularTopState extends State<RegularTop> {
                     ),
 
                     /* Selection of text colour */
-                    ...styledSeperatedText("Select text colour:"),
+                    const SizedBox(height: 16),
+                    Text(
+                      "Select text colour:",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        color: dialogScheme.textColour,
+                      ),
+                    ),
+                    const SizedBox(height: 9),
                     SimpleColorPicker(
                       currentColor: currentScheme.textColour,
                       onColorChanged: (color) {
@@ -133,7 +166,16 @@ class _RegularTopState extends State<RegularTop> {
                     ),
 
                     /* Selection of background colour */
-                    ...styledSeperatedText("Select background colour:"),
+                    const SizedBox(height: 16),
+                    Text(
+                      "Select background colour:",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        color: dialogScheme.textColour,
+                      ),
+                    ),
+                    const SizedBox(height: 9),
                     SimpleColorPicker(
                       currentColor: currentScheme.backgroundColour,
                       onColorChanged: (color) {
@@ -144,7 +186,16 @@ class _RegularTopState extends State<RegularTop> {
                     ),
 
                     /* User can instead make use of a previous colour combination. */
-                    ...styledSeperatedText("Or choose a theme:"),
+                    const SizedBox(height: 16),
+                    Text(
+                      "Or choose a theme:",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        color: dialogScheme.textColour,
+                      ),
+                    ),
+                    const SizedBox(height: 9),
                     SizedBox(
                       height: 300,
                       width: 307,
@@ -242,7 +293,10 @@ class _RegularTopState extends State<RegularTop> {
               actions: [
                 TextButton(
                   onPressed: () {Navigator.of(context).pop();},
-                  child: const Text("Cancel"),
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(color: dialogScheme.textColour),
+                  ),
                 ),
                 TextButton(
                   onPressed: () {
@@ -250,7 +304,10 @@ class _RegularTopState extends State<RegularTop> {
                     ThemeManager.instance.updateScheme(currentScheme);
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Save settings"),
+                  child: Text(
+                    "Save settings",
+                    style: TextStyle(color: dialogScheme.textColour),
+                  ),
                 ),
               ],
             ),
