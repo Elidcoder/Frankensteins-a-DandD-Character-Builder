@@ -94,7 +94,12 @@ class _RegularTopState extends State<RegularTop> {
   /* Returns a popup that allows the user to change the app's colour scheme. */ 
   void _showColorPicker(BuildContext context) {
     int? selectedIndex;
-    ColourScheme currentScheme = ThemeManager.instance.currentScheme;
+    // Create a copy of the current scheme so we can modify it without affecting the original
+    ColourScheme currentScheme = ColourScheme(
+      textColour: ThemeManager.instance.currentScheme.textColour,
+      backingColour: ThemeManager.instance.currentScheme.backingColour,
+      backgroundColour: ThemeManager.instance.currentScheme.backgroundColour,
+    );
     
     // Create a fixed color scheme for the dialog so it doesn't change as user picks colors
     final dialogScheme = ColourScheme(
@@ -137,6 +142,7 @@ class _RegularTopState extends State<RegularTop> {
                     ),
                     const SizedBox(height: 9),
                     SimpleColorPicker(
+                      key: ValueKey('backing_${currentScheme.backingColour.value}'),
                       currentColor: currentScheme.backingColour,
                       onColorChanged: (color) {
                         setState(() {
@@ -157,6 +163,7 @@ class _RegularTopState extends State<RegularTop> {
                     ),
                     const SizedBox(height: 9),
                     SimpleColorPicker(
+                      key: ValueKey('text_${currentScheme.textColour.value}'),
                       currentColor: currentScheme.textColour,
                       onColorChanged: (color) {
                         setState(() {
@@ -177,6 +184,7 @@ class _RegularTopState extends State<RegularTop> {
                     ),
                     const SizedBox(height: 9),
                     SimpleColorPicker(
+                      key: ValueKey('background_${currentScheme.backgroundColour.value}'),
                       currentColor: currentScheme.backgroundColour,
                       onColorChanged: (color) {
                         setState(() {
@@ -254,15 +262,15 @@ class _RegularTopState extends State<RegularTop> {
                                       children: [
                                         /* Mini version of the button that takes the user to the create_a_character page */
                                         const SizedBox(width: 21),
-                                        buildStyledMockButton("Create a \n character", index),
+                                        buildStyledMockButton("Create a \n character", THEMELIST.reversed.toList()[index]),
                                         
                                         /* Mini version of the button that takes the user to the search_for_content page */
                                         const SizedBox(width: 27.5),
-                                        buildStyledMockButton("Search for\nContent", index),
+                                        buildStyledMockButton("Search for\nContent", THEMELIST.reversed.toList()[index]),
 
                                         /* Mini version of the button that takes the user to the my_characters page */
                                         const SizedBox(width: 27.5),
-                                        buildStyledMockButton("My\nCharacters", index)
+                                        buildStyledMockButton("My\nCharacters", THEMELIST.reversed.toList()[index])
 
                                       ],
                                 )),
@@ -272,18 +280,24 @@ class _RegularTopState extends State<RegularTop> {
                                     children: [
                                       /* Mini version of the button that makes the download content popup */
                                       const SizedBox(width: 50),
-                                      buildStyledMockButton("Download\nContent", index),
+                                      buildStyledMockButton("Download\nContent", THEMELIST.reversed.toList()[index]),
                                       
                                       /* Mini version of the button that takes the user to the create_content page */
                                       const SizedBox(width: 27.5),
-                                      buildStyledMockButton("Create\nContent", index)
+                                      buildStyledMockButton("Create\nContent", THEMELIST.reversed.toList()[index])
                                   ],
                                 )),
                               ]),
                               onPressed: () {
                                 setState(() {
                                   selectedIndex = index;
-                                  currentScheme = THEMELIST.reversed.toList()[index];
+                                  // Create a copy of the selected theme instead of referencing it directly
+                                  final selectedTheme = THEMELIST.reversed.toList()[index];
+                                  currentScheme = ColourScheme(
+                                    textColour: selectedTheme.textColour,
+                                    backingColour: selectedTheme.backingColour,
+                                    backgroundColour: selectedTheme.backgroundColour,
+                                  );
                                 });
                               },
                             ));
@@ -319,19 +333,19 @@ class _RegularTopState extends State<RegularTop> {
   }
 
   /* Builds a fake version of a button styled to look like a given colour scheme. */
-  Widget buildStyledMockButton(String text, int index) {
+  Widget buildStyledMockButton(String text, ColourScheme scheme) {
     return Container(
       width: 61,
       height: 31,
       decoration: BoxDecoration(
-        color: THEMELIST.reversed.toList()[index].backingColour,
+        color: scheme.backingColour,
         borderRadius:const BorderRadius.all(Radius.circular(4))),
       child: Text(
         text,
         style: TextStyle(
           fontWeight: FontWeight.w600,
           fontSize: 10,
-          color: THEMELIST.reversed.toList()[index].textColour),
+          color: scheme.textColour),
         textAlign: TextAlign.center
       )
     );

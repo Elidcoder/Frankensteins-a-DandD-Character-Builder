@@ -65,7 +65,12 @@ class InitialTopState extends State<InitialTop> {
   /// Shows the color picker dialog for theme selection
   void showColorPicker(BuildContext context) {
     int? selectedIndex;
-    ColourScheme currentScheme = ThemeManager.instance.currentScheme;
+    // Create a copy of the current scheme so we can modify it without affecting the original
+    ColourScheme currentScheme = ColourScheme(
+      textColour: ThemeManager.instance.currentScheme.textColour,
+      backingColour: ThemeManager.instance.currentScheme.backingColour,
+      backgroundColour: ThemeManager.instance.currentScheme.backgroundColour,
+    );
     
     // Create a fixed color scheme for the dialog so it doesn't change as user picks colors
     final dialogScheme = ColourScheme(
@@ -107,6 +112,7 @@ class InitialTopState extends State<InitialTop> {
                         ),
                         const SizedBox(height: 8),
                         SimpleColorPicker(
+                          key: ValueKey('backing_${currentScheme.backingColour.value}'),
                           currentColor: currentScheme.backingColour,
                           onColorChanged: (color) {
                             setState(() {
@@ -127,6 +133,7 @@ class InitialTopState extends State<InitialTop> {
                         ),
                         const SizedBox(height: 8),
                         SimpleColorPicker(
+                          key: ValueKey('text_${currentScheme.textColour.value}'),
                           currentColor: currentScheme.textColour,
                           onColorChanged: (color) {
                             setState(() {
@@ -147,6 +154,7 @@ class InitialTopState extends State<InitialTop> {
                         ),
                         const SizedBox(height: 8),
                         SimpleColorPicker(
+                          key: ValueKey('background_${currentScheme.backgroundColour.value}'),
                           currentColor: currentScheme.backgroundColour,
                           onColorChanged: (color) {
                             setState(() {
@@ -175,7 +183,92 @@ class InitialTopState extends State<InitialTop> {
                             },
                             itemCount: THEMELIST.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return _buildThemePreview(index, selectedIndex, setState, currentScheme);
+                              return SizedBox(
+                                width: 305,
+                                height: 180,
+                                child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    backgroundColor: THEMELIST.reversed.toList()[index].backgroundColour,
+                                    /* Highlight the selected colour with a thicker boarder */
+                                    side: (selectedIndex == index) ? BorderSide(width: 7, color: Colors.amber) :BorderSide(width: 0.7, color: Colors.black),
+                                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      /* Mini and simplified version of the app title bar. */
+                                      Container(
+                                        width: 305,
+                                        height: 18,
+                                        color: THEMELIST.reversed.toList()[index].backingColour,
+                                        child: Text(
+                                          "Frankensteins  - a D&D 5e character builder:",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 9,
+                                            color: THEMELIST.reversed.toList()[index].textColour),
+                                          textAlign: TextAlign.center,
+                                      )),
+                                      
+                                      /* Mini version of the page title bar. */
+                                      Container(
+                                        width: 305,
+                                        height: 18,
+                                        color: THEMELIST.reversed.toList()[index].backingColour,
+                                        child: Text("Main Menu",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 12,
+                                            color: THEMELIST.reversed.toList()[index].textColour
+                                          ),
+                                          textAlign: TextAlign.center
+                                      )),
+                                      const SizedBox(height: 28),
+
+                                      /* Mini versions of the buttons on the main page. */
+                                      Center(
+                                        child: Row(
+                                          children: [
+                                            /* Mini version of the button that takes the user to the create_a_character page */
+                                            const SizedBox(width: 21),
+                                            buildStyledMockButton("Create a \n character", THEMELIST.reversed.toList()[index]),
+                                            
+                                            /* Mini version of the button that takes the user to the search_for_content page */
+                                            const SizedBox(width: 27.5),
+                                            buildStyledMockButton("Search for\nContent", THEMELIST.reversed.toList()[index]),
+
+                                            /* Mini version of the button that takes the user to the my_characters page */
+                                            const SizedBox(width: 27.5),
+                                            buildStyledMockButton("My\nCharacters", THEMELIST.reversed.toList()[index])
+
+                                          ],
+                                    )),
+                                    const SizedBox(height: 25),
+                                    Center(
+                                      child: Row(
+                                        children: [
+                                          /* Mini version of the button that makes the download content popup */
+                                          const SizedBox(width: 50),
+                                          buildStyledMockButton("Download\nContent", THEMELIST.reversed.toList()[index]),
+                                          
+                                          /* Mini version of the button that takes the user to the create_content page */
+                                          const SizedBox(width: 27.5),
+                                          buildStyledMockButton("Create\nContent", THEMELIST.reversed.toList()[index])
+                                      ],
+                                    )),
+                                  ]),
+                                  onPressed: () {
+                                    setState(() {
+                                      selectedIndex = index;
+                                      // Create a copy of the selected theme instead of referencing it directly
+                                      final selectedTheme = THEMELIST.reversed.toList()[index];
+                                      currentScheme = ColourScheme(
+                                        textColour: selectedTheme.textColour,
+                                        backingColour: selectedTheme.backingColour,
+                                        backgroundColour: selectedTheme.backgroundColour,
+                                      );
+                                    });
+                                  },
+                                ));
                             },
                           )
                         ),
@@ -211,96 +304,22 @@ class InitialTopState extends State<InitialTop> {
     );
   }
 
-  /// Builds a theme preview button for the color picker
-  Widget _buildThemePreview(int index, int? selectedIndex, StateSetter setState, ColourScheme currentScheme) {
-    final theme = THEMELIST.reversed.toList()[index];
-    
-    return SizedBox(
-      width: 305,
-      height: 180,
-      child: OutlinedButton(
-        style: OutlinedButton.styleFrom(
-          backgroundColor: theme.backgroundColour,
-          side: (selectedIndex == index) 
-            ? BorderSide(width: 7, color: Colors.amber) 
-            : BorderSide(width: 0.7, color: Colors.black),
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
-        ),
-        child: Column(
-          children: [
-            /* Mini app title bar */
-            StyleUtils.buildStyledContainer(
-              width: 305,
-              height: 18,
-              backgroundColor: theme.backingColour,
-              child: StyleUtils.buildStyledTinyTextBox(
-                text: "Frankensteins - a D&D 5e character builder:",
-                color: theme.textColour,
-              ),
-            ),
-            
-            /* Mini page title bar */
-            StyleUtils.buildStyledContainer(
-              width: 305,
-              height: 18,
-              backgroundColor: theme.backingColour,
-              child: StyleUtils.buildStyledSmallTextBox(
-                text: "Main Menu",
-                color: theme.textColour,
-              ),
-            ),
-            
-            const SizedBox(height: 28),
-
-            /* Mini buttons */
-            Center(
-              child: Row(
-                children: [
-                  const SizedBox(width: 21),
-                  _buildMiniButton("Create a\ncharacter", theme),
-                  const SizedBox(width: 27.5),
-                  _buildMiniButton("Search for\nContent", theme),
-                  const SizedBox(width: 27.5),
-                  _buildMiniButton("My\nCharacters", theme)
-                ],
-              )
-            ),
-            
-            const SizedBox(height: 25),
-            
-            Center(
-              child: Row(
-                children: [
-                  const SizedBox(width: 50),
-                  _buildMiniButton("Download\nContent", theme),
-                  const SizedBox(width: 27.5),
-                  _buildMiniButton("Create\nContent", theme)
-                ],
-              )
-            ),
-          ]
-        ),
-        onPressed: () {
-          setState(() {
-            selectedIndex = index;
-            currentScheme = theme;
-          });
-        },
-      )
-    );
-  }
-
-  /// Builds a mini button for theme preview
-  Widget _buildMiniButton(String text, ColourScheme theme) {
-    return StyleUtils.buildStyledContainer(
+  /* Builds a fake version of a button styled to look like a given colour scheme. */
+  Widget buildStyledMockButton(String text, ColourScheme scheme) {
+    return Container(
       width: 61,
       height: 31,
-      backgroundColor: theme.backingColour,
-      borderRadius: BorderRadius.circular(4),
-      child: StyleUtils.buildStyledTinyTextBox(
-        text: text,
-        color: theme.textColour,
-      ),
+      decoration: BoxDecoration(
+        color: scheme.backingColour,
+        borderRadius:const BorderRadius.all(Radius.circular(4))),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 10,
+          color: scheme.textColour),
+        textAlign: TextAlign.center
+      )
     );
   }
 }
