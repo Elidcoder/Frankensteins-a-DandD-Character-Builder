@@ -131,4 +131,9 @@ class ThemeManager {
     final luminance = _currentScheme.backgroundColour.computeLuminance();
     return luminance > 0.5 ? Brightness.light : Brightness.dark;
   }
+
+  /// Get saved themes excluding the current theme
+  List<ColourScheme> get savedThemes {
+    return THEMELIST.where((theme) => !_currentScheme.isSameColourScheme(theme)).toList();
+  }
 }

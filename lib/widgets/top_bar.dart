@@ -1,6 +1,5 @@
 // External imports
 import "package:flutter/material.dart";
-import "package:flutter_colorpicker/flutter_colorpicker.dart" show ColorPicker;
 
 // Project imports
 import "../pages/all_home_subpages.dart";
@@ -9,6 +8,7 @@ import "main_menu.dart" show MainMenu;
 import "../theme/theme_manager.dart";
 import "../colour_scheme_class/colour_scheme.dart";
 import "../utils/style_utils.dart";
+import "simple_color_picker.dart";
 
 /* A map of all the pages that can be navigated to. */
 final Map<String, Widget Function()> PAGELINKER = {
@@ -94,7 +94,19 @@ class _RegularTopState extends State<RegularTop> {
   /* Returns a popup that allows the user to change the app's colour scheme. */ 
   void _showColorPicker(BuildContext context) {
     int? selectedIndex;
-    ColourScheme currentScheme = ThemeManager.instance.currentScheme;
+    // Create a copy of the current scheme so we can modify it without affecting the original
+    ColourScheme currentScheme = ColourScheme(
+      textColour: ThemeManager.instance.currentScheme.textColour,
+      backingColour: ThemeManager.instance.currentScheme.backingColour,
+      backgroundColour: ThemeManager.instance.currentScheme.backgroundColour,
+    );
+    
+    // Create a fixed color scheme for the dialog so it doesn't change as user picks colors
+    final dialogScheme = ColourScheme(
+      backingColour: Colors.grey[300]!,
+      textColour: Colors.black,
+      backgroundColour: Colors.white,
+    );
     
     showDialog(
       context: context,
@@ -106,39 +118,92 @@ class _RegularTopState extends State<RegularTop> {
             const Opacity(opacity: 0.5, child: ModalBarrier(dismissible: false, color: Colors.grey)),
             /* Settings menu (choosing colours). */
             AlertDialog(
-              title: const Text("Settings", style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700)),
+              backgroundColor: dialogScheme.backgroundColour,
+              title: Text(
+                "Settings", 
+                style: TextStyle(
+                  fontSize: 28, 
+                  fontWeight: FontWeight.w700,
+                  color: dialogScheme.textColour,
+                ),
+              ),
               content: SingleChildScrollView(
                 child: Column(
                   children: [
                     /* Selection of backing colour */
-                    ...styledSeperatedText("Select box colours:"),
-                    ColorPicker(
-                      pickerColor: currentScheme.backingColour,
+                    const SizedBox(height: 16),
+                    Text(
+                      "Select box colours:",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        color: dialogScheme.textColour,
+                      ),
+                    ),
+                    const SizedBox(height: 9),
+                    SimpleColorPicker(
+                      key: ValueKey('backing_${currentScheme.backingColour.value}'),
+                      currentColor: currentScheme.backingColour,
                       onColorChanged: (color) {
-                        currentScheme.backingColour = color;
+                        setState(() {
+                          currentScheme.backingColour = color;
+                        });
                       },
                     ),
 
                     /* Selection of text colour */
-                    ...styledSeperatedText("Select text colour:"),
-                    ColorPicker(
-                      pickerColor: currentScheme.textColour,
+                    const SizedBox(height: 16),
+                    Text(
+                      "Select text colour:",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        color: dialogScheme.textColour,
+                      ),
+                    ),
+                    const SizedBox(height: 9),
+                    SimpleColorPicker(
+                      key: ValueKey('text_${currentScheme.textColour.value}'),
+                      currentColor: currentScheme.textColour,
                       onColorChanged: (color) {
-                        currentScheme.textColour = color;
+                        setState(() {
+                          currentScheme.textColour = color;
+                        });
                       },
                     ),
 
                     /* Selection of background colour */
-                    ...styledSeperatedText("Select background colour:"),
-                    ColorPicker(
-                      pickerColor: currentScheme.backgroundColour,
+                    const SizedBox(height: 16),
+                    Text(
+                      "Select background colour:",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        color: dialogScheme.textColour,
+                      ),
+                    ),
+                    const SizedBox(height: 9),
+                    SimpleColorPicker(
+                      key: ValueKey('background_${currentScheme.backgroundColour.value}'),
+                      currentColor: currentScheme.backgroundColour,
                       onColorChanged: (color) {
-                        currentScheme.backgroundColour = color;
+                        setState(() {
+                          currentScheme.backgroundColour = color;
+                        });
                       },
                     ),
 
                     /* User can instead make use of a previous colour combination. */
-                    ...styledSeperatedText("Or choose a theme:"),
+                    const SizedBox(height: 16),
+                    Text(
+                      "Or choose a theme:",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        color: dialogScheme.textColour,
+                      ),
+                    ),
+                    const SizedBox(height: 9),
                     SizedBox(
                       height: 300,
                       width: 307,
@@ -197,15 +262,15 @@ class _RegularTopState extends State<RegularTop> {
                                       children: [
                                         /* Mini version of the button that takes the user to the create_a_character page */
                                         const SizedBox(width: 21),
-                                        buildStyledMockButton("Create a \n character", index),
+                                        buildStyledMockButton("Create a \n character", THEMELIST.reversed.toList()[index]),
                                         
                                         /* Mini version of the button that takes the user to the search_for_content page */
                                         const SizedBox(width: 27.5),
-                                        buildStyledMockButton("Search for\nContent", index),
+                                        buildStyledMockButton("Search for\nContent", THEMELIST.reversed.toList()[index]),
 
                                         /* Mini version of the button that takes the user to the my_characters page */
                                         const SizedBox(width: 27.5),
-                                        buildStyledMockButton("My\nCharacters", index)
+                                        buildStyledMockButton("My\nCharacters", THEMELIST.reversed.toList()[index])
 
                                       ],
                                 )),
@@ -215,18 +280,24 @@ class _RegularTopState extends State<RegularTop> {
                                     children: [
                                       /* Mini version of the button that makes the download content popup */
                                       const SizedBox(width: 50),
-                                      buildStyledMockButton("Download\nContent", index),
+                                      buildStyledMockButton("Download\nContent", THEMELIST.reversed.toList()[index]),
                                       
                                       /* Mini version of the button that takes the user to the create_content page */
                                       const SizedBox(width: 27.5),
-                                      buildStyledMockButton("Create\nContent", index)
+                                      buildStyledMockButton("Create\nContent", THEMELIST.reversed.toList()[index])
                                   ],
                                 )),
                               ]),
                               onPressed: () {
                                 setState(() {
                                   selectedIndex = index;
-                                  currentScheme = THEMELIST.reversed.toList()[index];
+                                  // Create a copy of the selected theme instead of referencing it directly
+                                  final selectedTheme = THEMELIST.reversed.toList()[index];
+                                  currentScheme = ColourScheme(
+                                    textColour: selectedTheme.textColour,
+                                    backingColour: selectedTheme.backingColour,
+                                    backgroundColour: selectedTheme.backgroundColour,
+                                  );
                                 });
                               },
                             ));
@@ -236,7 +307,10 @@ class _RegularTopState extends State<RegularTop> {
               actions: [
                 TextButton(
                   onPressed: () {Navigator.of(context).pop();},
-                  child: const Text("Cancel"),
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(color: dialogScheme.textColour),
+                  ),
                 ),
                 TextButton(
                   onPressed: () {
@@ -244,7 +318,10 @@ class _RegularTopState extends State<RegularTop> {
                     ThemeManager.instance.updateScheme(currentScheme);
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Save settings"),
+                  child: Text(
+                    "Save settings",
+                    style: TextStyle(color: dialogScheme.textColour),
+                  ),
                 ),
               ],
             ),
@@ -256,19 +333,19 @@ class _RegularTopState extends State<RegularTop> {
   }
 
   /* Builds a fake version of a button styled to look like a given colour scheme. */
-  Widget buildStyledMockButton(String text, int index) {
+  Widget buildStyledMockButton(String text, ColourScheme scheme) {
     return Container(
       width: 61,
       height: 31,
       decoration: BoxDecoration(
-        color: THEMELIST.reversed.toList()[index].backingColour,
+        color: scheme.backingColour,
         borderRadius:const BorderRadius.all(Radius.circular(4))),
       child: Text(
         text,
         style: TextStyle(
           fontWeight: FontWeight.w600,
           fontSize: 10,
-          color: THEMELIST.reversed.toList()[index].textColour),
+          color: scheme.textColour),
         textAlign: TextAlign.center
       )
     );
