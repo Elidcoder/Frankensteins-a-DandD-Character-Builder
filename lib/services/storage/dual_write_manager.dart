@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'content_storage_service.dart';
 import '../../content_classes/srd_globals.dart';
+import '../../content_classes/all_content_classes.dart'; // ✅ For CHARACTERLIST and GROUPLIST
 import '../../content_classes/non_character_classes/spell/spell.dart';
 import '../../content_classes/non_character_classes/class/class.dart';
 import '../../content_classes/non_character_classes/race/race.dart';
@@ -9,7 +10,10 @@ import '../../content_classes/non_character_classes/item/item.dart';
 import '../../content_classes/non_character_classes/background/background.dart';
 import '../../content_classes/non_character_classes/proficiency.dart';
 import '../../colour_scheme_class/colour_scheme.dart';
-import '../../file_manager/file_manager.dart';
+import '../../file_manager/file_manager.dart' show CHARACTERLIST, GROUPLIST;
+import 'dart:io';
+import 'dart:convert';
+import 'package:path_provider/path_provider.dart';
 
 /// Dual Write Manager - Manages writing to both legacy and new storage systems
 /// During transition period, all writes go to both systems for safety
@@ -96,7 +100,7 @@ class DualWriteManager {
       try {
         SPELLLIST.clear();
         SPELLLIST.addAll(spells);
-        await saveChanges(); // Call existing file_manager save
+        await _saveLegacyOnly(); // ✅ Direct call to avoid circular dependency
         _log('Legacy spell write: SUCCESS');
       } catch (e) {
         legacySuccess = false;
@@ -136,7 +140,7 @@ class DualWriteManager {
       try {
         CLASSLIST.clear();
         CLASSLIST.addAll(classes);
-        await saveChanges();
+        await _saveLegacyOnly(); // ✅ Direct call to avoid circular dependency
         _log('Legacy class write: SUCCESS');
       } catch (e) {
         legacySuccess = false;
@@ -175,7 +179,7 @@ class DualWriteManager {
       try {
         RACELIST.clear();
         RACELIST.addAll(races);
-        await saveChanges();
+        await _saveLegacyOnly(); // ✅ Direct call to avoid circular dependency
         _log('Legacy race write: SUCCESS');
       } catch (e) {
         legacySuccess = false;
@@ -214,7 +218,7 @@ class DualWriteManager {
       try {
         FEATLIST.clear();
         FEATLIST.addAll(feats);
-        await saveChanges();
+        await _saveLegacyOnly(); // ✅ Direct call to avoid circular dependency
         _log('Legacy feat write: SUCCESS');
       } catch (e) {
         legacySuccess = false;
@@ -253,7 +257,7 @@ class DualWriteManager {
       try {
         ITEMLIST.clear();
         ITEMLIST.addAll(items);
-        await saveChanges();
+        await _saveLegacyOnly(); // ✅ Direct call to avoid circular dependency
         _log('Legacy item write: SUCCESS');
       } catch (e) {
         legacySuccess = false;
@@ -292,7 +296,7 @@ class DualWriteManager {
       try {
         BACKGROUNDLIST.clear();
         BACKGROUNDLIST.addAll(backgrounds);
-        await saveChanges();
+        await _saveLegacyOnly(); // ✅ Direct call to avoid circular dependency
         _log('Legacy background write: SUCCESS');
       } catch (e) {
         legacySuccess = false;
@@ -331,7 +335,7 @@ class DualWriteManager {
       try {
         PROFICIENCYLIST.clear();
         PROFICIENCYLIST.addAll(proficiencies);
-        await saveChanges();
+        await _saveLegacyOnly(); // ✅ Direct call to avoid circular dependency
         _log('Legacy proficiency write: SUCCESS');
       } catch (e) {
         legacySuccess = false;
@@ -370,7 +374,7 @@ class DualWriteManager {
       try {
         LANGUAGELIST.clear();
         LANGUAGELIST.addAll(languages);
-        await saveChanges();
+        await _saveLegacyOnly(); // ✅ Direct call to avoid circular dependency
         _log('Legacy language write: SUCCESS');
       } catch (e) {
         legacySuccess = false;
@@ -409,7 +413,7 @@ class DualWriteManager {
       try {
         THEMELIST.clear();
         THEMELIST.addAll(themes);
-        await saveChanges();
+        await _saveLegacyOnly(); // ✅ Direct call to avoid circular dependency
         _log('Legacy theme write: SUCCESS');
       } catch (e) {
         legacySuccess = false;
@@ -886,6 +890,30 @@ class DualWriteManager {
     if (_enableDetailedLogging) {
       debugPrint('[DualWriteManager] $message');
     }
+  }
+  
+  /// Legacy-only save method (to avoid circular dependency with file_manager)
+  Future<void> _saveLegacyOnly() async {
+    final documentsDir = await getApplicationDocumentsDirectory();
+    final path = '${documentsDir.path}/userContent.json';
+    final file = File(path);
+
+    final Map<String, dynamic> data = {
+      "Languages": LANGUAGELIST,
+      "Proficiencies": PROFICIENCYLIST.map((x) => x.toJson()).toList(),
+      "Races": RACELIST.map((x) => x.toJson()).toList(),
+      "Backgrounds": BACKGROUNDLIST.map((x) => x.toJson()).toList(),
+      "Classes": CLASSLIST.map((x) => x.toJson()).toList(),
+      "Spells": SPELLLIST.map((x) => x.toJson()).toList(),
+      "Feats": FEATLIST.map((x) => x.toJson()).toList(),
+      "Groups": GROUPLIST,
+      "Characters": CHARACTERLIST.map((x) => x.toJson()).toList(),
+      "ColourSchemes": THEMELIST.map((x) => x.toJson()).toList(),
+      "Equipment": List<Map<String, dynamic>>.from(ITEMLIST.map((x) => x.toJson()).toList()),
+    };
+
+    final jsonStringy = jsonEncode(data);
+    await file.writeAsString(jsonStringy);
   }
 }
 
