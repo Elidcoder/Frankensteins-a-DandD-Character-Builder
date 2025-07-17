@@ -12,7 +12,8 @@ List<String> GROUPLIST = [];
 
 /* initialiseGlobals reads the new storage system and updates the LISTS. */
 Future<bool> initialiseGlobals() async {
-  if (CHARACTERLIST.isNotEmpty) {
+  // Check if content is already loaded to shortcircuit initialization (do not need to check every list, an app loading without these is highly unlikely)
+  if (SPELLLIST.isNotEmpty || CLASSLIST.isNotEmpty || RACELIST.isNotEmpty) {
     return true;
   }
     
