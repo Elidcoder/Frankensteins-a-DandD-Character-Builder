@@ -1,134 +1,80 @@
 // External Imports
-import "dart:io" show File;
-import "dart:convert" show jsonDecode, jsonEncode;
 import "package:flutter/foundation.dart" show debugPrint;
-import "package:flutter/services.dart" show rootBundle;
-import "package:path_provider/path_provider.dart" show getApplicationDocumentsDirectory;
 
 // Project Import
 import "../colour_scheme_class/colour_scheme.dart";
 import "../content_classes/all_content_classes.dart";
 import "../services/character_migration_helper.dart";
-import "../services/storage/dual_write_manager.dart";
 import "../services/storage/content_storage_service.dart";
 
 List<Character> CHARACTERLIST = [];
 List<String> GROUPLIST = [];
 
-/* initialiseGlobals reads the JSON and uses it to update the LISTS. */
+/* initialiseGlobals reads the new storage system and updates the LISTS. */
 Future<bool> initialiseGlobals() async {
   if (CHARACTERLIST.isNotEmpty) {
-    bool myvar =  true;
-    return myvar;
+    return true;
   }
     
   try {
     // Initialize the new storage system
     await ContentStorageService.initialize();
     
-    /* Ensure the local file exists */
-    await copyAssetFileToLocal();
-    final path = await getLocalFilePath();
-    final file = File(path);
-
-    /* Add the information stored in the apps JSON to the LISTS. */
-    final success = await addToGlobalsFromFile(file);
+    // Load all content from the new multi-file storage system
+    SPELLLIST.addAll(await ContentStorageService.loadSpells());
+    CLASSLIST.addAll(await ContentStorageService.loadClasses());
+    RACELIST.addAll(await ContentStorageService.loadRaces());
+    FEATLIST.addAll(await ContentStorageService.loadFeats());
+    ITEMLIST.addAll(await ContentStorageService.loadItems());
+    BACKGROUNDLIST.addAll(await ContentStorageService.loadBackgrounds());
+    PROFICIENCYLIST.addAll(await ContentStorageService.loadProficiencies());
+    LANGUAGELIST.addAll(await ContentStorageService.loadLanguages());
+    THEMELIST.addAll(await ContentStorageService.loadThemes());
     
-    // After loading legacy data, sync to new system for the first time
-    if (success) {
-      try {
-        await DualWriteManager.instance.syncLegacyToNew();
-        debugPrint('Initial sync from legacy to new storage system completed');
-      } catch (e) {
-        debugPrint('Warning: Initial sync to new storage failed: $e');
-        // Continue anyway - legacy system still works
-      }
-    }
+    debugPrint('Content loaded from new storage system:');
+    debugPrint('- Spells: ${SPELLLIST.length}');
+    debugPrint('- Classes: ${CLASSLIST.length}');
+    debugPrint('- Races: ${RACELIST.length}');
+    debugPrint('- Feats: ${FEATLIST.length}');
+    debugPrint('- Items: ${ITEMLIST.length}');
+    debugPrint('- Backgrounds: ${BACKGROUNDLIST.length}');
+    debugPrint('- Proficiencies: ${PROFICIENCYLIST.length}');
+    debugPrint('- Languages: ${LANGUAGELIST.length}');
+    debugPrint('- Themes: ${THEMELIST.length}');
     
-    return success;
+    return true;
 
-  /* Update faluire */
+  /* Update failure */
   } catch (e) {
+    debugPrint('Failed to initialize from new storage system: $e');
     return false;
   }
 }
 
-/* Helper function that takes in a file, reads it, decodes the JSON,
- * and updates the LISTS accordingly. 
- * May throw an error, !!THE ERROR MUST BE HANDLED BY THE CALLER!!, 
- * returns true if no error was thrown by completion of updates to lists. */
-Future<bool> addToGlobalsFromFile(File file) async {
-  /* Read the file */
-  final jsonString = await file.readAsString();
-  final jsonMap = jsonDecode(jsonString);
-
-  /* Add the data into the correct lists. */
-  GROUPLIST.addAll(List<String>.from((jsonMap["Groups"]?? [])));
-  LANGUAGELIST.addAll(List<String>.from((jsonMap["Languages"]?? [])));
-  FEATLIST.addAll(List<Feat>.from((jsonMap["Feats"]?? []).map((x) => Feat.fromJson(x))));
-  RACELIST.addAll(List<Race>.from((jsonMap["Races"]?? []).map((x) => Race.fromJson(x))));
-  SPELLLIST.addAll(List<Spell>.from((jsonMap["Spells"]?? []).map((x) => Spell.fromJson(x))));
-  CLASSLIST.addAll(List<Class>.from((jsonMap["Classes"]?? []).map((x) => Class.fromJson(x))));
-  ITEMLIST.addAll(List<Item>.from((jsonMap["Equipment"]?? []).map((x) => mapEquipment(x))));
-  CHARACTERLIST.addAll(List<Character>.from((jsonMap["Characters"]?? []).map((x) => Character.fromJson(x))));
-  BACKGROUNDLIST.addAll(List<Background>.from((jsonMap["Backgrounds"]?? []).map((x) => Background.fromJson(x))));
-  THEMELIST.addAll(List<ColourScheme>.from((jsonMap["ColourSchemes"]?? []).map((x) => ColourScheme.fromJson(x))));
-  PROFICIENCYLIST.addAll(List<Proficiency>.from((jsonMap["Proficiencies"]?? []).map((x) => Proficiency.fromJson(x))));
-
-  /* If there were no errors thrown, true is returned. */
-  return true;
-}
-
-/* Get the file path to the content JSON. */
-Future<String> getLocalFilePath() async {
-  final directory = await getApplicationDocumentsDirectory();
-  return "${directory.path}/userContent.json";
-}
-
-/* Copy the JSON file from the project into the correct location. */
-Future<void> copyAssetFileToLocal() async {
-  final path = await getLocalFilePath();
-  final file = File(path);
-
-  if (!(await file.exists())) {
-    /* Load the JSON from assets. */
-    final byteData = await rootBundle.load("assets/userContent.json");
-
-    /* Write it locally. */
-    await file.writeAsBytes(byteData.buffer.asUint8List());
-  }
-}
-
-/* Save the changes to the JSON file. */
+/* Save the changes using the new multi-file storage system. */
 Future<void> saveChanges() async {
   try {
-    // First, try to write to new storage system via dual write manager
-    try {
-      final dualWriter = DualWriteManager.instance;
-      final results = await dualWriter.writeAllContent();
-      
-      // Log results for monitoring
-      int successCount = 0;
-      int failCount = 0;
-      for (final result in results.values) {
-        if (result.overallSuccess) {
-          successCount++;
-        } else {
-          failCount++;
-        }
-      }
-      
-      debugPrint('Dual write completed: $successCount successes, $failCount failures');
-      
-      // If new system completely failed, fall back to legacy-only save
-      if (failCount == results.length) {
-        debugPrint('New system completely failed, performing legacy-only save');
-        await _saveLegacyOnly();
-      }
-      
-    } catch (e) {
-      debugPrint('Dual write system failed: $e, falling back to legacy save');
-      await _saveLegacyOnly();
+    // Save to new storage system using ContentStorageService directly
+    final results = await Future.wait([
+      ContentStorageService.saveSpells(SPELLLIST),
+      ContentStorageService.saveClasses(CLASSLIST),
+      ContentStorageService.saveRaces(RACELIST),
+      ContentStorageService.saveFeats(FEATLIST),
+      ContentStorageService.saveItems(ITEMLIST),
+      ContentStorageService.saveBackgrounds(BACKGROUNDLIST),
+      ContentStorageService.saveProficiencies(PROFICIENCYLIST),
+      ContentStorageService.saveLanguages(LANGUAGELIST),
+      ContentStorageService.saveThemes(THEMELIST),
+    ]);
+    
+    // Count successes
+    final successCount = results.where((result) => result).length;
+    final failCount = results.length - successCount;
+    
+    debugPrint('Content save completed: $successCount successes, $failCount failures');
+    
+    if (failCount > 0) {
+      debugPrint('Warning: $failCount content types failed to save');
     }
 
   /* Error in saving changes, reset globals to undo bad change. */
@@ -145,35 +91,8 @@ Future<void> saveChanges() async {
     BACKGROUNDLIST.clear();
     THEMELIST.clear();
     PROFICIENCYLIST.clear();
-    initialiseGlobals();
+    await initialiseGlobals();
   }
-}
-
-/* Legacy-only save method (fallback) */
-Future<void> _saveLegacyOnly() async {
-  /* Ensure the JSON exists in filesys and get the file */
-  final path = await getLocalFilePath();
-  final file = File(path);
-
-  /* Create the JSON */
-  final Map<String, dynamic> data = {
-    "Languages": LANGUAGELIST,
-    "Proficiencies": PROFICIENCYLIST.map((x) => x.toJson()).toList(),
-    "Races": RACELIST.map((x) => x.toJson()).toList(),
-    "Backgrounds": BACKGROUNDLIST.map((x) => x.toJson()).toList(),
-    "Classes": CLASSLIST.map((x) => x.toJson()).toList(),
-    "Spells": SPELLLIST.map((x) => x.toJson()).toList(),
-    "Feats": FEATLIST.map((x) => x.toJson()).toList(),
-    "Groups": GROUPLIST,
-    "Characters": CHARACTERLIST.map((x) => x.toJson()).toList(),
-    "ColourSchemes": THEMELIST.map((x) => x.toJson()).toList(),
-    "Equipment": List<Map<String, dynamic>>.from(ITEMLIST.map((x) => x.toJson()).toList()),
-  };
-
-  /* Write the JSON */
-  final jsonStringy = jsonEncode(data);
-  await file.writeAsString(jsonStringy);
-  debugPrint('Legacy-only save completed');
 }
 
 /* Update GROUPLIST from the new character storage system */
@@ -201,17 +120,4 @@ Future<void> updateGroupListFromNewSystem() async {
     debugPrint('Error updating GROUPLIST from new system: $e');
     // Keep existing GROUPLIST if update fails
   }
-}
-
-/* Dual Write System Management Functions */
-/// Enable reading from new storage system (with legacy fallback)
-void enableNewSystemReads() {
-  DualWriteManager.instance.setNewSystemReadEnabled(true);
-  debugPrint('New storage system reads enabled');
-}
-
-/// Disable reading from new storage system (legacy only)
-void disableNewSystemReads() {
-  DualWriteManager.instance.setNewSystemReadEnabled(false);
-  debugPrint('New storage system reads disabled - using legacy only');
 }

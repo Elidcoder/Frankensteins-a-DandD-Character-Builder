@@ -30,7 +30,7 @@ class _FrankensteinAppState extends State<FrankensteinApp> {
   }
   
   Future<void> _initializeApp() async {
-    // Initialize legacy system (for content only, characters use new system)
+    // Initialize new content storage system
     await initialiseGlobals();
     
     // Initialize new character storage system
