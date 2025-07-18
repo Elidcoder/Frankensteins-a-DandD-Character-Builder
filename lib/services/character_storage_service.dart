@@ -11,6 +11,109 @@ class CharacterStorageService {
 
   CharacterStorageService._();
 
+  // Static interface for easy access (replaces CharacterMigrationHelper)
+  static const String notReadyMessage = 'Character service not ready';
+
+  // Initialize the character service (replaces CharacterMigrationHelper.initialize)
+  static Future<void> initialize() async {
+    try {
+      _instance = await CharacterStorageService.getInstance();
+      debugPrint('Character service initialized - using new storage system only');
+    } catch (e) {
+      debugPrint('Failed to initialize character service: $e');
+    }
+  }
+
+  // Static methods that provide error handling and null safety (replaces CharacterMigrationHelper methods)
+  
+  static Future<List<Character>> getAllCharacters() async {
+    if (!serviceIsReady) {
+      debugPrint(notReadyMessage);
+      return [];
+    }
+    
+    try {
+      return await _instance!.loadAllCharacters();
+    } catch (e) {
+      debugPrint('Error loading characters from new system: $e');
+      return [];
+    }
+  }
+
+  static Future<bool> saveCharacter(Character character) async {
+    if (!serviceIsReady) {
+      debugPrint(notReadyMessage);
+      return false;
+    }
+
+    try {
+      return await _instance!._saveCharacter(character);
+    } catch (e) {
+      debugPrint('Error saving character to new system: $e');
+      return false;
+    }
+  }
+
+  static Future<bool> deleteCharacter(int uniqueID) async {
+    if (!serviceIsReady) {
+      debugPrint(notReadyMessage);
+      return false;
+    }
+
+    try {
+      return await _instance!._deleteCharacter(uniqueID);
+    } catch (e) {
+      debugPrint('Error deleting character from new system: $e');
+      return false;
+    }
+  }
+
+  static Future<Character?> findCharacter(int uniqueID) async {
+    if (!serviceIsReady) {
+      debugPrint(notReadyMessage);
+      return null;
+    }
+    
+    try {
+      return await _instance!._loadCharacter(uniqueID);
+    } catch (e) {
+      debugPrint('Error loading character from new system: $e');
+      return null;
+    }
+  }
+
+  static Future<bool> characterExists(int uniqueID) async {
+    if (!serviceIsReady) {
+      debugPrint(notReadyMessage);
+      return false;
+    }
+    
+    try {
+      return await _instance!._characterExists(uniqueID);
+    } catch (e) {
+      debugPrint('Error checking character existence: $e');
+      return false;
+    }
+  }
+
+  static Future<List<int>> getAllCharacterIds() async {
+    if (!serviceIsReady) {
+      debugPrint(notReadyMessage);
+      return [];
+    }
+    
+    try {
+      return await _instance!.getCharacterIds();
+    } catch (e) {
+      debugPrint('Error loading character IDs: $e');
+      return [];
+    }
+  }
+
+  static bool get serviceIsReady => _instance != null && _instance!._initialized;
+
+  // Instance methods (original functionality)
+
   // Get the singleton instance and initialize if needed
   static Future<CharacterStorageService> getInstance() async {
     if (_instance == null) {
@@ -36,7 +139,7 @@ class CharacterStorageService {
   }
 
   // Save a character to individual JSON file
-  Future<bool> saveCharacter(Character character) async {
+  Future<bool> _saveCharacter(Character character) async {
     if (!_initialized) return false;
     
     try {
@@ -64,7 +167,7 @@ class CharacterStorageService {
   }
 
   // Load a specific character by ID
-  Future<Character?> loadCharacter(int uniqueID) async {
+  Future<Character?> _loadCharacter(int uniqueID) async {
     if (!_initialized) return null;
     
     try {
@@ -80,7 +183,7 @@ class CharacterStorageService {
   }
 
   // Delete a character file
-  Future<bool> deleteCharacter(int uniqueID) async {
+  Future<bool> _deleteCharacter(int uniqueID) async {
     if (!_initialized) return false;
     
     try {
@@ -125,7 +228,7 @@ class CharacterStorageService {
       final characterIds = await getCharacterIds();
       
       for (final id in characterIds) {
-        final character = await loadCharacter(id);
+        final character = await _loadCharacter(id);
         if (character != null) {
           characters.add(character);
         }
@@ -220,7 +323,7 @@ class CharacterStorageService {
   }
 
   // Utility method to check if a character exists (checks both index and file)
-  Future<bool> characterExists(int uniqueID) async {
+  Future<bool> _characterExists(int uniqueID) async {
     if (!_initialized) return false;
     
     // Check index first (more efficient)

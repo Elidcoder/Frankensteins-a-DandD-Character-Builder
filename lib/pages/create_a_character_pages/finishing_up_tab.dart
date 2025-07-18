@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 import "../../content_classes/all_content_classes.dart";
 import "../../utils/style_utils.dart";
 import "../../widgets/initial_top.dart";
-import "../../services/character_migration_helper.dart";
+import "../../services/character_storage_service.dart";
 import "../../file_manager/file_manager.dart" show GROUPLIST, updateGroupListFromNewSystem;
 import "../../pdf_generator/pdf_final_display.dart";
 import "../../theme/theme_manager.dart";
@@ -142,7 +142,7 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
                             final navigator = Navigator.of(context);
                             
                             // Save character using the new system only
-                            final saveSuccess = await CharacterMigrationHelper.saveCharacter(widget.character);
+                            final saveSuccess = await CharacterStorageService.saveCharacter(widget.character);
 
                             // If save was successful, update group list
                             if (saveSuccess) {

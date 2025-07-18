@@ -4,7 +4,6 @@ import "package:flutter/material.dart";
 // Project imports
 import "file_manager/file_manager.dart";
 import "services/character_storage_service.dart";
-import "services/character_migration_helper.dart";
 import "theme/theme_manager.dart";
 import "theme/theme_manager_widget.dart";
 import "widgets/initial_top.dart" show InitialTop, InitialTopKey;
@@ -37,7 +36,7 @@ class _FrankensteinAppState extends State<FrankensteinApp> {
     await getCharacterStorageService();
     
     // Initialize character service wrapper
-    await CharacterMigrationHelper.initialize();
+    await CharacterStorageService.initialize();
     
     // Initialize GROUPLIST from current characters (efficient startup)
     await updateGroupListFromNewSystem();
