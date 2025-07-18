@@ -124,7 +124,7 @@ class MainMenuState extends State<MainMenu> {
 
       try {
         await _loadContentFromFile(targetFile);
-        await saveChanges();
+        // _loadContentFromFile already saves all the content it modifies
       } catch (e) {
         if (mounted) {
           // ignore: use_build_context_synchronously (mounted check ensures correctness)

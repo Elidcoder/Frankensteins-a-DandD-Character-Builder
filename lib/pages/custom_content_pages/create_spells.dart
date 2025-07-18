@@ -2,7 +2,7 @@
 import "package:flutter/material.dart";
 
 // Project Imports
-import "../../file_manager/file_manager.dart" show saveChanges;
+import "../../services/storage/content_storage_service.dart";
 import "package:frankenstein/content_classes/all_content_classes.dart" show Spell, SPELLLIST;
 import "../../theme/theme_manager.dart";
 import "../../utils/style_utils.dart";
@@ -481,8 +481,8 @@ class MainMakeASpell extends State<MakeASpell> {
                               material: material)
                             );
 
-                            //write the modified spell list to the Json
-                            saveChanges();
+                            //write only the spell list to storage (more efficient than saving all content)
+                            ContentStorageService.saveSpells(SPELLLIST);
                             
                             //display the popup and return home
                             setState(() {

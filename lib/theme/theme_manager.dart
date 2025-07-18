@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../colour_scheme_class/colour_scheme.dart';
-import '../file_manager/file_manager.dart';
+import '../services/storage/content_storage_service.dart';
 
 /// Service class to manage theme operations
 /// Provides a cleaner interface for theme management
@@ -36,8 +36,8 @@ class ThemeManager {
     THEMELIST.removeWhere((theme) => newScheme.isSameColourScheme(theme));
     THEMELIST.add(newScheme);
     
-    // Save changes
-    saveChanges();
+    // Save only the themes (more efficient than saving all content)
+    ContentStorageService.saveThemes(THEMELIST);
     
     // Notify all listeners
     for (final listener in _listeners) {
@@ -131,7 +131,7 @@ class ThemeManager {
     final luminance = _currentScheme.backgroundColour.computeLuminance();
     return luminance > 0.5 ? Brightness.light : Brightness.dark;
   }
-
+  /// Get the brightness of the current theme
   /// Get saved themes excluding the current theme
   List<ColourScheme> get savedThemes {
     return THEMELIST.where((theme) => !_currentScheme.isSameColourScheme(theme)).toList();
