@@ -817,6 +817,7 @@ class StyleUtils {
   /// Creates a styled AppBar with consistent theming
   static AppBar buildStyledAppBar({
     required String title,
+    double? size,
     List<Widget>? actions,
     Widget? leading,
     bool automaticallyImplyLeading = true,
@@ -826,12 +827,8 @@ class StyleUtils {
     TextStyle? titleStyle,
   }) {
     return AppBar(
-      title: Text(
-        title,
-        style: titleStyle ?? TextStyle(
-          color: ThemeManager.instance.currentScheme.textColour,
-          fontWeight: FontWeight.w700,
-        ),
+      title: Center(
+        child: (size == null)? buildStyledSmallTextBox(text: title) : buildStyledTextBox(text: title, size: size),
       ),
       backgroundColor: ThemeManager.instance.currentScheme.backingColour,
       foregroundColor: ThemeManager.instance.currentScheme.textColour,
