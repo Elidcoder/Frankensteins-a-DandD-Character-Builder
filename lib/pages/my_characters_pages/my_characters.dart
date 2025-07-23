@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 
 // Project Imports
 import "../../widgets/top_bar.dart";
-import "../../services/character_migration_helper.dart";
+import "../../services/character_storage_service.dart";
 import "../../file_manager/file_manager.dart" show updateGroupListFromNewSystem;
 import "edit_character.dart";
 import "../../pdf_generator/pdf_final_display.dart";
@@ -37,7 +37,7 @@ class MainMyCharacters extends State<MyCharacters> {
     });
     
     try {
-      final characters = await CharacterMigrationHelper.getAllCharacters();
+      final characters = await CharacterStorageService.getAllCharacters();
       
       // Update GROUPLIST only if not already initialized (efficient)
       await updateGroupListFromNewSystem();
@@ -199,7 +199,7 @@ class MainMyCharacters extends State<MyCharacters> {
                             Character duplicatedCharacter = selectedCharacter.getCopy();
                             
                             // Save using migration helper
-                            final saveSuccess = await CharacterMigrationHelper.saveCharacter(duplicatedCharacter);
+                            final saveSuccess = await CharacterStorageService.saveCharacter(duplicatedCharacter);
                             
                             if (saveSuccess) {
                               // Refresh the character list also reloads the grouplist
@@ -237,7 +237,7 @@ class MainMyCharacters extends State<MyCharacters> {
                           final characterToDelete = filteredCharacters[index];
 
                           /* Delete the character using the new system only. */
-                          final success = await CharacterMigrationHelper.deleteCharacter(characterToDelete.uniqueID);
+                          final success = await CharacterStorageService.deleteCharacter(characterToDelete.uniqueID);
                           
                           if (success) {
                             /* Reload the character list to reflect changes and updates the grouplist. */

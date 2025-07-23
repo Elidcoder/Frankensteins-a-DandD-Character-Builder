@@ -4,7 +4,7 @@ import "package:flutter/foundation.dart" show debugPrint;
 // Project Import
 import "../colour_scheme_class/colour_scheme.dart";
 import "../content_classes/all_content_classes.dart";
-import "../services/character_migration_helper.dart";
+import "../services/character_storage_service.dart";
 import "../services/storage/content_storage_service.dart";
 
 List<Character> CHARACTERLIST = [];
@@ -52,55 +52,11 @@ Future<bool> initialiseGlobals() async {
   }
 }
 
-/* Save the changes using the new multi-file storage system. */
-Future<void> saveChanges() async {
-  try {
-    // Save to new storage system using ContentStorageService directly
-    final results = await Future.wait([
-      ContentStorageService.saveSpells(SPELLLIST),
-      ContentStorageService.saveClasses(CLASSLIST),
-      ContentStorageService.saveRaces(RACELIST),
-      ContentStorageService.saveFeats(FEATLIST),
-      ContentStorageService.saveItems(ITEMLIST),
-      ContentStorageService.saveBackgrounds(BACKGROUNDLIST),
-      ContentStorageService.saveProficiencies(PROFICIENCYLIST),
-      ContentStorageService.saveLanguages(LANGUAGELIST),
-      ContentStorageService.saveThemes(THEMELIST),
-    ]);
-    
-    // Count successes
-    final successCount = results.where((result) => result).length;
-    final failCount = results.length - successCount;
-    
-    debugPrint('Content save completed: $successCount successes, $failCount failures');
-    
-    if (failCount > 0) {
-      debugPrint('Warning: $failCount content types failed to save');
-    }
-
-  /* Error in saving changes, reset globals to undo bad change. */
-  } catch (e) {
-    debugPrint('Critical save failure: $e, resetting globals');
-    GROUPLIST.clear();
-    LANGUAGELIST.clear();
-    FEATLIST.clear();
-    RACELIST.clear();
-    SPELLLIST.clear();
-    CLASSLIST.clear();
-    ITEMLIST.clear();
-    CHARACTERLIST.clear();
-    BACKGROUNDLIST.clear();
-    THEMELIST.clear();
-    PROFICIENCYLIST.clear();
-    await initialiseGlobals();
-  }
-}
-
 /* Update GROUPLIST from the new character storage system */
 Future<void> updateGroupListFromNewSystem() async {
   try {
     // Get all characters from the new system
-    final characters = await CharacterMigrationHelper.getAllCharacters();
+    final characters = await CharacterStorageService.getAllCharacters();
     
     // Extract unique groups from characters efficiently
     final groups = characters

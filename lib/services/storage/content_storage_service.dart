@@ -1,52 +1,32 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'json_file_storage.dart';
-import 'file_storage.dart';
-import '../../content_classes/non_character_classes/spell/spell.dart';
-import '../../content_classes/non_character_classes/class/class.dart';
-import '../../content_classes/non_character_classes/race/race.dart';
-import '../../content_classes/non_character_classes/feat/feat.dart';
-import '../../content_classes/non_character_classes/item/item.dart';
-import '../../content_classes/non_character_classes/background/background.dart';
-import '../../content_classes/non_character_classes/proficiency.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import '../../colour_scheme_class/colour_scheme.dart';
+import '../../content_classes/non_character_classes/all_non_character_classes.dart';
 
-/// Content Storage Service - Manages separate file storage for each D&D content type
-/// Uses JsonFileStorage for atomic operations and data integrity
-/// Provides separate files: spells.json, classes.json, races.json, etc.
+/// Content Storage Service - Direct JSON file management for D&D content
+/// Provides atomic operations and data integrity for content files
+/// Manages separate files: spells.json, classes.json, races.json, etc.
 class ContentStorageService {
-  static final Map<String, JsonFileStorage> _storageInstances = {};
+  static late final Directory _baseDirectory;
   static bool _initialized = false;
   
-  // Storage configuration
-  static final StorageConfig _config = StorageConfig(
-    basePath: 'frankenstein_content', // Separate from legacy path
-    enableValidation: true,
-  );
+  // Base path for content files
+  static const String _basePath = 'frankenstein_content';
   
-  /// Initialize all storage instances
+  /// Initialize the storage service
   static Future<bool> initialize() async {
     if (_initialized) return true;
     
     try {
-      // Initialize all content type storages
-      final storages = [
-        spellStorage,
-        classStorage,
-        raceStorage,
-        featStorage,
-        itemStorage,
-        backgroundStorage,
-        proficiencyStorage,
-        languageStorage,
-        themeStorage,
-      ];
+      // Setup base directory
+      final appDocsDir = await getApplicationDocumentsDirectory();
+      _baseDirectory = Directory(path.join(appDocsDir.path, _basePath));
       
-      for (final storage in storages) {
-        final success = await storage.initialize();
-        if (!success) {
-          debugPrint('Failed to initialize storage: ${storage.runtimeType}');
-          return false;
-        }
+      if (!await _baseDirectory.exists()) {
+        await _baseDirectory.create(recursive: true);
       }
       
       _initialized = true;
@@ -58,41 +38,77 @@ class ContentStorageService {
     }
   }
   
-  /// Get storage instance for specific content type
-  static JsonFileStorage _getStorage(String contentType) {
-    return _storageInstances.putIfAbsent(contentType, () {
-      return JsonFileStorage(_config);
-    });
+  // ==================== Core file operations ====================
+  
+  /// Get full path for a filename
+  static String _getFullPath(String fileName) {
+    return path.join(_baseDirectory.path, fileName);
   }
   
-  // ==================== Content-specific storages ====================
+  /// Check if a file exists
+  static Future<bool> _fileExists(String fileName) async {
+    if (!_initialized) return false;
+    final file = File(_getFullPath(fileName));
+    return await file.exists();
+  }
   
-  /// Storage for spells (spells.json)
-  static JsonFileStorage get spellStorage => _getStorage('spells');
+  /// Read JSON data from file
+  static Future<Map<String, dynamic>?> _readJson(String fileName) async {
+    if (!_initialized) return null;
+    
+    try {
+      final file = File(_getFullPath(fileName));
+      if (!await file.exists()) return null;
+      
+      final content = await file.readAsString();
+      if (content.isEmpty) return null;
+      
+      return jsonDecode(content) as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Failed to read JSON from $fileName: $e');
+      return null;
+    }
+  }
   
-  /// Storage for classes (classes.json)
-  static JsonFileStorage get classStorage => _getStorage('classes');
-  
-  /// Storage for races (races.json)
-  static JsonFileStorage get raceStorage => _getStorage('races');
-  
-  /// Storage for feats (feats.json)
-  static JsonFileStorage get featStorage => _getStorage('feats');
-  
-  /// Storage for items (items.json)
-  static JsonFileStorage get itemStorage => _getStorage('items');
-  
-  /// Storage for backgrounds (backgrounds.json)
-  static JsonFileStorage get backgroundStorage => _getStorage('backgrounds');
-  
-  /// Storage for proficiencies (proficiencies.json)
-  static JsonFileStorage get proficiencyStorage => _getStorage('proficiencies');
-  
-  /// Storage for languages (languages.json)
-  static JsonFileStorage get languageStorage => _getStorage('languages');
-  
-  /// Storage for themes (themes.json)
-  static JsonFileStorage get themeStorage => _getStorage('themes');
+  /// Write JSON data to file with atomic operation
+  static Future<bool> _writeJson(String fileName, Map<String, dynamic> data) async {
+    if (!_initialized) return false;
+    
+    try {
+      // Validate JSON by encoding it first
+      final jsonString = jsonEncode(data);
+      
+      final fullPath = _getFullPath(fileName);
+      final targetFile = File(fullPath);
+      
+      // Create parent directories if needed
+      final parentDir = targetFile.parent;
+      if (!await parentDir.exists()) {
+        await parentDir.create(recursive: true);
+      }
+      
+      // Atomic write: write to temp file, then rename
+      final tempFile = File('$fullPath.tmp');
+      try {
+        await tempFile.writeAsString(jsonString);
+        await tempFile.rename(fullPath);
+        return true;
+      } catch (e) {
+        // Clean up temp file if rename fails
+        if (await tempFile.exists()) {
+          try {
+            await tempFile.delete();
+          } catch (_) {
+            // Ignore cleanup errors
+          }
+        }
+        rethrow;
+      }
+    } catch (e) {
+      debugPrint('Failed to write JSON to $fileName: $e');
+      return false;
+    }
+  }
   
   // ==================== High-level operations ====================
   
@@ -106,7 +122,7 @@ class ContentStorageService {
         'lastUpdated': DateTime.now().toIso8601String(),
       };
       
-      return await spellStorage.writeJson('spells.json', data);
+      return await _writeJson('spells.json', data);
     } catch (e) {
       debugPrint('Failed to save spells: $e');
       return false;
@@ -116,7 +132,7 @@ class ContentStorageService {
   /// Load spells from spells.json
   static Future<List<Spell>> loadSpells() async {
     try {
-      final data = await spellStorage.readJson('spells.json');
+      final data = await _readJson('spells.json');
       if (data == null || data['spells'] == null) {
         debugPrint('No spell data found');
         return [];
@@ -140,7 +156,7 @@ class ContentStorageService {
         'lastUpdated': DateTime.now().toIso8601String(),
       };
       
-      return await classStorage.writeJson('classes.json', data);
+      return await _writeJson('classes.json', data);
     } catch (e) {
       debugPrint('Failed to save classes: $e');
       return false;
@@ -150,7 +166,7 @@ class ContentStorageService {
   /// Load classes from classes.json
   static Future<List<Class>> loadClasses() async {
     try {
-      final data = await classStorage.readJson('classes.json');
+      final data = await _readJson('classes.json');
       if (data == null || data['classes'] == null) {
         debugPrint('No class data found');
         return [];
@@ -174,7 +190,7 @@ class ContentStorageService {
         'lastUpdated': DateTime.now().toIso8601String(),
       };
       
-      return await raceStorage.writeJson('races.json', data);
+      return await _writeJson('races.json', data);
     } catch (e) {
       debugPrint('Failed to save races: $e');
       return false;
@@ -184,7 +200,7 @@ class ContentStorageService {
   /// Load races from races.json
   static Future<List<Race>> loadRaces() async {
     try {
-      final data = await raceStorage.readJson('races.json');
+      final data = await _readJson('races.json');
       if (data == null || data['races'] == null) {
         debugPrint('No race data found');
         return [];
@@ -208,7 +224,7 @@ class ContentStorageService {
         'lastUpdated': DateTime.now().toIso8601String(),
       };
       
-      return await featStorage.writeJson('feats.json', data);
+      return await _writeJson('feats.json', data);
     } catch (e) {
       debugPrint('Failed to save feats: $e');
       return false;
@@ -218,7 +234,7 @@ class ContentStorageService {
   /// Load feats from feats.json
   static Future<List<Feat>> loadFeats() async {
     try {
-      final data = await featStorage.readJson('feats.json');
+      final data = await _readJson('feats.json');
       if (data == null || data['feats'] == null) {
         debugPrint('No feat data found');
         return [];
@@ -242,7 +258,7 @@ class ContentStorageService {
         'lastUpdated': DateTime.now().toIso8601String(),
       };
       
-      return await itemStorage.writeJson('items.json', data);
+      return await _writeJson('items.json', data);
     } catch (e) {
       debugPrint('Failed to save items: $e');
       return false;
@@ -252,7 +268,7 @@ class ContentStorageService {
   /// Load items from items.json
   static Future<List<Item>> loadItems() async {
     try {
-      final data = await itemStorage.readJson('items.json');
+      final data = await _readJson('items.json');
       if (data == null || data['items'] == null) {
         debugPrint('No item data found');
         return [];
@@ -276,7 +292,7 @@ class ContentStorageService {
         'lastUpdated': DateTime.now().toIso8601String(),
       };
       
-      return await backgroundStorage.writeJson('backgrounds.json', data);
+      return await _writeJson('backgrounds.json', data);
     } catch (e) {
       debugPrint('Failed to save backgrounds: $e');
       return false;
@@ -286,7 +302,7 @@ class ContentStorageService {
   /// Load backgrounds from backgrounds.json
   static Future<List<Background>> loadBackgrounds() async {
     try {
-      final data = await backgroundStorage.readJson('backgrounds.json');
+      final data = await _readJson('backgrounds.json');
       if (data == null || data['backgrounds'] == null) {
         debugPrint('No background data found');
         return [];
@@ -310,7 +326,7 @@ class ContentStorageService {
         'lastUpdated': DateTime.now().toIso8601String(),
       };
       
-      return await proficiencyStorage.writeJson('proficiencies.json', data);
+      return await _writeJson('proficiencies.json', data);
     } catch (e) {
       debugPrint('Failed to save proficiencies: $e');
       return false;
@@ -320,7 +336,7 @@ class ContentStorageService {
   /// Load proficiencies from proficiencies.json
   static Future<List<Proficiency>> loadProficiencies() async {
     try {
-      final data = await proficiencyStorage.readJson('proficiencies.json');
+      final data = await _readJson('proficiencies.json');
       if (data == null || data['proficiencies'] == null) {
         debugPrint('No proficiency data found');
         return [];
@@ -344,7 +360,7 @@ class ContentStorageService {
         'lastUpdated': DateTime.now().toIso8601String(),
       };
       
-      return await languageStorage.writeJson('languages.json', data);
+      return await _writeJson('languages.json', data);
     } catch (e) {
       debugPrint('Failed to save languages: $e');
       return false;
@@ -354,7 +370,7 @@ class ContentStorageService {
   /// Load languages from languages.json
   static Future<List<String>> loadLanguages() async {
     try {
-      final data = await languageStorage.readJson('languages.json');
+      final data = await _readJson('languages.json');
       if (data == null || data['languages'] == null) {
         debugPrint('No language data found');
         return [];
@@ -378,7 +394,7 @@ class ContentStorageService {
         'lastUpdated': DateTime.now().toIso8601String(),
       };
       
-      return await themeStorage.writeJson('themes.json', data);
+      return await _writeJson('themes.json', data);
     } catch (e) {
       debugPrint('Failed to save themes: $e');
       return false;
@@ -388,7 +404,7 @@ class ContentStorageService {
   /// Load themes from themes.json
   static Future<List<ColourScheme>> loadThemes() async {
     try {
-      final data = await themeStorage.readJson('themes.json');
+      final data = await _readJson('themes.json');
       if (data == null || data['themes'] == null) {
         debugPrint('No theme data found');
         return [];
@@ -406,26 +422,8 @@ class ContentStorageService {
   
   /// Check if a specific content file exists
   static Future<bool> contentExists(String contentType) async {
-    final storage = _getStorage(contentType);
-    return await storage.exists('$contentType.json');
-  }
-  
-  /// Get the size of a specific content file
-  static Future<int> getContentSize(String contentType) async {
-    final storage = _getStorage(contentType);
-    return await storage.getFileSize('$contentType.json');
-  }
-  
-  /// Get the last modification time of a specific content file
-  static Future<DateTime?> getContentModificationTime(String contentType) async {
-    final storage = _getStorage(contentType);
-    return await storage.getModificationTime('$contentType.json');
-  }
-  
-  /// Validate a specific content file
-  static Future<bool> validateContent(String contentType) async {
-    final storage = _getStorage(contentType);
-    return await storage.validateFile('$contentType.json');
+    final filename = '$contentType.json';
+    return await _fileExists(filename);
   }
   
   /// Get metadata for all content files
@@ -441,31 +439,29 @@ class ContentStorageService {
       try {
         final exists = await contentExists(contentType);
         if (exists) {
-          final size = await getContentSize(contentType);
-          final modTime = await getContentModificationTime(contentType);
-          final isValid = await validateContent(contentType);
+          final data = await _readJson('$contentType.json');
           
           metadata[contentType] = {
             'exists': exists,
-            'size': size,
-            'lastModified': modTime?.toIso8601String(),
-            'isValid': isValid,
+            'version': data?['version'] ?? 'unknown',
+            'lastModified': data?['lastUpdated'] ?? 'unknown',
+            'itemCount': _getItemCount(data ?? {}, contentType),
           };
         } else {
           metadata[contentType] = {
             'exists': false,
-            'size': 0,
+            'version': null,
             'lastModified': null,
-            'isValid': false,
+            'itemCount': 0,
           };
         }
       } catch (e) {
         debugPrint('Failed to get metadata for $contentType: $e');
         metadata[contentType] = {
           'exists': false,
-          'size': 0,
+          'version': null,
           'lastModified': null,
-          'isValid': false,
+          'itemCount': 0,
           'error': e.toString(),
         };
       }
@@ -474,48 +470,27 @@ class ContentStorageService {
     return metadata;
   }
   
-  /// Backup a specific content file
-  static Future<bool> backupContent(String contentType) async {
-    try {
-      final storage = _getStorage(contentType);
-      final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final backupFileName = '${contentType}_backup_$timestamp.json';
-      
-      return await storage.copyFile('$contentType.json', backupFileName);
-    } catch (e) {
-      debugPrint('Failed to backup $contentType: $e');
-      return false;
+  /// Helper to get item count from data
+  static int _getItemCount(Map<String, dynamic> data, String contentType) {
+    final key = contentType.toLowerCase();
+    if (data[key] is List) {
+      return (data[key] as List).length;
     }
-  }
-  
-  /// Backup all content files
-  static Future<Map<String, bool>> backupAllContent() async {
-    final contentTypes = [
-      'spells', 'classes', 'races', 'feats', 
-      'items', 'backgrounds', 'proficiencies', 'languages', 'themes'
-    ];
-    
-    final results = <String, bool>{};
-    
-    for (final contentType in contentTypes) {
-      results[contentType] = await backupContent(contentType);
-    }
-    
-    return results;
+    return 0;
   }
   
   /// Get storage statistics
   static Future<Map<String, dynamic>> getStorageStats() async {
     final metadata = await getContentMetadata();
-    int totalSize = 0;
+    int totalItems = 0;
     int validFiles = 0;
     int totalFiles = 0;
     
     for (final entry in metadata.values) {
       if (entry['exists'] == true) {
         totalFiles++;
-        totalSize += (entry['size'] as int?) ?? 0;
-        if (entry['isValid'] == true) {
+        totalItems += (entry['itemCount'] as int?) ?? 0;
+        if (entry['error'] == null) {
           validFiles++;
         }
       }
@@ -524,8 +499,8 @@ class ContentStorageService {
     return {
       'totalFiles': totalFiles,
       'validFiles': validFiles,
-      'totalSize': totalSize,
-      'averageSize': totalFiles > 0 ? totalSize / totalFiles : 0,
+      'totalItems': totalItems,
+      'averageItemsPerFile': totalFiles > 0 ? totalItems / totalFiles : 0,
       'healthScore': totalFiles > 0 ? validFiles / totalFiles : 0,
       'lastCheck': DateTime.now().toIso8601String(),
     };
