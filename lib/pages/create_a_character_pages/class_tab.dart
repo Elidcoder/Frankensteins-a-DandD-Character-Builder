@@ -173,34 +173,20 @@ class _ClassTabState extends State<ClassTab> {
           child: const Icon(Icons.exposure_plus_1),
         ),
         appBar: StyleUtils.buildStyledAppBar(
-          title: "",
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: ThemeManager.instance.currentScheme.backingColour),
-            onPressed: () {},
-          ),
+          title: "${widget.charLevel - widget.character.classLevels.reduce(sum)} class level(s) unselected",
+          automaticallyImplyLeading: false,
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(120),
+            preferredSize: const Size.fromHeight(60),
             child: Column(
               children: [
                 /* Class choices available and taken to/by the user. */
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: StyleUtils.buildStyledMediumTextBox(
-                        text: "${widget.charLevel - widget.character.classLevels.reduce(sum)} class level(s) unselected",
-                        color: ThemeManager.instance.currentScheme.textColour)
-                      ),
-                    widget.character.classList.isNotEmpty
-                      ? StyleUtils.buildStyledSmallTextBox(
-                        text: "Levels in Classes: ${CLASSLIST.asMap().entries.where((entry) => widget.character.classLevels[entry.key] != 0).map((entry) => "${entry.value.name} - ${widget.character.classLevels[entry.key]}").join(", ")}",
-                        color: ThemeManager.instance.currentScheme.textColour)                        
-                      :  StyleUtils.buildStyledSmallTextBox(
-                        text: "No levels selected in any class",
-                        color: ThemeManager.instance.currentScheme.textColour),
-                    const SizedBox(height: 3)
-                  ],
-                ),
+                Center(child: StyleUtils.buildStyledSmallTextBox(
+                  text: widget.character.classList.isNotEmpty
+                    ? "Levels in Classes: ${CLASSLIST.asMap().entries.where((entry) => widget.character.classLevels[entry.key] != 0).map((entry) => "${entry.value.name} - ${widget.character.classLevels[entry.key]}").join(", ")}"
+                    : "No levels selected in any class"
+                )),
+                    
+                const SizedBox(height: 3),
                 TabBar(
                   tabs: [
                     StyleUtils.tabLabel("Choose your classes"),

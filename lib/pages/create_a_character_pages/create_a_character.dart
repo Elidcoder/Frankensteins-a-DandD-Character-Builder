@@ -120,7 +120,6 @@ class MainCreateCharacter extends State<CreateACharacter>
         backgroundColor: ThemeManager.instance.currentScheme.backgroundColour,
         appBar: StyleUtils.buildStyledAppBar(
           title: "Create a character",
-          centerTitle: true,
           titleStyle: TextStyle(
             fontSize: 40, 
             fontWeight: FontWeight.w700,

@@ -24,7 +24,6 @@ class EditTop extends StatelessWidget {
       home: Scaffold(
         appBar: StyleUtils.buildStyledAppBar(
           title: title,
-          centerTitle: true,
           leading: IconButton(
             icon: const Icon(Icons.home),
             tooltip: "Return to the main menu",
@@ -148,7 +147,6 @@ class EditCharacter extends State<EditACharacter> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: StyleUtils.buildStyledAppBar(
           title: 'Edit ${character.characterDescription.name}',
-          centerTitle: true,
           titleStyle: TextStyle(
             fontSize: 40, 
             fontWeight: FontWeight.w700,

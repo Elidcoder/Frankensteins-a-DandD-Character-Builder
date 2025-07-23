@@ -37,7 +37,6 @@ class MainMakeASpell extends State<MakeASpell> {
     return StyleUtils.buildStyledScaffold(
         appBar: StyleUtils.buildStyledAppBar(
           title: "Create a Spell",
-          centerTitle: true,
         ),
         body: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
