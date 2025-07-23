@@ -1,0 +1,59 @@
+# Dart / Flutter related
+.dart_tool/
+.packages
+.pub-cache/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.melos_tool/
+.melos_managed/
+
+# Generated files
+**/generated_plugin_registrant.*
+**/*.g.dart
+**/*.freezed.dart
+
+# IDEs and editors
+.idea/
+.vscode/
+*.iml
+
+# macOS
+macos/Flutter/ephemeral/
+macos/Flutter/Generated.xcconfig
+
+# iOS
+ios/Flutter/Flutter.framework/
+ios/Flutter/Flutter.podspec
+ios/Flutter/App.framework/
+ios/Flutter/Generated.xcconfig
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/ephemeral/
+
+# Android
+android/.gradle/
+android/captures/
+android/app/build/
+android/local.properties
+android/.idea/
+
+# Windows
+windows/build/
+windows/runner/Debug/
+windows/runner/Release/
+windows/runner/*.vcxproj.user
+windows/generated_plugin_registrant.cc
+
+# Linux
+linux/build/
+linux/generated_plugin_registrant.cc
+
+# Web
+web/generated_plugin_registrant.dart
+
+# Misc
+*.log
+*.lock
+*.DS_Store
+*.swp
