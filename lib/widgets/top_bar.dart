@@ -55,7 +55,7 @@ class _RegularTopState extends State<RegularTop> {
     return StyleUtils.buildStyledScaffold(
       appBar: StyleUtils.buildStyledAppBar(
         title: RegularTop.appTitle,
-        centerTitle: true,
+        smallTitle: true,
         leading: IconButton(
           icon: (widget.pagechoice == "Main Menu") ? const Icon(Icons.image) : const Icon(Icons.home),
           tooltip: (widget.pagechoice == "Main Menu") ? "Put logo here" : "Return to the main menu",

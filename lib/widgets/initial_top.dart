@@ -42,7 +42,7 @@ class InitialTopState extends State<InitialTop> {
     return StyleUtils.buildStyledScaffold(
       appBar: StyleUtils.buildStyledAppBar(
         title: appTitle,
-        centerTitle: true,
+        smallTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.image),
           tooltip: "Put logo here",

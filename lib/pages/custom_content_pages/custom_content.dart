@@ -15,7 +15,6 @@ class CustomContent extends StatelessWidget {
       /* Page title (Create content) */
       appBar: StyleUtils.buildStyledAppBar(
         title: "Create content",
-        centerTitle: true,
         titleStyle: TextStyle(
           fontSize: 45, 
           fontWeight: FontWeight.w700,

@@ -40,7 +40,6 @@ class SearchForContentState extends State<SearchForContent> {
     return StyleUtils.buildStyledScaffold(
       appBar: StyleUtils.buildStyledAppBar(
         title: "Search for content",
-        centerTitle: true,
         titleStyle: TextStyle(
           fontSize: 45,
           fontWeight: FontWeight.w700,

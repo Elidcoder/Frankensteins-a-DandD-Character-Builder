@@ -174,7 +174,6 @@ class _ClassTabState extends State<ClassTab> {
         ),
         appBar: StyleUtils.buildStyledAppBar(
           title: "${widget.charLevel - widget.character.classLevels.reduce(sum)} class level(s) unselected",
-          size: 25,
           automaticallyImplyLeading: false,
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(60),
