@@ -220,91 +220,97 @@ class GlobalListManager {
     debugPrint('Updated group list with ${_groupList.length} groups');
   }
 
-  /// Get spell list (crashes if not initialized)
-  List<Spell> getSpellList() {
+  /// Spell list getter (crashes if not initialized)
+  List<Spell> get spellList {
     if (!_spellsInitialized) {
       throw StateError('Spell list not initialized. Call initialiseSpellList() first.');
     }
     return _spellList;
   }
 
-  /// Get class list (crashes if not initialized)
-  List<Class> getClassList() {
+  /// Class list getter (crashes if not initialized)
+  List<Class> get classList {
     if (!_classesInitialized) {
       throw StateError('Class list not initialized. Call initialiseClassList() first.');
     }
     return _classList;
   }
 
-  /// Get race list (crashes if not initialized)
-  List<Race> getRaceList() {
+  /// Race list getter (crashes if not initialized)
+  List<Race> get raceList {
     if (!_racesInitialized) {
       throw StateError('Race list not initialized. Call initialiseRaceList() first.');
     }
     return _raceList;
   }
 
-  /// Get feat list (crashes if not initialized)
-  List<Feat> getFeatList() {
+  /// Feat list getter (crashes if not initialized)
+  List<Feat> get featList {
     if (!_featsInitialized) {
       throw StateError('Feat list not initialized. Call initialiseFeatList() first.');
     }
     return _featList;
   }
 
-  /// Get item list (crashes if not initialized)
-  List<Item> getItemList() {
+  /// Item list getter (crashes if not initialized)
+  List<Item> get itemList {
     if (!_itemsInitialized) {
       throw StateError('Item list not initialized. Call initialiseItemList() first.');
     }
     return _itemList;
   }
 
-  /// Get background list (crashes if not initialized)
-  List<Background> getBackgroundList() {
+  /// Background list getter (crashes if not initialized)
+  List<Background> get backgroundList {
     if (!_backgroundsInitialized) {
       throw StateError('Background list not initialized. Call initialiseBackgroundList() first.');
     }
     return _backgroundList;
   }
 
-  /// Get proficiency list (crashes if not initialized)
-  List<Proficiency> getProficiencyList() {
+  /// Proficiency list getter (crashes if not initialized)
+  List<Proficiency> get proficiencyList {
     if (!_proficienciesInitialized) {
       throw StateError('Proficiency list not initialized. Call initialiseProficiencyList() first.');
     }
     return _proficiencyList;
   }
 
-  /// Get language list (crashes if not initialized)
-  List<String> getLanguageList() {
+  /// Language list getter (crashes if not initialized)
+  List<String> get languageList {
     if (!_languagesInitialized) {
       throw StateError('Language list not initialized. Call initialiseLanguageList() first.');
     }
     return _languageList;
   }
 
-  /// Get theme list (crashes if not initialized)
-  List<ColourScheme> getThemeList() {
+  /// Theme list getter (crashes if not initialized)
+  List<ColourScheme> get themeList {
     if (!_themesInitialized) {
       throw StateError('Theme list not initialized. Call initialiseThemeList() first.');
     }
     return _themeList;
   }
 
-  /// Get character list (crashes if not initialized)
-  List<Character> getCharacterList() {
+  /// Character list getter (crashes if not initialized)
+  List<Character> get characterList {
     if (!_charactersInitialized) {
       throw StateError('Character list not initialized. Call initialiseCharacterList() first.');
     }
     return _characterList;
   }
 
-  /// Get group list (crashes if not initialized)
-  List<String> getGroupList() {
+  /// Group list getter (crashes if not initialized)
+  List<String> get groupList {
     if (!_groupsInitialized) {
-      throw StateError('Group list not initialized. Call initialiseGroupList() first.');
+      throw StateError('Group list not initialized. Call initialiseCharacterList() first.');
     }
     return _groupList;
+  }
+
+  void initialiseContentLists() {
+    //TODO()
+    //TODO()
+    //TODO()
   }
 }
