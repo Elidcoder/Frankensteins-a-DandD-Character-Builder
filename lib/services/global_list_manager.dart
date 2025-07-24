@@ -55,104 +55,154 @@ class GlobalListManager {
   Future<List<Spell>> initialiseSpellList() async {
     if (_spellsInitialized) return _spellList;
     
-    _spellList = await ContentStorageService.loadSpells();
-    _spellsInitialized = true;
-    debugPrint('Initialized spell list with ${_spellList.length} spells');
-    return _spellList;
+    try {
+      _spellList = await ContentStorageService.loadSpells();
+      _spellsInitialized = true;
+      debugPrint('Initialized spell list with ${_spellList.length} spells');
+      return _spellList;
+    } catch (e) {
+      debugPrint('Failed to initialize spell list: $e');
+      rethrow;
+    }
   }
 
   /// Initialize class list
   Future<List<Class>> initialiseClassList() async {
     if (_classesInitialized) return _classList;
     
-    _classList = await ContentStorageService.loadClasses();
-    _classesInitialized = true;
-    debugPrint('Initialized class list with ${_classList.length} classes');
-    return _classList;
+    try {
+      _classList = await ContentStorageService.loadClasses();
+      _classesInitialized = true;
+      debugPrint('Initialized class list with ${_classList.length} classes');
+      return _classList;
+    } catch (e) {
+      debugPrint('Failed to initialize class list: $e');
+      rethrow;
+    }
   }
 
   /// Initialize race list
   Future<List<Race>> initialiseRaceList() async {
     if (_racesInitialized) return _raceList;
     
-    _raceList = await ContentStorageService.loadRaces();
-    _racesInitialized = true;
-    debugPrint('Initialized race list with ${_raceList.length} races');
-    return _raceList;
+    try {
+      _raceList = await ContentStorageService.loadRaces();
+      _racesInitialized = true;
+      debugPrint('Initialized race list with ${_raceList.length} races');
+      return _raceList;
+    } catch (e) {
+      debugPrint('Failed to initialize race list: $e');
+      rethrow;
+    }
   }
 
   /// Initialize feat list
   Future<List<Feat>> initialiseFeatList() async {
     if (_featsInitialized) return _featList;
     
-    _featList = await ContentStorageService.loadFeats();
-    _featsInitialized = true;
-    debugPrint('Initialized feat list with ${_featList.length} feats');
-    return _featList;
+    try {
+      _featList = await ContentStorageService.loadFeats();
+      _featsInitialized = true;
+      debugPrint('Initialized feat list with ${_featList.length} feats');
+      return _featList;
+    } catch (e) {
+      debugPrint('Failed to initialize feat list: $e');
+      rethrow;
+    }
   }
 
   /// Initialize item list
   Future<List<Item>> initialiseItemList() async {
     if (_itemsInitialized) return _itemList;
     
-    _itemList = await ContentStorageService.loadItems();
-    _itemsInitialized = true;
-    debugPrint('Initialized item list with ${_itemList.length} items');
-    return _itemList;
+    try {
+      _itemList = await ContentStorageService.loadItems();
+      _itemsInitialized = true;
+      debugPrint('Initialized item list with ${_itemList.length} items');
+      return _itemList;
+    } catch (e) {
+      debugPrint('Failed to initialize item list: $e');
+      rethrow;
+    }
   }
 
   /// Initialize background list
   Future<List<Background>> initialiseBackgroundList() async {
     if (_backgroundsInitialized) return _backgroundList;
     
-    _backgroundList = await ContentStorageService.loadBackgrounds();
-    _backgroundsInitialized = true;
-    debugPrint('Initialized background list with ${_backgroundList.length} backgrounds');
-    return _backgroundList;
+    try {
+      _backgroundList = await ContentStorageService.loadBackgrounds();
+      _backgroundsInitialized = true;
+      debugPrint('Initialized background list with ${_backgroundList.length} backgrounds');
+      return _backgroundList;
+    } catch (e) {
+      debugPrint('Failed to initialize background list: $e');
+      rethrow;
+    }
   }
 
   /// Initialize proficiency list
   Future<List<Proficiency>> initialiseProficiencyList() async {
     if (_proficienciesInitialized) return _proficiencyList;
     
-    _proficiencyList = await ContentStorageService.loadProficiencies();
-    _proficienciesInitialized = true;
-    debugPrint('Initialized proficiency list with ${_proficiencyList.length} proficiencies');
-    return _proficiencyList;
+    try {
+      _proficiencyList = await ContentStorageService.loadProficiencies();
+      _proficienciesInitialized = true;
+      debugPrint('Initialized proficiency list with ${_proficiencyList.length} proficiencies');
+      return _proficiencyList;
+    } catch (e) {
+      debugPrint('Failed to initialize proficiency list: $e');
+      rethrow;
+    }
   }
 
   /// Initialize language list
   Future<List<String>> initialiseLanguageList() async {
     if (_languagesInitialized) return _languageList;
     
-    _languageList = await ContentStorageService.loadLanguages();
-    _languagesInitialized = true;
-    debugPrint('Initialized language list with ${_languageList.length} languages');
-    return _languageList;
+    try {
+      _languageList = await ContentStorageService.loadLanguages();
+      _languagesInitialized = true;
+      debugPrint('Initialized language list with ${_languageList.length} languages');
+      return _languageList;
+    } catch (e) {
+      debugPrint('Failed to initialize language list: $e');
+      rethrow;
+    }
   }
 
   /// Initialize theme list
   Future<List<ColourScheme>> initialiseThemeList() async {
     if (_themesInitialized) return _themeList;
     
-    _themeList = await ContentStorageService.loadThemes();
-    _themesInitialized = true;
-    debugPrint('Initialized theme list with ${_themeList.length} themes');
-    return _themeList;
+    try {
+      _themeList = await ContentStorageService.loadThemes();
+      _themesInitialized = true;
+      debugPrint('Initialized theme list with ${_themeList.length} themes');
+      return _themeList;
+    } catch (e) {
+      debugPrint('Failed to initialize theme list: $e');
+      rethrow;
+    }
   }
 
   /// Initialize character list
   Future<List<Character>> initialiseCharacterList() async {
     if (_charactersInitialized) return _characterList;
     
-    _characterList = await CharacterStorageService.getAllCharacters();
-    _charactersInitialized = true;
-    debugPrint('Initialized character list with ${_characterList.length} characters');
-    
-    // Automatically initialize groups when characters are loaded
-    _updateGroupList();
-    
-    return _characterList;
+    try {
+      _characterList = await CharacterStorageService.getAllCharacters();
+      _charactersInitialized = true;
+      debugPrint('Initialized character list with ${_characterList.length} characters');
+      
+      // Automatically initialize groups when characters are loaded
+      _updateGroupList();
+      
+      return _characterList;
+    } catch (e) {
+      debugPrint('Failed to initialize character list: $e');
+      rethrow;
+    }
   }
 
   /// Update group list from current character list (internal method)
