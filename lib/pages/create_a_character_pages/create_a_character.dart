@@ -1,11 +1,12 @@
 // External Imports
 import "package:flutter/material.dart";
+import "package:frankenstein/services/global_list_manager.dart" show GlobalListManager;
 
 // Project Imports
 import "../../content_classes/all_content_classes.dart";
-import "creation_tabs.dart";
-import "../../utils/style_utils.dart";
 import "../../theme/theme_manager.dart";
+import "../../utils/style_utils.dart";
+import "creation_tabs.dart";
 
 /* Notifier for when settings changes colour to rebuild. */
 final ValueNotifier<int> tabRebuildNotifier = ValueNotifier<int>(0);
@@ -22,10 +23,19 @@ class MainCreateCharacter extends State<CreateACharacter>
   @override
   bool get wantKeepAlive => true;
 
+  late Character character;
+  late Future<void> _initialisedContent;
   @override
   void initState() {
     super.initState();
     ThemeManager.instance.addListener(_onThemeChanged);
+    _initialisedContent = initialiseContent();
+  }
+
+
+  Future<void> initialiseContent() async {
+    await GlobalListManager().initialiseContentLists(); // Optimise out necessary loads
+    character = Character.createDefault();
   }
   
   @override
@@ -90,8 +100,6 @@ class MainCreateCharacter extends State<CreateACharacter>
   // FUTUREPLAN(Implement a better skill proficiency section using skillProficienciesMap and adding a second field then delete this)
   List<String> skillProficiencies = [];
 
-  Character character = Character.createDefault();
-
   int get charLevel {
     return int.parse(characterLevel ?? "1");
   }
@@ -112,7 +120,7 @@ class MainCreateCharacter extends State<CreateACharacter>
   ) {
     super.build(context);
 
-    return ValueListenableBuilder<int>(
+    return StyleUtils.styledFutureBuilder(future: _initialisedContent, builder: (context) => ValueListenableBuilder<int>(
       valueListenable: tabRebuildNotifier,
       builder: (context, value, child) {return DefaultTabController(
       length: tabLabels.length,
@@ -291,6 +299,6 @@ class MainCreateCharacter extends State<CreateACharacter>
           ),
         ]),
       ),
-    );});
+    );}));
   }
 }

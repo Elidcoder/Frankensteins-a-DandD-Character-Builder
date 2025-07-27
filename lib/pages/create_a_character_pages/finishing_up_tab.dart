@@ -1,11 +1,11 @@
 import "package:flutter/material.dart";
+
 import "../../content_classes/all_content_classes.dart";
+import "../../pdf_generator/pdf_final_display.dart";
+import "../../services/global_list_manager.dart";
+import "../../theme/theme_manager.dart";
 import "../../utils/style_utils.dart";
 import "../../widgets/initial_top.dart";
-import "../../services/character_storage_service.dart";
-import "../../file_manager/file_manager.dart" show GROUPLIST, updateGroupListFromNewSystem;
-import "../../pdf_generator/pdf_final_display.dart";
-import "../../theme/theme_manager.dart";
 
 /// Finishing Up tab widget for character creation
 /// Handles group selection, character saving, and build checklist
@@ -40,23 +40,16 @@ class FinishingUpTab extends StatefulWidget {
 }
 
 class _FinishingUpTabState extends State<FinishingUpTab> {
+  late Future<void> _initialisedCharacters;
   @override
   void initState() {
     super.initState();
-    _initializeGroups();
+    _initialisedCharacters = GlobalListManager().initialiseCharacterList();
   }
 
-  void _initializeGroups() async {
-    try {
-      // Ensure GROUPLIST is up to date (uses efficient caching)
-      await updateGroupListFromNewSystem();
-    } catch (e) {
-      debugPrint('Error refreshing groups: $e');
-    }
-  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return StyleUtils.styledFutureBuilder(future: _initialisedCharacters, builder: (context) => Scaffold(
       backgroundColor: ThemeManager.instance.currentScheme.backgroundColour,
       // Floating pdf generator button
       floatingActionButton: FloatingActionButton(
@@ -84,25 +77,25 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
                   const SizedBox(height: 20),
                   StyleUtils.buildStyledHugeTextBox(text: "Add your character to a group:"),
                   StyleUtils.buildStyledMediumTextBox(text: "Select an existing group:"),
-                  // Group selection dropdown (using efficiently cached GROUPLIST)
+                  // Group selection dropdown (using efficiently cached GlobalListManager().groupList)
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
-                      color: (GROUPLIST.isNotEmpty)
+                      color: (GlobalListManager().groupList.isNotEmpty)
                           ? ThemeManager.instance.currentScheme.backingColour
                           : const Color.fromARGB(247, 56, 53, 52),
                     ),
                     height: 45,
                     child: StyleUtils.buildBaseDropdownButton(
-                        value: GROUPLIST.contains(widget.character.group) ? widget.character.group : null,
-                        items: GROUPLIST.isNotEmpty ? GROUPLIST : null,
+                        value: GlobalListManager().groupList.contains(widget.character.group) ? widget.character.group : null,
+                        items: GlobalListManager().groupList.isNotEmpty ? GlobalListManager().groupList : null,
                         onChanged: (String? value) {
                           setState(() {
                             widget.character.group = value!;
                           });
                           widget.onCharacterChanged();
                         },
-                        hintText: (GROUPLIST.isNotEmpty) ? " No matching group selected " : " No groups available "
+                        hintText: (GlobalListManager().groupList.isNotEmpty) ? " No matching group selected " : " No groups available "
                     ),
                   ),
                   StyleUtils.buildStyledMediumTextBox(text: "Or create a new one:"),
@@ -142,17 +135,18 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
                             final navigator = Navigator.of(context);
                             
                             // Save character using the new system only
-                            final saveSuccess = await CharacterStorageService.saveCharacter(widget.character);
+                            final saveResult  = await GlobalListManager().saveCharacter(widget.character);
+                            //final saveSuccess = await CharacterStorageService.saveCharacter(widget.character);
 
                             // If save was successful, update group list
-                            if (saveSuccess) {
-                              updateGroupListFromNewSystem();
-                            }
+                            // if (saveSuccess) {
+                            //   updateGroupListFromNewSystem();// TODO(Dynamically update in save character)
+                            // }
                             
                             // Check if widget is still mounted before using context
                             if (!mounted) return;
                             
-                            if (saveSuccess) {
+                            if (saveResult) {
                               // Navigation back to main menu using captured navigator
                               navigator.pop();
                               navigator.push(
@@ -229,7 +223,7 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
                 )
         ]))
       ]),
-    );
+    ));
   }
 
   void _showCongratulationsDialog(BuildContext context) {

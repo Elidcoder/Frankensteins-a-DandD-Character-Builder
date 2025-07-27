@@ -1,4 +1,7 @@
 // External Imports
+import 'dart:convert';
+import 'dart:io';
+
 import "package:flutter/foundation.dart" show debugPrint;
 
 // Project Imports
@@ -308,9 +311,165 @@ class GlobalListManager {
     return _groupList;
   }
 
-  void initialiseContentLists() {
+  Future<void> initialiseContentLists() async {
+    await Future.wait([
+      initialiseSpellList(),
+      initialiseClassList(),
+      initialiseRaceList(),
+      initialiseFeatList(),
+      initialiseItemList(),
+      initialiseBackgroundList(),
+      initialiseProficiencyList(),
+      initialiseLanguageList(),
+      initialiseThemeList(),
+      //initialiseCharacterList(),//TODO(UNEEDED IN CONTENT PAGE)
+    ]);
+  }
+
+  //TODO()
     //TODO()
-    //TODO()
-    //TODO()
+    //TODO() these below
+
+  Future<bool> saveSpell(Spell spell) async {
+    try {
+      // Add spell to the list
+      _spellList.add(spell);
+      
+      // Save the updated spell list
+      final savedSuccess = await ContentStorageService.saveSpells(_spellList);
+
+      // Save success
+      if (savedSuccess) {
+        debugPrint('Spell "${spell.name}" saved successfully.');
+        return true;
+      }
+
+    // Handle any saving errors
+    } catch (e) {
+      debugPrint('Error occured trying to save spell ${spell.name}: $e');
+    }
+    debugPrint('Failed to save spell "${spell.name}".');
+    _spellList.remove(spell);
+    return false;
+  }
+
+  Future<bool> saveCharacter(Character character) async {
+    try {
+      var savedSuccess = false;
+      // Updating character occurs
+      debugPrint('Attempting to save character: ${character.characterDescription.name}');
+      if (_characterList.contains(character)) {
+        // Abuse == overload relying only on UID
+        // Remove pre modificationcharacter from the list
+        _characterList.remove(character);
+
+        debugPrint('Previous entry found, deleting before saving character: ${character.characterDescription.name}');
+
+        // Save the updated character list
+        savedSuccess = await CharacterStorageService.updateCharacter(character);
+
+      }
+
+      // New character is created
+      else {
+        debugPrint('No previous entry found, continuing to save character: ${character.characterDescription.name}');
+        // Save the updated character list
+        savedSuccess = await CharacterStorageService.saveCharacter(character);
+      }
+
+      // Add character to the list
+      _characterList.add(character);
+
+      
+      // Save success
+      if (savedSuccess) {
+        debugPrint('Character "${character.characterDescription.name}" saved successfully.');
+        return true;
+      }
+    } catch (e) {
+      debugPrint('Error occured trying to save character ${character.characterDescription.name}: $e');
+    }
+    debugPrint('Failed to save character "${character.characterDescription.name}".');
+    _characterList.remove(character);
+    return false;
+  }
+
+  Future<bool> deleteCharacter(Character character) async {
+    try {
+      var deletedSuccess = false;
+      
+      // Save the updated character list
+      deletedSuccess = await CharacterStorageService.deleteCharacter(character.uniqueID);
+      
+      // Save success
+      if (deletedSuccess) {
+        debugPrint('Character "${character.characterDescription.name}" deleted successfully.');
+        _characterList.remove(character);
+        debugPrint('Character "${character.characterDescription.name}" removed from list successfully.');
+        return true;
+      }
+    } catch (e) {
+      debugPrint('Error occured trying to delete character ${character.characterDescription.name}: $e');
+    }
+    debugPrint('Failed to delete character "${character.characterDescription.name}".');
+    _characterList.remove(character);
+    return false;
+  }
+
+  // Will save the current content lists to persistent storage overwriting the existing content
+  // Will not modify the currently loaded content lists in memory
+  Future<bool> saveLists() async {
+    try {
+      // Save all content lists - can be done in parallel as they are independent files
+      await Future.wait([
+        ContentStorageService.saveSpells(_spellList),
+        ContentStorageService.saveClasses(_classList),
+        ContentStorageService.saveRaces(_raceList),
+        ContentStorageService.saveFeats(_featList),
+        ContentStorageService.saveItems(_itemList),
+        ContentStorageService.saveBackgrounds(_backgroundList),
+        ContentStorageService.saveProficiencies(_proficiencyList),
+        ContentStorageService.saveLanguages(_languageList),
+        ContentStorageService.saveThemes(_themeList),
+      ]);
+      
+      debugPrint('All content lists saved successfully.');
+      return true;
+    } catch (e) {
+      debugPrint('Failed to save content lists: $e');
+      return false;
+    }
+  }
+
+  /// Load content from an external JSON file and add it to the existing content
+  Future<void> loadContentFromFile(File file) async {
+    final jsonString = await file.readAsString();
+    final jsonMap = jsonDecode(jsonString);
+    
+    // Parse content from the file
+    final newSpells = List<Spell>.from((jsonMap["Spells"] ?? []).map((x) => Spell.fromJson(x)));
+    final newClasses = List<Class>.from((jsonMap["Classes"] ?? []).map((x) => Class.fromJson(x)));
+    final newRaces = List<Race>.from((jsonMap["Races"] ?? []).map((x) => Race.fromJson(x)));
+    final newFeats = List<Feat>.from((jsonMap["Feats"] ?? []).map((x) => Feat.fromJson(x)));
+    final newItems = List<Item>.from((jsonMap["Equipment"] ?? []).map((x) => mapEquipment(x)));
+    final newBackgrounds = List<Background>.from((jsonMap["Backgrounds"] ?? []).map((x) => Background.fromJson(x)));
+    final newProficiencies = List<Proficiency>.from((jsonMap["Proficiencies"] ?? []).map((x) => Proficiency.fromJson(x)));
+    final newLanguages = List<String>.from(jsonMap["Languages"] ?? []);
+    final newThemes = List<ColourScheme>.from((jsonMap["ColourSchemes"] ?? []).map((x) => ColourScheme.fromJson(x)));
+    
+    // Merge content (avoid duplicates by name/id)
+    //TODO(Improve the unpacking of their stuff) - swap to switch cases
+    _spellList       = [..._spellList, ...newSpells.where((spell) => !_spellList.any((existing) => existing.name == spell.name))];
+    _classList       = [..._classList, ...newClasses.where((cls) => !_classList.any((existing) => existing.name == cls.name))];
+    _raceList        = [..._raceList, ...newRaces.where((race) => !_raceList.any((existing) => existing.name == race.name))];
+    _featList        = [..._featList, ...newFeats.where((feat) => !_featList.any((existing) => existing.name == feat.name))];
+    _itemList        = [..._itemList, ...newItems.where((item) => !_itemList.any((existing) => existing.name == item.name))];
+    _backgroundList  = [..._backgroundList, ...newBackgrounds.where((bg) => !_backgroundList.any((existing) => existing.name == bg.name))];
+    _proficiencyList = [..._proficiencyList, ...newProficiencies.where((prof) => !_proficiencyList.any((existing) => existing.proficiencyTree.toString() == prof.proficiencyTree.toString()))];
+    _languageList    = [..._languageList.toSet(), ...newLanguages.toSet()].toList();
+    _themeList       = [..._themeList, ...newThemes.where((theme) => !_themeList.any((existing) => existing.isSameColourScheme(theme)))];
+
+    // Save the updated lists to persistent storage
+    saveLists();
   }
 }

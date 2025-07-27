@@ -1,8 +1,10 @@
 // External Imports
-import "dart:math" show Random;
 import "dart:collection" show Queue;
+import "dart:math" show Random;
+
 import 'package:json_annotation/json_annotation.dart';
 
+import "../../services/global_list_manager.dart";
 // Project Import
 import "../non_character_classes/all_non_character_classes.dart";
 
@@ -318,7 +320,7 @@ class Character {
         "Passive Perception": 0,
         "Initiative": 0,
       },
-      levelsPerClass: List.filled(CLASSLIST.length, 0),
+      levelsPerClass: List.filled(GlobalListManager().classList.length, 0),
       allSelected: [],
       classSubclassMapper: {},
       ACList: [
@@ -363,9 +365,9 @@ class Character {
       languagesKnown: ["Common"],
       featuresAndTraits: [],
       skillProficiencies: [],
-      background: BACKGROUNDLIST.first,
-      classLevels: List.filled(CLASSLIST.length, 0),
-      race: RACELIST.first,
+      background: GlobalListManager().backgroundList.first,
+      classLevels: List.filled(GlobalListManager().classList.length, 0),
+      race: GlobalListManager().raceList.first,
       currency: {
         "Copper Pieces": 0,
         "Silver Pieces": 0,
@@ -373,11 +375,11 @@ class Character {
         "Gold Pieces": 0,
         "Platinum Pieces": 0
       },
-      backgroundPersonalityTrait: BACKGROUNDLIST.first.personalityTrait.first,
-      backgroundIdeal: BACKGROUNDLIST.first.ideal.first,
-      backgroundBond: BACKGROUNDLIST.first.bond.first,
-      backgroundFlaw: BACKGROUNDLIST.first.flaw.first,
-      raceAbilityScoreIncreases: RACELIST.first.raceScoreIncrease,
+      backgroundPersonalityTrait: GlobalListManager().backgroundList.first.personalityTrait.first,
+      backgroundIdeal: GlobalListManager().backgroundList.first.ideal.first,
+      backgroundBond: GlobalListManager().backgroundList.first.bond.first,
+      backgroundFlaw: GlobalListManager().backgroundList.first.flaw.first,
+      raceAbilityScoreIncreases: GlobalListManager().raceList.first.raceScoreIncrease,
       featsASIScoreIncreases: [0, 0, 0, 0, 0, 0],
       strength: AbilityScore(name: "Strength", value: 8),
       dexterity: AbilityScore(name: "Dexterity", value: 8),
@@ -411,4 +413,12 @@ class Character {
   bool get chosenAllSpells => (allSpellsSelectedAsListsOfThings.where((element) => element[2] != 0).isEmpty);
 
   bool get chosenAllEqipment => (equipmentSelectedFromChoices.where((element) => element.length == 2).isEmpty);
+
+  @override
+  int get hashCode => uniqueID.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Character && runtimeType == other.runtimeType && uniqueID == other.uniqueID;
 }

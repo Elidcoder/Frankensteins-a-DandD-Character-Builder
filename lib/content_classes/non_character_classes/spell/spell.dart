@@ -47,5 +47,3 @@ class Spell implements Content {
   factory Spell.fromJson(Map<String, dynamic> json) => _$SpellFromJson(json);
   Map<String, dynamic> toJson() => _$SpellToJson(this);
 }
-
-List<Spell> SPELLLIST = [];

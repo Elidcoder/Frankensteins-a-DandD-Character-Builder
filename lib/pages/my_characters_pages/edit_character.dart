@@ -1,21 +1,23 @@
 // External Imports
 import "package:flutter/material.dart";
 
+import "../../content_classes/all_content_classes.dart";
+import "../../services/global_list_manager.dart";
+import "../../theme/theme_manager.dart";
+import "../../utils/style_utils.dart";
+import "../../widgets/initial_top.dart" show InitialTopKey;
+import "../../widgets/top_bar.dart";
+import "../create_a_character_pages/backstory_tab.dart";
 // Project Imports
 import "../create_a_character_pages/edit_tabs.dart";
 import "../create_a_character_pages/finishing_up_tab.dart";
-import "../create_a_character_pages/backstory_tab.dart";
 import "quick_edits_tab.dart";
-import "../../content_classes/all_content_classes.dart";
-import "../../widgets/initial_top.dart" show InitialTopKey;
-import "../../widgets/top_bar.dart";
-import "../../theme/theme_manager.dart";
-import "../../utils/style_utils.dart";
 
 class EditTop extends StatelessWidget {
   final Character character;
   const EditTop(this.character, {super.key});
   static const String title= "Frankenstein's - a D&D 5e character builder";
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -65,6 +67,7 @@ class EditACharacter extends StatefulWidget {
 class EditCharacter extends State<EditACharacter> {
   final Character character;
   late Character editableCharacter;
+  late Future<void> _initialisedCharacters;
   List<String> coinTypesSelected = ["Gold Pieces"];
 
   EditCharacter({required this.character});
@@ -82,6 +85,7 @@ class EditCharacter extends State<EditACharacter> {
   void initState() {
     super.initState();
     ThemeManager.instance.addListener(_onThemeChanged);
+    _initialisedCharacters = GlobalListManager().initialiseCharacterList();
     editableCharacter = character.getCopy();
     // Preserve the original character's uniqueID for edit mode
     editableCharacter.uniqueID = character.uniqueID;
@@ -97,10 +101,10 @@ class EditCharacter extends State<EditACharacter> {
     int count = 0;
     Set<String> classNames = {};
     for (int i = 0; i < editableCharacter.classList.length; i++) {
-      int classIndex = CLASSLIST.indexWhere((cls) => cls.name == editableCharacter.classList[i]);
+      int classIndex = GlobalListManager().classList.indexWhere((cls) => cls.name == editableCharacter.classList[i]);
       if (classIndex != -1 && !classNames.contains(editableCharacter.classList[i])) {
         for (int level = 0; level < editableCharacter.levelsPerClass[count]; level++) {
-          if (CLASSLIST[classIndex].gainAtEachLevel[level].any((advancement) => advancement[0] == "ASI")) {
+          if (GlobalListManager().classList[classIndex].gainAtEachLevel[level].any((advancement) => advancement[0] == "ASI")) {
             expectedFeatOrASIs++;
           }
         }
@@ -140,157 +144,158 @@ class EditCharacter extends State<EditACharacter> {
   Widget build(
     BuildContext context,
   ) {
-    //super.build(context);
-    return DefaultTabController(
-      length: 8,
-      child: Scaffold(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        appBar: StyleUtils.buildStyledAppBar(
-          title: 'Edit ${character.characterDescription.name}',
-          titleStyle: TextStyle(
-            fontSize: 40, 
-            fontWeight: FontWeight.w700,
-            color: ThemeManager.instance.currentScheme.textColour,
+      return StyleUtils.styledFutureBuilder(
+        future: _initialisedCharacters, 
+        builder: (context) => DefaultTabController(
+          length: 8,
+          child: Scaffold(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            appBar: StyleUtils.buildStyledAppBar(
+              title: 'Edit ${character.characterDescription.name}',
+              titleStyle: TextStyle(
+                fontSize: 40, 
+                fontWeight: FontWeight.w700,
+                color: ThemeManager.instance.currentScheme.textColour,
+              ),
+              bottom: TabBar(
+                tabs: [
+                  StyleUtils.tabLabel("Quick edits"),
+                  StyleUtils.tabLabel("Class"),
+                  StyleUtils.tabLabel("ASI's and Feats"),
+                  StyleUtils.tabLabel("Spells"),
+                  StyleUtils.tabLabel("Equipment"),
+                  StyleUtils.tabLabel("Boons and magic items"),
+                  StyleUtils.tabLabel("Backstory"),
+                  StyleUtils.tabLabel("Finishing up"),
+                ],
+              ),
+            ),
+            body: TabBarView(children: [
+              //Quick edits
+              QuickEditsTab(
+                character: editableCharacter,
+                characterLevel: characterLevel ?? "1",
+                onCharacterChanged: () {
+                  setState(() {
+                    // Character changes are handled by the QuickEditsTab internally
+                  });
+                },
+                onCharacterLevelChanged: (newLevel) {
+                  setState(() {
+                    characterLevel = newLevel;
+                  });
+                },
+              ),
+              //class - updated to color scheme
+              ClassTab(
+                character: editableCharacter,
+                charLevel: charLevel,
+                characterLevel: characterLevel,
+                widgetsInPlay: widgetsInPlay,
+                numberOfRemainingFeatOrASIs: numberOfRemainingFeatOrASIs,
+                tabRebuildNotifier: tabRebuildNotifier,
+                onCharacterChanged: () {
+                  setState(() {});
+                },
+                onCharacterLevelChanged: (newLevel) {
+                  setState(() {
+                    characterLevel = newLevel;
+                  });
+                },
+                onWidgetsInPlayChanged: (newWidgets) {
+                  setState(() {
+                    widgetsInPlay = newWidgets;
+                  });
+                },
+                onNumberOfRemainingFeatOrASIsChanged: (newCount) {
+                  setState(() {
+                    numberOfRemainingFeatOrASIs = newCount;
+                  });
+                },
+              ),
+              //ASI + FEAT- updated to use AsiFeatTab widget
+              AsiFeatTab(
+                character: editableCharacter,
+                numberOfRemainingFeatOrASIs: numberOfRemainingFeatOrASIs,
+                remainingAsi: remainingAsi,
+                widgetsInPlay: widgetsInPlay,
+                onCharacterChanged: () {
+                  setState(() {});
+                },
+                onRemainingFeatOrASIsChanged: (newCount) {
+                  setState(() {
+                    numberOfRemainingFeatOrASIs = newCount;
+                  });
+                },
+                onRemainingAsiChanged: (newRemainingAsi) {
+                  setState(() {
+                    remainingAsi = newRemainingAsi;
+                  });
+                },
+                onWidgetsInPlayChanged: (newWidgets) {
+                  setState(() {
+                    widgetsInPlay = newWidgets;
+                  });
+                },
+              ),
+              //spells - updated to new color Scheme
+              SpellsTab(
+                character: editableCharacter,
+                onCharacterChanged: () {
+                  setState(() {
+                    // Character changes are handled by the SpellsTab internally
+                  });
+                },
+              ),
+              //Equipment- updated to new color Scheme
+              EquipmentTab(
+                character: editableCharacter,
+                coinTypesSelected: coinTypesSelected,
+                onCharacterChanged: () {
+                  setState(() {
+                    // Character changes are handled by the EquipmentTab internally
+                  });
+                },
+                onCoinTypesChanged: (newCoinTypes) {
+                  setState(() {
+                    coinTypesSelected = newCoinTypes;
+                  });
+                },
+              ),
+              //Boons and magic items- updated to new color Scheme
+              const Icon(Icons.directions_bike),
+              //Backstory
+              BackstoryTab(
+                character: editableCharacter,
+                onCharacterChanged: () {
+                  setState(() {
+                    // Character changes are handled by the BackstoryTab internally
+                  });
+                },
+              ),
+              //Finishing up
+              FinishingUpTab(
+                character: editableCharacter,
+                groupEnterController: groupEnterController,
+                canCreateCharacter: (numberOfRemainingFeatOrASIs == 0 &&
+                    !remainingAsi &&
+                    charLevel <= editableCharacter.classList.length &&
+                    editableCharacter.chosenAllEqipment &&
+                    editableCharacter.chosenAllSpells),
+                pointsRemaining: 0, // Edit mode doesn't have point buy
+                numberOfRemainingFeatOrASIs: numberOfRemainingFeatOrASIs,
+                remainingAsi: remainingAsi,
+                charLevel: charLevel,
+                isEditMode: true, // This is edit mode
+                onCharacterChanged: () {
+                  setState(() {
+                    // Group changes are handled by the FinishingUpTab internally
+                  });
+                },
+                congratulationsTitle: 'Character edit saved!',
+              ),
+            ]),
           ),
-          bottom: TabBar(
-            tabs: [
-              StyleUtils.tabLabel("Quick edits"),
-              StyleUtils.tabLabel("Class"),
-              StyleUtils.tabLabel("ASI's and Feats"),
-              StyleUtils.tabLabel("Spells"),
-              StyleUtils.tabLabel("Equipment"),
-              StyleUtils.tabLabel("Boons and magic items"),
-              StyleUtils.tabLabel("Backstory"),
-              StyleUtils.tabLabel("Finishing up"),
-            ],
-          ),
-        ),
-        body: TabBarView(children: [
-          //Quick edits
-          QuickEditsTab(
-            character: editableCharacter,
-            characterLevel: characterLevel ?? "1",
-            onCharacterChanged: () {
-              setState(() {
-                // Character changes are handled by the QuickEditsTab internally
-              });
-            },
-            onCharacterLevelChanged: (newLevel) {
-              setState(() {
-                characterLevel = newLevel;
-              });
-            },
-          ),
-          //class - updated to color scheme
-          ClassTab(
-            character: editableCharacter,
-            charLevel: charLevel,
-            characterLevel: characterLevel,
-            widgetsInPlay: widgetsInPlay,
-            numberOfRemainingFeatOrASIs: numberOfRemainingFeatOrASIs,
-            tabRebuildNotifier: tabRebuildNotifier,
-            onCharacterChanged: () {
-              setState(() {});
-            },
-            onCharacterLevelChanged: (newLevel) {
-              setState(() {
-                characterLevel = newLevel;
-              });
-            },
-            onWidgetsInPlayChanged: (newWidgets) {
-              setState(() {
-                widgetsInPlay = newWidgets;
-              });
-            },
-            onNumberOfRemainingFeatOrASIsChanged: (newCount) {
-              setState(() {
-                numberOfRemainingFeatOrASIs = newCount;
-              });
-            },
-          ),
-          //ASI + FEAT- updated to use AsiFeatTab widget
-          AsiFeatTab(
-            character: editableCharacter,
-            numberOfRemainingFeatOrASIs: numberOfRemainingFeatOrASIs,
-            remainingAsi: remainingAsi,
-            widgetsInPlay: widgetsInPlay,
-            onCharacterChanged: () {
-              setState(() {});
-            },
-            onRemainingFeatOrASIsChanged: (newCount) {
-              setState(() {
-                numberOfRemainingFeatOrASIs = newCount;
-              });
-            },
-            onRemainingAsiChanged: (newRemainingAsi) {
-              setState(() {
-                remainingAsi = newRemainingAsi;
-              });
-            },
-            onWidgetsInPlayChanged: (newWidgets) {
-              setState(() {
-                widgetsInPlay = newWidgets;
-              });
-            },
-          ),
-          //spells - updated to new color Scheme
-          SpellsTab(
-            character: editableCharacter,
-            onCharacterChanged: () {
-              setState(() {
-                // Character changes are handled by the SpellsTab internally
-              });
-            },
-          ),
-          //Equipment- updated to new color Scheme
-          EquipmentTab(
-            character: editableCharacter,
-            coinTypesSelected: coinTypesSelected,
-            onCharacterChanged: () {
-              setState(() {
-                // Character changes are handled by the EquipmentTab internally
-              });
-            },
-            onCoinTypesChanged: (newCoinTypes) {
-              setState(() {
-                coinTypesSelected = newCoinTypes;
-              });
-            },
-          ),
-          //Boons and magic items- updated to new color Scheme
-          const Icon(Icons.directions_bike),
-          //Backstory
-          BackstoryTab(
-            character: editableCharacter,
-            onCharacterChanged: () {
-              setState(() {
-                // Character changes are handled by the BackstoryTab internally
-              });
-            },
-          ),
-          //Finishing up
-          FinishingUpTab(
-            character: editableCharacter,
-            groupEnterController: groupEnterController,
-            canCreateCharacter: (numberOfRemainingFeatOrASIs == 0 &&
-                !remainingAsi &&
-                charLevel <= editableCharacter.classList.length &&
-                editableCharacter.chosenAllEqipment &&
-                editableCharacter.chosenAllSpells),
-            pointsRemaining: 0, // Edit mode doesn't have point buy
-            numberOfRemainingFeatOrASIs: numberOfRemainingFeatOrASIs,
-            remainingAsi: remainingAsi,
-            charLevel: charLevel,
-            isEditMode: true, // This is edit mode
-            onCharacterChanged: () {
-              setState(() {
-                // Group changes are handled by the FinishingUpTab internally
-              });
-            },
-            congratulationsTitle: 'Character edit saved!',
-          ),
-        ]),
-      ),
-    );
+        ));
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frankenstein/services/global_list_manager.dart' show GlobalListManager;
+
 import '../colour_scheme_class/colour_scheme.dart';
 import '../services/storage/content_storage_service.dart';
 
@@ -22,9 +24,10 @@ class ThemeManager {
   ColourScheme get currentScheme => _currentScheme;
   
   /// Initialize the theme manager with saved themes
-  void initialize() {
-    if (THEMELIST.isNotEmpty) {
-      _currentScheme = THEMELIST.last;
+  Future<void> initialize() async {
+    await GlobalListManager().initialiseThemeList();
+    if (GlobalListManager().themeList.isNotEmpty) {
+      _currentScheme = GlobalListManager().themeList.last;
     }
   }
   
@@ -33,11 +36,11 @@ class ThemeManager {
     _currentScheme = newScheme;
     
     // Update the global theme list
-    THEMELIST.removeWhere((theme) => newScheme.isSameColourScheme(theme));
-    THEMELIST.add(newScheme);
+    GlobalListManager().themeList.removeWhere((theme) => newScheme.isSameColourScheme(theme));
+    GlobalListManager().themeList.add(newScheme);
     
     // Save only the themes (more efficient than saving all content)
-    ContentStorageService.saveThemes(THEMELIST);
+    ContentStorageService.saveThemes(GlobalListManager().themeList);
     
     // Notify all listeners
     for (final listener in _listeners) {
@@ -134,6 +137,6 @@ class ThemeManager {
   /// Get the brightness of the current theme
   /// Get saved themes excluding the current theme
   List<ColourScheme> get savedThemes {
-    return THEMELIST.where((theme) => !_currentScheme.isSameColourScheme(theme)).toList();
+    return GlobalListManager().themeList.where((theme) => !_currentScheme.isSameColourScheme(theme)).toList();
   }
 }

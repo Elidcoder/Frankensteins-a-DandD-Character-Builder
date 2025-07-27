@@ -5,6 +5,7 @@ import "dart:typed_data" show Uint8List;
 
 // Project Import
 import "../content_classes/all_content_classes.dart";
+import "../../services/global_list_manager.dart";
 
 //ARGB => 0x(AA)(RR)(GG)(BB)
 String formatNumber(int number) {
@@ -44,8 +45,8 @@ Future<Uint8List> makePdf(Character userCharacter) async {
   final pdf = Document();
 
   final classSkills = (userCharacter.classList.isNotEmpty)
-    ? CLASSLIST.firstWhere((element) => userCharacter.classList.isNotEmpty && element.name == userCharacter.classList.first).optionsForSkillProficiencies.where(
-      (element) => userCharacter.classSkillsSelected[CLASSLIST.firstWhere(
+    ? GlobalListManager().classList.firstWhere((element) => userCharacter.classList.isNotEmpty && element.name == userCharacter.classList.first).optionsForSkillProficiencies.where(
+      (element) => userCharacter.classSkillsSelected[GlobalListManager().classList.firstWhere(
         (element) => userCharacter.classList.isNotEmpty && element.name == userCharacter.classList.first
       ).optionsForSkillProficiencies.indexOf(element)]).toList()
     : [];
@@ -211,7 +212,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                       child: (userCharacter.classLevels
                                               .any((x) => x != 0))
                                           ? Text(
-                                              CLASSLIST
+                                              GlobalListManager().classList
                                                   .asMap()
                                                   .entries
                                                   .where((entry) =>
@@ -2444,7 +2445,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                       .fromInt(
                                                                   0xff6B6E73))),
                                                       Text(
-                                                          CLASSLIST
+                                                          GlobalListManager().classList
                                                               .where((car) => userCharacter
                                                                   .classList
                                                                   .contains(
@@ -2460,7 +2461,7 @@ Future<Uint8List> makePdf(Character userCharacter) async {
                                                                   entry.value >
                                                                   0)
                                                               .map((entry) =>
-                                                                  "${(userCharacter.classList.where((car) => car == entry.key).length)}D${CLASSLIST.firstWhere((car) => car.name == entry.key).maxHitDiceRoll}")
+                                                                  "${(userCharacter.classList.where((car) => car == entry.key).length)}D${GlobalListManager().classList.firstWhere((car) => car.name == entry.key).maxHitDiceRoll}")
                                                               .join(", "),
                                                           style: const TextStyle(
                                                               fontSize: 9,

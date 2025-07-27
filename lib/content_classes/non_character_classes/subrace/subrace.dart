@@ -1,3 +1,5 @@
+import 'package:frankenstein/services/global_list_manager.dart' show GlobalListManager;
+
 import '../proficiency.dart';
 import "../content.dart";
 import 'package:json_annotation/json_annotation.dart';
@@ -44,7 +46,7 @@ class Subrace implements Content {
     final proficienciesGainedNames =
         data["gainedProficiencies"]?.cast<String>() as List<String>?;
     final proficienciesGained = (proficienciesGainedNames?.map((thisprof) =>
-            (PROFICIENCYLIST.singleWhere(
+            (GlobalListManager().proficiencyList.singleWhere(
                 (listprof) => listprof.proficiencyTree.last == thisprof))))
         ?.toList();
     

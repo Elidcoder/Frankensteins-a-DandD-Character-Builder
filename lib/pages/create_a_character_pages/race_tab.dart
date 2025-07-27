@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
+
 import "../../content_classes/all_content_classes.dart";
+import "../../services/global_list_manager.dart";
 import "../../utils/style_utils.dart";
 
 /// Race tab widget for character creation
@@ -19,19 +21,27 @@ class RaceTab extends StatefulWidget {
 }
 
 class _RaceTabState extends State<RaceTab> {
+  late Future<void> _initialisedRaces;
+  
+  @override
+  void initState() {
+    super.initState();
+    _initialisedRaces = GlobalListManager().initialiseRaceList();
+  }
+  
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return StyleUtils.styledFutureBuilder(future: _initialisedRaces, builder: (context) => Column(
       children: [
         const SizedBox(height: 24),
         StyleUtils.buildStyledMediumTextBox(text: "Select a race:"),
         StyleUtils.buildStyledDropDown(
           initialValue: widget.character.race.name, 
-          items: RACELIST, 
+          items: GlobalListManager().raceList, 
           onChanged: (String? value) {
             setState(() {
               widget.character.raceAbilityScoreIncreases = [0, 0, 0, 0, 0, 0];
-              widget.character.race = RACELIST.singleWhere((x) => x.name == value);
+              widget.character.race = GlobalListManager().raceList.singleWhere((x) => x.name == value);
               widget.character.subrace = widget.character.race.subRaces?.first;
               
               for (int i = 0; i < abilityScores.length; i++) {
@@ -147,6 +157,6 @@ class _RaceTabState extends State<RaceTab> {
           )
         ]                
       ],
-    );
+    ));
   }
 }

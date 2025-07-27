@@ -1,3 +1,5 @@
+import "package:frankenstein/services/global_list_manager.dart" show GlobalListManager;
+
 import "../subrace/subrace.dart";
 import "../proficiency.dart";
 import "../content.dart";
@@ -46,7 +48,7 @@ class Race implements Content {
     final proficienciesGainedNames =
         data["gainedProficiencies"]?.cast<String>() as List<String>?;
     final proficienciesGained = (proficienciesGainedNames?.map((thisprof) =>
-            (PROFICIENCYLIST.singleWhere(
+            (GlobalListManager().proficiencyList.singleWhere(
                 (listprof) => listprof.proficiencyTree.last == thisprof))))
         ?.toList();
     
@@ -86,5 +88,3 @@ class Race implements Content {
     this.toolProficiencies,
   });
 }
-
-List<Race> RACELIST = [];
