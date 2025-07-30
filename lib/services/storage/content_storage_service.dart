@@ -2,13 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:frankenstein/services/storage_service.dart' show StorageService;
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import '../../colour_scheme_class/colour_scheme.dart';
 import '../../content_classes/non_character_classes/all_non_character_classes.dart';
 
-class ContentStorageService {
+class ContentStorageService implements StorageService {
   static final ContentStorageService _instance = ContentStorageService._internal();
   factory ContentStorageService() => _instance;
   ContentStorageService._internal();
