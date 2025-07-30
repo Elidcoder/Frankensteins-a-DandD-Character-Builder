@@ -1,14 +1,12 @@
 import 'dart:io';
-import 'dart:convert';
-import 'package:flutter/material.dart';
+
 import 'package:file_picker/file_picker.dart';
-import 'top_bar.dart';
-import '../file_manager/file_manager.dart';
+import 'package:flutter/material.dart';
+import 'package:frankenstein/services/global_list_manager.dart' show GlobalListManager;
+
 import '../theme/theme_manager.dart';
 import '../utils/style_utils.dart';
-import '../services/storage/content_storage_service.dart';
-import '../content_classes/all_content_classes.dart';
-import '../colour_scheme_class/colour_scheme.dart';
+import 'top_bar.dart';
 
 /// Displays the main menu with navigation buttons and help dialog
 class MainMenu extends StatefulWidget {
@@ -123,8 +121,8 @@ class MainMenuState extends State<MainMenu> {
       final targetFile = File(result.files.single.path ?? "PATH SHOULD NEVER OCCUR");
 
       try {
-        await _loadContentFromFile(targetFile);
-        // _loadContentFromFile already saves all the content it modifies
+        await GlobalListManager().loadContentFromFile(targetFile);
+        // loadContentFromFile updates all the content
       } catch (e) {
         if (mounted) {
           // ignore: use_build_context_synchronously (mounted check ensures correctness)
@@ -132,61 +130,6 @@ class MainMenuState extends State<MainMenu> {
         }
       }
     }
-  }
-
-  /// Load content from an external JSON file and add it to the existing content
-  Future<void> _loadContentFromFile(File file) async {
-    final jsonString = await file.readAsString();
-    final jsonMap = jsonDecode(jsonString);
-    
-    // Parse content from the file
-    final spells = List<Spell>.from((jsonMap["Spells"] ?? []).map((x) => Spell.fromJson(x)));
-    final classes = List<Class>.from((jsonMap["Classes"] ?? []).map((x) => Class.fromJson(x)));
-    final races = List<Race>.from((jsonMap["Races"] ?? []).map((x) => Race.fromJson(x)));
-    final feats = List<Feat>.from((jsonMap["Feats"] ?? []).map((x) => Feat.fromJson(x)));
-    final items = List<Item>.from((jsonMap["Equipment"] ?? []).map((x) => mapEquipment(x)));
-    final backgrounds = List<Background>.from((jsonMap["Backgrounds"] ?? []).map((x) => Background.fromJson(x)));
-    final proficiencies = List<Proficiency>.from((jsonMap["Proficiencies"] ?? []).map((x) => Proficiency.fromJson(x)));
-    final languages = List<String>.from(jsonMap["Languages"] ?? []);
-    final themes = List<ColourScheme>.from((jsonMap["ColourSchemes"] ?? []).map((x) => ColourScheme.fromJson(x)));
-    
-    // Get existing content and merge with new content
-    final existingSpells = await ContentStorageService.loadSpells();
-    final existingClasses = await ContentStorageService.loadClasses();
-    final existingRaces = await ContentStorageService.loadRaces();
-    final existingFeats = await ContentStorageService.loadFeats();
-    final existingItems = await ContentStorageService.loadItems();
-    final existingBackgrounds = await ContentStorageService.loadBackgrounds();
-    final existingProficiencies = await ContentStorageService.loadProficiencies();
-    final existingLanguages = await ContentStorageService.loadLanguages();
-    final existingThemes = await ContentStorageService.loadThemes();
-    
-    // Merge content (avoid duplicates by name/id)
-    final mergedSpells = [...existingSpells, ...spells.where((spell) => !existingSpells.any((existing) => existing.name == spell.name))];
-    final mergedClasses = [...existingClasses, ...classes.where((cls) => !existingClasses.any((existing) => existing.name == cls.name))];
-    final mergedRaces = [...existingRaces, ...races.where((race) => !existingRaces.any((existing) => existing.name == race.name))];
-    final mergedFeats = [...existingFeats, ...feats.where((feat) => !existingFeats.any((existing) => existing.name == feat.name))];
-    final mergedItems = [...existingItems, ...items.where((item) => !existingItems.any((existing) => existing.name == item.name))];
-    final mergedBackgrounds = [...existingBackgrounds, ...backgrounds.where((bg) => !existingBackgrounds.any((existing) => existing.name == bg.name))];
-    final mergedProficiencies = [...existingProficiencies, ...proficiencies.where((prof) => !existingProficiencies.any((existing) => existing.proficiencyTree.toString() == prof.proficiencyTree.toString()))];
-    final mergedLanguages = [...existingLanguages.toSet(), ...languages.toSet()].toList(); // Remove duplicates
-    final mergedThemes = [...existingThemes, ...themes.where((theme) => !existingThemes.any((existing) => existing.isSameColourScheme(theme)))];
-    
-    // Save merged content
-    await Future.wait([
-      ContentStorageService.saveSpells(mergedSpells),
-      ContentStorageService.saveClasses(mergedClasses),
-      ContentStorageService.saveRaces(mergedRaces),
-      ContentStorageService.saveFeats(mergedFeats),
-      ContentStorageService.saveItems(mergedItems),
-      ContentStorageService.saveBackgrounds(mergedBackgrounds),
-      ContentStorageService.saveProficiencies(mergedProficiencies),
-      ContentStorageService.saveLanguages(mergedLanguages),
-      ContentStorageService.saveThemes(mergedThemes),
-    ]);
-    
-    // Update global variables to reflect the new content
-    await initialiseGlobals();
   }
 
   /// Displays a popup with helpful information for new users

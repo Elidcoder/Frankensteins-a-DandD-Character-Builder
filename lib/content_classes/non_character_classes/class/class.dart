@@ -55,5 +55,3 @@ class Class implements Content {
       required this.gainAtEachLevel,
       required this.proficienciesGained});
 }
-
-List<Class> CLASSLIST = [];

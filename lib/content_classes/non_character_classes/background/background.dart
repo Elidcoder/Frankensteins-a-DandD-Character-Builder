@@ -1,3 +1,5 @@
+import 'package:frankenstein/services/global_list_manager.dart' show GlobalListManager;
+
 import "../content.dart";
 import 'package:json_annotation/json_annotation.dart';
 
@@ -65,11 +67,8 @@ class Background implements Content {
   
   List<String> getLanguageOptions() {
     if (languageOptions.isEmpty) {
-      return LANGUAGELIST;
+      return GlobalListManager().languageList;
     }
     return languageOptions;
   }
 }
-
-List<Background> BACKGROUNDLIST = [];
-List<String> LANGUAGELIST = [];

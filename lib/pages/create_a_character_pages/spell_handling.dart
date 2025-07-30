@@ -2,10 +2,11 @@
 import "package:flutter/material.dart";
 import "package:frankenstein/utils/style_utils.dart";
 
+import "../../content_classes/all_content_classes.dart";
+import "../../services/global_list_manager.dart";
+import "../../theme/theme_manager.dart";
 // Project Imports
 import "create_a_character.dart";
-import "../../content_classes/all_content_classes.dart";
-import "../../theme/theme_manager.dart";
 
 /* This creates a widget that represents a classes ability to gain spells. */
 class SpellSelections extends StatefulWidget {
@@ -17,95 +18,104 @@ class SpellSelections extends StatefulWidget {
 }
 
 class SpellSelectionsState extends State<SpellSelections> {
+  late Future<void> _initialisedSpells;
   List<Spell> allSpellsSelected;
   // Formatted as: [name, [spelllist], numb, formula]
   List<dynamic> thisDescription;
   SpellSelectionsState(this.allSpellsSelected, this.thisDescription);
 
   // Filters out unavailable spells
-  static List<Spell> allAvailableSpells = SPELLLIST.where((spell) => isAllowedContent(spell)).toList();
+  static List<Spell> allAvailableSpells = GlobalListManager().spellList.where((spell) => isAllowedContent(spell)).toList();
 
   @override
+  void initState() {
+    super.initState();
+    _initialisedSpells = GlobalListManager().initialiseSpellList();
+  }
+  
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 200,
-      width: 375,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-        body: Column(children: [
-          const SizedBox(height: 20),
-          /* Number of choices remaining */
-          Text(
-            "${thisDescription[2]} remaining ${thisDescription[0]} spell choices",
-            style: TextStyle(color: ThemeManager.instance.currentScheme.backingColour, fontSize: 22, fontWeight: FontWeight.w700)
-          ),
-          
-          /* List of spells */
-          Container(
-            height: 140,
-            width: 300,
-            decoration: BoxDecoration(
-              color: unavailableColor,
-              border: Border.all(color: Colors.black, width: 3),
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
+    return StyleUtils.styledFutureBuilder(
+      future: _initialisedSpells, 
+      builder: (context) => SizedBox(
+        height: 200,
+        width: 375,
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: Scaffold(
+          body: Column(children: [
+            const SizedBox(height: 20),
+            /* Number of choices remaining */
+            Text(
+              "${thisDescription[2]} remaining ${thisDescription[0]} spell choices",
+              style: TextStyle(color: ThemeManager.instance.currentScheme.backingColour, fontSize: 22, fontWeight: FontWeight.w700)
             ),
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: allAvailableSpells.length,
-              itemBuilder: (context, index) {
+            
+            /* List of spells */
+            Container(
+              height: 140,
+              width: 300,
+              decoration: BoxDecoration(
+                color: unavailableColor,
+                border: Border.all(color: Colors.black, width: 3),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+              ),
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: allAvailableSpells.length,
+                itemBuilder: (context, index) {
 
-                /* Button to select a spell after ensuring it is of a valid level */
-                return OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: (thisDescription[1].contains(allAvailableSpells[index])
-                      ? positiveColor
-                      : (allSpellsSelected.contains(allAvailableSpells[index])
-                        ? unavailableColor
-                        : Colors.white))),
-                  onPressed: () {
-                    setState(
-                      () {
-                        if (thisDescription[1].contains(allAvailableSpells[index])) {
-                          thisDescription[1].remove(allAvailableSpells[index]);
-                          allSpellsSelected.remove(allAvailableSpells[index]);
-                          thisDescription[2]++;
-                        } else {
-                          if (thisDescription[2] > 0) {
-                            if (!allSpellsSelected.contains(allAvailableSpells[index])) {
-                              thisDescription[1].add(allAvailableSpells[index]);
-                              allSpellsSelected.add(allAvailableSpells[index]);
-                              thisDescription[2] -= 1;
+                  /* Button to select a spell after ensuring it is of a valid level */
+                  return OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: (thisDescription[1].contains(allAvailableSpells[index])
+                        ? positiveColor
+                        : (allSpellsSelected.contains(allAvailableSpells[index])
+                          ? unavailableColor
+                          : Colors.white))),
+                    onPressed: () {
+                      setState(
+                        () {
+                          if (thisDescription[1].contains(allAvailableSpells[index])) {
+                            thisDescription[1].remove(allAvailableSpells[index]);
+                            allSpellsSelected.remove(allAvailableSpells[index]);
+                            thisDescription[2]++;
+                          } else {
+                            if (thisDescription[2] > 0) {
+                              if (!allSpellsSelected.contains(allAvailableSpells[index])) {
+                                thisDescription[1].add(allAvailableSpells[index]);
+                                allSpellsSelected.add(allAvailableSpells[index]);
+                                thisDescription[2] -= 1;
+                              }
                             }
                           }
-                        }
-                        tabRebuildNotifier.value ++;
-                      },
-                    );
-                  },
-                  
-                  /* Spell name */
-                  child: Text(allAvailableSpells[index].name),
-                );
-              },
+                          tabRebuildNotifier.value ++;
+                        },
+                      );
+                    },
+                    
+                    /* Spell name */
+                    child: Text(allAvailableSpells[index].name),
+                  );
+                },
+              ),
             ),
-          ),
-          
-          ],
-        )
-      )));
+            
+            ],
+          )
+        ))));
   }
 }
 
 /* Retrieve a spell from a list. */
 Spell listgetter(String spellname) {
-  for (int x = 0; x < SPELLLIST.length; x++) {
-    if (SPELLLIST[x].name == spellname) {
-      return SPELLLIST[x];
+  for (int x = 0; x < GlobalListManager().spellList.length; x++) {
+    if (GlobalListManager().spellList[x].name == spellname) {
+      return GlobalListManager().spellList[x];
     }
   }
-  return SPELLLIST[0];
+  return GlobalListManager().spellList[0];
 }
 
 class ChoiceRow extends StatefulWidget {

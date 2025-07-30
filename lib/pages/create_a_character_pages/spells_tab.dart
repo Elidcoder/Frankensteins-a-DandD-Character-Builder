@@ -1,8 +1,10 @@
 import "package:flutter/material.dart";
+
 import "../../content_classes/all_content_classes.dart";
+import "../../services/global_list_manager.dart";
+import "../../theme/theme_manager.dart";
 import "../../utils/style_utils.dart";
 import "spell_handling.dart";
-import "../../theme/theme_manager.dart";
 
 /// Spells tab widget for character creation
 /// Displays spell selections organized by spell level and spell selection options
@@ -21,6 +23,7 @@ class SpellsTab extends StatefulWidget {
 }
 
 class _SpellsTabState extends State<SpellsTab> {
+  late Future<void> _initialisedSpells;
 
   /// Builds a horizontal ListView of spells for a given level
   Widget _buildSpellLevelList(int level) {
@@ -56,42 +59,48 @@ class _SpellsTabState extends State<SpellsTab> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _initialisedSpells = GlobalListManager().initialiseSpellList();
+  }
+  
+  @override
   Widget build(BuildContext context) {
-    return Column(children: [
+    return StyleUtils.styledFutureBuilder(future: _initialisedSpells, builder: (context) =>  Column(children: [
       /* If the character has nothing to do with spells this displays a message.  */
-      if (widget.character.allSpellsSelected.isEmpty && widget.character.allSpellsSelectedAsListsOfThings.isEmpty) ...[
-        const SizedBox(height: 25),
-        StyleUtils.buildStyledHugeTextBox(text: "No spells selected or available"),
-      ],
-      
-      /* Displays all the spells selected by the character and all the options available to allow new spell choices. */
-      if (widget.character.allSpellsSelected.isNotEmpty || widget.character.allSpellsSelectedAsListsOfThings.isNotEmpty) ...[
-        Text("Choose your spells from regular progression",
-            style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.w700,
-                color: ThemeManager.instance.currentScheme.backingColour)),
-        Row(children: [
-          Expanded(child: Column(children: [
-            (widget.character.allSpellsSelected.isNotEmpty) 
-            ? StyleUtils.buildStyledLargeTextBox(text: "Spells learned:")
-            : StyleUtils.buildStyledLargeTextBox(text: "No spells learned"),
-            
-            // Generate spell lists for each level (0-9)
-            for (int level = 0; level <= 9; level++)
-              _buildSpellLevelList(level),
-          ])),
-          Expanded(
-            child: SingleChildScrollView(child: Column(
-              children: [
-              const SizedBox(height: 20),
-              ...widget.character.allSpellsSelectedAsListsOfThings.map(
-                (s) => SpellSelections(widget.character.allSpellsSelected, s)
-              )
-              ]
-            )),
-          )
-        ]),
-    ]]);
+        if (widget.character.allSpellsSelected.isEmpty && widget.character.allSpellsSelectedAsListsOfThings.isEmpty) ...[
+          const SizedBox(height: 25),
+          StyleUtils.buildStyledHugeTextBox(text: "No spells selected or available"),
+        ],
+        
+        /* Displays all the spells selected by the character and all the options available to allow new spell choices. */
+        if (widget.character.allSpellsSelected.isNotEmpty || widget.character.allSpellsSelectedAsListsOfThings.isNotEmpty) ...[
+          Text("Choose your spells from regular progression",
+              style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w700,
+                  color: ThemeManager.instance.currentScheme.backingColour)),
+          Row(children: [
+            Expanded(child: Column(children: [
+              (widget.character.allSpellsSelected.isNotEmpty) 
+              ? StyleUtils.buildStyledLargeTextBox(text: "Spells learned:")
+              : StyleUtils.buildStyledLargeTextBox(text: "No spells learned"),
+              
+              // Generate spell lists for each level (0-9)
+              for (int level = 0; level <= 9; level++)
+                _buildSpellLevelList(level),
+            ])),
+            Expanded(
+              child: SingleChildScrollView(child: Column(
+                children: [
+                const SizedBox(height: 20),
+                ...widget.character.allSpellsSelectedAsListsOfThings.map(
+                  (s) => SpellSelections(widget.character.allSpellsSelected, s)
+                )
+                ]
+              )),
+            )
+          ]),
+    ]]));
   }
 }

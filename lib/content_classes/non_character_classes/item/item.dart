@@ -38,5 +38,3 @@ class Item implements Content {
   Map<String, dynamic> toJson() => _$ItemToJson(this);
 
 }
-
-List<Item> ITEMLIST = [];

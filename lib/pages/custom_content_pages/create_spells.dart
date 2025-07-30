@@ -1,9 +1,8 @@
 // External Imports
 import "package:flutter/material.dart";
+import "package:frankenstein/content_classes/all_content_classes.dart" show Spell;
 
-// Project Imports
-import "../../services/storage/content_storage_service.dart";
-import "package:frankenstein/content_classes/all_content_classes.dart" show Spell, SPELLLIST;
+import "../../services/global_list_manager.dart";
 import "../../theme/theme_manager.dart";
 import "../../utils/style_utils.dart";
 import "../../widgets/initial_top.dart" show InitialTop;
@@ -16,7 +15,8 @@ class MakeASpell extends StatefulWidget {
 }
 
 class MainMakeASpell extends State<MakeASpell> {
-  //MainMakeASpell({Key? key}) : super(key: key);
+  late Future<void> _initialisedSpells;
+
   String name = "";
   String effect = "";
 
@@ -32,9 +32,16 @@ class MainMakeASpell extends State<MakeASpell> {
   String duration = "";
   List<dynamic> timings = [];
   String availableTo = "";
+  
+  @override
+  void initState() {
+    super.initState();
+    _initialisedSpells = GlobalListManager().initialiseSpellList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return StyleUtils.buildStyledScaffold(
+    return StyleUtils.styledFutureBuilder(future: _initialisedSpells, builder: (context) => StyleUtils.buildStyledScaffold(
         appBar: StyleUtils.buildStyledAppBar(
           title: "Create a Spell",
         ),
@@ -447,17 +454,19 @@ class MainMakeASpell extends State<MakeASpell> {
                       text: "Save Spell",
                       backgroundColor: validateSpell() ? StyleUtils.backingColor : Colors.grey,
                       padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
-                      onPressed: () {
+                      onPressed: () async {
+                        // Should really have a flag TODO() or it cld be triggered multiple times
                         //check the spell is in an accepted form
                         if (validateSpell()) {
                           //check it doesn't have the same name as another spell
-                          if (SPELLLIST
+                          if (GlobalListManager().spellList
                               .where((element) => element.name == name)
                               .toList()
                               .isEmpty) {
 
                             //add the new spell to the list of spells
-                            SPELLLIST.add(Spell(
+                            // add flag to prevent double tapping etc.
+                             final saveResult  = await GlobalListManager().saveSpell(Spell(
                               name: name,
                               sourceBook: "MADE BY USER",
                               range:
@@ -479,11 +488,9 @@ class MainMakeASpell extends State<MakeASpell> {
                               verbal: verbal,
                               material: material)
                             );
-
-                            //write only the spell list to storage (more efficient than saving all content)
-                            ContentStorageService.saveSpells(SPELLLIST);
                             
-                            //display the popup and return home
+                            
+                            //display the popup and return home TODO(CHOOSE POPUP BASED ON SAVE RESULT)
                             setState(() {
                               Navigator.pop(context);
                               Navigator.push(
@@ -499,7 +506,7 @@ class MainMakeASpell extends State<MakeASpell> {
                     ),
                     //const SizedBox(height: 100),
                   ])
-            ]));
+            ])));
   }
 
   void showCreationDialog(BuildContext context) {

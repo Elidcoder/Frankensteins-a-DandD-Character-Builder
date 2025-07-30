@@ -3,8 +3,9 @@ import "package:flutter/material.dart";
 
 // Project Imports
 import "../../content_classes/all_content_classes.dart";
-import "../../utils/style_utils.dart";
+import "../../services/global_list_manager.dart";
 import "../../theme/theme_manager.dart";
+import "../../utils/style_utils.dart";
 
 /* This page allows users to view and delete their downloaded content. */
 class SearchForContent extends StatefulWidget {
@@ -16,10 +17,12 @@ class SearchForContent extends StatefulWidget {
 
 class SearchForContentState extends State<SearchForContent> {
   String searchTerm = "";
+  late Future<void> _initialisedContent;
 
   @override
   void initState() {
     super.initState();
+    _initialisedContent = GlobalListManager().initialiseContentLists();
     ThemeManager.instance.addListener(_onThemeChanged);
   }
   
@@ -37,7 +40,7 @@ class SearchForContentState extends State<SearchForContent> {
 
   @override
   Widget build(BuildContext context) {
-    return StyleUtils.buildStyledScaffold(
+    return StyleUtils.styledFutureBuilder(future: _initialisedContent, builder: (context) => StyleUtils.buildStyledScaffold(
       appBar: StyleUtils.buildStyledAppBar(
         title: "Search for content",
         titleStyle: TextStyle(
@@ -72,33 +75,33 @@ class SearchForContentState extends State<SearchForContent> {
                 children: [
                   /* Display the classes. */
                   buildTitleCard("Classes"),
-                  ...buildFilteredContentCards(CLASSLIST),
+                  ...buildFilteredContentCards(GlobalListManager().classList),
 
                   /* Display the spells. */ 
                   buildTitleCard("Spells"),
-                  ...buildFilteredContentCards(SPELLLIST),
+                  ...buildFilteredContentCards(GlobalListManager().spellList),
 
-                  /* Display the feaets. */ 
+                  /* Display the feats. */ 
                   buildTitleCard("Feats"),
-                  ...buildFilteredContentCards(FEATLIST),
+                  ...buildFilteredContentCards(GlobalListManager().featList),
 
                   /* Display the races. */ 
                   buildTitleCard("Races"),
-                  ...buildFilteredContentCards(RACELIST),
+                  ...buildFilteredContentCards(GlobalListManager().raceList),
 
                   /* Display the items. */ 
                   buildTitleCard("Items"),
-                  ...buildFilteredContentCards(ITEMLIST),
+                  ...buildFilteredContentCards(GlobalListManager().itemList),
 
                   /* Display the backgrounds. */ 
                   buildTitleCard("Backgrounds"),
-                  ...buildFilteredContentCards(BACKGROUNDLIST)
+                  ...buildFilteredContentCards(GlobalListManager().backgroundList)
                 ],
               ),
             ),
           ),
         ],
-      ));
+      )));
   }
 
   /* Build a card displaying a string. */

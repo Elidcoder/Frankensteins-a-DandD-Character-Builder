@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
+
 import '../content_classes/all_content_classes.dart';
 
 // Simple character storage service using direct file operations
@@ -132,8 +134,12 @@ class CharacterStorageService {
     
     try {
       // Delete character file
-      final characterFile = File(path.join(_baseDirectory.path, '$characterId.json'));
+      final filePath = path.join(_baseDirectory.path, '$characterId.json');
+      debugPrint('Attempting to delete file: $filePath');
+      final characterFile = File(filePath);
+
       if (await characterFile.exists()) {
+        debugPrint('File exists, deleting: $filePath');
         await characterFile.delete();
       }
       
@@ -228,6 +234,29 @@ class CharacterStorageService {
 
   // Check if the service is ready to use
   bool get isInitialized => _initialized;
+
+  static Future<bool> updateCharacter(Character character) async {
+    if (!serviceIsReady) {
+      debugPrint(notReadyMessage);
+      return false;
+    }
+
+    try {
+      // Overwrite the character file with new data
+      final characterFile = File(path.join(_baseDirectory.path, '${character.uniqueID}.json'));
+      final characterData = character.toJson();
+      await characterFile.writeAsString(jsonEncode(characterData));
+
+      // Update index file (in case metadata changed)
+      await _instance!._updateIndex();
+
+      debugPrint('Character ${character.uniqueID} updated successfully');
+      return true;
+    } catch (e) {
+      debugPrint('Error updating character: $e');
+      return false;
+    }
+  }
 }
 
 // Global instance getter for easy access

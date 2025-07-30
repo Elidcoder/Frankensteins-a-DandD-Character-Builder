@@ -1,7 +1,9 @@
 import "package:flutter/material.dart";
+
 import "../../content_classes/all_content_classes.dart";
-import "../../utils/style_utils.dart";
+import "../../services/global_list_manager.dart";
 import "../../theme/theme_manager.dart";
+import "../../utils/style_utils.dart";
 
 /// Equipment tab widget for character creation
 /// Handles equipment purchasing, filtering, and selection from background/class choices
@@ -24,9 +26,10 @@ class EquipmentTab extends StatefulWidget {
 }
 
 class _EquipmentTabState extends State<EquipmentTab> {
+  late Future<void> _initialisedEquipment;
   
   List<Item> get filteredItems {
-    return ITEMLIST.where((element) =>
+    return GlobalListManager().itemList.where((element) =>
       ((element.equipmentType.contains("Armour") && element.equipmentType.any((item) => widget.character.armourList.contains(item))) 
       || (element.equipmentType.contains("Weapon") && element.equipmentType.any((item) => widget.character.weaponList.contains(item))) 
       || (element.equipmentType.contains("Item") && ((widget.character.itemList.contains("Stackable") && element.stackable) 
@@ -96,8 +99,14 @@ class _EquipmentTabState extends State<EquipmentTab> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _initialisedEquipment = GlobalListManager().initialiseItemList();
+  }
+  
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return StyleUtils.styledFutureBuilder(future: _initialisedEquipment, builder: (context) => SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Row(children: [
         Expanded(flex: 2, child: SingleChildScrollView(
@@ -431,6 +440,6 @@ class _EquipmentTabState extends State<EquipmentTab> {
                 ))),
         ],
       )
-    );
+    ));
   }
 }

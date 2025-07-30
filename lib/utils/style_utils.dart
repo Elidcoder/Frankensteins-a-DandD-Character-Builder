@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
-import "../theme/theme_manager.dart";
+import "package:frankenstein/services/global_list_manager.dart" show GlobalListManager;
+
 import "../colour_scheme_class/colour_scheme.dart";
+import "../theme/theme_manager.dart";
 
 /* Define colours that will be used a lot. */
 const Color unavailableColor = Color.fromARGB(247, 56, 53, 52);
@@ -1165,7 +1167,7 @@ class StyleUtils {
 
   /// Utility method to get available themes
   static List<ColourScheme> getAvailableThemes() {
-    return THEMELIST;
+    return GlobalListManager().themeList;
   }
 
   /// Helper method to get current theme colors without importing ThemeManager
@@ -1276,4 +1278,20 @@ class StyleUtils {
   }
 
   /* Used in: Multiple */
+  static Widget styledFutureBuilder({
+    required Future<void> future,
+    required Widget Function(BuildContext) builder,
+  }) {
+    return FutureBuilder<void>(
+      future: future,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator(backgroundColor: ThemeManager.instance.currentScheme.backingColour, color: ThemeManager.instance.currentScheme.textColour));
+        } else if (snapshot.hasError) {
+          return Center(child: buildStyledLargeTextBox(text: "Error loading classes: ${snapshot.error}"));
+        }
+        return builder(context);
+      },
+    );
+  }
 }

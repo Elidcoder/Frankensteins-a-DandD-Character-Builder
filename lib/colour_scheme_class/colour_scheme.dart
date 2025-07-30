@@ -31,5 +31,3 @@ class ColourScheme {
     return textColour == other.textColour && backingColour == other.backingColour && backgroundColour == other.backgroundColour;
   }
 }
-
-List<ColourScheme> THEMELIST = [];

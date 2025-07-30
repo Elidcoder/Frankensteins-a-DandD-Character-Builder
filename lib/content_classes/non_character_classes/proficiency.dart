@@ -16,5 +16,3 @@ class Proficiency {
     };
   }
 }
-
-List<Proficiency> PROFICIENCYLIST = [];

@@ -2,8 +2,7 @@
 import "package:flutter/material.dart";
 
 // Project imports
-import "file_manager/file_manager.dart";
-import "services/character_storage_service.dart";
+import "services/global_list_manager.dart";
 import "theme/theme_manager.dart";
 import "theme/theme_manager_widget.dart";
 import "widgets/initial_top.dart" show InitialTop, InitialTopKey;
@@ -20,35 +19,26 @@ class FrankensteinApp extends StatefulWidget {
 }
 
 class _FrankensteinAppState extends State<FrankensteinApp> {
-  late Future<void> _initializationFuture;
+  late Future<void> _initializationClasses;
   
   @override
   void initState() {
     super.initState();
-    _initializationFuture = _initializeApp();
+    _initializationClasses = _initializeApp();
   }
   
   Future<void> _initializeApp() async {
-    // Initialize new content storage system
-    await initialiseGlobals();
-    
-    // Initialize new character storage system
-    await getCharacterStorageService();
-    
-    // Initialize character service wrapper
-    await CharacterStorageService.initialize();
-    
-    // Initialize GROUPLIST from current characters (efficient startup)
-    await updateGroupListFromNewSystem();
+    // Initialize global list manager
+    await GlobalListManager().initialise();
     
     // Initialize theme manager
-    ThemeManager.instance.initialize();
+    await ThemeManager.instance.initialize();
   }
   
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<void>(
-      future: _initializationFuture,
+      future: _initializationClasses,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return ThemeManagerWidget(

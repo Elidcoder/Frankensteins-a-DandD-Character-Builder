@@ -1,9 +1,12 @@
-import "package:flutter/material.dart";
 import "dart:math";
+
+import "package:flutter/material.dart";
+
 import "../../content_classes/all_content_classes.dart";
+import "../../services/global_list_manager.dart";
+import "../../theme/theme_manager.dart";
 import "../../utils/style_utils.dart";
 import "spell_handling.dart"; // For ChoiceRow
-import "../../theme/theme_manager.dart";
 
 /// Class tab widget for character creation
 /// Handles class selection, level progression, and level-based choices
@@ -38,6 +41,7 @@ class ClassTab extends StatefulWidget {
 }
 
 class _ClassTabState extends State<ClassTab> {
+  late Future<void> _initialisedClasses;
 
   bool scoresFailRequirement(Character character, List<int> requirements) {
     int count = 0;
@@ -68,7 +72,7 @@ class _ClassTabState extends State<ClassTab> {
     }
 
     // Check they satisfy their last added class's requirements
-    return scoresFailRequirement(widget.character, CLASSLIST.last.multiclassingRequirements);
+    return scoresFailRequirement(widget.character, GlobalListManager().classList.last.multiclassingRequirements);
   }
 
   Widget? levelGainParser(List<dynamic> x, Class selectedClass) {
@@ -137,16 +141,16 @@ class _ClassTabState extends State<ClassTab> {
   }
 
   int levelZeroGetSpellsKnown(int index) {
-    if (CLASSLIST[index].spellsKnownFormula == null) {
-      return CLASSLIST[index].spellsKnownPerLevel![widget.character.classLevels[index]];
+    if (GlobalListManager().classList[index].spellsKnownFormula == null) {
+      return GlobalListManager().classList[index].spellsKnownPerLevel![widget.character.classLevels[index]];
     }
     //decode as zero
     return 3;
   }
 
   int getSpellsKnown(int index, List<dynamic> thisStuff) {
-    if (CLASSLIST[index].spellsKnownFormula == null) {
-      return (CLASSLIST[index].spellsKnownPerLevel![widget.character.classLevels[index]] -
+    if (GlobalListManager().classList[index].spellsKnownFormula == null) {
+      return (GlobalListManager().classList[index].spellsKnownPerLevel![widget.character.classLevels[index]] -
           thisStuff[1].length) as int;
     }
     //decode as level + 1 and then take away [1].length
@@ -154,8 +158,16 @@ class _ClassTabState extends State<ClassTab> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _initialisedClasses = GlobalListManager().initialiseClassList();
+  }
+  
+  @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    return StyleUtils.styledFutureBuilder(
+      future: _initialisedClasses,
+      builder: (context) => DefaultTabController(
       length: 2,
       child: Scaffold(
         backgroundColor: ThemeManager.instance.currentScheme.backgroundColour,
@@ -182,7 +194,7 @@ class _ClassTabState extends State<ClassTab> {
                 /* Class choices available and taken to/by the user. */
                 Center(child: StyleUtils.buildStyledSmallTextBox(
                   text: widget.character.classList.isNotEmpty
-                    ? "Levels in Classes: ${CLASSLIST.asMap().entries.where((entry) => widget.character.classLevels[entry.key] != 0).map((entry) => "${entry.value.name} - ${widget.character.classLevels[entry.key]}").join(", ")}"
+                    ? "Levels in Classes: ${GlobalListManager().classList.asMap().entries.where((entry) => widget.character.classLevels[entry.key] != 0).map((entry) => "${entry.value.name} - ${widget.character.classLevels[entry.key]}").join(", ")}"
                     : "No levels selected in any class"
                 )),
                     
@@ -209,7 +221,7 @@ class _ClassTabState extends State<ClassTab> {
                   spacing: 8.0,
                   runSpacing: 8.0,
                   alignment: WrapAlignment.center,
-                  children: List.generate(CLASSLIST.length, (index) {
+                  children: List.generate(GlobalListManager().classList.length, (index) {
                     return Container(
                       width: 240,
                       height: 175,
@@ -221,27 +233,27 @@ class _ClassTabState extends State<ClassTab> {
                       child: Column(
                         children: [
                           /* Information about the class */
-                          Text(CLASSLIST[index].name,
+                          Text(GlobalListManager().classList[index].name,
                             style: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.w700,
                               color: ThemeManager.instance.currentScheme.textColour)),
                           StyleUtils.buildStyledTinyTextBox(
-                            text: "Class type: ${CLASSLIST[index].classType}", 
+                            text: "Class type: ${GlobalListManager().classList[index].classType}", 
                             color: ThemeManager.instance.currentScheme.textColour
                           ),
                           StyleUtils.buildStyledTinyTextBox(
-                            text: (["Martial", "Third Caster"].contains(CLASSLIST[index].classType))
-                              ? "Main ability: ${CLASSLIST[index].mainOrSpellcastingAbility}"
-                              : "Spellcasting ability: ${CLASSLIST[index].mainOrSpellcastingAbility}", 
+                            text: (["Martial", "Third Caster"].contains(GlobalListManager().classList[index].classType))
+                              ? "Main ability: ${GlobalListManager().classList[index].mainOrSpellcastingAbility}"
+                              : "Spellcasting ability: ${GlobalListManager().classList[index].mainOrSpellcastingAbility}", 
                             color: ThemeManager.instance.currentScheme.textColour
                           ),
                           StyleUtils.buildStyledTinyTextBox(
-                            text: "Hit die: D${CLASSLIST[index].maxHitDiceRoll}", 
+                            text: "Hit die: D${GlobalListManager().classList[index].maxHitDiceRoll}", 
                             color: ThemeManager.instance.currentScheme.textColour
                           ),
                           StyleUtils.buildStyledTinyTextBox(
-                            text: "Saves: ${CLASSLIST[index].savingThrowProficiencies.join(", ")}", 
+                            text: "Saves: ${GlobalListManager().classList[index].savingThrowProficiencies.join(", ")}", 
                             color: ThemeManager.instance.currentScheme.textColour
                           ),
                           const SizedBox(height: 7),
@@ -249,7 +261,7 @@ class _ClassTabState extends State<ClassTab> {
                           /* Button to take a level in the class */
                           ElevatedButton(
                             style: OutlinedButton.styleFrom(
-                              backgroundColor: (widget.charLevel <= widget.character.classLevels.reduce(sum) || (!multiclassingPossible(CLASSLIST[index])))
+                              backgroundColor: (widget.charLevel <= widget.character.classLevels.reduce(sum) || (!multiclassingPossible(GlobalListManager().classList[index])))
                                 ? unavailableColor
                                 : ThemeManager.instance.currentScheme.backingColour,
                               shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
@@ -260,17 +272,17 @@ class _ClassTabState extends State<ClassTab> {
                                 List<Widget> newWidgetsInPlay = List.from(widget.widgetsInPlay);
 
                                 // Check if the character can level up in the class
-                                if (widget.charLevel > widget.character.classList.length && (multiclassingPossible(CLASSLIST[index]))) {
-                                  widget.character.classList.add(CLASSLIST[index].name);
+                                if (widget.charLevel > widget.character.classList.length && (multiclassingPossible(GlobalListManager().classList[index]))) {
+                                  widget.character.classList.add(GlobalListManager().classList[index].name);
 
-                                  if (CLASSLIST[index].gainAtEachLevel[widget.character.classLevels[index]]
+                                  if (GlobalListManager().classList[index].gainAtEachLevel[widget.character.classLevels[index]]
                                           .where((element) => element[0] == "Choice").isEmpty) {
-                                    newWidgetsInPlay.add(StyleUtils.buildStyledSmallTextBox(text: "No choices needed for ${CLASSLIST[index].name} level ${CLASSLIST[index].gainAtEachLevel[widget.character.classLevels[index]][0][1]}"));
+                                    newWidgetsInPlay.add(StyleUtils.buildStyledSmallTextBox(text: "No choices needed for ${GlobalListManager().classList[index].name} level ${GlobalListManager().classList[index].gainAtEachLevel[widget.character.classLevels[index]][0][1]}"));
                                   } else {
-                                    newWidgetsInPlay.add(StyleUtils.buildStyledMediumTextBox(text: "${CLASSLIST[index].name} Level ${CLASSLIST[index].gainAtEachLevel[widget.character.classLevels[index]][0][1]} choice(s):"));
+                                    newWidgetsInPlay.add(StyleUtils.buildStyledMediumTextBox(text: "${GlobalListManager().classList[index].name} Level ${GlobalListManager().classList[index].gainAtEachLevel[widget.character.classLevels[index]][0][1]} choice(s):"));
                                   }
 
-                                  for (List<dynamic> x in CLASSLIST[index].gainAtEachLevel[widget.character.classLevels[index]]) {
+                                  for (List<dynamic> x in GlobalListManager().classList[index].gainAtEachLevel[widget.character.classLevels[index]]) {
                                     if (x[0] == "Choice") {
                                       newWidgetsInPlay.add(SizedBox(
                                           height: 85,
@@ -279,7 +291,7 @@ class _ClassTabState extends State<ClassTab> {
                                             allSelected: widget.character.allSelected,
                                           )));
                                     } else {
-                                      levelGainParser(x, CLASSLIST[index]);
+                                      levelGainParser(x, GlobalListManager().classList[index]);
                                     }
                                   }
 
@@ -291,30 +303,30 @@ class _ClassTabState extends State<ClassTab> {
                                     }
 
                                     // Gain hit points (max die roll at lvl 1)
-                                    widget.character.maxHealth += CLASSLIST[index].maxHitDiceRoll;
+                                    widget.character.maxHealth += GlobalListManager().classList[index].maxHitDiceRoll;
                                     
                                     // Gain saving throw proficiencies
-                                    widget.character.savingThrowProficiencies = CLASSLIST[index].savingThrowProficiencies;
+                                    widget.character.savingThrowProficiencies = GlobalListManager().classList[index].savingThrowProficiencies;
 
                                     // Gain the equipment choices
-                                    widget.character.equipmentSelectedFromChoices.addAll(CLASSLIST[index].equipmentOptions);
+                                    widget.character.equipmentSelectedFromChoices.addAll(GlobalListManager().classList[index].equipmentOptions);
 
                                     // Gain the skill proficiencies
-                                    widget.character.classSkillsSelected = List.filled(CLASSLIST[index].optionsForSkillProficiencies.length,false);
+                                    widget.character.classSkillsSelected = List.filled(GlobalListManager().classList[index].optionsForSkillProficiencies.length,false);
 
                                     // Add any further choices needed
                                     newWidgetsInPlay.addAll([
-                                      StyleUtils.buildStyledSmallTextBox(text: "Pick ${(CLASSLIST[index].numberOfSkillChoices)} skill(s) to gain proficiency in"),
+                                      StyleUtils.buildStyledSmallTextBox(text: "Pick ${(GlobalListManager().classList[index].numberOfSkillChoices)} skill(s) to gain proficiency in"),
                                       const SizedBox(height: 7),
                                       StatefulBuilder(
                                         builder: (context, setState) { return StyleUtils.buildStyledToggleSelector(
-                                        itemLabels: CLASSLIST[index].optionsForSkillProficiencies,
+                                        itemLabels: GlobalListManager().classList[index].optionsForSkillProficiencies,
                                         isSelected: widget.character.classSkillsSelected,
                                         onPressed: (int subIndex, bool _) {
                                           setState(() {
                                           // Gain background skill choices
                                           if (widget.character.classSkillsSelected.where((b) => b).length <
-                                              CLASSLIST[index].numberOfSkillChoices) {
+                                              GlobalListManager().classList[index].numberOfSkillChoices) {
                                             widget.character.classSkillsSelected[subIndex] = !widget.character.classSkillsSelected[subIndex];
                                           } else {
                                             if (widget.character.classSkillsSelected[subIndex]) {
@@ -329,25 +341,25 @@ class _ClassTabState extends State<ClassTab> {
                                   // Health calculated in a normal way if not level 1
                                   else {
                                     if (widget.character.averageHitPoints ?? false) {
-                                      widget.character.maxHealth += ((CLASSLIST[index].maxHitDiceRoll) / 2).ceil();
+                                      widget.character.maxHealth += ((GlobalListManager().classList[index].maxHitDiceRoll) / 2).ceil();
                                     } else {
-                                      widget.character.maxHealth += 1 + (Random().nextDouble() * CLASSLIST[index].maxHitDiceRoll).floor();
+                                      widget.character.maxHealth += 1 + (Random().nextDouble() * GlobalListManager().classList[index].maxHitDiceRoll).floor();
                                     }
                                   }
 
                                   // Check if it's a spellcaster, if so add the necessary spell info
-                                  if (CLASSLIST[index].classType != "Martial") {
-                                    if (widget.character.classList.where((element) => element == CLASSLIST[index].name).length == 1) {
+                                  if (GlobalListManager().classList[index].classType != "Martial") {
+                                    if (widget.character.classList.where((element) => element == GlobalListManager().classList[index].name).length == 1) {
                                       widget.character.allSpellsSelectedAsListsOfThings.add([
-                                        CLASSLIST[index].name,
+                                        GlobalListManager().classList[index].name,
                                         [],
                                         levelZeroGetSpellsKnown(index),
-                                        CLASSLIST[index].spellsKnownFormula ?? CLASSLIST[index].spellsKnownPerLevel
+                                        GlobalListManager().classList[index].spellsKnownFormula ?? GlobalListManager().classList[index].spellsKnownPerLevel
                                       ]); 
                                     } else {
-                                      var a = widget.character.classSubclassMapper[CLASSLIST[index].name];
+                                      var a = widget.character.classSubclassMapper[GlobalListManager().classList[index].name];
                                       for (var x = 0; x < widget.character.allSpellsSelectedAsListsOfThings.length; x++) {
-                                        if (widget.character.allSpellsSelectedAsListsOfThings[x][0] == CLASSLIST[index].name) {
+                                        if (widget.character.allSpellsSelectedAsListsOfThings[x][0] == GlobalListManager().classList[index].name) {
                                           widget.character.allSpellsSelectedAsListsOfThings[x][2] =
                                               getSpellsKnown(
                                                   index,
@@ -383,6 +395,6 @@ class _ClassTabState extends State<ClassTab> {
           Column(children: widget.widgetsInPlay)
         ]),
       ),
-    );
+    ));    
   }
 }

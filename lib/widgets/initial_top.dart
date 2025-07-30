@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frankenstein/services/global_list_manager.dart' show GlobalListManager;
 import '../colour_scheme_class/colour_scheme.dart';
 import '../theme/theme_manager.dart';
 import '../utils/style_utils.dart';
@@ -181,14 +182,14 @@ class InitialTopState extends State<InitialTop> {
                             separatorBuilder: (BuildContext context, int index) {
                               return const SizedBox(height: 15);
                             },
-                            itemCount: THEMELIST.length,
+                            itemCount: GlobalListManager().themeList.length,
                             itemBuilder: (BuildContext context, int index) {
                               return SizedBox(
                                 width: 305,
                                 height: 180,
                                 child: OutlinedButton(
                                   style: OutlinedButton.styleFrom(
-                                    backgroundColor: THEMELIST.reversed.toList()[index].backgroundColour,
+                                    backgroundColor: GlobalListManager().themeList.reversed.toList()[index].backgroundColour,
                                     /* Highlight the selected colour with a thicker boarder */
                                     side: (selectedIndex == index) ? BorderSide(width: 7, color: Colors.amber) :BorderSide(width: 0.7, color: Colors.black),
                                     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
@@ -199,13 +200,13 @@ class InitialTopState extends State<InitialTop> {
                                       Container(
                                         width: 305,
                                         height: 18,
-                                        color: THEMELIST.reversed.toList()[index].backingColour,
+                                        color: GlobalListManager().themeList.reversed.toList()[index].backingColour,
                                         child: Text(
                                           "Frankensteins  - a D&D 5e character builder:",
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 9,
-                                            color: THEMELIST.reversed.toList()[index].textColour),
+                                            color: GlobalListManager().themeList.reversed.toList()[index].textColour),
                                           textAlign: TextAlign.center,
                                       )),
                                       
@@ -213,12 +214,12 @@ class InitialTopState extends State<InitialTop> {
                                       Container(
                                         width: 305,
                                         height: 18,
-                                        color: THEMELIST.reversed.toList()[index].backingColour,
+                                        color: GlobalListManager().themeList.reversed.toList()[index].backingColour,
                                         child: Text("Main Menu",
                                           style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             fontSize: 12,
-                                            color: THEMELIST.reversed.toList()[index].textColour
+                                            color: GlobalListManager().themeList.reversed.toList()[index].textColour
                                           ),
                                           textAlign: TextAlign.center
                                       )),
@@ -230,15 +231,15 @@ class InitialTopState extends State<InitialTop> {
                                           children: [
                                             /* Mini version of the button that takes the user to the create_a_character page */
                                             const SizedBox(width: 21),
-                                            buildStyledMockButton("Create a \n character", THEMELIST.reversed.toList()[index]),
+                                            buildStyledMockButton("Create a \n character", GlobalListManager().themeList.reversed.toList()[index]),
                                             
                                             /* Mini version of the button that takes the user to the search_for_content page */
                                             const SizedBox(width: 27.5),
-                                            buildStyledMockButton("Search for\nContent", THEMELIST.reversed.toList()[index]),
+                                            buildStyledMockButton("Search for\nContent", GlobalListManager().themeList.reversed.toList()[index]),
 
                                             /* Mini version of the button that takes the user to the my_characters page */
                                             const SizedBox(width: 27.5),
-                                            buildStyledMockButton("My\nCharacters", THEMELIST.reversed.toList()[index])
+                                            buildStyledMockButton("My\nCharacters", GlobalListManager().themeList.reversed.toList()[index])
 
                                           ],
                                     )),
@@ -248,11 +249,11 @@ class InitialTopState extends State<InitialTop> {
                                         children: [
                                           /* Mini version of the button that makes the download content popup */
                                           const SizedBox(width: 50),
-                                          buildStyledMockButton("Download\nContent", THEMELIST.reversed.toList()[index]),
+                                          buildStyledMockButton("Download\nContent", GlobalListManager().themeList.reversed.toList()[index]),
                                           
                                           /* Mini version of the button that takes the user to the create_content page */
                                           const SizedBox(width: 27.5),
-                                          buildStyledMockButton("Create\nContent", THEMELIST.reversed.toList()[index])
+                                          buildStyledMockButton("Create\nContent", GlobalListManager().themeList.reversed.toList()[index])
                                       ],
                                     )),
                                   ]),
@@ -260,7 +261,7 @@ class InitialTopState extends State<InitialTop> {
                                     setState(() {
                                       selectedIndex = index;
                                       // Create a copy of the selected theme instead of referencing it directly
-                                      final selectedTheme = THEMELIST.reversed.toList()[index];
+                                      final selectedTheme = GlobalListManager().themeList.reversed.toList()[index];
                                       currentScheme = ColourScheme(
                                         textColour: selectedTheme.textColour,
                                         backingColour: selectedTheme.backingColour,
