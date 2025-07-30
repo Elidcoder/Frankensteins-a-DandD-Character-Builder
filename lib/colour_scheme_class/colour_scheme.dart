@@ -30,4 +30,6 @@ class ColourScheme {
   bool isSameColourScheme(ColourScheme other) {
     return textColour == other.textColour && backingColour == other.backingColour && backgroundColour == other.backgroundColour;
   }
+
+  get name => "Custom Theme: backing: $backingColour, text: $textColour, background: $backgroundColour";
 }

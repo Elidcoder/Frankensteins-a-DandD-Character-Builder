@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:frankenstein/services/global_list_manager.dart' show GlobalListManager;
 
 import '../colour_scheme_class/colour_scheme.dart';
-import '../services/storage/content_storage_service.dart';
 
 /// Service class to manage theme operations
 /// Provides a cleaner interface for theme management
@@ -32,15 +31,12 @@ class ThemeManager {
   }
   
   /// Update the current theme and notify listeners
-  void updateScheme(ColourScheme newScheme) {
-    _currentScheme = newScheme;
-    
-    // Update the global theme list
-    GlobalListManager().themeList.removeWhere((theme) => newScheme.isSameColourScheme(theme));
-    GlobalListManager().themeList.add(newScheme);
-    
+  void updateScheme(ColourScheme newScheme) {    
     // Save only the themes (more efficient than saving all content)
-    ContentStorageService.saveThemes(GlobalListManager().themeList);
+    // TODO(Add error handling for save operation)
+    GlobalListManager().saveTheme(newScheme);
+
+    _currentScheme = newScheme;
     
     // Notify all listeners
     for (final listener in _listeners) {
