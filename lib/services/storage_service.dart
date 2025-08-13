@@ -10,24 +10,23 @@ import 'package:frankenstein/content_classes/non_character_classes/spell/spell.d
 abstract interface class StorageService {
   Future<void> initialize();
 
-  Future<List<Spell>> loadSpells();
+  Future<List<Background>> loadBackgrounds();
   Future<List<Class>> loadClasses();
-  Future<List<Race>> loadRaces();
   Future<List<Feat>> loadFeats();
   Future<List<Item>> loadItems();
-  Future<List<ColourScheme>> loadThemes();
-  Future<List<Background>> loadBackgrounds();
   Future<List<String>> loadLanguages();
   Future<List<Proficiency>> loadProficiencies();
+  Future<List<Race>> loadRaces();
+  Future<List<Spell>> loadSpells();
+  Future<List<ColourScheme>> loadThemes();
 
-
-  Future<bool> saveThemes(List<ColourScheme> themes);
+  Future<bool> saveBackgrounds(List<Background> backgrounds);
   Future<bool> saveClasses(List<Class> classes);
-  Future<bool> saveRaces(List<Race> races);
   Future<bool> saveFeats(List<Feat> feats);
   Future<bool> saveItems(List<Item> items);
-  Future<bool> saveBackgrounds(List<Background> backgrounds);
   Future<bool> saveLanguages(List<String> languages);
   Future<bool> saveProficiencies(List<Proficiency> proficiencies);
+  Future<bool> saveRaces(List<Race> races);
   Future<bool> saveSpells(List<Spell> spells);
+  Future<bool> saveThemes(List<ColourScheme> themes);
 }
