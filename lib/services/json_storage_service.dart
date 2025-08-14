@@ -17,6 +17,7 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 class JsonStorageService implements StorageService {
+  // TODO(LOOK FOR RACE CONDITIONS - MAYBE USE MUTEX)
   static final JsonStorageService _instance = JsonStorageService._internal();
   factory JsonStorageService() => _instance;
   JsonStorageService._internal();
@@ -31,7 +32,7 @@ class JsonStorageService implements StorageService {
   static const String _charactersSubfolder = 'frankenstein_characters';
 
   static const String characterNotReadyMessage = 'Character service not ready';
-  static const String contentNotReadyMessage   = 'Content service not ready'; //TODO()
+  static const String contentNotReadyMessage   = 'Content service not ready';
 
   @override
   Future<bool> initialize() async {
@@ -72,7 +73,10 @@ class JsonStorageService implements StorageService {
   }
 
   Future<Map<String, dynamic>?> _readJson(String fileName) async {
-    if (!_initialized) return null;
+    if (!_initialized) {
+      debugPrint(contentNotReadyMessage);
+      return null;
+    }
     try {
       final file = File(_getFullPath(fileName));
       if (!await file.exists()) return null;
@@ -86,7 +90,10 @@ class JsonStorageService implements StorageService {
   }
 
   Future<bool> _writeJson(String fileName, Map<String, dynamic> data) async {
-    if (!_initialized) return false;
+    if (!_initialized) {
+      debugPrint(contentNotReadyMessage);
+      return false;
+    }
     try {
       final jsonString = jsonEncode(data);
       final fullPath = _getFullPath(fileName);
@@ -449,10 +456,10 @@ class JsonStorageService implements StorageService {
         await characterFile.delete();
       }
       await _updateIndex();
-      debugPrint('Character $characterId deleted successfully');
+      debugPrint('Character (ID: $characterId) deleted successfully');
       return true;
     } catch (e) {
-      debugPrint('Error deleting character: $e');
+      debugPrint('Error deleting character (ID: $characterId): $e');
       return false;
     }
   }
@@ -532,10 +539,10 @@ class JsonStorageService implements StorageService {
       final characterData = character.toJson();
       await characterFile.writeAsString(jsonEncode(characterData));
       await _updateIndex();
-      debugPrint('Character ${character.uniqueID} saved successfully');
+      debugPrint('Character  ${character.name}, UID: ${character.uniqueID}, saved successfully');
       return true;
     } catch (e) {
-      debugPrint('Error saving character: $e');
+      debugPrint('Error saving character ${character.name}, UID: ${character.uniqueID}: $e');
       return false;
     }
   }
@@ -551,10 +558,10 @@ class JsonStorageService implements StorageService {
       final characterData = character.toJson();
       await characterFile.writeAsString(jsonEncode(characterData));
       await _updateIndex();
-      debugPrint('Character ${character.uniqueID} updated successfully');
+      debugPrint('Character  ${character.name}, UID: ${character.uniqueID}, updated successfully');
       return true;
     } catch (e) {
-      debugPrint('Error updating character: $e');
+      debugPrint('Error updating character ${character.name}, UID: ${character.uniqueID}: $e');
       return false;
     }
   }
