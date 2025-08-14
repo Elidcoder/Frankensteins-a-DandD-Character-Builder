@@ -16,13 +16,14 @@ class CharacterStorageService {
   bool _initialized = false;
 
   static const String notReadyMessage = 'Character service not ready';
-  static const String _basePath = 'frankenstein_characters';
+  static const String _contentPath = 'frankenstein_content';
+  static const String _charactersSubfolder = 'frankenstein_characters';
 
   Future<void> initialize() async {
     if (_initialized) return;
     try {
       final appDocumentsDir = await getApplicationDocumentsDirectory();
-      _baseDirectory = Directory(path.join(appDocumentsDir.path, _basePath));
+      _baseDirectory = Directory(path.join(appDocumentsDir.path, _contentPath, _charactersSubfolder));
       if (!await _baseDirectory.exists()) {
         await _baseDirectory.create(recursive: true);
         debugPrint('Created character storage directory: ${_baseDirectory.path}');
