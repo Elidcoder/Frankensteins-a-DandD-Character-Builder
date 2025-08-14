@@ -3,20 +3,18 @@ import 'dart:convert';
 import 'dart:io';
 
 import "package:flutter/foundation.dart" show debugPrint;
+import "package:frankenstein/services/storage_service.dart";
 
 // Project Imports
 import "../colour_scheme_class/colour_scheme.dart";
 import "../content_classes/all_content_classes.dart";
-import "../services/character_storage_service.dart";
-import "../services/storage/content_storage_service.dart";
 
 /// Global list manager that handles initialization and access to all game content lists
 class GlobalListManager {
   static final GlobalListManager _instance = GlobalListManager._internal();
   factory GlobalListManager() => _instance;
   GlobalListManager._internal();
-  late CharacterStorageService characterStorageService;
-  late ContentStorageService contentStorageService;
+  late StorageService storageService;
 
   // Content lists
   List<Spell> _spellList = [];
@@ -45,14 +43,10 @@ class GlobalListManager {
   bool _groupsInitialized = false;
 
   /// Initialize both content and character storage systems
-  Future<bool> initialise() async {
+  Future<bool> initialise(StorageService injectedStorageService) async {
     try {
-      characterStorageService = CharacterStorageService();
-      contentStorageService = ContentStorageService();
-      await Future.wait([
-        characterStorageService.initialize(),
-        contentStorageService.initialize(),
-      ]);
+      storageService = injectedStorageService;
+      await storageService.initialize();
       return true;
     } catch (e) {
       debugPrint('Failed to initialize storage systems: $e');
@@ -65,7 +59,7 @@ class GlobalListManager {
     if (_spellsInitialized) return _spellList;
     
     try {
-      _spellList = await contentStorageService.loadSpells();
+      _spellList = await storageService.loadSpells();
       _spellsInitialized = true;
       debugPrint('Initialized spell list with ${_spellList.length} spells');
       return _spellList;
@@ -80,7 +74,7 @@ class GlobalListManager {
     if (_classesInitialized) return _classList;
     
     try {
-      _classList = await contentStorageService.loadClasses();
+      _classList = await storageService.loadClasses();
       _classesInitialized = true;
       debugPrint('Initialized class list with ${_classList.length} classes');
       return _classList;
@@ -95,7 +89,7 @@ class GlobalListManager {
     if (_racesInitialized) return _raceList;
     
     try {
-      _raceList = await contentStorageService.loadRaces();
+      _raceList = await storageService.loadRaces();
       _racesInitialized = true;
       debugPrint('Initialized race list with ${_raceList.length} races');
       return _raceList;
@@ -110,7 +104,7 @@ class GlobalListManager {
     if (_featsInitialized) return _featList;
     
     try {
-      _featList = await contentStorageService.loadFeats();
+      _featList = await storageService.loadFeats();
       _featsInitialized = true;
       debugPrint('Initialized feat list with ${_featList.length} feats');
       return _featList;
@@ -125,7 +119,7 @@ class GlobalListManager {
     if (_itemsInitialized) return _itemList;
     
     try {
-      _itemList = await contentStorageService.loadItems();
+      _itemList = await storageService.loadItems();
       _itemsInitialized = true;
       debugPrint('Initialized item list with ${_itemList.length} items');
       return _itemList;
@@ -140,7 +134,7 @@ class GlobalListManager {
     if (_backgroundsInitialized) return _backgroundList;
     
     try {
-      _backgroundList = await contentStorageService.loadBackgrounds();
+      _backgroundList = await storageService.loadBackgrounds();
       _backgroundsInitialized = true;
       debugPrint('Initialized background list with ${_backgroundList.length} backgrounds');
       return _backgroundList;
@@ -155,7 +149,7 @@ class GlobalListManager {
     if (_proficienciesInitialized) return _proficiencyList;
     
     try {
-      _proficiencyList = await contentStorageService.loadProficiencies();
+      _proficiencyList = await storageService.loadProficiencies();
       _proficienciesInitialized = true;
       debugPrint('Initialized proficiency list with ${_proficiencyList.length} proficiencies');
       return _proficiencyList;
@@ -170,7 +164,7 @@ class GlobalListManager {
     if (_languagesInitialized) return _languageList;
     
     try {
-      _languageList = await contentStorageService.loadLanguages();
+      _languageList = await storageService.loadLanguages();
       _languagesInitialized = true;
       debugPrint('Initialized language list with ${_languageList.length} languages');
       return _languageList;
@@ -185,7 +179,7 @@ class GlobalListManager {
     if (_themesInitialized) return _themeList;
     
     try {
-      _themeList = await contentStorageService.loadThemes();
+      _themeList = await storageService.loadThemes();
       _themesInitialized = true;
       debugPrint('Initialized theme list with ${_themeList.length} themes');
       return _themeList;
@@ -200,7 +194,7 @@ class GlobalListManager {
     if (_charactersInitialized) return _characterList;
     
     try {
-      _characterList = await characterStorageService.getAllCharacters();
+      _characterList = await storageService.getAllCharacters();
       _charactersInitialized = true;
       debugPrint('Initialized character list with ${_characterList.length} characters');
       
@@ -342,7 +336,7 @@ class GlobalListManager {
       _spellList.add(spell);
       
       // Save the updated spell list
-      final savedSuccess = await contentStorageService.saveSpells(_spellList);
+      final savedSuccess = await storageService.saveSpells(_spellList);
 
       // Save success
       if (savedSuccess) {
@@ -368,7 +362,7 @@ class GlobalListManager {
       _themeList.add(newScheme);
 
       // Save only the themes (more efficient than saving all content)
-      final savedSuccess = await contentStorageService.saveThemes(_themeList);
+      final savedSuccess = await storageService.saveThemes(_themeList);
 
       // Save success
       if (savedSuccess) {
@@ -398,7 +392,7 @@ class GlobalListManager {
         debugPrint('Previous entry found, deleting before saving character: ${character.characterDescription.name}');
 
         // Save the updated character list
-        savedSuccess = await characterStorageService.updateCharacter(character);
+        savedSuccess = await storageService.updateCharacter(character);
 
       }
 
@@ -406,7 +400,7 @@ class GlobalListManager {
       else {
         debugPrint('No previous entry found, continuing to save character: ${character.characterDescription.name}');
         // Save the updated character list
-        savedSuccess = await characterStorageService.saveCharacter(character);
+        savedSuccess = await storageService.saveCharacter(character);
       }
 
       // Add character to the list
@@ -431,7 +425,7 @@ class GlobalListManager {
       var deletedSuccess = false;
       
       // Save the updated character list
-      deletedSuccess = await characterStorageService.deleteCharacter(character.uniqueID);
+      deletedSuccess = await storageService.deleteCharacter(character.uniqueID);
       
       // Save success
       if (deletedSuccess) {
@@ -455,15 +449,15 @@ class GlobalListManager {
     try {
       // Save all content lists - can be done in parallel as they are independent files
       await Future.wait([
-        contentStorageService.saveSpells(_spellList),
-        contentStorageService.saveClasses(_classList),
-        contentStorageService.saveRaces(_raceList),
-        contentStorageService.saveFeats(_featList),
-        contentStorageService.saveItems(_itemList),
-        contentStorageService.saveBackgrounds(_backgroundList),
-        contentStorageService.saveProficiencies(_proficiencyList),
-        contentStorageService.saveLanguages(_languageList),
-        contentStorageService.saveThemes(_themeList),
+        storageService.saveSpells(_spellList),
+        storageService.saveClasses(_classList),
+        storageService.saveRaces(_raceList),
+        storageService.saveFeats(_featList),
+        storageService.saveItems(_itemList),
+        storageService.saveBackgrounds(_backgroundList),
+        storageService.saveProficiencies(_proficiencyList),
+        storageService.saveLanguages(_languageList),
+        storageService.saveThemes(_themeList),
       ]);
       
       debugPrint('All content lists saved successfully.');
