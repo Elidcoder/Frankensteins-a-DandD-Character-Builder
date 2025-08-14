@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:frankenstein/colour_scheme_class/colour_scheme.dart';
+import 'package:frankenstein/content_classes/character/character.dart';
 import 'package:frankenstein/content_classes/non_character_classes/background/background.dart';
 import 'package:frankenstein/content_classes/non_character_classes/class/class.dart';
 import 'package:frankenstein/content_classes/non_character_classes/feat/feat.dart';
@@ -21,25 +22,46 @@ class JsonStorageService implements StorageService {
   JsonStorageService._internal();
 
   late Directory _baseDirectory;
+  late Directory _characterDirectory;
   
   bool _initialized = false;
   bool get isInitialized => _initialized;
 
-  static const String _basePath = 'frankenstein_content';
+  static const String _contentPath = 'frankenstein_content';
+  static const String _charactersSubfolder = 'frankenstein_characters';
+
+  static const String characterNotReadyMessage = 'Character service not ready';
+  static const String contentNotReadyMessage   = 'Content service not ready'; //TODO()
 
   @override
   Future<bool> initialize() async {
     if (_initialized) return true;
     try {
       final appDocsDir = await getApplicationDocumentsDirectory();
-      _baseDirectory = Directory(path.join(appDocsDir.path, _basePath));
+
+      // Initialise content storage
+      _baseDirectory = Directory(path.join(appDocsDir.path, _contentPath));
       if (!await _baseDirectory.exists()) {
         await _baseDirectory.create(recursive: true);
+        debugPrint('Created main storage directory: ${_baseDirectory.path}');
+      } else {
+        debugPrint('Using existing main storage directory: ${_baseDirectory.path}');
       }
+
+      // initialise character storage
+      _characterDirectory = Directory(path.join(appDocsDir.path, _contentPath, _charactersSubfolder));
+      if (!await _characterDirectory.exists()) {
+        await _characterDirectory.create(recursive: true);
+        debugPrint('Created character storage directory: ${_characterDirectory.path}');
+      } else {
+        debugPrint('Using existing character storage directory: ${_characterDirectory.path}');
+      }
+
       _initialized = true;
       debugPrint('JsonStorageService initialized successfully');
       return true;
     } catch (e) {
+      // TODO(Possibly attempt some kind of file repair or warning system)
       debugPrint('JsonStorageService initialization failed: $e');
       return false;
     }
@@ -376,6 +398,163 @@ class JsonStorageService implements StorageService {
       return await _writeJson('themes.json', data);
     } catch (e) {
       debugPrint('Failed to save themes: $e');
+      return false;
+    }
+  }
+
+
+
+  // Character operations
+  // Updates the index file to ensure it is up to date with the current characters
+  Future<void> _updateIndex() async {
+    try {
+      final files = _baseDirectory.listSync().whereType<File>();
+      final characterIds = files
+          .where((file) => file.path.endsWith('.json') && !file.path.endsWith('index.json'))
+          .map((file) => path.basenameWithoutExtension(file.path))
+          .toList();
+      final indexData = {
+        'characters': characterIds,
+        'lastUpdated': DateTime.now().toIso8601String(),
+      };
+      final indexFile = File(path.join(_baseDirectory.path, 'index.json'));
+      await indexFile.writeAsString(jsonEncode(indexData));
+      debugPrint('Index updated with ${characterIds.length} characters');
+    } catch (e) {
+      debugPrint('Error updating index: $e');
+    }
+  }
+
+  @override
+  Future<bool> deleteCharacter(int characterId) async {
+    if (!_initialized) {
+      debugPrint(characterNotReadyMessage);
+      return false;
+    }
+    try {
+      return await _deleteCharacter(characterId);
+    } catch (e) {
+      debugPrint('Error deleting character: $e');
+      return false;
+    }
+  }
+
+  Future<bool> _deleteCharacter(int characterId) async {
+    try {
+      final filePath = path.join(_baseDirectory.path, '$characterId.json');
+      debugPrint('Attempting to delete file: $filePath');
+      final characterFile = File(filePath);
+      if (await characterFile.exists()) {
+        debugPrint('File exists, deleting: $filePath');
+        await characterFile.delete();
+      }
+      await _updateIndex();
+      debugPrint('Character $characterId deleted successfully');
+      return true;
+    } catch (e) {
+      debugPrint('Error deleting character: $e');
+      return false;
+    }
+  }
+
+  @override
+  Future<List<Character>> getAllCharacters() async {
+    if (!_initialized) {
+      debugPrint(characterNotReadyMessage);
+      return [];
+    }
+    try {
+      return await _loadAllCharacters();
+    } catch (e) {
+      debugPrint('Error loading characters from new system: $e');
+      return [];
+    }
+  }
+
+  //TODO(Cleanup function)
+  // Function can error, this should be handled by the caller
+  Future<List<Character>> _loadAllCharacters() async {
+    final characters = <Character>[];
+    final indexFile = File(path.join(_baseDirectory.path, 'index.json'));
+    if (await indexFile.exists()) {
+      final indexContent = await indexFile.readAsString();
+      final indexData = jsonDecode(indexContent) as Map<String, dynamic>;
+      final characterIds = List<String>.from(indexData['characters'] ?? []);
+      for (final characterId in characterIds) {
+        final characterFile = File(path.join(_baseDirectory.path, '$characterId.json'));
+        if (await characterFile.exists()) {
+          try {
+            final characterContent = await characterFile.readAsString();
+            final characterData = jsonDecode(characterContent) as Map<String, dynamic>;
+            final character = Character.fromJson(characterData);
+            characters.add(character);
+          } catch (e) {
+            debugPrint('Error loading character $characterId: $e');
+          }
+        }
+      }
+    } else {
+      final files = _baseDirectory.listSync().whereType<File>();
+      for (final file in files) {
+        if (file.path.endsWith('.json') && !file.path.endsWith('index.json')) {
+          try {
+            final characterContent = await file.readAsString();
+            final characterData = jsonDecode(characterContent) as Map<String, dynamic>;
+            final character = Character.fromJson(characterData);
+            characters.add(character);
+          } catch (e) {
+            debugPrint('Error loading character from ${file.path}: $e');
+          }
+        }
+      }
+    }
+    debugPrint('Loaded ${characters.length} characters from storage');
+    return characters;
+}
+
+  @override
+  Future<bool> saveCharacter(Character character) async {
+    if (!_initialized) {
+      debugPrint(characterNotReadyMessage);
+      return false;
+    }
+    try {
+      return await _saveCharacter(character);
+    } catch (e) {
+      debugPrint('Error saving character to new system: $e');
+      return false;
+    }
+  }
+
+  Future<bool> _saveCharacter(Character character) async {
+    try {
+      final characterFile = File(path.join(_baseDirectory.path, '${character.uniqueID}.json'));
+      final characterData = character.toJson();
+      await characterFile.writeAsString(jsonEncode(characterData));
+      await _updateIndex();
+      debugPrint('Character ${character.uniqueID} saved successfully');
+      return true;
+    } catch (e) {
+      debugPrint('Error saving character: $e');
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> updateCharacter(Character character) async {
+    if (!_initialized) {
+      debugPrint(characterNotReadyMessage);
+      return false;
+    }
+    try {
+      final characterFile = File(path.join(_baseDirectory.path, '${character.uniqueID}.json'));
+      final characterData = character.toJson();
+      await characterFile.writeAsString(jsonEncode(characterData));
+      await _updateIndex();
+      debugPrint('Character ${character.uniqueID} updated successfully');
+      return true;
+    } catch (e) {
+      debugPrint('Error updating character: $e');
       return false;
     }
   }

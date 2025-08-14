@@ -1,4 +1,5 @@
 import 'package:frankenstein/colour_scheme_class/colour_scheme.dart' show ColourScheme;
+import 'package:frankenstein/content_classes/character/character.dart' show Character;
 import 'package:frankenstein/content_classes/non_character_classes/background/background.dart' show Background;
 import 'package:frankenstein/content_classes/non_character_classes/class/class.dart' show Class;
 import 'package:frankenstein/content_classes/non_character_classes/feat/feat.dart' show Feat;
@@ -29,4 +30,9 @@ abstract interface class StorageService {
   Future<bool> saveRaces(List<Race> races);
   Future<bool> saveSpells(List<Spell> spells);
   Future<bool> saveThemes(List<ColourScheme> themes);
+
+  Future<List<Character>> getAllCharacters();
+  Future<bool> updateCharacter(Character character);
+  Future<bool> saveCharacter(Character character);
+  Future<bool> deleteCharacter(int characterId); 
 }
