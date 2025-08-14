@@ -439,15 +439,6 @@ class JsonStorageService implements StorageService {
       return false;
     }
     try {
-      return await _deleteCharacter(characterId);
-    } catch (e) {
-      debugPrint('Error deleting character: $e');
-      return false;
-    }
-  }
-
-  Future<bool> _deleteCharacter(int characterId) async {
-    try {
       final filePath = path.join(_baseDirectory.path, '$characterId.json');
       debugPrint('Attempting to delete file: $filePath');
       final characterFile = File(filePath);
@@ -525,15 +516,6 @@ class JsonStorageService implements StorageService {
       debugPrint(characterNotReadyMessage);
       return false;
     }
-    try {
-      return await _saveCharacter(character);
-    } catch (e) {
-      debugPrint('Error saving character to new system: $e');
-      return false;
-    }
-  }
-
-  Future<bool> _saveCharacter(Character character) async {
     try {
       final characterFile = File(path.join(_baseDirectory.path, '${character.uniqueID}.json'));
       final characterData = character.toJson();
