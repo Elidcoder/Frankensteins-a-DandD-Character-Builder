@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frankenstein/services/global_list_manager.dart' show GlobalListManager;
+import 'package:frankenstein/storage/global_list_manager.dart' show GlobalListManager;
 
 import '../colour_scheme_class/colour_scheme.dart';
 

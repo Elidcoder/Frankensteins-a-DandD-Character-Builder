@@ -1,14 +1,14 @@
 // External imports
 import "package:flutter/material.dart";
-import "package:frankenstein/services/global_list_manager.dart" show GlobalListManager;
+import "package:frankenstein/storage/global_list_manager.dart" show GlobalListManager;
 
+import "../colour_scheme_class/colour_scheme.dart";
 // Project imports
 import "../pages/all_home_subpages.dart";
 import "../pages/custom_content_pages/create_spells.dart" show MakeASpell;
-import "main_menu.dart" show MainMenu;
 import "../theme/theme_manager.dart";
-import "../colour_scheme_class/colour_scheme.dart";
 import "../utils/style_utils.dart";
+import "main_menu.dart" show MainMenu;
 import "simple_color_picker.dart";
 
 /* A map of all the pages that can be navigated to. */

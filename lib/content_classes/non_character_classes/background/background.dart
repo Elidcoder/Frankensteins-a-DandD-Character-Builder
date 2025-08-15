@@ -1,7 +1,7 @@
-import 'package:frankenstein/services/global_list_manager.dart' show GlobalListManager;
+import 'package:frankenstein/storage/global_list_manager.dart' show GlobalListManager;
+import 'package:json_annotation/json_annotation.dart';
 
 import "../content.dart";
-import 'package:json_annotation/json_annotation.dart';
 
 part 'background.g.dart';
 

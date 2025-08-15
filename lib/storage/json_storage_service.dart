@@ -11,8 +11,8 @@ import 'package:frankenstein/content_classes/non_character_classes/item/item.dar
 import 'package:frankenstein/content_classes/non_character_classes/proficiency.dart';
 import 'package:frankenstein/content_classes/non_character_classes/race/race.dart';
 import 'package:frankenstein/content_classes/non_character_classes/spell/spell.dart';
-import 'package:frankenstein/services/storage_service.dart' show StorageService;
-import 'package:frankenstein/services/storage_service.dart';
+import 'package:frankenstein/storage/storage_service.dart' show StorageService;
+import 'package:frankenstein/storage/storage_service.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 

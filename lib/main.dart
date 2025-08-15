@@ -1,9 +1,9 @@
 // External imports
 import "package:flutter/material.dart";
-import "package:frankenstein/services/json_storage_service.dart";
+import "package:frankenstein/storage/json_storage_service.dart";
 
 // Project imports
-import "services/global_list_manager.dart";
+import "storage/global_list_manager.dart";
 import "theme/theme_manager.dart";
 import "theme/theme_manager_widget.dart";
 import "widgets/initial_top.dart" show InitialTop, InitialTopKey;

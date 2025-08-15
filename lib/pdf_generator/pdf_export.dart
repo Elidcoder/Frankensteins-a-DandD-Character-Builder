@@ -1,11 +1,12 @@
 // External Imports
+import "dart:typed_data" show Uint8List;
+
 import "package:pdf/pdf.dart";
 import "package:pdf/widgets.dart";
-import "dart:typed_data" show Uint8List;
 
 // Project Import
 import "../content_classes/all_content_classes.dart";
-import "../../services/global_list_manager.dart";
+import "../storage/global_list_manager.dart";
 
 //ARGB => 0x(AA)(RR)(GG)(BB)
 String formatNumber(int number) {

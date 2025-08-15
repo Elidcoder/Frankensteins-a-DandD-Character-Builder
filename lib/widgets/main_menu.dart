@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:frankenstein/services/global_list_manager.dart' show GlobalListManager;
+import 'package:frankenstein/storage/global_list_manager.dart' show GlobalListManager;
 
 import '../theme/theme_manager.dart';
 import '../utils/style_utils.dart';

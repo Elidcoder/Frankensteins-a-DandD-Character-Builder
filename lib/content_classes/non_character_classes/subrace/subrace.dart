@@ -1,8 +1,8 @@
-import 'package:frankenstein/services/global_list_manager.dart' show GlobalListManager;
-
-import '../proficiency.dart';
-import "../content.dart";
+import 'package:frankenstein/storage/global_list_manager.dart' show GlobalListManager;
 import 'package:json_annotation/json_annotation.dart';
+
+import "../content.dart";
+import '../proficiency.dart';
 
 part 'subrace.g.dart';
 
