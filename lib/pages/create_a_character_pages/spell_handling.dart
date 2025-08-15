@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 import "package:frankenstein/utils/style_utils.dart";
 
 import "../../content_classes/all_content_classes.dart";
-import "../../services/global_list_manager.dart";
+import "../../storage/global_list_manager.dart";
 import "../../theme/theme_manager.dart";
 // Project Imports
 import "create_a_character.dart";

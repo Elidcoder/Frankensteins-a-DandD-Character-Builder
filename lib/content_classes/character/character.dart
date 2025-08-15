@@ -4,7 +4,7 @@ import "dart:math" show Random;
 
 import 'package:json_annotation/json_annotation.dart';
 
-import "../../services/global_list_manager.dart";
+import "../../storage/global_list_manager.dart";
 // Project Import
 import "../non_character_classes/all_non_character_classes.dart";
 
