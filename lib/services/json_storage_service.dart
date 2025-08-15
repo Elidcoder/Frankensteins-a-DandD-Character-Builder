@@ -415,7 +415,7 @@ class JsonStorageService implements StorageService {
   // Updates the index file to ensure it is up to date with the current characters
   Future<void> _updateIndex() async {
     try {
-      final files = _baseDirectory.listSync().whereType<File>();
+      final files = _characterDirectory.listSync().whereType<File>();
       final characterIds = files
           .where((file) => file.path.endsWith('.json') && !file.path.endsWith('index.json'))
           .map((file) => path.basenameWithoutExtension(file.path))
@@ -424,7 +424,7 @@ class JsonStorageService implements StorageService {
         'characters': characterIds,
         'lastUpdated': DateTime.now().toIso8601String(),
       };
-      final indexFile = File(path.join(_baseDirectory.path, 'index.json'));
+      final indexFile = File(path.join(_characterDirectory.path, 'index.json'));
       await indexFile.writeAsString(jsonEncode(indexData));
       debugPrint('Index updated with ${characterIds.length} characters');
     } catch (e) {
@@ -439,7 +439,7 @@ class JsonStorageService implements StorageService {
       return false;
     }
     try {
-      final filePath = path.join(_baseDirectory.path, '$characterId.json');
+      final filePath = path.join(_characterDirectory.path, '$characterId.json');
       debugPrint('Attempting to delete file: $filePath');
       final characterFile = File(filePath);
       if (await characterFile.exists()) {
@@ -473,13 +473,13 @@ class JsonStorageService implements StorageService {
   // Function can error, this should be handled by the caller
   Future<List<Character>> _loadAllCharacters() async {
     final characters = <Character>[];
-    final indexFile = File(path.join(_baseDirectory.path, 'index.json'));
+    final indexFile = File(path.join(_characterDirectory.path, 'index.json'));
     if (await indexFile.exists()) {
       final indexContent = await indexFile.readAsString();
       final indexData = jsonDecode(indexContent) as Map<String, dynamic>;
       final characterIds = List<String>.from(indexData['characters'] ?? []);
       for (final characterId in characterIds) {
-        final characterFile = File(path.join(_baseDirectory.path, '$characterId.json'));
+        final characterFile = File(path.join(_characterDirectory.path, '$characterId.json'));
         if (await characterFile.exists()) {
           try {
             final characterContent = await characterFile.readAsString();
@@ -492,7 +492,7 @@ class JsonStorageService implements StorageService {
         }
       }
     } else {
-      final files = _baseDirectory.listSync().whereType<File>();
+      final files = _characterDirectory.listSync().whereType<File>();
       for (final file in files) {
         if (file.path.endsWith('.json') && !file.path.endsWith('index.json')) {
           try {
@@ -517,7 +517,7 @@ class JsonStorageService implements StorageService {
       return false;
     }
     try {
-      final characterFile = File(path.join(_baseDirectory.path, '${character.uniqueID}.json'));
+      final characterFile = File(path.join(_characterDirectory.path, '${character.uniqueID}.json'));
       final characterData = character.toJson();
       await characterFile.writeAsString(jsonEncode(characterData));
       await _updateIndex();
@@ -536,7 +536,7 @@ class JsonStorageService implements StorageService {
       return false;
     }
     try {
-      final characterFile = File(path.join(_baseDirectory.path, '${character.uniqueID}.json'));
+      final characterFile = File(path.join(_characterDirectory.path, '${character.uniqueID}.json'));
       final characterData = character.toJson();
       await characterFile.writeAsString(jsonEncode(characterData));
       await _updateIndex();
