@@ -60,7 +60,9 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => PdfPreviewPage(
-                  character: widget.character),
+                  character: widget.character,
+                  isPreview: true,
+              ),
             ),
           );
         },

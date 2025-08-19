@@ -1,21 +1,26 @@
-// External imports
+// External Imports
 import "package:flutter/material.dart";
 import "package:printing/printing.dart" show PdfPreview;
 
-// Project imports:
+// Project Imports
 import "../content_classes/character/character.dart";
 import "../utils/style_utils.dart";
 import "pdf_export.dart";
 
 class PdfPreviewPage extends StatelessWidget {
   final Character character;
-  const PdfPreviewPage({super.key, required this.character});
+  final bool isPreview;
+  const PdfPreviewPage({
+    super.key,
+    required this.character,
+    this.isPreview = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: StyleUtils.buildStyledAppBar(
-        title: "PDF Preview",
+        title: "${character.characterDescription.name} - PDF${isPreview ? " Preview" : ""}",
       ),
       body: PdfPreview(
         build: (context) => makePdf(character),
