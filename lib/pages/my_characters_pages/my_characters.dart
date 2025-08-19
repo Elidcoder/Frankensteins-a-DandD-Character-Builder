@@ -2,7 +2,7 @@
 import "package:flutter/material.dart";
 
 import "../../content_classes/all_content_classes.dart";
-import "../../pdf_generator/pdf_final_display.dart";
+import "../../pdf/pdf_display.dart";
 import "../../storage/global_list_manager.dart";
 import "../../theme/theme_manager.dart";
 import "../../utils/style_utils.dart";
@@ -161,7 +161,7 @@ class MainMyCharacters extends State<MyCharacters> {
                           buildCharacterActionButton("Open PDF", Colors.grey, () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => PdfPreviewPage(character: filteredCharacters[index]),
+                                builder: (context) => PdfDisplay(character: filteredCharacters[index]),
                               ),
                             );
                           }),

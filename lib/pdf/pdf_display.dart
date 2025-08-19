@@ -5,12 +5,12 @@ import "package:printing/printing.dart" show PdfPreview;
 // Project Imports
 import "../content_classes/character/character.dart";
 import "../utils/style_utils.dart";
-import "pdf_export.dart";
+import "pdf_generator.dart";
 
-class PdfPreviewPage extends StatelessWidget {
+class PdfDisplay extends StatelessWidget {
   final Character character;
   final bool isPreview;
-  const PdfPreviewPage({
+  const PdfDisplay({
     super.key,
     required this.character,
     this.isPreview = false,
