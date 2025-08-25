@@ -250,7 +250,49 @@ Widget borderedSection(String title, List<Widget> children, {double height = 200
 
 
 Widget buildFirstColumn(Character userCharacter) {
-  return Container();
+  return Container(
+    alignment: Alignment.center,
+    width: 155.0,
+    child: Column(children: [
+      // Top box - Ability Scores and Skills
+      Container(
+        alignment: Alignment.center,
+        height: 448.0,
+        child: Row(children: [
+          // Ability Scores column
+          buildAbilityScoresColumn(userCharacter),
+          // Saving throws and skills column
+          Container(
+            width: 80.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ...buildSavingThrowsColumn(userCharacter),
+                ...buildSkillsColumn(userCharacter)
+              ],
+            ),
+          ),
+        ]),
+      ),
+
+      Container(
+        alignment: Alignment.center,
+        height: 48.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            // Inspiration
+            buildInspirationBox(userCharacter),
+
+            // Proficiency Bonus
+            buildProficiencyBonusBox(userCharacter),
+          ],
+        ),
+      ),
+      
+      buildOtherProficienciesBox(userCharacter),
+    ]),
+  );
 }
 
 Widget buildSecondColumn(Character userCharacter) {
