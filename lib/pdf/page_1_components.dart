@@ -1,9 +1,11 @@
 // External Imports
 import "package:frankenstein/storage/global_list_manager.dart" show GlobalListManager;
+import "package:pdf/pdf.dart" show PdfColor;
 import "package:pdf/widgets.dart";
 
 // Project Imports
 import "../content_classes/all_content_classes.dart";
+import "pdf_utils.dart";
 
 Widget buildHeader(Character userCharacter) {
   return Container(
@@ -304,11 +306,60 @@ Widget buildThirdColumn(Character userCharacter) {
 }
 
 Widget buildAbilityScore(String name, int score, [bool small = false]) {
-  return Container();
+  return Container(
+    height: 63,
+    width: 50,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(8.0),
+      border: Border.all(width: 0.8),
+      color: const PdfColor.fromInt(0xffffffff),
+    ),
+    child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text(name, style: TextStyle(fontSize: small ? 8 : 10)),
+          Text(
+              //"${userCharacter.strength.value + userCharacter.raceAbilityScoreIncreases[0] + userCharacter.featsASIScoreIncreases[0]}",
+              "$score",
+              style: const TextStyle(fontSize: 23)),
+          Container(
+              height: 13,
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 1),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  border: Border.all(width: 0.8)),
+              child: Text(formatNumber(modifierFromAbilityScore[score] ?? 0)))
+        ]));
 }
 
 Container buildAbilityScoresColumn(Character userCharacter) {
-  return Container();
+  return Container(
+    alignment: Alignment.center,
+    width: 60.0,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(8.0),
+      color: const PdfColor.fromInt(0xff9c9995),
+    ),
+    padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+    //ability scores
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        // Strength
+        buildAbilityScore("Strength", userCharacter.strength.value),
+        // Dexterity
+        buildAbilityScore("Dexterity", userCharacter.dexterity.value),
+        // Constitution
+        buildAbilityScore("Constitution", userCharacter.constitution.value, true),
+        // Intelligence
+        buildAbilityScore("Intelligence", userCharacter.intelligence.value, true),
+        // Wisdom
+        buildAbilityScore("Wisdom", userCharacter.wisdom.value),
+        // Charisma
+        buildAbilityScore("Charisma", userCharacter.charisma.value),
+      ],
+    ),
+  );
 }
 
 List<Widget> buildSavingThrowsColumn(Character userCharacter) {
