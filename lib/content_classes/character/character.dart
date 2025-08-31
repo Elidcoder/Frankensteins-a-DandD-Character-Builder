@@ -421,4 +421,13 @@ class Character {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Character && runtimeType == other.runtimeType && uniqueID == other.uniqueID;
+
+  List<AbilityScore> get abilityScores => [
+    strength,
+    dexterity,
+    constitution,
+    intelligence,
+    wisdom,
+    charisma
+  ];
 }

@@ -305,7 +305,8 @@ Widget buildThirdColumn(Character userCharacter) {
   return Container();
 }
 
-Widget buildAbilityScore(String name, int score, [bool small = false]) {
+Widget buildAbilityScore(String name, int score) {
+  bool small = name.length > 10;
   return Container(
     height: 63,
     width: 50,
@@ -319,7 +320,6 @@ Widget buildAbilityScore(String name, int score, [bool small = false]) {
         children: [
           Text(name, style: TextStyle(fontSize: small ? 8 : 10)),
           Text(
-              //"${userCharacter.strength.value + userCharacter.raceAbilityScoreIncreases[0] + userCharacter.featsASIScoreIncreases[0]}",
               "$score",
               style: const TextStyle(fontSize: 23)),
           Container(
@@ -333,6 +333,7 @@ Widget buildAbilityScore(String name, int score, [bool small = false]) {
 }
 
 Container buildAbilityScoresColumn(Character userCharacter) {
+  var ASboxes = userCharacter.abilityScores.asMap().map((index, ability) => MapEntry(index, buildAbilityScore(ability.name, ability.value + userCharacter.raceAbilityScoreIncreases[index] + userCharacter.featsASIScoreIncreases[index]))).values.toList();
   return Container(
     alignment: Alignment.center,
     width: 60.0,
@@ -344,20 +345,7 @@ Container buildAbilityScoresColumn(Character userCharacter) {
     //ability scores
     child: Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        // Strength
-        buildAbilityScore("Strength", userCharacter.strength.value),
-        // Dexterity
-        buildAbilityScore("Dexterity", userCharacter.dexterity.value),
-        // Constitution
-        buildAbilityScore("Constitution", userCharacter.constitution.value, true),
-        // Intelligence
-        buildAbilityScore("Intelligence", userCharacter.intelligence.value, true),
-        // Wisdom
-        buildAbilityScore("Wisdom", userCharacter.wisdom.value),
-        // Charisma
-        buildAbilityScore("Charisma", userCharacter.charisma.value),
-      ],
+      children: ASboxes,
     ),
   );
 }
