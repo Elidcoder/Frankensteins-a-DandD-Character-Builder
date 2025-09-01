@@ -371,7 +371,22 @@ Container buildSavingThrowLine(AbilityScore abilityScore, int index, Character u
 }
 
 Container buildSavingThrowsColumn(Character userCharacter) {
-  return Container();
+  var SavingThrowBoxes = userCharacter.abilityScores.asMap().map((index, ability) => MapEntry(index, buildSavingThrowLine(ability, index, userCharacter))).values.toList();
+  return Container(
+    height: 100,
+    decoration: BoxDecoration(border: Border.all(width: 0.8)),
+    child: Column(children: [
+      Container(
+        height: 16,
+        child: Center(
+          child: Text(
+            "Saving throws",
+            style: const TextStyle(fontSize: 12)
+          )
+        )
+      ),
+      ...SavingThrowBoxes
+    ]));
 }
 
 List<Widget> buildSkillsColumn(Character userCharacter) {
