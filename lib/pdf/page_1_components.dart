@@ -269,7 +269,7 @@ Widget buildFirstColumn(Character userCharacter) {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ...buildSavingThrowsColumn(userCharacter),
+                buildSavingThrowsColumn(userCharacter),
                 ...buildSkillsColumn(userCharacter)
               ],
             ),
@@ -350,8 +350,28 @@ Container buildAbilityScoresColumn(Character userCharacter) {
   );
 }
 
-List<Widget> buildSavingThrowsColumn(Character userCharacter) {
-  return [];
+Container buildSavingThrowLine(AbilityScore abilityScore, int index, Character userCharacter) {
+  bool isProficient = userCharacter.savingThrowProficiencies.contains(abilityScore.name);
+  return Container(
+    height: 14,
+    child: Row(children: [
+        Text(
+          (isProficient) ? "  X " : "  O ",
+          style: const TextStyle(fontSize: 6.4)
+        ),
+        Text(
+          "${formatNumber(modifierFromAbilityScore[abilityScore.value + userCharacter.raceAbilityScoreIncreases[index] + userCharacter.featsASIScoreIncreases[index]] ?? 0 + (isProficient as int) * (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+          style: const TextStyle(decoration: TextDecoration.underline, fontSize: 6.4)
+        ),
+        Text(
+          " ${abilityScore.name} ",
+          style: const TextStyle(fontSize: 6.4)
+        ),
+    ]));
+}
+
+Container buildSavingThrowsColumn(Character userCharacter) {
+  return Container();
 }
 
 List<Widget> buildSkillsColumn(Character userCharacter) {
