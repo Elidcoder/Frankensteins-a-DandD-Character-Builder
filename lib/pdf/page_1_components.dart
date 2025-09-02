@@ -270,7 +270,7 @@ Widget buildFirstColumn(Character userCharacter) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   buildInspirationBanner(userCharacter),
-                  buildProficiencyBonusBox(userCharacter),
+                  buildProficiencyBonusBanner(userCharacter),
                   buildSavingThrowsColumn(userCharacter),
                   buildSkillsColumn(userCharacter)
               ],
@@ -281,6 +281,7 @@ Widget buildFirstColumn(Character userCharacter) {
 
       buildPassivePerceptionBanner(userCharacter),
 
+      // Other proficiencies and languages
       buildOtherProficienciesBox(userCharacter),
     ]),
   );
@@ -508,7 +509,7 @@ Container buildBanner(Text value, Text label, [bool isBig = false]) {
   );
 }
 
-Container buildProficiencyBonusBox(Character userCharacter) {
+Container buildProficiencyBonusBanner(Character userCharacter) {
   return buildBanner(
     Text(
       (userCharacter.inspired)
@@ -540,7 +541,7 @@ Container buildInspirationBanner(Character userCharacter) {
   );
 }
 
-buildPassivePerceptionBanner(Character userCharacter) {
+Container buildPassivePerceptionBanner(Character userCharacter) {
   return Container(
     alignment: Alignment.center,
     height: 48.0,
@@ -555,6 +556,31 @@ buildPassivePerceptionBanner(Character userCharacter) {
       ),
       true
     )
+  );
+}
+
+Widget buildOtherProficienciesBox(Character userCharacter) {
+  return Container(
+    alignment: Alignment.center,
+    padding: const EdgeInsets.fromLTRB(0, 2, 0, 0),
+    height: 132.0,
+    decoration: BoxDecoration(border: Border.all(width: 0.8)),
+    child: Column(children: [
+      Text("Other proficiencies & languages:", style: const TextStyle(fontSize: 10.5)),
+      Container(
+        height: 117,
+        padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+        child: Text(
+          "Other proficiencies - ${[
+            ...userCharacter.background.toolProficiencies,
+            ...userCharacter.race.toolProficiencies ?? [],
+            ...userCharacter.subrace?.toolProficiencies ?? [],
+            ...userCharacter.mainToolProficiencies
+          ].join(", ")}\nLanguages Known - ${<dynamic>{...userCharacter.languagesKnown, ...userCharacter.languageChoices}.join(", ")}",
+          style: const TextStyle(fontSize: 8)
+        )
+      )
+    ])
   );
 }
 
@@ -574,6 +600,4 @@ Widget buildSkill(String skillName, AbilityScore abilityScore, bool isProficient
   return Container();
 }
 
-Widget buildOtherProficienciesBox(Character userCharacter) {
-  return Container();
-}
+
