@@ -270,7 +270,7 @@ Widget buildFirstColumn(Character userCharacter) {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 buildSavingThrowsColumn(userCharacter),
-                ...buildSkillsColumn(userCharacter)
+                buildSkillsColumn(userCharacter)
               ],
             ),
           ),
@@ -342,7 +342,6 @@ Container buildAbilityScoresColumn(Character userCharacter) {
       color: const PdfColor.fromInt(0xff9c9995),
     ),
     padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-    //ability scores
     child: Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: ASboxes,
@@ -389,8 +388,120 @@ Container buildSavingThrowsColumn(Character userCharacter) {
     ]));
 }
 
-List<Widget> buildSkillsColumn(Character userCharacter) {
-  return [];
+Container AbAuildSkillLine(List<String> skills, Character userCharacter, String skillName) {
+  bool isProficient = skills.contains(skillName);
+  return Container(
+    height: 13,
+    child: Row(children: [
+      Text(
+        (isProficient) ? "  X " : "  O ",
+        style: const TextStyle(fontSize: 6.4)
+      ),
+      Text(
+        "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0 + (isProficient as int) * (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+        style: const TextStyle(decoration: TextDecoration.underline, fontSize: 6.4)
+      ),
+      Text(
+        " $skillName ",
+        style: const TextStyle(fontSize: 6.4)
+      ),
+      Text(
+        "(Dex)",
+        style: const TextStyle(fontSize: 6.4)
+      )
+    ]));
+}
+
+//TODO(PULL IN WITH REFACTORED ABILITY SCORES)
+enum Ability {
+  STRENGTH(0, 'Str'),
+  DEXTERITY(1, 'Dex'),
+  CONSTITUTION(2, 'Con'),
+  INTELLIGENCE(3, 'Int'),
+  WISDOM(4, 'Wis'),
+  CHARISMA(5, 'Cha');
+
+  const Ability(this.value, this.shortName);
+
+  /// 0..5
+  final int value;
+  final String shortName;
+
+  /// Optional helper: reverse-lookup by value.
+  static Ability fromValue(int v) =>
+      Ability.values.firstWhere((a) => a.value == v);
+}
+
+Container buildSkillsColumn(Character userCharacter) {
+  final classSkills = (userCharacter.classList.isNotEmpty)
+    ? GlobalListManager().classList.firstWhere((element) => userCharacter.classList.isNotEmpty && element.name == userCharacter.classList.first).optionsForSkillProficiencies.where(
+      (element) => userCharacter.classSkillsSelected[GlobalListManager().classList.firstWhere(
+        (element) => userCharacter.classList.isNotEmpty && element.name == userCharacter.classList.first
+      ).optionsForSkillProficiencies.indexOf(element)]).toList()
+    : [];
+
+  List<String> skills = [
+    ...userCharacter.skillProficiencies,
+    ...userCharacter.background.initialProficiencies,
+    ...classSkills,
+    ...userCharacter.skillsSelected
+  ];
+
+  Map<Ability, int> abilityValues = Ability.values.asMap().map((key, ability) => MapEntry(ability, userCharacter.abilityScores[ability.value].value + userCharacter.raceAbilityScoreIncreases[ability.value] + userCharacter.featsASIScoreIncreases[ability.value]));
+
+  int totalLevel = userCharacter.classLevels.reduce((a, b) => a + b);
+  int profBonus = proficiencyBonus[totalLevel] ?? 2;
+
+  Widget buildSkillLine(String skillName, Ability ability) {
+    int abilityScore = abilityValues[ability] ?? 0;
+    int mod = modifierFromAbilityScore[abilityScore] ?? 0;
+    bool proficient = skills.contains(skillName);
+    int score = mod + (proficient ? profBonus : 0);
+    return Container(
+      height: 13,
+      child: Row(children: [
+        Text(proficient ? "  X " : "  O ", style: const TextStyle(fontSize: 6.4)),
+        Text(
+          "${formatNumber(score)} ",
+          style: const TextStyle(decoration: TextDecoration.underline, fontSize: 6.4),
+        ),
+        Text(" $skillName ", style: const TextStyle(fontSize: 6.4)),
+        Text("(${ability.shortName})", style: const TextStyle(fontSize: 6.4)),
+      ]),
+    );
+  }
+
+  return Container(
+    height: 260,
+    decoration: BoxDecoration(border: Border.all(width: 0.8)),
+    child: Column(
+      children: [
+        Container(
+          child: Center(
+            child: Text("Skills", style: const TextStyle(fontSize: 14))
+          )
+        ),
+        buildSkillLine("Acrobatics", Ability.DEXTERITY),
+        buildSkillLine("Animal Handling", Ability.WISDOM),
+        buildSkillLine("Arcana", Ability.INTELLIGENCE),
+        buildSkillLine("Athletics", Ability.STRENGTH),
+        buildSkillLine("Deception", Ability.CHARISMA),
+        buildSkillLine("History", Ability.INTELLIGENCE),
+        buildSkillLine("Insight", Ability.WISDOM),
+        buildSkillLine("Intimidation", Ability.CHARISMA),
+        buildSkillLine("Investigation", Ability.INTELLIGENCE),
+        buildSkillLine("Medicine", Ability.WISDOM),
+        buildSkillLine("Nature", Ability.INTELLIGENCE),
+        buildSkillLine("Perception", Ability.WISDOM),
+        buildSkillLine("Performance", Ability.CHARISMA),
+        buildSkillLine("Persuasion", Ability.CHARISMA),
+        buildSkillLine("Religion", Ability.INTELLIGENCE),
+        buildSkillLine("Sleight of Hand", Ability.DEXTERITY),
+        buildSkillLine("Stealth", Ability.DEXTERITY),
+        buildSkillLine("Survival", Ability.WISDOM),
+      ]
+    ),
+  );
 }
 
 Container buildInspirationBox(Character userCharacter) {
