@@ -1,6 +1,7 @@
 // External Imports
 import "dart:typed_data" show Uint8List;
 
+import "package:frankenstein/pdf/first_page/page.dart" show generatePage1;
 import "package:pdf/pdf.dart";
 import "package:pdf/widgets.dart";
 
@@ -44,6 +45,8 @@ int decodeBonus(List<String> x) {
 /* Takes in a character and generates the PDF it relates to. */
 Future<Uint8List> makePdf(Character userCharacter) async {
   final pdf = Document();
+
+  pdf.addPage(generatePage1(userCharacter));
 
   final classSkills = (userCharacter.classList.isNotEmpty)
     ? GlobalListManager().classList.firstWhere((element) => userCharacter.classList.isNotEmpty && element.name == userCharacter.classList.first).optionsForSkillProficiencies.where(

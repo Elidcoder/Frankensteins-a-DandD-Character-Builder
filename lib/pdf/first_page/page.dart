@@ -1,9 +1,12 @@
 // External Imports
+import "package:frankenstein/content_classes/character/character.dart" show Character;
 import "package:pdf/widgets.dart";
 
 // Project Imports
-import "../content_classes/all_content_classes.dart";
-import "page_1_components.dart";
+import "first_column.dart";
+import "header.dart";
+import "second_column.dart";
+import "third_column.dart";
 
 /// Generates the first page of the character sheet
 Page generatePage1(Character userCharacter) {

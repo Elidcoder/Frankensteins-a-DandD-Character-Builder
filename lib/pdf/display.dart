@@ -5,7 +5,7 @@ import "package:printing/printing.dart" show PdfPreview;
 // Project Imports
 import "../content_classes/character/character.dart";
 import "../utils/style_utils.dart";
-import "pdf_generator.dart";
+import "generator.dart";
 
 class PdfDisplay extends StatelessWidget {
   final Character character;
