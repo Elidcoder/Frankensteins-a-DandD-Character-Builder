@@ -1,3 +1,8 @@
+// External Imports
+import "package:pdf/pdf.dart";
+
+const PDF_DARK_GREY = PdfColor.fromInt(0xff9c9995);
+
 // Utility functions for PDF generation
 String formatNumber(int number) {
   return (number >= 0) ? "+$number" : "$number";
