@@ -249,8 +249,6 @@ Widget borderedSection(String title, List<Widget> children, {double height = 200
   );
 }
 
-
-
 Widget buildFirstColumn(Character userCharacter) {
   return Container(
     alignment: Alignment.center,
@@ -265,10 +263,12 @@ Widget buildFirstColumn(Character userCharacter) {
           buildAbilityScoresColumn(userCharacter),
           // Saving throws and skills column
           Container(
-            width: 80.0,
+            padding: const EdgeInsets.fromLTRB(3, 3, 3, 0),
+            alignment: Alignment.center,
+            width: 95.0,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                 buildSavingThrowsColumn(userCharacter),
                 buildSkillsColumn(userCharacter)
               ],
@@ -305,34 +305,34 @@ Widget buildThirdColumn(Character userCharacter) {
   return Container();
 }
 
-Widget buildAbilityScore(String name, int score) {
-  bool small = name.length > 10;
-  return Container(
-    height: 63,
-    width: 50,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(8.0),
-      border: Border.all(width: 0.8),
-      color: const PdfColor.fromInt(0xffffffff),
-    ),
-    child: Column(
+Container buildAbilityScoresColumn(Character userCharacter) {
+  Widget buildAbilityScore(String name, int score) {
+    bool small = name.length > 10;
+    return Container(
+      height: 63,
+      width: 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(width: 0.8),
+        color: const PdfColor.fromInt(0xffffffff),
+      ),
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(name, style: TextStyle(fontSize: small ? 8 : 10)),
           Text(
-              "$score",
-              style: const TextStyle(fontSize: 23)),
+            "$score",
+            style: const TextStyle(fontSize: 23)
+          ),
           Container(
-              height: 13,
-              padding: const EdgeInsets.fromLTRB(5, 0, 5, 1),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.0),
-                  border: Border.all(width: 0.8)),
-              child: Text(formatNumber(modifierFromAbilityScore[score] ?? 0)))
+            height: 13,
+            padding: const EdgeInsets.fromLTRB(5, 0, 5, 1),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5.0),
+              border: Border.all(width: 0.8)),
+            child: Text(formatNumber(modifierFromAbilityScore[score] ?? 0)))
         ]));
-}
-
-Container buildAbilityScoresColumn(Character userCharacter) {
+  }
   var ASboxes = userCharacter.abilityScores.asMap().map((index, ability) => MapEntry(index, buildAbilityScore(ability.name, ability.value + userCharacter.raceAbilityScoreIncreases[index] + userCharacter.featsASIScoreIncreases[index]))).values.toList();
   return Container(
     alignment: Alignment.center,
@@ -349,28 +349,33 @@ Container buildAbilityScoresColumn(Character userCharacter) {
   );
 }
 
-Container buildSavingThrowLine(AbilityScore abilityScore, int index, Character userCharacter) {
-  bool isProficient = userCharacter.savingThrowProficiencies.contains(abilityScore.name);
-  return Container(
-    height: 14,
-    child: Row(children: [
-        Text(
-          (isProficient) ? "  X " : "  O ",
-          style: const TextStyle(fontSize: 6.4)
-        ),
-        Text(
-          "${formatNumber(modifierFromAbilityScore[abilityScore.value + userCharacter.raceAbilityScoreIncreases[index] + userCharacter.featsASIScoreIncreases[index]] ?? 0 + (isProficient as int) * (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
-          style: const TextStyle(decoration: TextDecoration.underline, fontSize: 6.4)
-        ),
-        Text(
-          " ${abilityScore.name} ",
-          style: const TextStyle(fontSize: 6.4)
-        ),
-    ]));
-}
 
 Container buildSavingThrowsColumn(Character userCharacter) {
-  var SavingThrowBoxes = userCharacter.abilityScores.asMap().map((index, ability) => MapEntry(index, buildSavingThrowLine(ability, index, userCharacter))).values.toList();
+
+  Container buildSavingThrowLine(AbilityScore abilityScore, int index) {
+    bool isProficient = userCharacter.savingThrowProficiencies.contains(abilityScore.name);
+    return Container(
+      height: 14,
+      child: Row(children: [
+          Text(
+            (isProficient) ? "  X " : "  O ",
+            style: const TextStyle(fontSize: 6.4)
+          ),
+          Text(
+            "${formatNumber(modifierFromAbilityScore[abilityScore.value + userCharacter.raceAbilityScoreIncreases[index] + userCharacter.featsASIScoreIncreases[index]] ?? 0 + (isProficient as int) * (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+            style: const TextStyle(decoration: TextDecoration.underline, fontSize: 6.4)
+          ),
+          Text(
+            " ${abilityScore.name} ",
+            style: const TextStyle(fontSize: 6.4)
+          ),
+      ]));
+  }
+
+  var SavingThrowBoxes = userCharacter.abilityScores.asMap().map(
+    (index, ability) => MapEntry(index, buildSavingThrowLine(ability, index))
+  ).values.toList();
+  
   return Container(
     height: 100,
     decoration: BoxDecoration(border: Border.all(width: 0.8)),
@@ -385,30 +390,6 @@ Container buildSavingThrowsColumn(Character userCharacter) {
         )
       ),
       ...SavingThrowBoxes
-    ]));
-}
-
-Container AbAuildSkillLine(List<String> skills, Character userCharacter, String skillName) {
-  bool isProficient = skills.contains(skillName);
-  return Container(
-    height: 13,
-    child: Row(children: [
-      Text(
-        (isProficient) ? "  X " : "  O ",
-        style: const TextStyle(fontSize: 6.4)
-      ),
-      Text(
-        "${formatNumber(modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0 + (isProficient as int) * (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
-        style: const TextStyle(decoration: TextDecoration.underline, fontSize: 6.4)
-      ),
-      Text(
-        " $skillName ",
-        style: const TextStyle(fontSize: 6.4)
-      ),
-      Text(
-        "(Dex)",
-        style: const TextStyle(fontSize: 6.4)
-      )
     ]));
 }
 
