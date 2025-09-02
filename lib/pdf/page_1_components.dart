@@ -269,29 +269,18 @@ Widget buildFirstColumn(Character userCharacter) {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                buildSavingThrowsColumn(userCharacter),
-                buildSkillsColumn(userCharacter)
+                  buildInspirationBanner(userCharacter),
+                  buildProficiencyBonusBox(userCharacter),
+                  buildSavingThrowsColumn(userCharacter),
+                  buildSkillsColumn(userCharacter)
               ],
             ),
           ),
         ]),
       ),
 
-      Container(
-        alignment: Alignment.center,
-        height: 48.0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            // Inspiration
-            buildInspirationBox(userCharacter),
+      buildPassivePerceptionBanner(userCharacter),
 
-            // Proficiency Bonus
-            buildProficiencyBonusBox(userCharacter),
-          ],
-        ),
-      ),
-      
       buildOtherProficienciesBox(userCharacter),
     ]),
   );
@@ -485,12 +474,88 @@ Container buildSkillsColumn(Character userCharacter) {
   );
 }
 
-Container buildInspirationBox(Character userCharacter) {
-  return Container();
+Container buildBanner(Text value, Text label, [bool isBig = false]) {
+  double boxSize = isBig ? 26 : 22;
+  return Container(
+    height: 26,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          alignment: Alignment.center,
+          width: boxSize,
+          height: boxSize,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(2.0),
+            border: Border.all(width: 0.8)
+          ),
+          child: value),
+        Container(
+          alignment: Alignment.center,
+          width: isBig ? 129 : 68,
+          height: isBig ? 20 : 16,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(2.0),
+              bottomRight: Radius.circular(2.0),
+            ),
+            border: Border.all(width: 0.8)
+          ),
+          child: label
+        ),
+      ]
+    )
+  );
 }
 
 Container buildProficiencyBonusBox(Character userCharacter) {
-  return Container();
+  return buildBanner(
+    Text(
+      (userCharacter.inspired)
+        ? "X"
+        : "",
+      style: const TextStyle(fontSize: 13)
+    ),
+    Text(
+      " Proficiency Bonus",
+      style: const TextStyle(fontSize: 7.6)
+    )
+  );
+}
+
+Container buildInspirationBanner(Character userCharacter) {
+  return buildBanner(
+    Text(
+      formatNumber(
+        proficiencyBonus[userCharacter.classLevels.reduce(
+          (value, element) => value + element
+        )] as int
+      ),
+      style: const TextStyle(fontSize: 13)
+    ),
+    Text(
+      " Inspiration",
+      style: const TextStyle(fontSize: 9.4)
+    )
+  );
+}
+
+buildPassivePerceptionBanner(Character userCharacter) {
+  return Container(
+    alignment: Alignment.center,
+    height: 48.0,
+    child: buildBanner(
+      Text(
+        "${10 + (modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0 + (userCharacter.skillProficiencies.contains("Perception") as int) * (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))}",
+        style: const TextStyle(fontSize: 13),
+      ),
+      Text(
+        " Passive Perception (Wisdom) ",
+        style: const TextStyle(fontSize: 8.8)
+      ),
+      true
+    )
+  );
 }
 
 Widget buildSavingThrow(String name, AbilityScore abilityScore, bool isProficient) {
