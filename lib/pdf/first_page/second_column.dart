@@ -1,7 +1,6 @@
 // External Imports
 import "package:frankenstein/pdf/generator.dart" show formatList;
 import "package:frankenstein/pdf/utils.dart" show modifierFromAbilityScore, decodeBonus, proficiencyBonus, formatNumber, PDF_DARK_GREY, PDF_BLACK, PDF_LIGHT_GREY;
-import "package:pdf/pdf.dart";
 import "package:pdf/widgets.dart";
 
 // Project Import
@@ -275,37 +274,25 @@ Container buildDeathSavesBox(Character userCharacter) {
 }
 
 List<Container> buildCentralBoxes(Character userCharacter) {
+  Container buildHighlightBox() {
+    return Container(
+      alignment: Alignment.center,
+      height: 16.0,
+      decoration: BoxDecoration(border: Border.all(width: 0.8)),
+    );
+  }
   return [
-    Container(
-      alignment: Alignment.center,
-      height: 16.0,
-      decoration: BoxDecoration(
-          border: Border.all(width: 0.8)),
-    ),
-    Container(
-      alignment: Alignment.center,
-      height: 16.0,
-      decoration: BoxDecoration(
-          border: Border.all(width: 0.8)),
-    ),
-    Container(
-      alignment: Alignment.center,
-      height: 16.0,
-      decoration: BoxDecoration(
-          border: Border.all(width: 0.8)),
-    ),
+    buildHighlightBox(),
+    buildHighlightBox(),
+    buildHighlightBox(),
     Container(
       alignment: Alignment.center,
       height: 130.5,
-      decoration: BoxDecoration(
-          border: Border.all(width: 0.8)),
+      decoration: BoxDecoration(border: Border.all(width: 0.8)),
       child: ListView.builder(
-        itemCount: userCharacter
-            .allSpellsSelected.length,
+        itemCount: userCharacter.allSpellsSelected.length,
         itemBuilder: (context, index) {
-          return Text(userCharacter
-              .allSpellsSelected[index]
-              .name);
+          return Text(userCharacter.allSpellsSelected[index].name);
         },
       ),
     ),
@@ -313,119 +300,35 @@ List<Container> buildCentralBoxes(Character userCharacter) {
 }
 
 Container buildCoinsBoxes(Character userCharacter) {
+  Container buildCoinBox(String coinName) {
+    return Container(
+      alignment: Alignment.center,
+      height: 27.0,
+      decoration: BoxDecoration(
+        color: PDF_BLACK,
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(width: 0.8)),
+      child: Column(children: [
+        Text(coinName, style: const TextStyle(fontSize: 8)),
+        Text("${userCharacter.currency["$coinName Pieces"] ?? "ERROR"}")
+      ])
+    );
+  }
+
   return Container(
     alignment: Alignment.center,
     width: 45.0,
     child: Column(
-        mainAxisAlignment:
-            MainAxisAlignment.spaceEvenly,
-        children: [
-          //Platinum
-          Container(
-              alignment: Alignment.center,
-              height: 27.0,
-              decoration: BoxDecoration(
-                  color: const PdfColor
-                          .fromInt(
-                      0xffffffff),
-                  borderRadius:
-                      BorderRadius
-                          .circular(8.0),
-                  border: Border.all(
-                      width: 0.8)),
-              child: Column(children: [
-                Text("Platinum",
-                    style:
-                        const TextStyle(
-                            fontSize: 8)),
-                Text(
-                    "${userCharacter.currency["Platinum Pieces"] ?? "ERROR"}")
-              ])),
-          //Gold
-          Container(
-              alignment: Alignment.center,
-              height: 27.0,
-              decoration: BoxDecoration(
-                  color: const PdfColor
-                          .fromInt(
-                      0xffffffff),
-                  borderRadius:
-                      BorderRadius
-                          .circular(8.0),
-                  border: Border.all(
-                      width: 0.8)),
-              child: Column(children: [
-                Text("Gold",
-                    style:
-                        const TextStyle(
-                            fontSize: 8)),
-                Text(
-                    "${userCharacter.currency["Gold Pieces"] ?? "ERROR"}")
-              ])),
-          //Electrum
-          Container(
-              alignment: Alignment.center,
-              height: 27.0,
-              decoration: BoxDecoration(
-                  color: const PdfColor
-                          .fromInt(
-                      0xffffffff),
-                  borderRadius:
-                      BorderRadius
-                          .circular(8.0),
-                  border: Border.all(
-                      width: 0.8)),
-              child: Column(children: [
-                Text("Electrum",
-                    style:
-                        const TextStyle(
-                            fontSize: 8)),
-                Text(
-                    "${userCharacter.currency["Electrum Pieces"] ?? "ERROR"}")
-              ])),
-          //Silver
-          Container(
-              alignment: Alignment.center,
-              height: 27.0,
-              decoration: BoxDecoration(
-                  color: const PdfColor
-                          .fromInt(
-                      0xffffffff),
-                  borderRadius:
-                      BorderRadius
-                          .circular(8.0),
-                  border: Border.all(
-                      width: 0.8)),
-              child: Column(children: [
-                Text("Silver",
-                    style:
-                        const TextStyle(
-                            fontSize: 8)),
-                Text(
-                    "${userCharacter.currency["Silver Pieces"] ?? "ERROR"}")
-              ])),
-          //Copper
-          Container(
-              alignment: Alignment.center,
-              height: 27.0,
-              decoration: BoxDecoration(
-                  color: const PdfColor
-                          .fromInt(
-                      0xffffffff),
-                  borderRadius:
-                      BorderRadius
-                          .circular(8.0),
-                  border: Border.all(
-                      width: 0.8)),
-              child: Column(children: [
-                Text("Copper",
-                    style:
-                        const TextStyle(
-                            fontSize: 8)),
-                Text(
-                    "${userCharacter.currency["Copper Pieces"] ?? "ERROR"}")
-              ])),
-        ]));
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        buildCoinBox("Platinum"),
+        buildCoinBox("Gold"),
+        buildCoinBox("Electrum"),
+        buildCoinBox("Silver"),
+        buildCoinBox("Copper")
+      ]
+    )
+  );
 }
 
 Container buildEquipmentBox(Character userCharacter) {
@@ -448,8 +351,10 @@ Container buildEquipmentBox(Character userCharacter) {
             (entry) => "${entry.value}x${entry.key}"
           ),
           ...userCharacter.background.equipment
-        ].join(", "),
-        style: const TextStyle(fontSize: 8)))
-    ]));
-                                    
+          ].join(", "),
+          style: const TextStyle(fontSize: 8)
+        )
+      )
+    ])
+  );                                    
 }
