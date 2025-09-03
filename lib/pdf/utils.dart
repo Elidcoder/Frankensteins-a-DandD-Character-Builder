@@ -1,44 +1,44 @@
 // External Imports
 import "package:pdf/pdf.dart";
 
-const PDF_DARK_GREY = PdfColor.fromInt(0xff9c9995);
+// Colours for use in PDF generation
 const PDF_WHITE = PdfColor.fromInt(0xffffffff);
 const PDF_LIGHT_GREY = PdfColor.fromInt(0xff6B6E73);
+const PDF_DARK_GREY = PdfColor.fromInt(0xff9c9995);
 
-// Utility functions for PDF generation
-String formatNumber(int number) {
-  return (number >= 0) ? "+$number" : "$number";
-}
+// Show a number with the appropriate sign (+/-)
+String formatNumber(int number) => (number >= 0) ? "+$number" : "$number";
 
 /* Takes in for example [2, "Arrow", "Dagger"] 
  * Outputs: 2xArrow, Dagger */
 String formatList(List list) {
-  String result = "";
+  StringBuffer result = StringBuffer();
 
   /* Iterate through the list adding number-string pairs or just strings */
   for (int i = 0; i < list.length; i++) {
     // Current element is a number, so append the number and the next string
     if (list[i] is num) {
-      result += "${list[i]}x${list[i + 1]}";
+      result.write("${list[i]}x${list[i + 1]}");
       i++;
 
     // Append just the current string to the result string
     } else {
-      result += "${list[i]}";
+      result.write("${list[i]}");
     }
 
     /* If this is not the last element, add a comma and space separator */
-    if (i != list.length - 1) result += ", ";
+    if (i != list.length - 1) result.write(", ");
   }
-  return result;
+  return result.toString();
 }
 
 /* Takes in a list of bonuses to a speed and works out the total bonus */
 int decodeBonus(List<String> x) {
+  // TODO(IMPLEMENT SPEED HANDLING)
   return 0;
 }
 
-// Proficiency bonus mapping
+// Map from total character level to proficiency bonus
 final Map<int, int> proficiencyBonus = {
   0: 0,
   1: 2,
@@ -63,7 +63,7 @@ final Map<int, int> proficiencyBonus = {
   20: 6,
 };
 
-// Ability score to modifier mapping
+// Map from ability score value to modifier
 final Map<int, int> modifierFromAbilityScore = {
   0: -5,
   1: -5,
