@@ -1,5 +1,4 @@
 // External Imports
-import "package:frankenstein/pdf/utils.dart";
 import "package:pdf/widgets.dart";
 
 // Project Imports
@@ -59,7 +58,6 @@ Container buildInfoBox(String title, String content) {
     padding: const EdgeInsets.fromLTRB(5, 2, 5, 0),
     decoration: BoxDecoration(
       borderRadius: const BorderRadius.all(Radius.circular(2)),
-      color: PDF_BLACK,
       border: Border.all(width: 0.8)
     ),
     child: Column(children: [

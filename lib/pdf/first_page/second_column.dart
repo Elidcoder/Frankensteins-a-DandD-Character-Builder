@@ -1,6 +1,6 @@
 // External Imports
 import "package:frankenstein/pdf/generator.dart" show formatList;
-import "package:frankenstein/pdf/utils.dart" show modifierFromAbilityScore, decodeBonus, proficiencyBonus, formatNumber, PDF_DARK_GREY, PDF_BLACK, PDF_LIGHT_GREY;
+import "package:frankenstein/pdf/utils.dart" show modifierFromAbilityScore, decodeBonus, proficiencyBonus, formatNumber, PDF_DARK_GREY, PDF_WHITE, PDF_LIGHT_GREY;
 import "package:pdf/widgets.dart";
 
 // Project Import
@@ -32,10 +32,13 @@ Widget buildSecondColumn(Character userCharacter) {
               buildSpeedBox(userCharacter)
             ])
           ),
+
           SizedBox(height: 10),
           buildHealthBox(userCharacter),
+
           SizedBox(height: 7),
           buildTemporaryHealthBox(userCharacter),
+          
           SizedBox(height: 7),
           Row(children: [
             buildHitDiceBox(userCharacter),
@@ -75,7 +78,7 @@ Container buildArmourClassBox(Character userCharacter) {
     height: 47,
     padding: const EdgeInsets.fromLTRB(5, 2, 5, 0),
     decoration: BoxDecoration(
-      color: PDF_BLACK,
+      color: PDF_WHITE,
       border: Border.all(width: 0.8),
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(8),
@@ -101,7 +104,7 @@ Container buildDisplayBox(Text label, Text value) {
     padding: const EdgeInsets.fromLTRB(1, 4, 1, 0),
     width: 45,
     decoration: BoxDecoration(
-      color: PDF_BLACK,
+      color: PDF_WHITE,
       border: Border.all(width: 0.8),
       borderRadius: BorderRadius.circular(6.0)
     ),
@@ -151,7 +154,7 @@ Container buildHealthBox(Character userCharacter) {
     height: 56.0,
     padding: const EdgeInsets.fromLTRB(0, 1, 0, 0),
     decoration: BoxDecoration(
-      color: PDF_BLACK,
+      color: PDF_WHITE,
       border: Border.all(width: 0.8),
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(6),
@@ -191,7 +194,7 @@ Container buildTemporaryHealthBox(Character userCharacter) {
         bottomLeft: Radius.circular(6),
         bottomRight: Radius.circular(6),
       ),
-      color: PDF_BLACK,
+      color: PDF_WHITE,
       border: Border.all(width: 0.8)
     ),
     child: Text(
@@ -208,7 +211,7 @@ Container buildHitDiceBox(Character userCharacter) {
     height: 54.0,
     padding: const EdgeInsets.fromLTRB(5, 2, 5, 0),
     decoration: BoxDecoration(
-      color: PDF_BLACK,
+      color: PDF_WHITE,
       border: Border.all(width: 0.8),
       borderRadius: BorderRadius.circular(4.0)
     ),
@@ -262,7 +265,7 @@ Container buildDeathSavesBox(Character userCharacter) {
     padding: const EdgeInsets.fromLTRB(1, 3, 1, 0),
     width: 70,
     decoration: BoxDecoration(
-      color: PDF_BLACK,
+      color: PDF_WHITE,
       border: Border.all(width: 0.8),
       borderRadius: BorderRadius.circular(4.0)
     ),
@@ -305,9 +308,9 @@ Container buildCoinsBoxes(Character userCharacter) {
       alignment: Alignment.center,
       height: 27.0,
       decoration: BoxDecoration(
-        color: PDF_BLACK,
         borderRadius: BorderRadius.circular(8.0),
-        border: Border.all(width: 0.8)),
+        border: Border.all(width: 0.8)
+      ),
       child: Column(children: [
         Text(coinName, style: const TextStyle(fontSize: 8)),
         Text("${userCharacter.currency["$coinName Pieces"] ?? "ERROR"}")

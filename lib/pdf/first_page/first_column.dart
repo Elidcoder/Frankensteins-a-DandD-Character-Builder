@@ -79,7 +79,7 @@ Container buildAbilityScoresColumn(Character userCharacter) {
     width: 60.0,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(8.0),
-      color: const PdfColor.fromInt(0xff9c9995),
+      color: PDF_DARK_GREY,
     ),
     padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
     child: Column(
@@ -102,7 +102,7 @@ Container buildSavingThrowsColumn(Character userCharacter) {
             style: const TextStyle(fontSize: 6.4)
           ),
           Text(
-            "${formatNumber(modifierFromAbilityScore[abilityScore.value + userCharacter.raceAbilityScoreIncreases[index] + userCharacter.featsASIScoreIncreases[index]] ?? 0 + (isProficient as int) * (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+            "${formatNumber(modifierFromAbilityScore[abilityScore.value + userCharacter.raceAbilityScoreIncreases[index] + userCharacter.featsASIScoreIncreases[index]] ?? 0 + (isProficient ? 1 : 0) * (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
             style: const TextStyle(decoration: TextDecoration.underline, fontSize: 6.4)
           ),
           Text(
@@ -297,7 +297,7 @@ Container buildPassivePerceptionBanner(Character userCharacter) {
     height: 48.0,
     child: buildBanner(
       Text(
-        "${10 + (modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0 + (userCharacter.skillProficiencies.contains("Perception") as int) * (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))}",
+        "${10 + (modifierFromAbilityScore[userCharacter.wisdom.value + userCharacter.raceAbilityScoreIncreases[4] + userCharacter.featsASIScoreIncreases[4]] ?? 0 + (userCharacter.skillProficiencies.contains("Perception") ? 1 : 0) * (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))}",
         style: const TextStyle(fontSize: 13),
       ),
       Text(
