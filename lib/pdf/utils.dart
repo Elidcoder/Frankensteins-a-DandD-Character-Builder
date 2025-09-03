@@ -2,6 +2,8 @@
 import "package:pdf/pdf.dart";
 
 const PDF_DARK_GREY = PdfColor.fromInt(0xff9c9995);
+const PDF_BLACK = PdfColor.fromInt(0xffffffff);
+const PDF_LIGHT_GREY = PdfColor.fromInt(0xff6B6E73);
 
 // Utility functions for PDF generation
 String formatNumber(int number) {

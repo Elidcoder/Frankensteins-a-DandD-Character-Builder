@@ -1,6 +1,6 @@
 // External Imports
 import "package:frankenstein/pdf/generator.dart" show formatList;
-import "package:frankenstein/pdf/utils.dart" show modifierFromAbilityScore, decodeBonus, proficiencyBonus, formatNumber, PDF_DARK_GREY;
+import "package:frankenstein/pdf/utils.dart" show modifierFromAbilityScore, decodeBonus, proficiencyBonus, formatNumber, PDF_DARK_GREY, PDF_BLACK, PDF_LIGHT_GREY;
 import "package:pdf/pdf.dart";
 import "package:pdf/widgets.dart";
 
@@ -74,145 +74,85 @@ Container buildArmourClassBox(Character userCharacter) {
     alignment: Alignment.center,
     width: 45,
     height: 47,
-    padding:
-        const EdgeInsets.fromLTRB(
-            5, 2, 5, 0),
+    padding: const EdgeInsets.fromLTRB(5, 2, 5, 0),
     decoration: BoxDecoration(
-      color: const PdfColor.fromInt(
-          0xffffffff),
-      border:
-          Border.all(width: 0.8),
-      borderRadius:
-          const BorderRadius.only(
+      color: PDF_BLACK,
+      border: Border.all(width: 0.8),
+      borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(8),
-        topRight:
-            Radius.circular(8),
-        bottomLeft:
-            Radius.circular(24),
-        bottomRight:
-            Radius.circular(24),
+        topRight: Radius.circular(8),
+        bottomLeft: Radius.circular(24),
+        bottomRight: Radius.circular(24),
       ),
     ),
     child: Column(children: [
-      Text("Armour\nClass:",
-          style: const TextStyle(
-              fontSize: 9.5)),
+      Text("ARMOUR", style: const TextStyle(fontSize: 7.6)),
+      Text("CLASS", style: const TextStyle(fontSize: 7.6)),
       Text(
-          "${10 + (modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0)}"),
-      Container(
-        width: 155,
-        //child:
+        "${10 + (modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0)}",
+        style: const TextStyle(fontSize: 18)
       ),
-    ]));
+    ])
+  );
 }
 
-
-Container buildInitiativeBox(Character userCharacter) {
-  return Container(
-      height: 47,
-      padding:
-          const EdgeInsets.fromLTRB(
-              1, 4, 1, 0),
-      width: 45,
-      decoration: BoxDecoration(
-          color:
-              const PdfColor.fromInt(
-                  0xffffffff),
-          border:
-              Border.all(width: 0.8),
-          borderRadius:
-              BorderRadius.circular(
-                  6.0)),
-      child: Column(children: [
-        Text("Initiative:",
-            style: const TextStyle(
-                fontSize: 9.5)),
-        SizedBox(height: 3),
-        Container(
-            padding: const EdgeInsets
-                .fromLTRB(1, 0, 0, 0),
-            child: ([
-              ...userCharacter
-                  .skillProficiencies,
-              ...userCharacter
-                      .background
-                      .initialProficiencies,
-              // ...classSkills,
-              // ...skillsSelected
-            ].contains("Initiative"))
-                ? Text(
-                    "${formatNumber((modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0) + (userCharacter.skillBonusMap["Initiative"] ?? 0) + (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
-                    style:
-                        const TextStyle(
-                            fontSize:
-                                18))
-                : Text(
-                    "${formatNumber((modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0) + (userCharacter.skillBonusMap["Initiative"] ?? 0))} ",
-                    style:
-                        const TextStyle(
-                            fontSize:
-                                18)))
-      ]));
-}
-
-
-Container buildSpeedBox(Character userCharacter) {
+Container buildDisplayBox(Text label, Text value) {
   return Container(
     height: 47,
-    padding:
-        const EdgeInsets.fromLTRB(
-            1, 4, 1, 0),
+    padding: const EdgeInsets.fromLTRB(1, 4, 1, 0),
     width: 45,
     decoration: BoxDecoration(
-        color:
-            const PdfColor.fromInt(
-                0xffffffff),
-        border:
-            Border.all(width: 0.8),
-        borderRadius:
-            BorderRadius.circular(
-                6.0)),
+      color: PDF_BLACK,
+      border: Border.all(width: 0.8),
+      borderRadius: BorderRadius.circular(6.0)
+    ),
     child: Column(children: [
-      Text("Speed",
-          style: const TextStyle(
-              fontSize: 9.5)),
+      label,
       SizedBox(height: 3),
-      Container(
-          padding: const EdgeInsets
-              .fromLTRB(1, 0, 0, 0),
-          child: (userCharacter
-                      .subrace ==
-                  null)
-              ? Text(
-                  "${userCharacter.race.walkingSpeed + decodeBonus(userCharacter.speedBonuses["Walking"] ?? [])}ft",
-                  style:
-                      const TextStyle(
-                          fontSize:
-                              18))
-              : Text(
-                  "${userCharacter.subrace!.walkingSpeed + decodeBonus(userCharacter.speedBonuses["Walking"] ?? [])}ft",
-                  style:
-                      const TextStyle(
-                          fontSize:
-                              18))),
-      Container(
-        padding: const EdgeInsets
-            .fromLTRB(1, 0, 0, 0),
-        //child:
-      ),
-    ]));
+      Container(child: value)
+    ])
+  );
 }
 
+Container buildInitiativeBox(Character userCharacter) {
+  // TODO(SHOULD I CHECK THE OTHER 2?)
+  bool hasInitiativeProficiency = ([
+      ...userCharacter
+          .skillProficiencies,
+      ...userCharacter
+              .background
+              .initialProficiencies,
+      // ...classSkills,
+      // ...skillsSelected
+    ].contains("Initiative"));
+  return buildDisplayBox(
+    Text("Initiative:", style: const TextStyle(fontSize: 9.5)), 
+    Text(
+      "${formatNumber((modifierFromAbilityScore[userCharacter.dexterity.value + userCharacter.raceAbilityScoreIncreases[1] + userCharacter.featsASIScoreIncreases[1]] ?? 0) + (userCharacter.skillBonusMap["Initiative"] ?? 0) + (hasInitiativeProficiency ? 1 : 0) * (proficiencyBonus[userCharacter.classLevels.reduce((value, element) => value + element)] as int))} ",
+      style: const TextStyle(fontSize: 18)
+    )
+  );
+}
+
+Container buildSpeedBox(Character userCharacter) {
+  // TODO(THIS BEHAVIOUR MAY NOT BE CORRECT IF A BONUS IS PROVIDED BY BOTH)
+  int raceRelatedBonus = (userCharacter.subrace == null) ? userCharacter.race.walkingSpeed : userCharacter.subrace!.walkingSpeed;
+  return buildDisplayBox(
+    Text("Speed", style: const TextStyle(fontSize: 9.5)), 
+    Text(
+      "${raceRelatedBonus + decodeBonus(userCharacter.speedBonuses["Walking"] ?? [])}ft",
+      style: const TextStyle(fontSize: 18)
+    )
+  );
+}
 
 Container buildHealthBox(Character userCharacter) {
   return Container(
     alignment: Alignment.center,
     height: 56.0,
-    padding: const EdgeInsets.fromLTRB(
-        0, 1, 0, 0),
+    padding: const EdgeInsets.fromLTRB(0, 1, 0, 0),
     decoration: BoxDecoration(
-      color: const PdfColor.fromInt(
-          0xffffffff),
+      color: PDF_BLACK,
       border: Border.all(width: 0.8),
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(6),
@@ -224,25 +164,18 @@ Container buildHealthBox(Character userCharacter) {
     child: Column(children: [
       Text("Health:"),
       Container(
-          width: 155,
-          child: Row(children: [
-            SizedBox(width: 26),
-            Text("Hit point maximum: ",
-                style: TextStyle(
-                    fontSize: 9.6,
-                    fontItalic: Font
-                        .timesBoldItalic(),
-                    color: const PdfColor
-                            .fromInt(
-                        0xff6B6E73))),
-            Text(
-                " ${userCharacter.maxHealth}",
-                style: const TextStyle(
-                    fontSize: 10.6,
-                    decoration:
-                        TextDecoration
-                            .underline))
-          ]))
+        width: 155,
+        child: Row(children: [
+          SizedBox(width: 26),
+          Text(
+            "Hit point maximum: ",
+            style: TextStyle(fontSize: 9.6, fontItalic: Font.timesBoldItalic(), color: PDF_LIGHT_GREY),
+          ),
+          Text(
+            " ${userCharacter.maxHealth}",
+            style: const TextStyle(fontSize: 10.6, decoration: TextDecoration.underline)
+          )
+        ]))
     ]),
   );
 }
@@ -250,24 +183,23 @@ Container buildHealthBox(Character userCharacter) {
 Container buildTemporaryHealthBox(Character userCharacter) {
   return Container(
     width: 155,
-    padding: const EdgeInsets.fromLTRB(
-        0, 2, 0, 0),
+    padding: const EdgeInsets.fromLTRB(0, 2, 0, 0),
     height: 44.0,
     decoration: BoxDecoration(
-        borderRadius:
-            const BorderRadius.only(
-          topLeft: Radius.circular(2),
-          topRight: Radius.circular(2),
-          bottomLeft: Radius.circular(6),
-          bottomRight: Radius.circular(6),
-        ),
-        color: const PdfColor.fromInt(
-            0xffffffff),
-        border: Border.all(width: 0.8)),
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(2),
+        topRight: Radius.circular(2),
+        bottomLeft: Radius.circular(6),
+        bottomRight: Radius.circular(6),
+      ),
+      color: PDF_BLACK,
+      border: Border.all(width: 0.8)
+    ),
     child: Text(
-        "           Temporary hit points:",
-        style: const TextStyle(
-            fontSize: 9.5)));
+      "           Temporary hit points:",
+      style: const TextStyle(fontSize: 9.5)
+    )
+  );
 }
 
 Container buildHitDiceBox(Character userCharacter) {
@@ -275,55 +207,36 @@ Container buildHitDiceBox(Character userCharacter) {
     alignment: Alignment.center,
     width: 70,
     height: 54.0,
-    padding: const EdgeInsets.fromLTRB(
-        5, 2, 5, 0),
+    padding: const EdgeInsets.fromLTRB(5, 2, 5, 0),
     decoration: BoxDecoration(
-        color: const PdfColor.fromInt(
-            0xffffffff),
-        border: Border.all(width: 0.8),
-        borderRadius:
-            BorderRadius.circular(4.0)),
+      color: PDF_BLACK,
+      border: Border.all(width: 0.8),
+      borderRadius: BorderRadius.circular(4.0)
+    ),
     child: Column(children: [
-      Text("Hit Dice:",
-          style: const TextStyle(
-              fontSize: 10.5)),
+      Text("Hit Dice:", style: const TextStyle(fontSize: 10.5)),
       Container(
-        height: 54,
         child: FittedBox(
           fit: BoxFit.contain,
           child: Row(
             children: [
               SizedBox(width: 5),
-              Text("Total: ",
-                  style: TextStyle(
-                      fontSize: 8,
-                      fontItalic: Font
-                          .timesBoldItalic(),
-                      color: const PdfColor
-                              .fromInt(
-                          0xff6B6E73))),
               Text(
-                  GlobalListManager().classList
-                      .where((car) => userCharacter
-                          .classList
-                          .contains(
-                              car.name))
-                      .fold<Map<String, int>>(
-                          {},
-                          (map, car) => map
-                            ..update(car.name, (count) => count + 1,
-                                ifAbsent: () =>
-                                    1))
-                      .entries
-                      .where((entry) =>
-                          entry.value >
-                          0)
-                      .map((entry) =>
-                          "${(userCharacter.classList.where((car) => car == entry.key).length)}D${GlobalListManager().classList.firstWhere((car) => car.name == entry.key).maxHitDiceRoll}")
-                      .join(", "),
-                  style: const TextStyle(
-                      fontSize: 9,
-                      decoration: TextDecoration.underline)),
+                "Total: ",
+                style: TextStyle(fontSize: 8, fontItalic: Font.timesBoldItalic(), color: PDF_LIGHT_GREY)
+              ),
+              Text(
+                // Note this is generating the nDk for each class selected by the user to support multiclassing across hit die types 
+                GlobalListManager().classList.where(
+                  (clas) => userCharacter.classList.contains(clas.name)
+                ).fold<Map<String, int>>(
+                  {},
+                  (map, clas) => map..update(clas.name, (count) => count + 1, ifAbsent: () => 1)).entries.where(
+                    (entry) => entry.value > 0
+                  ).map(
+                    (entry) => "${(userCharacter.classList.where((car) => car == entry.key).length)}D${GlobalListManager().classList.firstWhere((car) => car.name == entry.key).maxHitDiceRoll}"
+                  ).join(", "),
+                style: const TextStyle(fontSize: 9, decoration: TextDecoration.underline)),
               SizedBox(width: 5),
             ],
           ),
@@ -333,61 +246,31 @@ Container buildHitDiceBox(Character userCharacter) {
 }
 
 Container buildDeathSavesBox(Character userCharacter) {
+  Container buildTripleMarkable(String label) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(1, 0, 0, 0),
+      child: Row(children: [
+        Text(
+          "$label:",
+          style: TextStyle(fontSize: 7, fontItalic: Font.timesBoldItalic(), color: PDF_LIGHT_GREY)
+        ),
+        Text(" O-O-O", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 9.5))
+      ]),
+    );
+  }
   return Container(
     height: 54.0,
-    padding: const EdgeInsets.fromLTRB(
-        1, 3, 1, 0),
+    padding: const EdgeInsets.fromLTRB(1, 3, 1, 0),
     width: 70,
     decoration: BoxDecoration(
-        color: const PdfColor.fromInt(
-            0xffffffff),
-        border: Border.all(width: 0.8),
-        borderRadius:
-            BorderRadius.circular(4.0)),
+      color: PDF_BLACK,
+      border: Border.all(width: 0.8),
+      borderRadius: BorderRadius.circular(4.0)
+    ),
     child: Column(children: [
-      Text(" Death Saves:",
-          style: const TextStyle(
-              fontSize: 9.5)),
-      Container(
-        padding:
-            const EdgeInsets.fromLTRB(
-                1, 0, 0, 0),
-        child: Row(children: [
-          Text("Successes:",
-              style: TextStyle(
-                  fontSize: 7,
-                  fontItalic: Font
-                      .timesBoldItalic(),
-                  color: const PdfColor
-                          .fromInt(
-                      0xff6B6E73))),
-          Text(" O-O-O",
-              style: TextStyle(
-                  fontWeight:
-                      FontWeight.bold,
-                  fontSize: 9.5))
-        ]),
-      ),
-      Container(
-        padding:
-            const EdgeInsets.fromLTRB(
-                1, 0, 0, 0),
-        child: Row(children: [
-          Text("Fails:",
-              style: TextStyle(
-                  fontSize: 7,
-                  fontItalic: Font
-                      .timesBoldItalic(),
-                  color: const PdfColor
-                          .fromInt(
-                      0xff6B6E73))),
-          Text(" O-O-O",
-              style: TextStyle(
-                  fontSize: 9.5,
-                  fontWeight:
-                      FontWeight.bold))
-        ]),
-      )
+      Text(" Death Saves:", style: const TextStyle(fontSize: 9.5)),
+      buildTripleMarkable("Successes"),
+      buildTripleMarkable("Fails")
     ]));
 }
 
