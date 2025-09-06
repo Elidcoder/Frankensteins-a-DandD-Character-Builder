@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 
 import "../../content_classes/all_content_classes.dart";
-import "../../pdf_generator/pdf_final_display.dart";
+import "../../pdf/display.dart";
 import "../../storage/global_list_manager.dart";
 import "../../theme/theme_manager.dart";
 import "../../utils/style_utils.dart";
@@ -59,8 +59,10 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => PdfPreviewPage(
-                  character: widget.character),
+              builder: (context) => PdfDisplay(
+                  character: widget.character,
+                  isPreview: true,
+              ),
             ),
           );
         },
