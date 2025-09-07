@@ -5,9 +5,8 @@ import 'dart:io';
 import "package:flutter/foundation.dart" show debugPrint;
 import "package:frankenstein/storage/storage_service.dart";
 
-// Project Imports
-import "../colour_scheme_class/colour_scheme.dart";
-import "../content_classes/all_content_classes.dart";
+import "../../models/index.dart";
+import "../utils/helpers.dart" show mapEquipment;
 
 /// Global list manager that handles initialization and access to all game content lists
 class GlobalListManager {

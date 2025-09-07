@@ -1,12 +1,13 @@
 import "package:flutter/material.dart";
+import "package:frankenstein/utils/helpers.dart" show displayPlural;
 
-import "../../content_classes/all_content_classes.dart";
+import "../../models/index.dart";
 import "../../storage/global_list_manager.dart";
 import "../../utils/style_utils.dart";
 import "spell_handling.dart";
 
 /// ASI and Feats tab widget for character creation
-/// Handles abilit                          StyleUtils.buildStyledLargeTextBox(text: "Selected Feat${displayPlural(widget.character.featsSelected.keys.toList())}:", color: StyleUtils.currentTextColor), score improvements and feat selection
+/// Handles ability score improvements and feat selection
 class AsiFeatTab extends StatefulWidget {
   final Character character;
   final int numberOfRemainingFeatOrASIs;

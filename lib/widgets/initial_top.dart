@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frankenstein/storage/global_list_manager.dart' show GlobalListManager;
 
-import '../colour_scheme_class/colour_scheme.dart';
+import '../models/ui/colour_scheme.dart';
 import '../theme/theme_manager.dart';
 import '../utils/style_utils.dart';
 import 'main_menu.dart';

@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:frankenstein/theme/theme_manager.dart";
-import "../../content_classes/all_content_classes.dart";
+
+import "../../models/index.dart";
 import "../../utils/style_utils.dart";
 
 /// Ability Score tab widget for character creation

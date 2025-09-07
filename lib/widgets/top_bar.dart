@@ -2,7 +2,7 @@
 import "package:flutter/material.dart";
 import "package:frankenstein/storage/global_list_manager.dart" show GlobalListManager;
 
-import "../colour_scheme_class/colour_scheme.dart";
+import '../models/ui/colour_scheme.dart';
 // Project imports
 import "../pages/all_home_subpages.dart";
 import "../pages/custom_content_pages/create_spells.dart" show MakeASpell;

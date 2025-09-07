@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 import "package:frankenstein/storage/global_list_manager.dart" show GlobalListManager;
 
 // Project Imports
-import "../../content_classes/all_content_classes.dart";
+import "../../models/character/character.dart";
 import "../../theme/theme_manager.dart";
 import "../../utils/style_utils.dart";
 import "creation_tabs.dart";

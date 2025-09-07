@@ -1,6 +1,6 @@
 // External Imports
 import "package:flutter/material.dart";
-import "package:frankenstein/content_classes/all_content_classes.dart" show Spell;
+import "package:frankenstein/models/content/game_mechanics/spell/spell.dart" show Spell;
 
 import "../../storage/global_list_manager.dart";
 import "../../theme/theme_manager.dart";
@@ -466,7 +466,8 @@ class MainMakeASpell extends State<MakeASpell> {
 
                             //add the new spell to the list of spells
                             // add flag to prevent double tapping etc.
-                             final saveResult  = await GlobalListManager().saveSpell(Spell(
+                            // TODO(SAVE RESULT AND SHOW POPUP BASED ON IT)
+                            await GlobalListManager().saveSpell(Spell(
                               name: name,
                               sourceBook: "MADE BY USER",
                               range:
@@ -503,8 +504,7 @@ class MainMakeASpell extends State<MakeASpell> {
                           }
                         }
                       },
-                    ),
-                    //const SizedBox(height: 100),
+                    )
                   ])
             ])));
   }

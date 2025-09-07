@@ -1,11 +1,9 @@
 // External Imports
-import "package:frankenstein/pdf/generator.dart" show formatList;
-import "package:frankenstein/pdf/utils.dart" show modifierFromAbilityScore, decodeBonus, proficiencyBonus, formatNumber, PDF_DARK_GREY, PDF_WHITE, PDF_LIGHT_GREY;
+import "package:frankenstein/pdf/utils.dart" show formatList, modifierFromAbilityScore, decodeBonus, proficiencyBonus, formatNumber, PDF_DARK_GREY, PDF_WHITE, PDF_LIGHT_GREY;
 import "package:pdf/widgets.dart";
-import "../utils.dart";
 
-// Project Import
-import "../../content_classes/all_content_classes.dart";
+// Project Imports
+import "../../models/character/character.dart";
 import "../../storage/global_list_manager.dart";
 
 Widget buildSecondColumn(Character userCharacter) {

@@ -2,19 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:frankenstein/colour_scheme_class/colour_scheme.dart';
-import 'package:frankenstein/content_classes/character/character.dart';
-import 'package:frankenstein/content_classes/non_character_classes/background/background.dart';
-import 'package:frankenstein/content_classes/non_character_classes/class/class.dart';
-import 'package:frankenstein/content_classes/non_character_classes/feat/feat.dart';
-import 'package:frankenstein/content_classes/non_character_classes/item/item.dart';
-import 'package:frankenstein/content_classes/non_character_classes/proficiency.dart';
-import 'package:frankenstein/content_classes/non_character_classes/race/race.dart';
-import 'package:frankenstein/content_classes/non_character_classes/spell/spell.dart';
 import 'package:frankenstein/storage/storage_service.dart' show StorageService;
 import 'package:frankenstein/storage/storage_service.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
+
+import "../../models/index.dart";
 
 class JsonStorageService implements StorageService {
   // TODO(LOOK FOR RACE CONDITIONS - MAYBE USE MUTEX)

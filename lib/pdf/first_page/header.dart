@@ -3,7 +3,7 @@ import "package:frankenstein/storage/global_list_manager.dart" show GlobalListMa
 import "package:pdf/widgets.dart";
 
 // Project Imports
-import "../../content_classes/all_content_classes.dart";
+import "../../models/character/character.dart";
 
 Widget buildHeader(Character userCharacter) {
   return Container(

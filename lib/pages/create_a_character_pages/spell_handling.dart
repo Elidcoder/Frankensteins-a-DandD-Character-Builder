@@ -1,8 +1,9 @@
 // External Imports
 import "package:flutter/material.dart";
+import "package:frankenstein/utils/helpers.dart" show isAllowedContent;
 import "package:frankenstein/utils/style_utils.dart";
 
-import "../../content_classes/all_content_classes.dart";
+import "../../models/content/index.dart";
 import "../../storage/global_list_manager.dart";
 import "../../theme/theme_manager.dart";
 // Project Imports

@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
-import "../../content_classes/all_content_classes.dart";
+
+import "../../models/character/character.dart";
 import "../../utils/style_utils.dart";
 
 /// Basics tab widget for character creation
@@ -366,4 +367,3 @@ class _BasicsTabState extends State<BasicsTab> {
     );
   }
 }
-

@@ -1,7 +1,7 @@
 // External Imports
 import "package:flutter/material.dart";
 
-import "../../content_classes/all_content_classes.dart";
+import "../../models/character/character.dart";
 import "../../storage/global_list_manager.dart";
 import "../../theme/theme_manager.dart";
 import "../../utils/style_utils.dart";
