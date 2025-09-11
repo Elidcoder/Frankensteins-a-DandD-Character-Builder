@@ -1,5 +1,7 @@
 // External Imports
 import "package:flutter/material.dart";
+import "package:frankenstein/features/content_search/widgets/content_card.dart" show buildContentCard;
+import "package:frankenstein/features/content_search/widgets/title_card.dart" show buildTitleCard;
 
 // Project Imports
 import "../../../models/content/base/content.dart";
@@ -104,28 +106,6 @@ class SearchForContentState extends State<SearchForContent> {
       )));
   }
 
-  /* Build a card displaying a string. */
-  Center buildTitleCard(String listType) {
-    return Center(
-      child: FractionallySizedBox(
-        widthFactor: 0.5,
-        child: StyleUtils.buildStyledContainer(
-          margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-          padding: const EdgeInsets.all(8.0),
-          decoration: BoxDecoration(
-            color: StyleUtils.backingColor,
-            border: Border.all(color: StyleUtils.currentTextColor, width: 4),
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          child: Center(child: StyleUtils.buildStyledLargeTextBox(
-            text: listType,
-            color: StyleUtils.currentTextColor,
-          )),
-        ),
-      ),
-    );
-  }
-
   /* Generate a list of cards displaying a piece of content. */
   List<Center> buildFilteredContentCards(List<Content> list) {
     final filtered = list.where((item) {
@@ -133,50 +113,8 @@ class SearchForContentState extends State<SearchForContent> {
       return item.name.toLowerCase().contains(query) ||
              item.sourceBook.toLowerCase().contains(query);
     }).toList();
-    return filtered.map((item) => buildContentCard(item, list)).toList();
-  }
-
-  /* Build a card for a piece of content that allows for viewing and deletion. */
-  Center buildContentCard(Content content, List<Content> list) {
-    return Center(child: FractionallySizedBox(
-      widthFactor: 0.5, 
-      child: StyleUtils.buildStyledContainer(
-        margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-        padding: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          color: StyleUtils.backingColor,
-          border: Border.all(color: StyleUtils.currentTextColor, width: 1.5),
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            /* Display content info */
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(content.name, style: StyleUtils.buildDefaultTextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                const SizedBox(height: 4),
-                Text(content.sourceBook, style: StyleUtils.buildDefaultTextStyle(fontSize: 14).copyWith(fontStyle: FontStyle.italic)),
-              ],
-            ),
-
-            /* Delete content button */
-            Tooltip(
-              message: "Delete ${content.name}", 
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    list.remove(content);
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                ),
-                child: const Icon(Icons.delete, color: Colors.white),
-            ))
-          ]
-        )
-    )));
+    return filtered.map(
+      (item) => buildContentCard(item, list, (content) => setState(() {list.remove(content);})),
+    ).toList();
   }
 }
