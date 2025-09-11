@@ -39,13 +39,9 @@ class MainMenuState extends State<MainMenu> {
   Widget build(BuildContext context) {
     return StyleUtils.buildStyledScaffold(
       floatingActionButton: StyleUtils.buildStyledFloatingActionButton(
-        onPressed: (
-          
-        ) {
-          _showInfoAndHelp(context);
-        },
+        onPressed: () {_showInfoAndHelp(context);},
         tooltip: "Help and guidance",
-        child: const Icon(Icons.info),
+        child: const Icon(Icons.info)
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,18 +113,13 @@ class MainMenuState extends State<MainMenu> {
       allowedExtensions: ["json"],
     );
 
-    if (result != null) {
-      final targetFile = File(result.files.single.path ?? "PATH SHOULD NEVER OCCUR");
-
-      try {
-        await GlobalListManager().loadContentFromFile(targetFile);
-        // loadContentFromFile updates all the content
-      } catch (e) {
-        if (mounted) {
-          // ignore: use_build_context_synchronously (mounted check ensures correctness)
-          _showErrorDialog(context);
-        }
-      }
+    try {
+      if (result == null) throw Exception("File cannot be found");
+      if (result.files.single.path == null) throw Exception("File path is null");
+      await GlobalListManager().loadContentFromFile(File(result.files.single.path!));
+    } catch (err) {
+      // ignore: use_build_context_synchronously (mounted check ensures correctness)
+      if (mounted) _showErrorDialog(context, err);
     }
   }
 
@@ -203,12 +194,12 @@ class MainMenuState extends State<MainMenu> {
   }
 
   /// Display an error dialog letting the user know that the download was bad
-  void _showErrorDialog(BuildContext context) {
+  void _showErrorDialog(BuildContext context, Object error) {
     showDialog(
       context: context,
       builder: (context) => StyleUtils.buildStyledAlertDialog(
         title: "Error",
-        content: "Json format incorrect, reformat and try again!",
+        content: error.toString(),
         titleWidget: StyleUtils.buildStyledLargeTextBox(
           text: "Json format incorrect, reformat and try again!",
           color: Colors.red,
