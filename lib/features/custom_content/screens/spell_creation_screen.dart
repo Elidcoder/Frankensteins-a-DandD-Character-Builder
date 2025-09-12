@@ -535,16 +535,28 @@ class MainMakeASpell extends State<MakeASpell> {
     );
   }
 
-  bool validateSpell() {
-    if (name.replaceAll(" ", "") != "" &&
-        level != null &&
-        spellSchool != null &&
-        range != null &&
-        (["SELF", "TOUCH"].contains(range!.toUpperCase()) ||
-            (double.tryParse(range ?? "") != null))) {
-      return true;
-    }
+  bool validateName() {
+    return name.replaceAll(" ", "") != "";
+  }  
 
-    return false;
+  bool validateLevel() {
+    return level != null;
+  }
+
+  bool validateSchool() {
+    return spellSchool != null;
+  }
+
+  bool validateRange() {
+    return range != null &&
+        (["SELF", "TOUCH"].contains(range!.toUpperCase()) ||
+            (double.tryParse(range ?? "") != null));
+  }
+
+  bool validateSpell() {
+    return validateName() 
+      && validateLevel() 
+      && validateSchool() 
+      && validateRange();
   }
 }
