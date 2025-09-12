@@ -57,7 +57,6 @@ class MainMyCharacters extends State<MyCharacters> {
     final filteredCharacters = _characters.where(
       (element) => element.characterDescription.name.toLowerCase().contains(searchTerm.toLowerCase())
     ).toList();
-
     return StyleUtils.styledFutureBuilder(
       future: _initializedCharacters,
       builder: (context) => StyleUtils.buildStyledScaffold(
@@ -168,30 +167,20 @@ class MainMyCharacters extends State<MyCharacters> {
 
                           /* Duplicate character button */
                           buildCharacterActionButton("Duplicate character", Colors.lightBlue, () async {
-                            // Capture ScaffoldMessenger before async operation
                             final scaffoldMessenger = ScaffoldMessenger.of(context);
-                            
                             try {
                               Character selectedCharacter = filteredCharacters[index];
                               Character duplicatedCharacter = selectedCharacter.getCopy();
-                              
-                              // Save using migration helper
                               final saveResult  = await GlobalListManager().saveCharacter(duplicatedCharacter); //TODO(ENSURE THIS WORKS CORRECTLY)
-                              // final saveSuccess = await CharacterStorageService.saveCharacter(duplicatedCharacter);
-
                               if (saveResult) {
-                                // Refresh the character list also reloads the grouplist
                                 setState(() {});
-                                //await _loadCharacters();// Should be uneeded as GlobalListManager().characterList updates grouplist
                               } else {
-                                // Show error message using captured messenger
                                 scaffoldMessenger.showSnackBar(
                                   const SnackBar(content: Text('Failed to duplicate character')),
                                 );
                               }
                             } catch (e) {
                               debugPrint('Error duplicating character: $e');
-                              // Show error message using captured messenger
                               scaffoldMessenger.showSnackBar(
                                 const SnackBar(content: Text('Error duplicating character')),
                               );
