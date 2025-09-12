@@ -4,7 +4,7 @@ import "package:frankenstein/utils/helpers.dart" show displayPlural;
 import "../../../models/index.dart";
 import "../../../storage/global_list_manager.dart";
 import "../../../utils/style_utils.dart";
-import "spell_handling.dart";
+import "../widgets/spell_handling.dart";
 
 /// ASI and Feats tab widget for character creation
 /// Handles ability score improvements and feat selection

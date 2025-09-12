@@ -4,7 +4,7 @@ import "../../../models/character/character.dart";
 import "../../../storage/global_list_manager.dart";
 import "../../../theme/theme_manager.dart";
 import "../../../utils/style_utils.dart";
-import "spell_handling.dart";
+import "../widgets/spell_handling.dart";
 
 /// Spells tab widget for character creation
 /// Displays spell selections organized by spell level and spell selection options

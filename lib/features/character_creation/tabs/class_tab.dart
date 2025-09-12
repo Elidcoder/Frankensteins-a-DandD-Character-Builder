@@ -7,7 +7,7 @@ import "../../../models/index.dart";
 import "../../../storage/global_list_manager.dart";
 import "../../../theme/theme_manager.dart";
 import "../../../utils/style_utils.dart";
-import "spell_handling.dart"; // For ChoiceRow
+import "../widgets/spell_handling.dart";
 
 /// Class tab widget for character creation
 /// Handles class selection, level progression, and level-based choices
