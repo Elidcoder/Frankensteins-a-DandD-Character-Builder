@@ -28,6 +28,7 @@ class EditTop extends StatelessWidget {
       title: title,
       home: Scaffold(
         appBar: StyleUtils.buildStyledAppBar(
+          smallTitle: true,
           title: title,
           leading: IconButton(
             icon: const Icon(Icons.home),
@@ -81,9 +82,21 @@ class EditCharacter extends State<EditACharacter> {
   ValueNotifier<int> tabRebuildNotifier = ValueNotifier<int>(0);
   TextEditingController groupEnterController = TextEditingController();
 
+  static const List<String> tabLabels = [
+    "Quick edits",
+    "Class",
+    "ASIs and Feats",
+    "Spells",
+    "Equipment",
+    "Boons and magic items",
+    "Backstory",
+    "Finishing up"
+  ];
+
   int get charLevel {
     return int.parse(characterLevel ?? "1");
   }
+
   @override
   void initState() {
     super.initState();
@@ -150,9 +163,9 @@ class EditCharacter extends State<EditACharacter> {
       return StyleUtils.styledFutureBuilder(
         future: _initialisedCharacters, 
         builder: (context) => DefaultTabController(
-          length: 8,
+          length: tabLabels.length,
           child: Scaffold(
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            backgroundColor: ThemeManager.instance.currentScheme.backgroundColour,
             appBar: StyleUtils.buildStyledAppBar(
               title: 'Edit ${character.characterDescription.name}',
               titleStyle: TextStyle(
@@ -161,16 +174,8 @@ class EditCharacter extends State<EditACharacter> {
                 color: ThemeManager.instance.currentScheme.textColour,
               ),
               bottom: TabBar(
-                tabs: [
-                  StyleUtils.tabLabel("Quick edits"),
-                  StyleUtils.tabLabel("Class"),
-                  StyleUtils.tabLabel("ASI's and Feats"),
-                  StyleUtils.tabLabel("Spells"),
-                  StyleUtils.tabLabel("Equipment"),
-                  StyleUtils.tabLabel("Boons and magic items"),
-                  StyleUtils.tabLabel("Backstory"),
-                  StyleUtils.tabLabel("Finishing up"),
-                ],
+                tabs: tabLabels.map((e) => StyleUtils.tabLabel(e)).toList(),
+                indicatorColor: ThemeManager.instance.currentScheme.textColour,
               ),
             ),
             body: TabBarView(children: [
