@@ -1,11 +1,11 @@
 // External Imports
 import "package:frankenstein/core/services/global_list_manager.dart" show GlobalListManager;
-import "package:frankenstein/models/character/ability_score/ability_score.dart" show AbilityScore;
+import "package:frankenstein/models/core/ability_score/ability_score.dart" show AbilityScore;
 import "package:pdf/pdf.dart" show PdfColor;
 import "package:pdf/widgets.dart";
 
 // Project Imports
-import "../../../../models/character/character.dart";
+import "../../../../models/core/character/character.dart";
 import "../../services/pdf_utils.dart";
 
 Widget buildFirstColumn(Character userCharacter) {

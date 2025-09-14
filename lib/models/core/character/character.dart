@@ -2,13 +2,13 @@
 import "dart:collection" show Queue;
 import "dart:math" show Random;
 
-import "package:frankenstein/models/character/ability_score/ability_score.dart" show AbilityScore;
-import "package:frankenstein/models/character/character_description.dart" show CharacterDescription;
+import "package:frankenstein/models/core/ability_score/ability_score.dart" show AbilityScore;
+import "package:frankenstein/models/core/character/character_description.dart" show CharacterDescription;
 import 'package:json_annotation/json_annotation.dart';
 
-import "../../core/services/global_list_manager.dart";
+import "../../../core/services/global_list_manager.dart";
 // Project Import
-import "../content/index.dart";
+import "../../content/index.dart";
 
 part 'character.g.dart';
 

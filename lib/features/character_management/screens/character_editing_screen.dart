@@ -9,7 +9,7 @@ import "package:frankenstein/features/character_creation/tabs/spells_tab.dart" s
 import "../../../core/services/global_list_manager.dart";
 import "../../../core/theme/theme_manager.dart";
 import "../../../core/utils/style_utils.dart";
-import "../../../models/character/character.dart";
+import "../../../models/core/character/character.dart";
 import "../../../shared/widgets/top_bar.dart";
 import "../../character_creation/tabs/backstory_tab.dart";
 import "../../character_creation/tabs/finishing_up_tab.dart";

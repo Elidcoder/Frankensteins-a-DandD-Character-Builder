@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/style_utils.dart';
-import "../../../models/character/character.dart";
+import "../../../models/core/character/character.dart";
 
 class BackstoryTab extends StatefulWidget {
   final Character character;

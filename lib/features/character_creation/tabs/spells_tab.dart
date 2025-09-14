@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 import "../../../core/services/global_list_manager.dart";
 import "../../../core/theme/theme_manager.dart";
 import "../../../core/utils/style_utils.dart";
-import "../../../models/character/character.dart";
+import "../../../models/core/character/character.dart";
 import "../widgets/spell_handling.dart";
 
 /// Spells tab widget for character creation

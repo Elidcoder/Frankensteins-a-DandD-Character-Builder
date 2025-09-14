@@ -2,7 +2,7 @@
 import "package:pdf/widgets.dart";
 
 // Project Imports
-import "../../../../models/character/character.dart";
+import "../../../../models/core/character/character.dart";
 
 Widget buildThirdColumn(Character userCharacter) {
   return Container(

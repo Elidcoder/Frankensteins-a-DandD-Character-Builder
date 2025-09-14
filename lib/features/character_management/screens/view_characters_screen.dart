@@ -4,7 +4,7 @@ import "package:flutter/material.dart";
 import "../../../core/services/global_list_manager.dart";
 import "../../../core/theme/theme_manager.dart";
 import "../../../core/utils/style_utils.dart";
-import "../../../models/character/character.dart";
+import "../../../models/core/character/character.dart";
 // Project Imports
 import "../../../shared/widgets/top_bar.dart";
 import "../../pdf_export/screens/pdf_display_screen.dart";

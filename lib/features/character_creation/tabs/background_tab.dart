@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 
 import "../../../core/services/global_list_manager.dart";
 import "../../../core/utils/style_utils.dart";
-import "../../../models/character/character.dart";
+import "../../../models/core/character/character.dart";
 
 /// Background tab widget for character creation
 /// Handles background selection, personality traits, bonds, flaws, skills, and languages

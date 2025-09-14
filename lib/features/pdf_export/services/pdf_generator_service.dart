@@ -5,7 +5,7 @@ import "package:frankenstein/features/pdf_export/widgets/first_page/page.dart" s
 import "package:pdf/widgets.dart";
 
 // Project Import
-import "../../../models/character/character.dart";
+import "../../../models/core/character/character.dart";
 
 /* Takes in a character and generates the PDF for it. */
 Future<Uint8List> makePdf(Character userCharacter) async {

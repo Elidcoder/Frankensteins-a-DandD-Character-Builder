@@ -1,7 +1,7 @@
 // External Imports
 import "package:pdf/widgets.dart";
 
-import "../../../../models/character/character.dart";
+import "../../../../models/core/character/character.dart";
 // Project Imports
 import "first_column.dart";
 import "header.dart";

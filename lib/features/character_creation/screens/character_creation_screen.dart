@@ -9,7 +9,7 @@ import "package:frankenstein/features/character_creation/tabs/spells_tab.dart" s
 import "../../../core/theme/theme_manager.dart";
 import "../../../core/utils/style_utils.dart";
 // Project Imports
-import "../../../models/character/character.dart";
+import "../../../models/core/character/character.dart";
 import "../tabs/ability_score_tab.dart" show AbilityScoreTab;
 import "../tabs/background_tab.dart" show BackgroundTab;
 import "../tabs/backstory_tab.dart" show BackstoryTab;

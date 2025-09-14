@@ -4,7 +4,7 @@ import "package:pdf/widgets.dart";
 
 import "../../../../core/services/global_list_manager.dart";
 // Project Imports
-import "../../../../models/character/character.dart";
+import "../../../../models/core/character/character.dart";
 
 Widget buildSecondColumn(Character userCharacter) {
   return Container(
