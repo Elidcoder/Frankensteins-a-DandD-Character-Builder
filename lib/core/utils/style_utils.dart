@@ -199,7 +199,7 @@ class StyleUtils {
       title: Text(title, style: TextStyle(color: ThemeManager.instance.currentScheme.backingColour)),
       value: value,
       onChanged: onChanged,
-      activeColor: ThemeManager.instance.currentScheme.backingColour,
+      activeThumbColor: ThemeManager.instance.currentScheme.backingColour,
       secondary: Icon(Icons.insert_photo, color: ThemeManager.instance.currentScheme.backingColour),
     );
   }
@@ -214,7 +214,7 @@ class StyleUtils {
       title: Text(title, style: TextStyle(color: ThemeManager.instance.currentScheme.backingColour)),
       value: value,
       onChanged: onChanged,
-      activeColor: ThemeManager.instance.currentScheme.backingColour,
+      activeThumbColor: ThemeManager.instance.currentScheme.backingColour,
       secondary: Icon(Icons.insert_photo, color: ThemeManager.instance.currentScheme.backingColour),
     );
   }
