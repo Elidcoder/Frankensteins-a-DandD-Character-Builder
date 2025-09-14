@@ -1,9 +1,9 @@
 // External Imports
 import "package:flutter/material.dart";
 
+import "../../../core/utils/style_utils.dart";
 // Project Imports
 import "../../../models/content/base/content.dart";
-import "../../../utils/style_utils.dart";
 
 /* Build a card for a piece of content that allows for viewing and deletion. */
 Center buildContentCard(Content content, List<Content> list, void Function(Content) onDelete) {

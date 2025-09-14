@@ -2,9 +2,9 @@
 import "package:frankenstein/features/pdf_export/services/pdf_utils.dart" show formatList, modifierFromAbilityScore, decodeBonus, proficiencyBonus, formatNumber, PDF_DARK_GREY, PDF_WHITE, PDF_LIGHT_GREY;
 import "package:pdf/widgets.dart";
 
+import "../../../../core/services/global_list_manager.dart";
 // Project Imports
 import "../../../../models/character/character.dart";
-import "../../../../storage/global_list_manager.dart";
 
 Widget buildSecondColumn(Character userCharacter) {
   return Container(

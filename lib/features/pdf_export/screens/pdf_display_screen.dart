@@ -2,9 +2,9 @@
 import "package:flutter/material.dart";
 import "package:printing/printing.dart" show PdfPreview;
 
+import "../../../core/utils/style_utils.dart";
 // Project Imports
 import "../../../models/character/character.dart";
-import "../../../utils/style_utils.dart";
 import "../services/pdf_generator_service.dart";
 
 class PdfDisplay extends StatelessWidget {

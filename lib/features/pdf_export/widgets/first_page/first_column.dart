@@ -1,6 +1,6 @@
 // External Imports
+import "package:frankenstein/core/services/global_list_manager.dart" show GlobalListManager;
 import "package:frankenstein/models/character/ability_score/ability_score.dart" show AbilityScore;
-import "package:frankenstein/storage/global_list_manager.dart" show GlobalListManager;
 import "package:pdf/pdf.dart" show PdfColor;
 import "package:pdf/widgets.dart";
 

@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
 
+import "../../../core/services/global_list_manager.dart";
+import "../../../core/utils/style_utils.dart";
 import "../../../models/character/character.dart";
-import "../../../storage/global_list_manager.dart";
-import "../../../utils/style_utils.dart";
 
 /// Race tab widget for character creation
 /// Handles race and subrace selection, as well as ability score increases

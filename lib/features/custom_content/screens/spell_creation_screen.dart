@@ -2,9 +2,9 @@
 import "package:flutter/material.dart";
 import "package:frankenstein/models/content/game_mechanics/spell/spell.dart" show Spell;
 
-import "../../../storage/global_list_manager.dart";
-import "../../../theme/theme_manager.dart";
-import "../../../utils/style_utils.dart";
+import "../../../core/services/global_list_manager.dart";
+import "../../../core/theme/theme_manager.dart";
+import "../../../core/utils/style_utils.dart";
 import "../../home/widgets/initial_top.dart" show InitialTop;
 
 class MakeASpell extends StatefulWidget {

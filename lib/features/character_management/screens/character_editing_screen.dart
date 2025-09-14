@@ -5,12 +5,12 @@ import "package:frankenstein/features/character_creation/tabs/class_tab.dart" sh
 import "package:frankenstein/features/character_creation/tabs/equipment_tab.dart" show EquipmentTab;
 import "package:frankenstein/features/character_creation/tabs/spells_tab.dart" show SpellsTab;
 
-import "../../../models/character/character.dart";
-import "../../../shared/top_bar.dart";
 // Project Imports
-import "../../../storage/global_list_manager.dart";
-import "../../../theme/theme_manager.dart";
-import "../../../utils/style_utils.dart";
+import "../../../core/services/global_list_manager.dart";
+import "../../../core/theme/theme_manager.dart";
+import "../../../core/utils/style_utils.dart";
+import "../../../models/character/character.dart";
+import "../../../shared/widgets/top_bar.dart";
 import "../../character_creation/tabs/backstory_tab.dart";
 import "../../character_creation/tabs/finishing_up_tab.dart";
 import "../../home/widgets/initial_top.dart" show InitialTopKey;

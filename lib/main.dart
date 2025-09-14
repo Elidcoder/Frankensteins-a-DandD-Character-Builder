@@ -1,12 +1,12 @@
 // External imports
 import "package:flutter/material.dart";
-import "package:frankenstein/storage/json_storage_service.dart";
+import "package:frankenstein/core/services/json_storage_service.dart";
 
-import "features/home/widgets/initial_top.dart" show InitialTop, InitialTopKey;
 // Project imports
-import "storage/global_list_manager.dart";
-import "theme/theme_manager.dart";
-import "theme/theme_manager_widget.dart";
+import "core/services/global_list_manager.dart";
+import "core/theme/theme_manager.dart";
+import "core/theme/theme_manager_widget.dart";
+import "features/home/widgets/initial_top.dart" show InitialTop, InitialTopKey;
 
 void main() {
   runApp(const FrankensteinApp());

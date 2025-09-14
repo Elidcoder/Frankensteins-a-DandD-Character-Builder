@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frankenstein/storage/global_list_manager.dart' show GlobalListManager;
+import 'package:frankenstein/core/services/global_list_manager.dart' show GlobalListManager;
 
-import '../models/ui/colour_scheme.dart';
+import 'colour_scheme.dart';
 
 /// Service class to manage theme operations
 /// Provides a cleaner interface for theme management

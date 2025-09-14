@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:frankenstein/storage/global_list_manager.dart' show GlobalListManager;
+import 'package:frankenstein/core/services/global_list_manager.dart' show GlobalListManager;
 
-import '../../../shared/top_bar.dart';
-import '../../../theme/theme_manager.dart';
-import '../../../utils/style_utils.dart';
+import '../../../core/theme/theme_manager.dart';
+import '../../../core/utils/style_utils.dart';
+import '../../../shared/widgets/top_bar.dart';
 
 /// Displays the main menu with navigation buttons and help dialog
 class MainMenu extends StatefulWidget {

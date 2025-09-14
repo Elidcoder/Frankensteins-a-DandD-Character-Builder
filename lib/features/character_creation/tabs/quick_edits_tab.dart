@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/theme_manager.dart';
+import '../../../core/utils/style_utils.dart';
 import "../../../models/character/character.dart";
-import '../../../theme/theme_manager.dart';
-import '../../../utils/style_utils.dart';
 
 /// Quick Edits tab widget for character editing
 /// Handles level increases and experience adjustments

@@ -1,11 +1,11 @@
 // External Imports
 import "package:flutter/material.dart";
-import "package:frankenstein/utils/helpers.dart" show isAllowedContent;
-import "package:frankenstein/utils/style_utils.dart";
+import "package:frankenstein/core/utils/helpers.dart" show isAllowedContent;
+import "package:frankenstein/core/utils/style_utils.dart";
 
+import "../../../core/services/global_list_manager.dart";
+import "../../../core/theme/theme_manager.dart";
 import "../../../models/content/index.dart";
-import "../../../storage/global_list_manager.dart";
-import "../../../theme/theme_manager.dart";
 // Project Imports
 import "../screens/character_creation_screen.dart";
 

@@ -1,15 +1,15 @@
 // External Imports
 import "package:flutter/material.dart";
+import "package:frankenstein/core/services/global_list_manager.dart" show GlobalListManager;
 import "package:frankenstein/features/character_creation/tabs/asi_feat_tab.dart" show AsiFeatTab;
 import "package:frankenstein/features/character_creation/tabs/class_tab.dart" show ClassTab;
 import "package:frankenstein/features/character_creation/tabs/equipment_tab.dart" show EquipmentTab;
 import "package:frankenstein/features/character_creation/tabs/spells_tab.dart" show SpellsTab;
-import "package:frankenstein/storage/global_list_manager.dart" show GlobalListManager;
 
+import "../../../core/theme/theme_manager.dart";
+import "../../../core/utils/style_utils.dart";
 // Project Imports
 import "../../../models/character/character.dart";
-import "../../../theme/theme_manager.dart";
-import "../../../utils/style_utils.dart";
 import "../tabs/ability_score_tab.dart" show AbilityScoreTab;
 import "../tabs/background_tab.dart" show BackgroundTab;
 import "../tabs/backstory_tab.dart" show BackstoryTab;

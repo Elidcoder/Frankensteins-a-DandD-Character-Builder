@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 
+import "../../../core/utils/style_utils.dart";
 import "../../../models/character/character.dart";
-import "../../../utils/style_utils.dart";
 
 /// Basics tab widget for character creation
 /// Handles character info, leveling method, and build parameters

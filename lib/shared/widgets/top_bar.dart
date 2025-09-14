@@ -1,17 +1,17 @@
 // External imports
 import "package:flutter/material.dart";
+import "package:frankenstein/core/services/global_list_manager.dart" show GlobalListManager;
 import "package:frankenstein/features/character_creation/screens/character_creation_screen.dart" show CreateACharacter;
 import "package:frankenstein/features/character_management/screens/view_characters_screen.dart" show MyCharacters;
 import "package:frankenstein/features/content_search/screens/content_search_screen.dart" show SearchForContent;
 import "package:frankenstein/features/custom_content/screens/overview_screen.dart" show CustomContent;
-import "package:frankenstein/storage/global_list_manager.dart" show GlobalListManager;
 
-import "../features/custom_content/screens/spell_creation_screen.dart" show MakeASpell;
-import "../features/home/screens/home_screen.dart" show MainMenu;
-import '../models/ui/colour_scheme.dart';
+import '../../core/theme/colour_scheme.dart';
 // Project imports
-import "../theme/theme_manager.dart";
-import "../utils/style_utils.dart";
+import "../../core/theme/theme_manager.dart";
+import "../../core/utils/style_utils.dart";
+import "../../features/custom_content/screens/spell_creation_screen.dart" show MakeASpell;
+import "../../features/home/screens/home_screen.dart" show MainMenu;
 import "simple_color_picker.dart";
 
 /* A map of all the pages that can be navigated to. */

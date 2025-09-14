@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
-import "package:frankenstein/theme/theme_manager.dart";
+import "package:frankenstein/core/theme/theme_manager.dart";
 
+import "../../../core/utils/style_utils.dart";
 import "../../../models/index.dart";
-import "../../../utils/style_utils.dart";
 
 /// Ability Score tab widget for character creation
 /// Handles ability score point allocation using the point-buy system

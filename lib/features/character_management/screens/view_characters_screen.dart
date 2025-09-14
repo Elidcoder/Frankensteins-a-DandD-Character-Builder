@@ -1,12 +1,12 @@
 // External Imports
 import "package:flutter/material.dart";
 
+import "../../../core/services/global_list_manager.dart";
+import "../../../core/theme/theme_manager.dart";
+import "../../../core/utils/style_utils.dart";
 import "../../../models/character/character.dart";
 // Project Imports
-import "../../../shared/top_bar.dart";
-import "../../../storage/global_list_manager.dart";
-import "../../../theme/theme_manager.dart";
-import "../../../utils/style_utils.dart";
+import "../../../shared/widgets/top_bar.dart";
 import "../../pdf_export/screens/pdf_display_screen.dart";
 import "character_editing_screen.dart";
 

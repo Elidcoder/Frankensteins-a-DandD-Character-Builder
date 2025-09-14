@@ -1,4 +1,4 @@
-import 'package:frankenstein/storage/global_list_manager.dart' show GlobalListManager;
+import 'package:frankenstein/core/services/global_list_manager.dart' show GlobalListManager;
 import 'package:json_annotation/json_annotation.dart';
 
 import "../../base/content.dart";

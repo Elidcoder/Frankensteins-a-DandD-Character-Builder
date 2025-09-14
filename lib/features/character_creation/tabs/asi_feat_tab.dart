@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
-import "package:frankenstein/utils/helpers.dart" show displayPlural;
+import "package:frankenstein/core/utils/helpers.dart" show displayPlural;
 
+import "../../../core/services/global_list_manager.dart";
+import "../../../core/utils/style_utils.dart";
 import "../../../models/index.dart";
-import "../../../storage/global_list_manager.dart";
-import "../../../utils/style_utils.dart";
 import "../widgets/spell_handling.dart";
 
 /// ASI and Feats tab widget for character creation

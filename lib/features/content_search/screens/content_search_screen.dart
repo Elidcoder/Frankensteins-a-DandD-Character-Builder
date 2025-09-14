@@ -3,11 +3,11 @@ import "package:flutter/material.dart";
 import "package:frankenstein/features/content_search/widgets/content_card.dart" show buildContentCard;
 import "package:frankenstein/features/content_search/widgets/title_card.dart" show buildTitleCard;
 
+import "../../../core/services/global_list_manager.dart";
+import "../../../core/theme/theme_manager.dart";
+import "../../../core/utils/style_utils.dart";
 // Project Imports
 import "../../../models/content/base/content.dart";
-import "../../../storage/global_list_manager.dart";
-import "../../../theme/theme_manager.dart";
-import "../../../utils/style_utils.dart";
 
 /* This page allows users to view and delete their downloaded content. */
 class SearchForContent extends StatefulWidget {

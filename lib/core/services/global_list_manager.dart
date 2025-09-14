@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import "package:flutter/foundation.dart" show debugPrint;
-import "package:frankenstein/storage/storage_service.dart";
+import "package:frankenstein/core/services/storage_service.dart";
 
-import "../../models/index.dart";
+import "../../../models/index.dart";
 import "../utils/helpers.dart" show mapEquipment;
 
 /// Global list manager that handles initialization and access to all game content lists

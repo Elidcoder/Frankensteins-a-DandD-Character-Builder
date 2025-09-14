@@ -2,7 +2,7 @@
 import "package:flutter/material.dart";
 
 // Project Imports
-import "../../../utils/style_utils.dart";
+import "../../../core/utils/style_utils.dart";
 
 /* Build a card displaying a string. */
 Center buildTitleCard(String listType) {

@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:frankenstein/storage/storage_service.dart' show StorageService;
-import 'package:frankenstein/storage/storage_service.dart';
+import 'package:frankenstein/core/services/storage_service.dart' show StorageService;
+import 'package:frankenstein/core/services/storage_service.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
-import "../../models/index.dart";
+import "../../../models/index.dart";
 
 class JsonStorageService implements StorageService {
   // TODO(LOOK FOR RACE CONDITIONS - MAYBE USE MUTEX)

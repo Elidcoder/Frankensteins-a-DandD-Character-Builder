@@ -1,12 +1,12 @@
 import "dart:math";
 
 import "package:flutter/material.dart";
-import "package:frankenstein/utils/helpers.dart" show sum;
+import "package:frankenstein/core/utils/helpers.dart" show sum;
 
+import "../../../core/services/global_list_manager.dart";
+import "../../../core/theme/theme_manager.dart";
+import "../../../core/utils/style_utils.dart";
 import "../../../models/index.dart";
-import "../../../storage/global_list_manager.dart";
-import "../../../theme/theme_manager.dart";
-import "../../../utils/style_utils.dart";
 import "../widgets/spell_handling.dart";
 
 /// Class tab widget for character creation

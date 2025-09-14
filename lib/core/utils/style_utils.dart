@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
-import "package:frankenstein/storage/global_list_manager.dart" show GlobalListManager;
+import "package:frankenstein/core/services/global_list_manager.dart" show GlobalListManager;
 
-import '../models/ui/colour_scheme.dart';
+import '../theme/colour_scheme.dart';
 import "../theme/theme_manager.dart";
 
 /* Define colours that will be used a lot. */

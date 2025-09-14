@@ -6,7 +6,7 @@ import "package:frankenstein/models/character/ability_score/ability_score.dart" 
 import "package:frankenstein/models/character/character_description.dart" show CharacterDescription;
 import 'package:json_annotation/json_annotation.dart';
 
-import "../../storage/global_list_manager.dart";
+import "../../core/services/global_list_manager.dart";
 // Project Import
 import "../content/index.dart";
 

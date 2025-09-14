@@ -1,10 +1,10 @@
 // External Import
 import "package:flutter/material.dart";
 
+import "../../../core/theme/theme_manager.dart";
+import "../../../core/utils/style_utils.dart";
 // Project Imports
-import "../../../shared/top_bar.dart";
-import "../../../theme/theme_manager.dart";
-import "../../../utils/style_utils.dart";
+import "../../../shared/widgets/top_bar.dart";
 
 /* Serves as a linker page between the main page and the users choice of content to create. */
 class CustomContent extends StatelessWidget {
