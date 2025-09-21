@@ -17,7 +17,7 @@ file="${1:-}"
 message="$(sed -n '1{s/\r$//;s/[[:space:]]*$//;p}' -- "$file")"
 full_msg="$(cat -- "$file")"
 
-# Skip merges and reverts 
+# Skip merges and reverts
 if [[ "$message" =~ ^(Merge|Revert)($|[[:space:]]) ]]; then
   printf '%b\n' "${GREEN}✅ Merge/Revert commit - skipping validation${NC}"
   exit 0

@@ -15,19 +15,18 @@ class Armour extends Item {
   @JsonKey(name: 'armourType')
   String armourType;
 
-  Armour({
-    required super.name,
-    required super.sourceBook,
-    required super.cost,
-    required super.weight,
-    required super.stackable,
-    required super.equipmentType,
-    super.description,
-    required this.armourFormula,
-    required this.imposeStealthDisadvantage,
-    required this.strengthRequirement,
-    required this.armourType
-  });
+  Armour(
+      {required super.name,
+      required super.sourceBook,
+      required super.cost,
+      required super.weight,
+      required super.stackable,
+      required super.equipmentType,
+      super.description,
+      required this.armourFormula,
+      required this.imposeStealthDisadvantage,
+      required this.strengthRequirement,
+      required this.armourType});
 
   factory Armour.fromJson(Map<String, dynamic> json) {
     return Armour(

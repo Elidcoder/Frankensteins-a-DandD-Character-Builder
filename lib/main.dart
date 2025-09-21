@@ -21,21 +21,21 @@ class FrankensteinApp extends StatefulWidget {
 
 class _FrankensteinAppState extends State<FrankensteinApp> {
   late Future<void> _initializationClasses;
-  
+
   @override
   void initState() {
     super.initState();
     _initializationClasses = _initializeApp();
   }
-  
+
   Future<void> _initializeApp() async {
     // Initialize global list manager using the JsonStorageService
     await GlobalListManager().initialise(JsonStorageService());
-    
+
     // Initialize theme manager
     await ThemeManager.instance.initialize();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<void>(

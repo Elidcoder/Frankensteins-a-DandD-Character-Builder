@@ -11,7 +11,7 @@ features/pdf_export/
 │   ├── pdf_generator_service.dart # Main entry point
 │   └── pdf_utils.dart             # Shared utilities & constants
 └── widgets/
-    └── first_page/                
+    └── first_page/
         ├── page.dart              # Page assembly & layout
         ...                        # Page-specific components
 ```

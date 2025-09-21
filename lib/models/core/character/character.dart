@@ -2,8 +2,10 @@
 import "dart:collection" show Queue;
 import "dart:math" show Random;
 
-import "package:frankenstein/models/core/ability_score/ability_score.dart" show AbilityScore;
-import "package:frankenstein/models/core/character/character_description.dart" show CharacterDescription;
+import "package:frankenstein/models/core/ability_score/ability_score.dart"
+    show AbilityScore;
+import "package:frankenstein/models/core/character/character_description.dart"
+    show CharacterDescription;
 import 'package:json_annotation/json_annotation.dart';
 
 import "../../../core/services/global_list_manager.dart";
@@ -13,7 +15,8 @@ import "../../content/index.dart";
 part 'character.g.dart';
 
 // Helper functions for Queue serialization
-Queue<String> _queueFromJson(List<dynamic>? json) => Queue<String>.from((json ?? []).cast<String>());
+Queue<String> _queueFromJson(List<dynamic>? json) =>
+    Queue<String>.from((json ?? []).cast<String>());
 List<String> _queueToJson(Queue<String> queue) => queue.toList();
 
 // Helper functions for Map<Feat, int> serialization
@@ -21,7 +24,9 @@ Map<Feat, int> _featsSelectedFromJson(List<dynamic>? json) {
   if (json == null) return {};
   Map<Feat, int> result = {};
   for (var item in json) {
-    if (item is Map<String, dynamic> && item.containsKey('feat') && item.containsKey('count')) {
+    if (item is Map<String, dynamic> &&
+        item.containsKey('feat') &&
+        item.containsKey('count')) {
       try {
         Feat feat = Feat.fromJson(item['feat']);
         int count = item['count'] as int;
@@ -36,10 +41,12 @@ Map<Feat, int> _featsSelectedFromJson(List<dynamic>? json) {
 }
 
 List<Map<String, dynamic>> _featsSelectedToJson(Map<Feat, int> featsSelected) {
-  return featsSelected.entries.map((entry) => {
-    'feat': entry.key.toJson(),
-    'count': entry.value,
-  }).toList();
+  return featsSelected.entries
+      .map((entry) => {
+            'feat': entry.key.toJson(),
+            'count': entry.value,
+          })
+      .toList();
 }
 
 @JsonSerializable()
@@ -47,7 +54,7 @@ class Character {
   String get name => characterDescription.name;
   // make this final after removing the change UID in edit character
   int uniqueID;
-  
+
   // Character information
   List<String> languagesKnown;
   List<String> featuresAndTraits;
@@ -140,89 +147,83 @@ class Character {
 
   //finishing up variables
   String? group;
-  
-  // Use generated methods with custom uniqueID handling
-  factory Character.fromJson(Map<String, dynamic> json) => _$CharacterFromJson(json);
-  
-  Map<String, dynamic> toJson() => _$CharacterToJson(this);
-  
-  Character(
-      {required this.skillBonusMap,
-      required this.levelsPerClass,
-      required this.allSelected,
-      required this.classSubclassMapper,
-      required this.ACList,
-      required this.allSpellsSelected,
-      required this.allSpellsSelectedAsListsOfThings,
-      required this.armourList,
-      required this.featsSelected,
-      required this.itemList,
-      required this.equipmentSelectedFromChoices,
-      required this.optionalOnesStates,
-      required this.optionalTwosStates,
-      required this.speedBonuses,
-      required this.weaponList,
-      required this.unstackableEquipmentSelected,
-      required this.featuresAndTraits,
-      required this.languagesKnown,
-      required this.classList,
-      required this.stackableEquipmentSelected,
-      required this.skillsSelected,
-      required this.languageChoices,
-      required this.mainToolProficiencies,
-      required this.savingThrowProficiencies,
-      required this.skillProficiencies,
-      required this.background,
-      required this.classLevels,
-      required this.race,
-      required this.backgroundIdeal,
-      required this.backgroundPersonalityTrait,
-      required this.backgroundBond,
-      required this.backgroundFlaw,
-      required this.raceAbilityScoreIncreases,
-      required this.strength,
-      required this.dexterity,
-      required this.classSkillsSelected,
-      required this.constitution,
-      required this.intelligence,
-      required this.wisdom,
-      required this.charisma,
-      required this.featsASIScoreIncreases,
-      required this.currency,
-      required this.characterDescription,
 
-      this.maxHealth = 0,
-      this.characterExperience = 0,
-      this.extraFeatures = "",
-      this.playerName = "",
-      this.multiclassing = true,
-      this.featsAllowed = true,
-      this.criticalRoleContent = false,
-      this.encumberanceRules = false,
-      this.extraFeatAtLevel1 = false,
-      this.averageHitPoints = false,
-      this.firearmsUsable = false,
-      this.includeCoinsForWeight = false,
-      this.unearthedArcanaContent = false,
-      this.milestoneLevelling = false,
-      this.useCustomContent = false,
-      this.optionalClassFeatures = false,
-      this.inspired = false,
-      this.subrace,
-      this.group,
-      int? uniqueID,
-      }) : uniqueID = uniqueID ?? int.parse([ 
-        for(
-          var i in List.generate(
-            15, (_) => Random().nextInt(
-              10
-            )
-          )
-        )
-        i.toString()
-        ].join()
-      );
-  
+  // Use generated methods with custom uniqueID handling
+  factory Character.fromJson(Map<String, dynamic> json) =>
+      _$CharacterFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CharacterToJson(this);
+
+  Character({
+    required this.skillBonusMap,
+    required this.levelsPerClass,
+    required this.allSelected,
+    required this.classSubclassMapper,
+    required this.ACList,
+    required this.allSpellsSelected,
+    required this.allSpellsSelectedAsListsOfThings,
+    required this.armourList,
+    required this.featsSelected,
+    required this.itemList,
+    required this.equipmentSelectedFromChoices,
+    required this.optionalOnesStates,
+    required this.optionalTwosStates,
+    required this.speedBonuses,
+    required this.weaponList,
+    required this.unstackableEquipmentSelected,
+    required this.featuresAndTraits,
+    required this.languagesKnown,
+    required this.classList,
+    required this.stackableEquipmentSelected,
+    required this.skillsSelected,
+    required this.languageChoices,
+    required this.mainToolProficiencies,
+    required this.savingThrowProficiencies,
+    required this.skillProficiencies,
+    required this.background,
+    required this.classLevels,
+    required this.race,
+    required this.backgroundIdeal,
+    required this.backgroundPersonalityTrait,
+    required this.backgroundBond,
+    required this.backgroundFlaw,
+    required this.raceAbilityScoreIncreases,
+    required this.strength,
+    required this.dexterity,
+    required this.classSkillsSelected,
+    required this.constitution,
+    required this.intelligence,
+    required this.wisdom,
+    required this.charisma,
+    required this.featsASIScoreIncreases,
+    required this.currency,
+    required this.characterDescription,
+    this.maxHealth = 0,
+    this.characterExperience = 0,
+    this.extraFeatures = "",
+    this.playerName = "",
+    this.multiclassing = true,
+    this.featsAllowed = true,
+    this.criticalRoleContent = false,
+    this.encumberanceRules = false,
+    this.extraFeatAtLevel1 = false,
+    this.averageHitPoints = false,
+    this.firearmsUsable = false,
+    this.includeCoinsForWeight = false,
+    this.unearthedArcanaContent = false,
+    this.milestoneLevelling = false,
+    this.useCustomContent = false,
+    this.optionalClassFeatures = false,
+    this.inspired = false,
+    this.subrace,
+    this.group,
+    int? uniqueID,
+  }) : uniqueID = uniqueID ??
+            int.parse([
+              for (var i in List.generate(15, (_) => Random().nextInt(10)))
+                i.toString()
+            ].join());
+
   Character getCopy() {
     return Character(
       languagesKnown: languagesKnown,
@@ -234,7 +235,7 @@ class Character {
       inspired: inspired,
       mainToolProficiencies: mainToolProficiencies,
       skillBonusMap: skillBonusMap,
-      skillsSelected: skillsSelected, 
+      skillsSelected: skillsSelected,
       languageChoices: languageChoices,
       speedBonuses: speedBonuses,
       ACList: ACList,
@@ -377,11 +378,13 @@ class Character {
         "Gold Pieces": 0,
         "Platinum Pieces": 0
       },
-      backgroundPersonalityTrait: GlobalListManager().backgroundList.first.personalityTrait.first,
+      backgroundPersonalityTrait:
+          GlobalListManager().backgroundList.first.personalityTrait.first,
       backgroundIdeal: GlobalListManager().backgroundList.first.ideal.first,
       backgroundBond: GlobalListManager().backgroundList.first.bond.first,
       backgroundFlaw: GlobalListManager().backgroundList.first.flaw.first,
-      raceAbilityScoreIncreases: GlobalListManager().raceList.first.raceScoreIncrease,
+      raceAbilityScoreIncreases:
+          GlobalListManager().raceList.first.raceScoreIncrease,
       featsASIScoreIncreases: [0, 0, 0, 0, 0, 0],
       strength: AbilityScore(name: "Strength", value: 8),
       dexterity: AbilityScore(name: "Dexterity", value: 8),
@@ -393,28 +396,31 @@ class Character {
   }
 
   // Helper functions for checking creation status
-  bool get basicsComplete => (
-    characterDescription.name.replaceAll(" ", "") != "" &&
-    characterDescription.gender.replaceAll(" ", "") != "" &&
-    playerName.replaceAll(" ", "") != ""
-    // FUTUREPLAN(When experience is implemented, implement this)
-    /* &&(enteredExperience.replaceAll(" ", "") != "" || levellingMethod != "Experience")*/
-  );
+  bool get basicsComplete =>
+      (characterDescription.name.replaceAll(" ", "") != "" &&
+          characterDescription.gender.replaceAll(" ", "") != "" &&
+          playerName.replaceAll(" ", "") != ""
+      // FUTUREPLAN(When experience is implemented, implement this)
+      /* &&(enteredExperience.replaceAll(" ", "") != "" || levellingMethod != "Experience")*/
+      );
 
-  bool get backstoryComplete => (
-    characterDescription.age.replaceAll(" ", "") != "" &&
-    characterDescription.height.replaceAll(" ", "") != "" &&
-    characterDescription.weight.replaceAll(" ", "") != "" &&
-    characterDescription.eyes.replaceAll(" ", "") != "" &&
-    characterDescription.skin.replaceAll(" ", "") != "" &&
-    characterDescription.hair.replaceAll(" ", "") != "" &&
-    characterDescription.backstory.replaceAll(" ", "") != "" &&
-    extraFeatures.replaceAll(" ", "") != ""
-  );
+  bool get backstoryComplete =>
+      (characterDescription.age.replaceAll(" ", "") != "" &&
+          characterDescription.height.replaceAll(" ", "") != "" &&
+          characterDescription.weight.replaceAll(" ", "") != "" &&
+          characterDescription.eyes.replaceAll(" ", "") != "" &&
+          characterDescription.skin.replaceAll(" ", "") != "" &&
+          characterDescription.hair.replaceAll(" ", "") != "" &&
+          characterDescription.backstory.replaceAll(" ", "") != "" &&
+          extraFeatures.replaceAll(" ", "") != "");
 
-  bool get chosenAllSpells => (allSpellsSelectedAsListsOfThings.where((element) => element[2] != 0).isEmpty);
+  bool get chosenAllSpells => (allSpellsSelectedAsListsOfThings
+      .where((element) => element[2] != 0)
+      .isEmpty);
 
-  bool get chosenAllEqipment => (equipmentSelectedFromChoices.where((element) => element.length == 2).isEmpty);
+  bool get chosenAllEqipment => (equipmentSelectedFromChoices
+      .where((element) => element.length == 2)
+      .isEmpty);
 
   @override
   int get hashCode => uniqueID.hashCode;
@@ -422,14 +428,10 @@ class Character {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Character && runtimeType == other.runtimeType && uniqueID == other.uniqueID;
+      other is Character &&
+          runtimeType == other.runtimeType &&
+          uniqueID == other.uniqueID;
 
-  List<AbilityScore> get abilityScores => [
-    strength,
-    dexterity,
-    constitution,
-    intelligence,
-    wisdom,
-    charisma
-  ];
+  List<AbilityScore> get abilityScores =>
+      [strength, dexterity, constitution, intelligence, wisdom, charisma];
 }

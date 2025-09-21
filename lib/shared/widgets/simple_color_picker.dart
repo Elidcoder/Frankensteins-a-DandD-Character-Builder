@@ -40,19 +40,16 @@ class _SimpleColorPickerState extends State<SimpleColorPicker> {
     Colors.purple,
     Colors.deepPurple,
     Colors.indigo,
-
     Colors.blue,
     Colors.lightBlue,
     Colors.cyan,
     Colors.teal,
     Colors.green,
-
     Colors.lightGreen,
     Colors.lime,
     Colors.yellow,
     Colors.amber,
     Colors.orange,
-
     Colors.brown,
     Colors.grey,
     Colors.blueGrey,
@@ -65,7 +62,7 @@ class _SimpleColorPickerState extends State<SimpleColorPicker> {
     // Check if this color should be highlighted based on the current color
     Color closestToCurrentColor = _findClosestColor(_currentColor);
     bool isSelected = color == closestToCurrentColor;
-    
+
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -135,14 +132,16 @@ class _SimpleColorPickerState extends State<SimpleColorPicker> {
             child: Text(
               'Current Color',
               style: TextStyle(
-                color: _currentColor.computeLuminance() > 0.5 ? Colors.black : Colors.white,
+                color: _currentColor.computeLuminance() > 0.5
+                    ? Colors.black
+                    : Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
         ),
         const SizedBox(height: 16),
-        
+
         // Color palette in a 4x5 grid using Column and Row
         Column(
           children: [
@@ -156,7 +155,9 @@ class _SimpleColorPickerState extends State<SimpleColorPicker> {
                       if (row * 5 + col < _colors.length)
                         _buildColorBox(_colors[row * 5 + col])
                       else
-                        const SizedBox(width: 40, height: 40), // Empty space for incomplete rows
+                        const SizedBox(
+                            width: 40,
+                            height: 40), // Empty space for incomplete rows
                   ],
                 ),
               ),

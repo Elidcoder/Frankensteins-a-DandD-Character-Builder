@@ -32,7 +32,7 @@ class Class implements Content {
       proficienciesGained; //replace string with equipment (parent of) armour/tools/weapons
 
   final List<List<dynamic>> gainAtEachLevel; //replace string with something?
-  
+
   // Use generated methods for serialization
   factory Class.fromJson(Map<String, dynamic> json) => _$ClassFromJson(json);
 

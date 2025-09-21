@@ -1,8 +1,10 @@
-import 'package:frankenstein/models/content/equipment/armour/armour.dart' show Armour;
+import 'package:frankenstein/models/content/equipment/armour/armour.dart'
+    show Armour;
 import 'package:frankenstein/models/content/equipment/item/item.dart' show Item;
-import 'package:frankenstein/models/content/equipment/weapon/weapon.dart' show Weapon;
+import 'package:frankenstein/models/content/equipment/weapon/weapon.dart'
+    show Weapon;
 
-// TODO(Implement this function) 
+// TODO(Implement this function)
 bool isAllowedContent(dynamic x) {
   return true;
 }

@@ -48,37 +48,39 @@ class _QuickEditsTabState extends State<QuickEditsTab> {
       children: [
         const SizedBox(height: 50),
         StyleUtils.buildStyledMediumTextBox(
-          text: "${widget.character.characterDescription.name} is level ${int.parse(widget.characterLevel)} with ${widget.character.characterExperience} experience"
-        ),
-        if (int.parse(widget.characterLevel) > widget.character.classLevels.fold(0, (val, acc) => val + acc)) ...[
+            text:
+                "${widget.character.characterDescription.name} is level ${int.parse(widget.characterLevel)} with ${widget.character.characterExperience} experience"),
+        if (int.parse(widget.characterLevel) >
+            widget.character.classLevels.fold(0, (val, acc) => val + acc)) ...[
           const SizedBox(height: 16),
           StyleUtils.buildStyledSmallTextBox(
-            text: "${widget.character.characterDescription.name} has at least one unused level!!",
-            color: ThemeManager.instance.currentScheme.backingColour
-          ),
+              text:
+                  "${widget.character.characterDescription.name} has at least one unused level!!",
+              color: ThemeManager.instance.currentScheme.backingColour),
         ],
-
         const SizedBox(height: 16),
         StyleUtils.buildStyledSmallTextBox(
-          text: "Increase level by 1:",
-          color: ThemeManager.instance.currentScheme.backingColour
-        ),
+            text: "Increase level by 1:",
+            color: ThemeManager.instance.currentScheme.backingColour),
         const SizedBox(height: 8),
         ElevatedButton(
-          onPressed: int.parse(widget.characterLevel) < 20 ? () {
-            widget.onCharacterLevelChanged((int.parse(widget.characterLevel) + 1).toString());
-          } : null,
+          onPressed: int.parse(widget.characterLevel) < 20
+              ? () {
+                  widget.onCharacterLevelChanged(
+                      (int.parse(widget.characterLevel) + 1).toString());
+                }
+              : null,
           style: ElevatedButton.styleFrom(
             backgroundColor: ThemeManager.instance.currentScheme.backingColour,
             foregroundColor: ThemeManager.instance.currentScheme.textColour,
           ),
-          child: Icon(Icons.add, color: ThemeManager.instance.currentScheme.textColour, size: 37),
+          child: Icon(Icons.add,
+              color: ThemeManager.instance.currentScheme.textColour, size: 37),
         ),
         const SizedBox(height: 16),
         StyleUtils.buildStyledSmallTextBox(
-          text: "Experience amount to add:",
-          color: ThemeManager.instance.currentScheme.backingColour
-        ),
+            text: "Experience amount to add:",
+            color: ThemeManager.instance.currentScheme.backingColour),
         const SizedBox(height: 8),
         StyleUtils.buildStyledSmallTextField(
           width: 320,
@@ -92,23 +94,24 @@ class _QuickEditsTabState extends State<QuickEditsTab> {
         ),
         const SizedBox(height: 20),
         StyleUtils.buildStyledSmallTextBox(
-          text: "Confirm adding experience",
-          color: ThemeManager.instance.currentScheme.backingColour
-        ),
+            text: "Confirm adding experience",
+            color: ThemeManager.instance.currentScheme.backingColour),
         const SizedBox(height: 8),
         ElevatedButton(
-          onPressed: double.tryParse(experienceIncrease ?? "NOT NUMBER") != null ? () {
-            widget.character.characterExperience += double.tryParse(
-                    experienceIncrease ?? "NOT NUMBER") ??
-                0;
-            widget.onCharacterChanged();
-            //validate level
-          } : null,
+          onPressed: double.tryParse(experienceIncrease ?? "NOT NUMBER") != null
+              ? () {
+                  widget.character.characterExperience +=
+                      double.tryParse(experienceIncrease ?? "NOT NUMBER") ?? 0;
+                  widget.onCharacterChanged();
+                  //validate level
+                }
+              : null,
           style: ElevatedButton.styleFrom(
             backgroundColor: ThemeManager.instance.currentScheme.backingColour,
             foregroundColor: ThemeManager.instance.currentScheme.textColour,
           ),
-          child: Icon(Icons.add, color: ThemeManager.instance.currentScheme.textColour, size: 37),
+          child: Icon(Icons.add,
+              color: ThemeManager.instance.currentScheme.textColour, size: 37),
         )
       ],
     );

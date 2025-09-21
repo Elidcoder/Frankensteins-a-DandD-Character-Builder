@@ -17,7 +17,8 @@ Center buildTitleCard(String listType) {
           border: Border.all(color: StyleUtils.currentTextColor, width: 4),
           borderRadius: BorderRadius.circular(8.0),
         ),
-        child: Center(child: StyleUtils.buildStyledLargeTextBox(
+        child: Center(
+            child: StyleUtils.buildStyledLargeTextBox(
           text: listType,
           color: StyleUtils.currentTextColor,
         )),

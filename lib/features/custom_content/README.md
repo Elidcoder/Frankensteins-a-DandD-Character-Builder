@@ -27,9 +27,9 @@ The system uses a modular techniques to validate content according to D&D rules:
 ```dart
 // Rigorous validation with D&D rule compliance
 bool validateSpell() {
-return validateName() 
-    && validateLevel() 
-    && validateSchool() 
+return validateName()
+    && validateLevel()
+    && validateSchool()
     && validateRange();
 }
 ```

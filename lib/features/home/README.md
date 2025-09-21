@@ -25,7 +25,7 @@ features/home/
 ## Code
 ### Smart Feature Navigation System
 ```dart
-// Dynamicly and modularly created navigation boxes 
+// Dynamicly and modularly created navigation boxes
 @override
 Widget build(BuildContext context) {
     return StyleUtils.buildStyledScaffold(
@@ -38,10 +38,10 @@ Widget build(BuildContext context) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
             const SizedBox(height: 80),
-            
+
             /* Row containing the create character, search for content and my characters buttons. */
             _buildMainNavigationRow(context),
-            
+
             const SizedBox(height: 120),
 
             /* Row containing the download content and create content buttons */

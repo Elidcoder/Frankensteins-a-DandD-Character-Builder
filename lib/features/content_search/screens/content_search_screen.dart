@@ -1,7 +1,9 @@
 // External Imports
 import "package:flutter/material.dart";
-import "package:frankenstein/features/content_search/widgets/content_card.dart" show buildContentCard;
-import "package:frankenstein/features/content_search/widgets/title_card.dart" show buildTitleCard;
+import "package:frankenstein/features/content_search/widgets/content_card.dart"
+    show buildContentCard;
+import "package:frankenstein/features/content_search/widgets/title_card.dart"
+    show buildTitleCard;
 
 import "../../../core/services/global_list_manager.dart";
 import "../../../core/theme/theme_manager.dart";
@@ -27,13 +29,13 @@ class SearchForContentState extends State<SearchForContent> {
     _initialisedContent = GlobalListManager().initialiseContentLists();
     ThemeManager.instance.addListener(_onThemeChanged);
   }
-  
+
   @override
   void dispose() {
     ThemeManager.instance.removeListener(_onThemeChanged);
     super.dispose();
   }
-  
+
   void _onThemeChanged() {
     setState(() {
       // Rebuild when theme changes
@@ -42,68 +44,78 @@ class SearchForContentState extends State<SearchForContent> {
 
   @override
   Widget build(BuildContext context) {
-    return StyleUtils.styledFutureBuilder(future: _initialisedContent, builder: (context) => StyleUtils.buildStyledScaffold(
-      appBar: StyleUtils.buildStyledAppBar(
-        title: "Search for content",
-        titleStyle: TextStyle(
-          fontSize: 45,
-          fontWeight: FontWeight.w700,
-          color: ThemeManager.instance.currentScheme.textColour,
-        ),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          /* Contents name search bar */
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              onChanged: (value) {
-                setState(() {
-                  searchTerm = value;
-                });
-              },
-              decoration: StyleUtils.buildDefaultInputDecoration(
-                hintText: "Search for content using its names",
-                prefixIcon: Icon(Icons.search, color: ThemeManager.instance.currentScheme.textColour),
+    return StyleUtils.styledFutureBuilder(
+        future: _initialisedContent,
+        builder: (context) => StyleUtils.buildStyledScaffold(
+            appBar: StyleUtils.buildStyledAppBar(
+              title: "Search for content",
+              titleStyle: TextStyle(
+                fontSize: 45,
+                fontWeight: FontWeight.w700,
+                color: ThemeManager.instance.currentScheme.textColour,
               ),
             ),
-          ),
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /* Contents name search bar */
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        searchTerm = value;
+                      });
+                    },
+                    decoration: StyleUtils.buildDefaultInputDecoration(
+                      hintText: "Search for content using its names",
+                      prefixIcon: Icon(Icons.search,
+                          color:
+                              ThemeManager.instance.currentScheme.textColour),
+                    ),
+                  ),
+                ),
 
-          /* All content matching the search displayed as cards. */
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  /* Display the classes. */
-                  buildTitleCard("Classes"),
-                  ...buildFilteredContentCards(GlobalListManager().classList),
+                /* All content matching the search displayed as cards. */
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        /* Display the classes. */
+                        buildTitleCard("Classes"),
+                        ...buildFilteredContentCards(
+                            GlobalListManager().classList),
 
-                  /* Display the spells. */ 
-                  buildTitleCard("Spells"),
-                  ...buildFilteredContentCards(GlobalListManager().spellList),
+                        /* Display the spells. */
+                        buildTitleCard("Spells"),
+                        ...buildFilteredContentCards(
+                            GlobalListManager().spellList),
 
-                  /* Display the feats. */ 
-                  buildTitleCard("Feats"),
-                  ...buildFilteredContentCards(GlobalListManager().featList),
+                        /* Display the feats. */
+                        buildTitleCard("Feats"),
+                        ...buildFilteredContentCards(
+                            GlobalListManager().featList),
 
-                  /* Display the races. */ 
-                  buildTitleCard("Races"),
-                  ...buildFilteredContentCards(GlobalListManager().raceList),
+                        /* Display the races. */
+                        buildTitleCard("Races"),
+                        ...buildFilteredContentCards(
+                            GlobalListManager().raceList),
 
-                  /* Display the items. */ 
-                  buildTitleCard("Items"),
-                  ...buildFilteredContentCards(GlobalListManager().itemList),
+                        /* Display the items. */
+                        buildTitleCard("Items"),
+                        ...buildFilteredContentCards(
+                            GlobalListManager().itemList),
 
-                  /* Display the backgrounds. */ 
-                  buildTitleCard("Backgrounds"),
-                  ...buildFilteredContentCards(GlobalListManager().backgroundList)
-                ],
-              ),
-            ),
-          ),
-        ],
-      )));
+                        /* Display the backgrounds. */
+                        buildTitleCard("Backgrounds"),
+                        ...buildFilteredContentCards(
+                            GlobalListManager().backgroundList)
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            )));
   }
 
   /* Generate a list of cards displaying a piece of content. */
@@ -111,10 +123,17 @@ class SearchForContentState extends State<SearchForContent> {
     final filtered = list.where((item) {
       final query = searchTerm.toLowerCase();
       return item.name.toLowerCase().contains(query) ||
-             item.sourceBook.toLowerCase().contains(query);
+          item.sourceBook.toLowerCase().contains(query);
     }).toList();
-    return filtered.map(
-      (item) => buildContentCard(item, list, (content) => setState(() {list.remove(content);})),
-    ).toList();
+    return filtered
+        .map(
+          (item) => buildContentCard(
+              item,
+              list,
+              (content) => setState(() {
+                    list.remove(content);
+                  })),
+        )
+        .toList();
   }
 }

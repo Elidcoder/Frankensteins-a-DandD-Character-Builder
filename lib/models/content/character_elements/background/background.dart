@@ -1,4 +1,5 @@
-import 'package:frankenstein/core/services/global_list_manager.dart' show GlobalListManager;
+import 'package:frankenstein/core/services/global_list_manager.dart'
+    show GlobalListManager;
 import 'package:json_annotation/json_annotation.dart';
 
 import "../../base/content.dart";
@@ -47,7 +48,8 @@ class Background implements Content {
   Map<String, dynamic> toJson() => _$BackgroundToJson(this);
 
   // Use generated fromJson
-  factory Background.fromJson(Map<String, dynamic> json) => _$BackgroundFromJson(json);
+  factory Background.fromJson(Map<String, dynamic> json) =>
+      _$BackgroundFromJson(json);
   Background({
     required this.sourceBook,
     required this.name,
@@ -64,7 +66,7 @@ class Background implements Content {
     this.numberOfSkillChoices = 0,
     this.numberOfLanguageChoices = 0,
   });
-  
+
   List<String> getLanguageOptions() {
     if (languageOptions.isEmpty) {
       return GlobalListManager().languageList;

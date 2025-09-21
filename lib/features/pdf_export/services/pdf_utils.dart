@@ -9,7 +9,7 @@ const PDF_DARK_GREY = PdfColor.fromInt(0xff9c9995);
 // Show a number with the appropriate sign (+/-)
 String formatNumber(int number) => (number >= 0) ? "+$number" : "$number";
 
-/* Takes in for example [2, "Arrow", "Dagger"] 
+/* Takes in for example [2, "Arrow", "Dagger"]
  * Outputs: 2xArrow, Dagger */
 String formatList(List list) {
   StringBuffer result = StringBuffer();
@@ -21,7 +21,7 @@ String formatList(List list) {
       result.write("${list[i]}x${list[i + 1]}");
       i++;
 
-    // Append just the current string to the result string
+      // Append just the current string to the result string
     } else {
       result.write("${list[i]}");
     }
