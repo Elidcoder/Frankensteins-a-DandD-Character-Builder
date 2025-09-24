@@ -551,11 +551,10 @@ class MainMakeASpell extends State<MakeASpell> {
 
                                 //display the popup and return home TODO(CHOOSE POPUP BASED ON SAVE RESULT)
                                 setState(() {
-                                  Navigator.pop(context);
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => InitialTop()),
+                                        builder: (_) => InitialTop()),
                                   );
                                   showCreationDialog(context);
                                 });

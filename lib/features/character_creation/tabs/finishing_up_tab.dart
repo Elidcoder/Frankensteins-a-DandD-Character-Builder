@@ -169,22 +169,15 @@ class _FinishingUpTabState extends State<FinishingUpTab> {
                                     // Save character using the new system only
                                     final saveResult = await GlobalListManager()
                                         .saveCharacter(widget.character);
-                                    //final saveSuccess = await CharacterStorageService.saveCharacter(widget.character);
-
-                                    // If save was successful, update group list
-                                    // if (saveSuccess) {
-                                    //   updateGroupListFromNewSystem();// TODO(Dynamically update in save character)
-                                    // }
 
                                     // Check if widget is still mounted before using context
-                                    if (!mounted) return;
+                                    if (!context.mounted) return;
 
                                     if (saveResult) {
                                       // Navigation back to main menu using captured navigator
-                                      navigator.pop();
-                                      navigator.push(
+                                      navigator.pushReplacement(
                                         MaterialPageRoute(
-                                            builder: (context) => InitialTop()),
+                                            builder: (_) => InitialTop()),
                                       );
                                       _showCongratulationsDialog(context);
                                     } else {

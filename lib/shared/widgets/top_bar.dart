@@ -159,7 +159,7 @@ class _RegularTopState extends State<RegularTop> {
                   const SizedBox(height: 9),
                   SimpleColorPicker(
                     key: ValueKey(
-                        'backing_${currentScheme.backingColour.value}'),
+                        'backing_${currentScheme.backingColour.toARGB32()}'),
                     currentColor: currentScheme.backingColour,
                     onColorChanged: (color) {
                       setState(() {
@@ -180,7 +180,8 @@ class _RegularTopState extends State<RegularTop> {
                   ),
                   const SizedBox(height: 9),
                   SimpleColorPicker(
-                    key: ValueKey('text_${currentScheme.textColour.value}'),
+                    key:
+                        ValueKey('text_${currentScheme.textColour.toARGB32()}'),
                     currentColor: currentScheme.textColour,
                     onColorChanged: (color) {
                       setState(() {
@@ -202,7 +203,7 @@ class _RegularTopState extends State<RegularTop> {
                   const SizedBox(height: 9),
                   SimpleColorPicker(
                     key: ValueKey(
-                        'background_${currentScheme.backgroundColour.value}'),
+                        'background_${currentScheme.backgroundColour.toARGB32()}'),
                     currentColor: currentScheme.backgroundColour,
                     onColorChanged: (color) {
                       setState(() {

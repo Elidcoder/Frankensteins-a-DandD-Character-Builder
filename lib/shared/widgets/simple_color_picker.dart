@@ -107,9 +107,9 @@ class _SimpleColorPickerState extends State<SimpleColorPicker> {
 
   // Calculate color distance using RGB values
   double _colorDistance(Color color1, Color color2) {
-    double rDiff = (color1.red - color2.red).toDouble();
-    double gDiff = (color1.green - color2.green).toDouble();
-    double bDiff = (color1.blue - color2.blue).toDouble();
+    double rDiff = (color1.r - color2.r).toDouble();
+    double gDiff = (color1.g - color2.g).toDouble();
+    double bDiff = (color1.b - color2.b).toDouble();
     return rDiff * rDiff + gDiff * gDiff + bDiff * bDiff;
   }
 

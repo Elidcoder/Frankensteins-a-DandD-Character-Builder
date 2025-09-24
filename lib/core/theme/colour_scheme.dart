@@ -37,6 +37,6 @@ class ColourScheme {
         backgroundColour == other.backgroundColour;
   }
 
-  get name =>
+  String get name =>
       "Custom Theme: backing: $backingColour, text: $textColour, background: $backgroundColour";
 }

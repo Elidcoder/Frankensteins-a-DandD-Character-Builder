@@ -1,4 +1,6 @@
 // External Imports
+// ignore_for_file: constant_identifier_names
+
 import "package:pdf/pdf.dart";
 
 // Colours for use in PDF generation

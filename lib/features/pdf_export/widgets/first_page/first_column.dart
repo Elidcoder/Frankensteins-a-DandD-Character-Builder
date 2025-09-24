@@ -1,4 +1,6 @@
 // External Imports
+// ignore_for_file: constant_identifier_names
+
 import "package:frankenstein/core/services/global_list_manager.dart"
     show GlobalListManager;
 import "package:frankenstein/models/core/ability_score/ability_score.dart"

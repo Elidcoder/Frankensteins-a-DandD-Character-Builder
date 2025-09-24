@@ -11,7 +11,7 @@ bool isAllowedContent(dynamic x) {
 
 T sum<T extends num>(T lhs, T rhs) => (lhs + rhs) as T;
 
-dynamic mapEquipment(x) {
+dynamic mapEquipment(Map<String, dynamic> x) {
   if (x["EquipmentType"].contains("Magic")) {
     ///run through magic subtypes
   } else if (x["EquipmentType"].contains("Armour")) {

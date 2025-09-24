@@ -539,14 +539,19 @@ class StyleUtils {
     required T groupValue,
     required ValueChanged<T?> onChanged,
   }) {
-    return RadioListTile<T>(
-      title: Text(title,
-          style: TextStyle(
-              color: ThemeManager.instance.currentScheme.backingColour)),
-      value: value,
+    final scheme = ThemeManager.instance.currentScheme;
+
+    return RadioGroup<T>(
       groupValue: groupValue,
       onChanged: onChanged,
-      activeColor: ThemeManager.instance.currentScheme.backingColour,
+      child: RadioListTile<T>(
+        value: value,
+        title: Text(
+          title,
+          style: TextStyle(color: scheme.backingColour),
+        ),
+        activeColor: scheme.backingColour,
+      ),
     );
   }
 
