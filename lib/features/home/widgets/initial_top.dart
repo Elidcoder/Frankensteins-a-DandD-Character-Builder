@@ -288,10 +288,10 @@ class InitialTopState extends State<InitialTop> {
                                   Center(
                                       child: Row(
                                     children: [
-                                      /* Mini version of the button that makes the download content popup */
+                                      /* Mini version of the button that makes the share content popup */
                                       const SizedBox(width: 50),
                                       buildStyledMockButton(
-                                          "Download\nContent",
+                                          "Share\nContent",
                                           GlobalListManager()
                                               .themeList
                                               .reversed
