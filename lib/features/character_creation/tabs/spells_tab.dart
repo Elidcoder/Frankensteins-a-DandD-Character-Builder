@@ -25,7 +25,7 @@ class SpellsTab extends StatefulWidget {
 class _SpellsTabState extends State<SpellsTab> {
   late Future<void> _initialisedSpells;
 
-  /// Builds a horizontal ListView of spells for a given level
+  /// Builds a horizontal scrollable list of spells for a given level
   Widget _buildSpellLevelList(int level) {
     final spellsAtLevel = widget.character.allSpellsSelected
         .where((element) => element.level == level)
@@ -35,27 +35,68 @@ class _SpellsTabState extends State<SpellsTab> {
       return const SizedBox.shrink();
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(level == 0 ? "Cantrips:" : "Level $level Spells:"),
-        SizedBox(
-            height: 50,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              itemCount: spellsAtLevel.length,
-              itemBuilder: (context, index) {
-                return OutlinedButton(
-                  style:
-                      OutlinedButton.styleFrom(backgroundColor: Colors.white),
-                  onPressed: () {},
-                  child: Text(spellsAtLevel[index].name),
-                );
-              },
-            )),
-      ],
-    );
+    return Padding(
+        padding: const EdgeInsets.only(left: 100),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            /* Level header with fixed width to prevent shifting */
+            SizedBox(
+              width: 150,
+              child: StyleUtils.buildStyledSmallTextBox(
+                text: level == 0 ? "Cantrips:" : "Level $level:",
+              ),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 50,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: spellsAtLevel.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: positiveColor,
+                        side: BorderSide(
+                          color:
+                              ThemeManager.instance.currentScheme.backingColour,
+                          width: 2,
+                        ),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          widget.character.allSpellsSelected
+                              .remove(spellsAtLevel[index]);
+                          // Find and update the spell list in allSpellsSelectedAsListsOfThings
+                          for (final spellListData in widget
+                              .character.allSpellsSelectedAsListsOfThings) {
+                            if (spellListData[1]
+                                .contains(spellsAtLevel[index])) {
+                              spellListData[1].remove(spellsAtLevel[index]);
+                              spellListData[2]++;
+                            }
+                          }
+                          widget.onCharacterChanged();
+                        });
+                      },
+                      child: Text(
+                        spellsAtLevel[index].name,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 16),
+          ],
+        ));
   }
 
   @override
@@ -68,13 +109,14 @@ class _SpellsTabState extends State<SpellsTab> {
   Widget build(BuildContext context) {
     return StyleUtils.styledFutureBuilder(
         future: _initialisedSpells,
-        builder: (context) => Column(children: [
+        builder: (context) =>
+            Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
               /* If the character has nothing to do with spells this displays a message.  */
               if (widget.character.allSpellsSelected.isEmpty &&
                   widget
                       .character.allSpellsSelectedAsListsOfThings.isEmpty) ...[
                 const SizedBox(height: 25),
-                StyleUtils.buildStyledHugeTextBox(
+                StyleUtils.buildStyledLargeTextBox(
                     text: "No spells selected or available"),
               ],
 
@@ -82,35 +124,49 @@ class _SpellsTabState extends State<SpellsTab> {
               if (widget.character.allSpellsSelected.isNotEmpty ||
                   widget.character.allSpellsSelectedAsListsOfThings
                       .isNotEmpty) ...[
-                Text("Choose your spells from regular progression",
-                    style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w700,
-                        color:
-                            ThemeManager.instance.currentScheme.backingColour)),
-                Row(children: [
-                  Expanded(
-                      child: Column(children: [
-                    (widget.character.allSpellsSelected.isNotEmpty)
-                        ? StyleUtils.buildStyledLargeTextBox(
-                            text: "Spells learned:")
-                        : StyleUtils.buildStyledLargeTextBox(
-                            text: "No spells learned"),
-
-                    // Generate spell lists for each level (0-9)
-                    for (int level = 0; level <= 9; level++)
-                      _buildSpellLevelList(level),
-                  ])),
-                  Expanded(
-                    child: SingleChildScrollView(
-                        child: Column(children: [
-                      const SizedBox(height: 20),
-                      ...widget.character.allSpellsSelectedAsListsOfThings.map(
-                          (s) => SpellSelections(
-                              widget.character.allSpellsSelected, s))
-                    ])),
-                  )
-                ]),
+                StyleUtils.buildStyledLargeTextBox(
+                    text: "Choose your spells from regular progression"),
+                const SizedBox(height: 20),
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      /* Left side: Selected spells */
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              (widget.character.allSpellsSelected.isNotEmpty)
+                                  ? StyleUtils.buildStyledMediumTextBox(
+                                      text: "Spells learned:")
+                                  : StyleUtils.buildStyledMediumTextBox(
+                                      text: "No spells learned"),
+                              const SizedBox(height: 15),
+                              // Generate spell lists for each level (0-9)
+                              for (int level = 0; level <= 9; level++)
+                                _buildSpellLevelList(level),
+                            ],
+                          ),
+                        ),
+                      ),
+                      /* Right side: Spell selection widgets */
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 20),
+                              ...widget
+                                  .character.allSpellsSelectedAsListsOfThings
+                                  .map((s) => SpellSelections(
+                                      widget.character.allSpellsSelected, s))
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
               ]
             ]));
   }

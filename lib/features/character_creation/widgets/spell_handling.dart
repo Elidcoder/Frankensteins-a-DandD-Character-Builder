@@ -38,88 +38,195 @@ class SpellSelectionsState extends State<SpellSelections> {
     _initialisedSpells = GlobalListManager().initialiseSpellList();
   }
 
+  /// Organizes spells by level
+  Map<int, List<Spell>> _groupSpellsByLevel() {
+    final grouped = <int, List<Spell>>{};
+    for (final spell in allAvailableSpells) {
+      grouped.putIfAbsent(spell.level, () => []).add(spell);
+    }
+    return Map.fromEntries(
+      grouped.entries.toList()..sort((a, b) => a.key.compareTo(b.key)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return StyleUtils.styledFutureBuilder(
         future: _initialisedSpells,
         builder: (context) => SizedBox(
-            height: 200,
-            width: 375,
+            height: 500,
+            width: 600,
             child: MaterialApp(
                 debugShowCheckedModeBanner: false,
                 home: Scaffold(
+                    backgroundColor:
+                        ThemeManager.instance.currentScheme.backgroundColour,
                     body: Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    /* Number of choices remaining */
-                    Text(
-                        "${thisDescription[2]} remaining ${thisDescription[0]} spell choices",
-                        style: TextStyle(
-                            color: ThemeManager
-                                .instance.currentScheme.backingColour,
-                            fontSize: 22,
-                            fontWeight: FontWeight.w700)),
+                      children: [
+                        const SizedBox(height: 20),
+                        /* Number of choices remaining */
+                        StyleUtils.buildStyledMediumTextBox(
+                            text:
+                                "${thisDescription[2]} remaining ${thisDescription[0]} spell choices"),
+                        const SizedBox(height: 15),
 
-                    /* List of spells */
-                    Container(
-                      height: 140,
-                      width: 300,
-                      decoration: BoxDecoration(
-                        color: unavailableColor,
-                        border: Border.all(color: Colors.black, width: 3),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: allAvailableSpells.length,
-                        itemBuilder: (context, index) {
-                          /* Button to select a spell after ensuring it is of a valid level */
-                          return OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                backgroundColor: (thisDescription[1]
-                                        .contains(allAvailableSpells[index])
-                                    ? positiveColor
-                                    : (allSpellsSelected
-                                            .contains(allAvailableSpells[index])
-                                        ? unavailableColor
-                                        : Colors.white))),
-                            onPressed: () {
-                              setState(
-                                () {
-                                  if (thisDescription[1]
-                                      .contains(allAvailableSpells[index])) {
-                                    thisDescription[1]
-                                        .remove(allAvailableSpells[index]);
-                                    allSpellsSelected
-                                        .remove(allAvailableSpells[index]);
-                                    thisDescription[2]++;
-                                  } else {
-                                    if (thisDescription[2] > 0) {
-                                      if (!allSpellsSelected.contains(
-                                          allAvailableSpells[index])) {
-                                        thisDescription[1]
-                                            .add(allAvailableSpells[index]);
-                                        allSpellsSelected
-                                            .add(allAvailableSpells[index]);
-                                        thisDescription[2] -= 1;
-                                      }
-                                    }
-                                  }
-                                  tabRebuildNotifier.value++;
-                                },
-                              );
-                            },
+                        /* List of spells organized by level */
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 15),
+                            decoration: BoxDecoration(
+                              color: ThemeManager
+                                  .instance.currentScheme.backgroundColour,
+                              border: Border.all(color: Colors.black, width: 3),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                            ),
+                            child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: false,
+                              itemCount: _groupSpellsByLevel().length,
+                              itemBuilder: (context, levelIndex) {
+                                final levels = _groupSpellsByLevel();
+                                final spellLevel =
+                                    levels.keys.toList()[levelIndex];
+                                final spellsAtLevel = levels[spellLevel]!;
 
-                            /* Spell name */
-                            child: Text(allAvailableSpells[index].name),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                )))));
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    /* Level header */
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 10, 10, 5),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: ThemeManager.instance
+                                              .currentScheme.backingColour,
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(5)),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 4),
+                                        child: Text(
+                                          "Level $spellLevel",
+                                          style: TextStyle(
+                                            color: ThemeManager.instance
+                                                .currentScheme.textColour,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    /* Spells at this level with per-level scrolling */
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 5),
+                                      child: SizedBox(
+                                        height: 500,
+                                        child: SingleChildScrollView(
+                                          scrollDirection: Axis.vertical,
+                                          child: Wrap(
+                                            spacing: 8,
+                                            runSpacing: 8,
+                                            children: [
+                                              for (final spell in spellsAtLevel)
+                                                /* Button to select a spell */
+                                                OutlinedButton(
+                                                  style:
+                                                      OutlinedButton.styleFrom(
+                                                    backgroundColor: (thisDescription[
+                                                                1]
+                                                            .contains(spell)
+                                                        ? positiveColor
+                                                        : (allSpellsSelected
+                                                                .contains(spell)
+                                                            ? unavailableColor
+                                                            : ThemeManager
+                                                                .instance
+                                                                .currentScheme
+                                                                .backgroundColour)),
+                                                    side: BorderSide(
+                                                      color: ThemeManager
+                                                          .instance
+                                                          .currentScheme
+                                                          .backingColour,
+                                                      width: 1,
+                                                    ),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 6),
+                                                  ),
+                                                  onPressed: () {
+                                                    setState(
+                                                      () {
+                                                        if (thisDescription[1]
+                                                            .contains(spell)) {
+                                                          thisDescription[1]
+                                                              .remove(spell);
+                                                          allSpellsSelected
+                                                              .remove(spell);
+                                                          thisDescription[2]++;
+                                                        } else {
+                                                          if (thisDescription[
+                                                                  2] >
+                                                              0) {
+                                                            if (!allSpellsSelected
+                                                                .contains(
+                                                                    spell)) {
+                                                              thisDescription[1]
+                                                                  .add(spell);
+                                                              allSpellsSelected
+                                                                  .add(spell);
+                                                              thisDescription[
+                                                                  2] -= 1;
+                                                            }
+                                                          }
+                                                        }
+                                                        tabRebuildNotifier
+                                                            .value++;
+                                                      },
+                                                    );
+                                                  },
+
+                                                  /* Spell name */
+                                                  child: Text(
+                                                    spell.name,
+                                                    style: TextStyle(
+                                                      color: (thisDescription[1]
+                                                              .contains(spell)
+                                                          ? Colors.white
+                                                          : (allSpellsSelected
+                                                                  .contains(
+                                                                      spell)
+                                                              ? ThemeManager
+                                                                  .instance
+                                                                  .currentScheme
+                                                                  .textColour
+                                                              : ThemeManager
+                                                                  .instance
+                                                                  .currentScheme
+                                                                  .textColour)),
+                                                      fontSize: 13,
+                                                    ),
+                                                  ),
+                                                ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                      ],
+                    )))));
   }
 }
 

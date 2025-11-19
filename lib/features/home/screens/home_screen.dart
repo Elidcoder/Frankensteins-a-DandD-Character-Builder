@@ -7,8 +7,6 @@ import 'package:frankenstein/features/content_search/screens/content_search_scre
     show SearchForContent;
 import 'package:frankenstein/features/custom_content/screens/overview_screen.dart'
     show CustomContent;
-import 'package:frankenstein/features/custom_content/screens/sharing_content_screen.dart'
-    show SharingContent;
 
 import '../../../core/theme/theme_manager.dart';
 import '../../../core/utils/style_utils.dart';
@@ -86,9 +84,9 @@ class MainMenuState extends State<MainMenu> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        /* Sharing content button */
-        _buildNavigationButton(
-            "Share \ncontent", () => SharingContent(), context),
+        // /* Sharing content button */
+        // _buildNavigationButton(
+        //     "Share \ncontent", () => SharingContent(), context),
         const SizedBox(width: 100),
         /* Create content button */
         _buildNavigationButton(
