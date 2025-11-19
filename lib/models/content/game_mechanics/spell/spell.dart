@@ -29,20 +29,19 @@ class Spell implements Content {
   // Formatted as [casting time type, casting multiple, duration time type, duration multiple]
   final List<dynamic> timings;
 
-  Spell({
-    required this.name,
-    required this.sourceBook,
-    required this.level,
-    required this.effect,
-    required this.timings,
-    required this.availableTo,
-    required this.spellSchool,
-    required this.range,
-    this.ritual,
-    this.material,
-    this.somatic,
-    this.verbal
-  });
+  Spell(
+      {required this.name,
+      required this.sourceBook,
+      required this.level,
+      required this.effect,
+      required this.timings,
+      required this.availableTo,
+      required this.spellSchool,
+      required this.range,
+      this.ritual,
+      this.material,
+      this.somatic,
+      this.verbal});
 
   // Use generated methods
   factory Spell.fromJson(Map<String, dynamic> json) => _$SpellFromJson(json);

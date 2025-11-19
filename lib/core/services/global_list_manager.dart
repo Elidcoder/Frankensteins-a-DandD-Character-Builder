@@ -56,7 +56,7 @@ class GlobalListManager {
   /// Initialize spell list
   Future<List<Spell>> initialiseSpellList() async {
     if (_spellsInitialized) return _spellList;
-    
+
     try {
       _spellList = await storageService.loadSpells();
       _spellsInitialized = true;
@@ -71,7 +71,7 @@ class GlobalListManager {
   /// Initialize class list
   Future<List<Class>> initialiseClassList() async {
     if (_classesInitialized) return _classList;
-    
+
     try {
       _classList = await storageService.loadClasses();
       _classesInitialized = true;
@@ -86,7 +86,7 @@ class GlobalListManager {
   /// Initialize race list
   Future<List<Race>> initialiseRaceList() async {
     if (_racesInitialized) return _raceList;
-    
+
     try {
       _raceList = await storageService.loadRaces();
       _racesInitialized = true;
@@ -101,7 +101,7 @@ class GlobalListManager {
   /// Initialize feat list
   Future<List<Feat>> initialiseFeatList() async {
     if (_featsInitialized) return _featList;
-    
+
     try {
       _featList = await storageService.loadFeats();
       _featsInitialized = true;
@@ -116,7 +116,7 @@ class GlobalListManager {
   /// Initialize item list
   Future<List<Item>> initialiseItemList() async {
     if (_itemsInitialized) return _itemList;
-    
+
     try {
       _itemList = await storageService.loadItems();
       _itemsInitialized = true;
@@ -131,11 +131,12 @@ class GlobalListManager {
   /// Initialize background list
   Future<List<Background>> initialiseBackgroundList() async {
     if (_backgroundsInitialized) return _backgroundList;
-    
+
     try {
       _backgroundList = await storageService.loadBackgrounds();
       _backgroundsInitialized = true;
-      debugPrint('Initialized background list with ${_backgroundList.length} backgrounds');
+      debugPrint(
+          'Initialized background list with ${_backgroundList.length} backgrounds');
       return _backgroundList;
     } catch (e) {
       debugPrint('Failed to initialize background list: $e');
@@ -146,11 +147,12 @@ class GlobalListManager {
   /// Initialize proficiency list
   Future<List<Proficiency>> initialiseProficiencyList() async {
     if (_proficienciesInitialized) return _proficiencyList;
-    
+
     try {
       _proficiencyList = await storageService.loadProficiencies();
       _proficienciesInitialized = true;
-      debugPrint('Initialized proficiency list with ${_proficiencyList.length} proficiencies');
+      debugPrint(
+          'Initialized proficiency list with ${_proficiencyList.length} proficiencies');
       return _proficiencyList;
     } catch (e) {
       debugPrint('Failed to initialize proficiency list: $e');
@@ -161,11 +163,12 @@ class GlobalListManager {
   /// Initialize language list
   Future<List<String>> initialiseLanguageList() async {
     if (_languagesInitialized) return _languageList;
-    
+
     try {
       _languageList = await storageService.loadLanguages();
       _languagesInitialized = true;
-      debugPrint('Initialized language list with ${_languageList.length} languages');
+      debugPrint(
+          'Initialized language list with ${_languageList.length} languages');
       return _languageList;
     } catch (e) {
       debugPrint('Failed to initialize language list: $e');
@@ -176,7 +179,7 @@ class GlobalListManager {
   /// Initialize theme list
   Future<List<ColourScheme>> initialiseThemeList() async {
     if (_themesInitialized) return _themeList;
-    
+
     try {
       _themeList = await storageService.loadThemes();
       _themesInitialized = true;
@@ -191,15 +194,16 @@ class GlobalListManager {
   /// Initialize character list
   Future<List<Character>> initialiseCharacterList() async {
     if (_charactersInitialized) return _characterList;
-    
+
     try {
       _characterList = await storageService.getAllCharacters();
       _charactersInitialized = true;
-      debugPrint('Initialized character list with ${_characterList.length} characters');
-      
+      debugPrint(
+          'Initialized character list with ${_characterList.length} characters');
+
       // Automatically initialize groups when characters are loaded
       _updateGroupList();
-      
+
       return _characterList;
     } catch (e) {
       debugPrint('Failed to initialize character list: $e');
@@ -216,7 +220,7 @@ class GlobalListManager {
         .toSet()
         .toList()
       ..sort();
-    
+
     _groupList = groups;
     _groupsInitialized = true;
     debugPrint('Updated group list with ${_groupList.length} groups');
@@ -225,7 +229,8 @@ class GlobalListManager {
   /// Spell list getter (crashes if not initialized)
   List<Spell> get spellList {
     if (!_spellsInitialized) {
-      throw StateError('Spell list not initialized. Call initialiseSpellList() first.');
+      throw StateError(
+          'Spell list not initialized. Call initialiseSpellList() first.');
     }
     return _spellList;
   }
@@ -233,7 +238,8 @@ class GlobalListManager {
   /// Class list getter (crashes if not initialized)
   List<Class> get classList {
     if (!_classesInitialized) {
-      throw StateError('Class list not initialized. Call initialiseClassList() first.');
+      throw StateError(
+          'Class list not initialized. Call initialiseClassList() first.');
     }
     return _classList;
   }
@@ -241,7 +247,8 @@ class GlobalListManager {
   /// Race list getter (crashes if not initialized)
   List<Race> get raceList {
     if (!_racesInitialized) {
-      throw StateError('Race list not initialized. Call initialiseRaceList() first.');
+      throw StateError(
+          'Race list not initialized. Call initialiseRaceList() first.');
     }
     return _raceList;
   }
@@ -249,7 +256,8 @@ class GlobalListManager {
   /// Feat list getter (crashes if not initialized)
   List<Feat> get featList {
     if (!_featsInitialized) {
-      throw StateError('Feat list not initialized. Call initialiseFeatList() first.');
+      throw StateError(
+          'Feat list not initialized. Call initialiseFeatList() first.');
     }
     return _featList;
   }
@@ -257,7 +265,8 @@ class GlobalListManager {
   /// Item list getter (crashes if not initialized)
   List<Item> get itemList {
     if (!_itemsInitialized) {
-      throw StateError('Item list not initialized. Call initialiseItemList() first.');
+      throw StateError(
+          'Item list not initialized. Call initialiseItemList() first.');
     }
     return _itemList;
   }
@@ -265,7 +274,8 @@ class GlobalListManager {
   /// Background list getter (crashes if not initialized)
   List<Background> get backgroundList {
     if (!_backgroundsInitialized) {
-      throw StateError('Background list not initialized. Call initialiseBackgroundList() first.');
+      throw StateError(
+          'Background list not initialized. Call initialiseBackgroundList() first.');
     }
     return _backgroundList;
   }
@@ -273,7 +283,8 @@ class GlobalListManager {
   /// Proficiency list getter (crashes if not initialized)
   List<Proficiency> get proficiencyList {
     if (!_proficienciesInitialized) {
-      throw StateError('Proficiency list not initialized. Call initialiseProficiencyList() first.');
+      throw StateError(
+          'Proficiency list not initialized. Call initialiseProficiencyList() first.');
     }
     return _proficiencyList;
   }
@@ -281,7 +292,8 @@ class GlobalListManager {
   /// Language list getter (crashes if not initialized)
   List<String> get languageList {
     if (!_languagesInitialized) {
-      throw StateError('Language list not initialized. Call initialiseLanguageList() first.');
+      throw StateError(
+          'Language list not initialized. Call initialiseLanguageList() first.');
     }
     return _languageList;
   }
@@ -289,7 +301,8 @@ class GlobalListManager {
   /// Theme list getter (crashes if not initialized)
   List<ColourScheme> get themeList {
     if (!_themesInitialized) {
-      throw StateError('Theme list not initialized. Call initialiseThemeList() first.');
+      throw StateError(
+          'Theme list not initialized. Call initialiseThemeList() first.');
     }
     return _themeList;
   }
@@ -297,7 +310,8 @@ class GlobalListManager {
   /// Character list getter (crashes if not initialized)
   List<Character> get characterList {
     if (!_charactersInitialized) {
-      throw StateError('Character list not initialized. Call initialiseCharacterList() first.');
+      throw StateError(
+          'Character list not initialized. Call initialiseCharacterList() first.');
     }
     return _characterList;
   }
@@ -305,7 +319,8 @@ class GlobalListManager {
   /// Group list getter (crashes if not initialized)
   List<String> get groupList {
     if (!_groupsInitialized) {
-      throw StateError('Group list not initialized. Call initialiseCharacterList() first.');
+      throw StateError(
+          'Group list not initialized. Call initialiseCharacterList() first.');
     }
     return _groupList;
   }
@@ -326,14 +341,14 @@ class GlobalListManager {
   }
 
   //TODO()
-    //TODO()
-    //TODO() these below
+  //TODO()
+  //TODO() these below
 
   Future<bool> saveSpell(Spell spell) async {
     try {
       // Add spell to the list
       _spellList.add(spell);
-      
+
       // Save the updated spell list
       final savedSuccess = await storageService.saveSpells(_spellList);
 
@@ -343,7 +358,7 @@ class GlobalListManager {
         return true;
       }
 
-    // Handle any saving errors
+      // Handle any saving errors
     } catch (e) {
       debugPrint('Error occured trying to save spell ${spell.name}: $e');
     }
@@ -353,8 +368,6 @@ class GlobalListManager {
   }
 
   Future<bool> saveTheme(ColourScheme newScheme) async {
-    
-    
     try {
       // Update the theme lists
       _themeList.removeWhere((theme) => newScheme.isSameColourScheme(theme));
@@ -369,7 +382,7 @@ class GlobalListManager {
         return true;
       }
 
-    // Handle any saving errors
+      // Handle any saving errors
     } catch (e) {
       debugPrint('Error occured trying to save theme ${newScheme.name}: $e');
     }
@@ -382,22 +395,24 @@ class GlobalListManager {
     try {
       var savedSuccess = false;
       // Updating character occurs
-      debugPrint('Attempting to save character: ${character.characterDescription.name}');
+      debugPrint(
+          'Attempting to save character: ${character.characterDescription.name}');
       if (_characterList.contains(character)) {
         // Abuse == overload relying only on UID
         // Remove pre modificationcharacter from the list
         _characterList.remove(character);
 
-        debugPrint('Previous entry found, deleting before saving character: ${character.characterDescription.name}');
+        debugPrint(
+            'Previous entry found, deleting before saving character: ${character.characterDescription.name}');
 
         // Save the updated character list
         savedSuccess = await storageService.updateCharacter(character);
-
       }
 
       // New character is created
       else {
-        debugPrint('No previous entry found, continuing to save character: ${character.characterDescription.name}');
+        debugPrint(
+            'No previous entry found, continuing to save character: ${character.characterDescription.name}');
         // Save the updated character list
         savedSuccess = await storageService.saveCharacter(character);
       }
@@ -405,16 +420,18 @@ class GlobalListManager {
       // Add character to the list
       _characterList.add(character);
 
-      
       // Save success
       if (savedSuccess) {
-        debugPrint('Character "${character.characterDescription.name}" saved successfully.');
+        debugPrint(
+            'Character "${character.characterDescription.name}" saved successfully.');
         return true;
       }
     } catch (e) {
-      debugPrint('Error occured trying to save character ${character.characterDescription.name}: $e');
+      debugPrint(
+          'Error occured trying to save character ${character.characterDescription.name}: $e');
     }
-    debugPrint('Failed to save character "${character.characterDescription.name}".');
+    debugPrint(
+        'Failed to save character "${character.characterDescription.name}".');
     _characterList.remove(character);
     return false;
   }
@@ -422,21 +439,25 @@ class GlobalListManager {
   Future<bool> deleteCharacter(Character character) async {
     try {
       var deletedSuccess = false;
-      
+
       // Save the updated character list
       deletedSuccess = await storageService.deleteCharacter(character.uniqueID);
-      
+
       // Save success
       if (deletedSuccess) {
-        debugPrint('Character "${character.characterDescription.name}" deleted successfully.');
+        debugPrint(
+            'Character "${character.characterDescription.name}" deleted successfully.');
         _characterList.remove(character);
-        debugPrint('Character "${character.characterDescription.name}" removed from list successfully.');
+        debugPrint(
+            'Character "${character.characterDescription.name}" removed from list successfully.');
         return true;
       }
     } catch (e) {
-      debugPrint('Error occured trying to delete character ${character.characterDescription.name}: $e');
+      debugPrint(
+          'Error occured trying to delete character ${character.characterDescription.name}: $e');
     }
-    debugPrint('Failed to delete character "${character.characterDescription.name}".');
+    debugPrint(
+        'Failed to delete character "${character.characterDescription.name}".');
     _characterList.remove(character);
     return false;
   }
@@ -458,7 +479,7 @@ class GlobalListManager {
         storageService.saveLanguages(_languageList),
         storageService.saveThemes(_themeList),
       ]);
-      
+
       debugPrint('All content lists saved successfully.');
       return true;
     } catch (e) {
@@ -471,29 +492,71 @@ class GlobalListManager {
   Future<void> loadContentFromFile(File file) async {
     final jsonString = await file.readAsString();
     final jsonMap = jsonDecode(jsonString);
-    
+
     // Parse content from the file
-    final newSpells = List<Spell>.from((jsonMap["Spells"] ?? []).map((x) => Spell.fromJson(x)));
-    final newClasses = List<Class>.from((jsonMap["Classes"] ?? []).map((x) => Class.fromJson(x)));
-    final newRaces = List<Race>.from((jsonMap["Races"] ?? []).map((x) => Race.fromJson(x)));
-    final newFeats = List<Feat>.from((jsonMap["Feats"] ?? []).map((x) => Feat.fromJson(x)));
-    final newItems = List<Item>.from((jsonMap["Equipment"] ?? []).map((x) => mapEquipment(x)));
-    final newBackgrounds = List<Background>.from((jsonMap["Backgrounds"] ?? []).map((x) => Background.fromJson(x)));
-    final newProficiencies = List<Proficiency>.from((jsonMap["Proficiencies"] ?? []).map((x) => Proficiency.fromJson(x)));
+    final newSpells = List<Spell>.from(
+        (jsonMap["Spells"] ?? []).map((x) => Spell.fromJson(x)));
+    final newClasses = List<Class>.from(
+        (jsonMap["Classes"] ?? []).map((x) => Class.fromJson(x)));
+    final newRaces =
+        List<Race>.from((jsonMap["Races"] ?? []).map((x) => Race.fromJson(x)));
+    final newFeats =
+        List<Feat>.from((jsonMap["Feats"] ?? []).map((x) => Feat.fromJson(x)));
+    final newItems = List<Item>.from(
+        (jsonMap["Equipment"] ?? []).map((x) => mapEquipment(x)));
+    final newBackgrounds = List<Background>.from(
+        (jsonMap["Backgrounds"] ?? []).map((x) => Background.fromJson(x)));
+    final newProficiencies = List<Proficiency>.from(
+        (jsonMap["Proficiencies"] ?? []).map((x) => Proficiency.fromJson(x)));
     final newLanguages = List<String>.from(jsonMap["Languages"] ?? []);
-    final newThemes = List<ColourScheme>.from((jsonMap["ColourSchemes"] ?? []).map((x) => ColourScheme.fromJson(x)));
-    
+    final newThemes = List<ColourScheme>.from(
+        (jsonMap["ColourSchemes"] ?? []).map((x) => ColourScheme.fromJson(x)));
+
     // Merge content (avoid duplicates by name/id)
     //TODO(Improve the unpacking of their stuff) - swap to switch cases
-    _spellList       = [..._spellList, ...newSpells.where((spell) => !_spellList.any((existing) => existing.name == spell.name))];
-    _classList       = [..._classList, ...newClasses.where((cls) => !_classList.any((existing) => existing.name == cls.name))];
-    _raceList        = [..._raceList, ...newRaces.where((race) => !_raceList.any((existing) => existing.name == race.name))];
-    _featList        = [..._featList, ...newFeats.where((feat) => !_featList.any((existing) => existing.name == feat.name))];
-    _itemList        = [..._itemList, ...newItems.where((item) => !_itemList.any((existing) => existing.name == item.name))];
-    _backgroundList  = [..._backgroundList, ...newBackgrounds.where((bg) => !_backgroundList.any((existing) => existing.name == bg.name))];
-    _proficiencyList = [..._proficiencyList, ...newProficiencies.where((prof) => !_proficiencyList.any((existing) => existing.proficiencyTree.toString() == prof.proficiencyTree.toString()))];
-    _languageList    = [..._languageList.toSet(), ...newLanguages.toSet()].toList();
-    _themeList       = [..._themeList, ...newThemes.where((theme) => !_themeList.any((existing) => existing.isSameColourScheme(theme)))];
+    _spellList = [
+      ..._spellList,
+      ...newSpells.where(
+          (spell) => !_spellList.any((existing) => existing.name == spell.name))
+    ];
+    _classList = [
+      ..._classList,
+      ...newClasses.where(
+          (cls) => !_classList.any((existing) => existing.name == cls.name))
+    ];
+    _raceList = [
+      ..._raceList,
+      ...newRaces.where(
+          (race) => !_raceList.any((existing) => existing.name == race.name))
+    ];
+    _featList = [
+      ..._featList,
+      ...newFeats.where(
+          (feat) => !_featList.any((existing) => existing.name == feat.name))
+    ];
+    _itemList = [
+      ..._itemList,
+      ...newItems.where(
+          (item) => !_itemList.any((existing) => existing.name == item.name))
+    ];
+    _backgroundList = [
+      ..._backgroundList,
+      ...newBackgrounds.where(
+          (bg) => !_backgroundList.any((existing) => existing.name == bg.name))
+    ];
+    _proficiencyList = [
+      ..._proficiencyList,
+      ...newProficiencies.where((prof) => !_proficiencyList.any((existing) =>
+          existing.proficiencyTree.toString() ==
+          prof.proficiencyTree.toString()))
+    ];
+    _languageList =
+        [..._languageList.toSet(), ...newLanguages.toSet()].toList();
+    _themeList = [
+      ..._themeList,
+      ...newThemes.where((theme) =>
+          !_themeList.any((existing) => existing.isSameColourScheme(theme)))
+    ];
 
     // Save the updated lists to persistent storage
     saveLists();

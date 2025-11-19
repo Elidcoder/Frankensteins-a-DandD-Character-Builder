@@ -34,13 +34,15 @@ class _QuickEditsTabState extends State<QuickEditsTab> {
       children: [
         const SizedBox(height: 50),
         StyleUtils.buildStyledLargeTextBox(
-            text: "${widget.character.characterDescription.name} is level ${int.parse(widget.characterLevel)} with ${widget.character.characterExperience} experience"),
-        if (int.parse(widget.characterLevel) > widget.character.classLevels.fold(0, (val, acc) => val + acc)) ...[
+            text:
+                "${widget.character.characterDescription.name} is level ${int.parse(widget.characterLevel)} with ${widget.character.characterExperience} experience"),
+        if (int.parse(widget.characterLevel) >
+            widget.character.classLevels.fold(0, (val, acc) => val + acc)) ...[
           const SizedBox(height: 16),
           StyleUtils.buildStyledMediumTextBox(
-              text: "${widget.character.characterDescription.name} has at least one unused level!!"),
+              text:
+                  "${widget.character.characterDescription.name} has at least one unused level!!"),
         ],
-
         const SizedBox(height: 16),
         StyleUtils.buildStyledMediumTextBox(text: "Increase level by 1:"),
         const SizedBox(height: 8),
@@ -56,10 +58,12 @@ class _QuickEditsTabState extends State<QuickEditsTab> {
             ),
             onPressed: () {
               if (int.parse(widget.characterLevel) < 20) {
-                widget.onCharacterLevelChanged((int.parse(widget.characterLevel) + 1).toString());
+                widget.onCharacterLevelChanged(
+                    (int.parse(widget.characterLevel) + 1).toString());
               }
             },
-            child: Icon(Icons.add, color: StyleUtils.currentTextColor, size: 37)),
+            child:
+                Icon(Icons.add, color: StyleUtils.currentTextColor, size: 37)),
         const SizedBox(height: 16),
         StyleUtils.buildStyledMediumTextBox(text: "Experience amount to add:"),
         const SizedBox(height: 8),
@@ -85,8 +89,7 @@ class _QuickEditsTabState extends State<QuickEditsTab> {
         OutlinedButton(
             style: OutlinedButton.styleFrom(
               backgroundColor:
-                  (double.tryParse(experienceIncrease ?? "NOT NUMBER") !=
-                          null)
+                  (double.tryParse(experienceIncrease ?? "NOT NUMBER") != null)
                       ? StyleUtils.backingColor
                       : const Color.fromARGB(247, 56, 53, 52),
               shape: const RoundedRectangleBorder(
@@ -96,14 +99,14 @@ class _QuickEditsTabState extends State<QuickEditsTab> {
             ),
             onPressed: () {
               if (double.tryParse(experienceIncrease ?? "NOT NUMBER") != null) {
-                widget.character.characterExperience += double.tryParse(
-                        experienceIncrease ?? "NOT NUMBER") ??
-                    0;
+                widget.character.characterExperience +=
+                    double.tryParse(experienceIncrease ?? "NOT NUMBER") ?? 0;
                 widget.onCharacterChanged();
                 //validate level
               }
             },
-            child: Icon(Icons.add, color: StyleUtils.currentTextColor, size: 37))
+            child:
+                Icon(Icons.add, color: StyleUtils.currentTextColor, size: 37))
       ],
     );
   }

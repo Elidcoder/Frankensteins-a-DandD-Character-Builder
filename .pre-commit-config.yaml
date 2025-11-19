@@ -1,0 +1,76 @@
+repos:
+  # General code quality hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        name: Trim trailing whitespace
+      - id: end-of-file-fixer
+        name: Fix end of files
+      - id: check-yaml
+        name: Check YAML syntax
+      - id: check-json
+        name: Check JSON syntax
+      - id: pretty-format-json
+        name: Pretty + fix JSON
+        args: ['--autofix']
+      - id: check-merge-conflict
+        name: Check for merge conflicts
+      - id: check-added-large-files
+        name: Check file sizes
+        args: ['--maxkb=5000']
+      - id: mixed-line-ending
+        name: Fix line endings
+        args: ['--fix=lf']
+      - id: no-commit-to-branch
+        name: Block commits to protected branches
+        args: ['--branch', 'master', '--branch', 'main']
+        stages: [pre-commit, pre-push]
+
+  # Validate the pre-commit config
+  - repo: meta
+    hooks:
+      - id: check-hooks-apply
+      - id: check-useless-excludes
+
+  # Dart checks
+  - repo: local
+    hooks:
+      - id: dart-format
+        name: Format Dart Code
+        entry: dart format --set-exit-if-changed
+        language: system
+        files: '\.dart$'
+        stages: [pre-commit]
+
+      - id: dart-analyze
+        name: Analyze Dart Code
+        entry: bash -lc "dart pub get && dart analyze --fatal-infos --fatal-warnings"
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+  # Custom local checks
+  - repo: local
+    hooks:
+      - id: prevent-main-commit
+        name: Prevent commits to protected branches
+        language: system
+        entry: bash .githooks/prevent-main-commit.sh
+        stages: [pre-commit]
+        pass_filenames: false
+
+      - id: commit-message-format
+        name: Validate Commit Message Format
+        language: system
+        entry: bash .githooks/validate-commit-msg.sh
+        stages: [commit-msg]
+
+# Configs
+default_stages: [pre-commit, pre-push]
+default_install_hook_types: [pre-commit, pre-push, commit-msg]
+minimum_pre_commit_version: 3.0.0
+
+# CI configuration
+ci:
+  autofix_commit_msg: "chore: [pre-commit.ci] auto fixes from pre-commit hooks"

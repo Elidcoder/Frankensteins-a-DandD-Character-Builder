@@ -26,5 +26,5 @@ abstract interface class StorageService {
   Future<List<Character>> getAllCharacters();
   Future<bool> updateCharacter(Character character);
   Future<bool> saveCharacter(Character character);
-  Future<bool> deleteCharacter(int characterId); 
+  Future<bool> deleteCharacter(int characterId);
 }

@@ -20,7 +20,8 @@ class PdfDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: StyleUtils.buildStyledAppBar(
-        title: "${character.characterDescription.name} - PDF${isPreview ? " Preview" : ""}",
+        title:
+            "${character.characterDescription.name} - PDF${isPreview ? " Preview" : ""}",
       ),
       body: PdfPreview(
         build: (context) => makePdf(character),

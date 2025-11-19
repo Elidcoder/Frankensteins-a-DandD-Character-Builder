@@ -1,4 +1,5 @@
-import "package:frankenstein/core/services/global_list_manager.dart" show GlobalListManager;
+import "package:frankenstein/core/services/global_list_manager.dart"
+    show GlobalListManager;
 import 'package:json_annotation/json_annotation.dart';
 
 import "../../base/content.dart";
@@ -36,9 +37,8 @@ class Race implements Content {
   Map<String, dynamic> toJson() {
     final json = _$RaceToJson(this);
     // Add custom proficiency serialization
-    json["gainedProficiencies"] = proficienciesGained
-        ?.map((prof) => prof.proficiencyTree.last)
-        .toList();
+    json["gainedProficiencies"] =
+        proficienciesGained?.map((prof) => prof.proficiencyTree.last).toList();
     return json;
   }
 
@@ -51,10 +51,10 @@ class Race implements Content {
             (GlobalListManager().proficiencyList.singleWhere(
                 (listprof) => listprof.proficiencyTree.last == thisprof))))
         ?.toList();
-    
+
     // Use generated fromJson for all other fields
     final race = _$RaceFromJson(data);
-    
+
     // Return new instance with custom proficienciesGained
     return Race(
       name: race.name,

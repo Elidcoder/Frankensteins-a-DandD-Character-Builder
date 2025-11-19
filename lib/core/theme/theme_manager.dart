@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frankenstein/core/services/global_list_manager.dart' show GlobalListManager;
+import 'package:frankenstein/core/services/global_list_manager.dart'
+    show GlobalListManager;
 
 import 'colour_scheme.dart';
 
@@ -8,20 +9,20 @@ import 'colour_scheme.dart';
 class ThemeManager {
   static ThemeManager? _instance;
   static ThemeManager get instance => _instance ??= ThemeManager._internal();
-  
+
   ThemeManager._internal();
-  
+
   ColourScheme _currentScheme = ColourScheme(
     textColour: Colors.white,
     backingColour: Colors.blue,
     backgroundColour: Colors.white,
   );
-  
+
   final List<VoidCallback> _listeners = [];
-  
+
   /// Get the current color scheme
   ColourScheme get currentScheme => _currentScheme;
-  
+
   /// Initialize the theme manager with saved themes
   Future<void> initialize() async {
     await GlobalListManager().initialiseThemeList();
@@ -29,36 +30,36 @@ class ThemeManager {
       _currentScheme = GlobalListManager().themeList.last;
     }
   }
-  
+
   /// Update the current theme and notify listeners
-  void updateScheme(ColourScheme newScheme) {    
+  void updateScheme(ColourScheme newScheme) {
     // Save only the themes (more efficient than saving all content)
     // TODO(Add error handling for save operation)
     GlobalListManager().saveTheme(newScheme);
 
     _currentScheme = newScheme;
-    
+
     // Notify all listeners
     for (final listener in _listeners) {
       listener();
     }
   }
-  
+
   /// Add a listener for theme changes
   void addListener(VoidCallback listener) {
     _listeners.add(listener);
   }
-  
+
   /// Remove a listener for theme changes
   void removeListener(VoidCallback listener) {
     _listeners.remove(listener);
   }
-  
+
   /// Dispose of all listeners
   void dispose() {
     _listeners.clear();
   }
-  
+
   /// Convert current scheme to ThemeData
   ThemeData get themeData {
     return ThemeData(
@@ -79,7 +80,7 @@ class ThemeManager {
       tabBarTheme: TabBarThemeData(
         indicatorColor: _currentScheme.textColour,
         labelColor: _currentScheme.textColour,
-        unselectedLabelColor: _currentScheme.textColour.withOpacity(0.7),
+        unselectedLabelColor: _currentScheme.textColour.withValues(alpha: 0.7),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -124,15 +125,19 @@ class ThemeManager {
       ),
     );
   }
-  
+
   /// Determines brightness based on the background color
   Brightness _getBrightness() {
     final luminance = _currentScheme.backgroundColour.computeLuminance();
     return luminance > 0.5 ? Brightness.light : Brightness.dark;
   }
+
   /// Get the brightness of the current theme
   /// Get saved themes excluding the current theme
   List<ColourScheme> get savedThemes {
-    return GlobalListManager().themeList.where((theme) => !_currentScheme.isSameColourScheme(theme)).toList();
+    return GlobalListManager()
+        .themeList
+        .where((theme) => !_currentScheme.isSameColourScheme(theme))
+        .toList();
   }
 }

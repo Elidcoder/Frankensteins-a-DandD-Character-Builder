@@ -19,7 +19,6 @@ Page generatePage1(Character userCharacter) {
           children: [
             buildHeader(userCharacter),
             SizedBox(height: 10),
-
             Container(
               alignment: Alignment.center,
               height: 628.0,

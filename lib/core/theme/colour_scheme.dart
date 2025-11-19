@@ -21,15 +21,22 @@ class ColourScheme {
   @_colorJsonKey
   Color backgroundColour;
 
-  ColourScheme({required this.textColour, required this.backingColour, required this.backgroundColour});
+  ColourScheme(
+      {required this.textColour,
+      required this.backingColour,
+      required this.backgroundColour});
 
   // Use generated methods
-  factory ColourScheme.fromJson(Map<String, dynamic> json) => _$ColourSchemeFromJson(json);
+  factory ColourScheme.fromJson(Map<String, dynamic> json) =>
+      _$ColourSchemeFromJson(json);
   Map<String, dynamic> toJson() => _$ColourSchemeToJson(this);
 
   bool isSameColourScheme(ColourScheme other) {
-    return textColour == other.textColour && backingColour == other.backingColour && backgroundColour == other.backgroundColour;
+    return textColour == other.textColour &&
+        backingColour == other.backingColour &&
+        backgroundColour == other.backgroundColour;
   }
 
-  get name => "Custom Theme: backing: $backingColour, text: $textColour, background: $backgroundColour";
+  String get name =>
+      "Custom Theme: backing: $backingColour, text: $textColour, background: $backgroundColour";
 }

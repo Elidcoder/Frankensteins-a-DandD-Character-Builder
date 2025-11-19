@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:frankenstein/core/services/storage_service.dart' show StorageService;
+import 'package:frankenstein/core/services/storage_service.dart'
+    show StorageService;
 import 'package:frankenstein/core/services/storage_service.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
@@ -17,7 +18,7 @@ class JsonStorageService implements StorageService {
 
   late Directory _baseDirectory;
   late Directory _characterDirectory;
-  
+
   bool _initialized = false;
   bool get isInitialized => _initialized;
 
@@ -25,7 +26,7 @@ class JsonStorageService implements StorageService {
   static const String _charactersSubfolder = 'frankenstein_characters';
 
   static const String characterNotReadyMessage = 'Character service not ready';
-  static const String contentNotReadyMessage   = 'Content service not ready';
+  static const String contentNotReadyMessage = 'Content service not ready';
 
   @override
   Future<bool> initialize() async {
@@ -39,16 +40,20 @@ class JsonStorageService implements StorageService {
         await _baseDirectory.create(recursive: true);
         debugPrint('Created main storage directory: ${_baseDirectory.path}');
       } else {
-        debugPrint('Using existing main storage directory: ${_baseDirectory.path}');
+        debugPrint(
+            'Using existing main storage directory: ${_baseDirectory.path}');
       }
 
       // initialise character storage
-      _characterDirectory = Directory(path.join(appDocsDir.path, _contentPath, _charactersSubfolder));
+      _characterDirectory = Directory(
+          path.join(appDocsDir.path, _contentPath, _charactersSubfolder));
       if (!await _characterDirectory.exists()) {
         await _characterDirectory.create(recursive: true);
-        debugPrint('Created character storage directory: ${_characterDirectory.path}');
+        debugPrint(
+            'Created character storage directory: ${_characterDirectory.path}');
       } else {
-        debugPrint('Using existing character storage directory: ${_characterDirectory.path}');
+        debugPrint(
+            'Using existing character storage directory: ${_characterDirectory.path}');
       }
 
       _initialized = true;
@@ -402,15 +407,14 @@ class JsonStorageService implements StorageService {
     }
   }
 
-
-
   // Character operations
   // Updates the index file to ensure it is up to date with the current characters
   Future<void> _updateIndex() async {
     try {
       final files = _characterDirectory.listSync().whereType<File>();
       final characterIds = files
-          .where((file) => file.path.endsWith('.json') && !file.path.endsWith('index.json'))
+          .where((file) =>
+              file.path.endsWith('.json') && !file.path.endsWith('index.json'))
           .map((file) => path.basenameWithoutExtension(file.path))
           .toList();
       final indexData = {
@@ -472,11 +476,13 @@ class JsonStorageService implements StorageService {
       final indexData = jsonDecode(indexContent) as Map<String, dynamic>;
       final characterIds = List<String>.from(indexData['characters'] ?? []);
       for (final characterId in characterIds) {
-        final characterFile = File(path.join(_characterDirectory.path, '$characterId.json'));
+        final characterFile =
+            File(path.join(_characterDirectory.path, '$characterId.json'));
         if (await characterFile.exists()) {
           try {
             final characterContent = await characterFile.readAsString();
-            final characterData = jsonDecode(characterContent) as Map<String, dynamic>;
+            final characterData =
+                jsonDecode(characterContent) as Map<String, dynamic>;
             final character = Character.fromJson(characterData);
             characters.add(character);
           } catch (e) {
@@ -490,7 +496,8 @@ class JsonStorageService implements StorageService {
         if (file.path.endsWith('.json') && !file.path.endsWith('index.json')) {
           try {
             final characterContent = await file.readAsString();
-            final characterData = jsonDecode(characterContent) as Map<String, dynamic>;
+            final characterData =
+                jsonDecode(characterContent) as Map<String, dynamic>;
             final character = Character.fromJson(characterData);
             characters.add(character);
           } catch (e) {
@@ -501,7 +508,7 @@ class JsonStorageService implements StorageService {
     }
     debugPrint('Loaded ${characters.length} characters from storage');
     return characters;
-}
+  }
 
   @override
   Future<bool> saveCharacter(Character character) async {
@@ -510,14 +517,17 @@ class JsonStorageService implements StorageService {
       return false;
     }
     try {
-      final characterFile = File(path.join(_characterDirectory.path, '${character.uniqueID}.json'));
+      final characterFile = File(
+          path.join(_characterDirectory.path, '${character.uniqueID}.json'));
       final characterData = character.toJson();
       await characterFile.writeAsString(jsonEncode(characterData));
       await _updateIndex();
-      debugPrint('Character  ${character.name}, UID: ${character.uniqueID}, saved successfully');
+      debugPrint(
+          'Character  ${character.name}, UID: ${character.uniqueID}, saved successfully');
       return true;
     } catch (e) {
-      debugPrint('Error saving character ${character.name}, UID: ${character.uniqueID}: $e');
+      debugPrint(
+          'Error saving character ${character.name}, UID: ${character.uniqueID}: $e');
       return false;
     }
   }
@@ -529,14 +539,17 @@ class JsonStorageService implements StorageService {
       return false;
     }
     try {
-      final characterFile = File(path.join(_characterDirectory.path, '${character.uniqueID}.json'));
+      final characterFile = File(
+          path.join(_characterDirectory.path, '${character.uniqueID}.json'));
       final characterData = character.toJson();
       await characterFile.writeAsString(jsonEncode(characterData));
       await _updateIndex();
-      debugPrint('Character  ${character.name}, UID: ${character.uniqueID}, updated successfully');
+      debugPrint(
+          'Character  ${character.name}, UID: ${character.uniqueID}, updated successfully');
       return true;
     } catch (e) {
-      debugPrint('Error updating character ${character.name}, UID: ${character.uniqueID}: $e');
+      debugPrint(
+          'Error updating character ${character.name}, UID: ${character.uniqueID}: $e');
       return false;
     }
   }

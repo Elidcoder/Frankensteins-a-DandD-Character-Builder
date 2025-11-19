@@ -43,7 +43,7 @@ bool get canCreateCharacter {
     numberOfRemainingFeatOrASIs == 0 &&
     !remainingAsi &&
     charLevel <= character.classList.length &&
-    character.chosenAllEqipment && 
+    character.chosenAllEqipment &&
     character.chosenAllSpells
   );
 }

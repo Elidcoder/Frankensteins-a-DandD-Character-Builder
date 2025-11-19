@@ -27,10 +27,9 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  
   flutter:
     sdk: flutter
-  file_picker: ^8.1.2
+  file_picker: ^10.3.3
   pdf: ^3.11.3
   printing: ^5.10.3
   path_provider: ^2.0.11
@@ -48,7 +47,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

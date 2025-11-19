@@ -26,7 +26,7 @@ features/content_search/
 // Makes use of the underlying interface to display information
 Center buildContentCard(Content content, List<Content> list, void Function(Content) onDelete) {
   return Center(child: FractionallySizedBox(
-    widthFactor: 0.5, 
+    widthFactor: 0.5,
     child: StyleUtils.buildStyledContainer(
       ...styling...,
       child: Row(

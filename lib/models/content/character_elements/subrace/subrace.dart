@@ -1,4 +1,5 @@
-import 'package:frankenstein/core/services/global_list_manager.dart' show GlobalListManager;
+import 'package:frankenstein/core/services/global_list_manager.dart'
+    show GlobalListManager;
 import 'package:json_annotation/json_annotation.dart';
 
 import "../../base/content.dart";
@@ -49,10 +50,10 @@ class Subrace implements Content {
             (GlobalListManager().proficiencyList.singleWhere(
                 (listprof) => listprof.proficiencyTree.last == thisprof))))
         ?.toList();
-    
+
     // Use generated fromJson for all other fields with proper defaults
     final subrace = _$SubraceFromJson(data);
-    
+
     // Return new instance with custom proficienciesGained
     return Subrace(
       mystery2S: subrace.mystery2S,

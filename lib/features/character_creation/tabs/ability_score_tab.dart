@@ -32,23 +32,26 @@ class _AbilityScoreTabState extends State<AbilityScoreTab> {
         Text(
           textAlign: TextAlign.center,
           "Points remaining: ${widget.pointsRemaining}",
-          style: TextStyle(fontSize: 50, fontWeight: FontWeight.w700, color: ThemeManager.instance.currentScheme.backingColour),
+          style: TextStyle(
+              fontSize: 50,
+              fontWeight: FontWeight.w700,
+              color: ThemeManager.instance.currentScheme.backingColour),
         ),
         const SizedBox(height: 35),
         SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            spacing: 10,
-            children: [
-              const SizedBox(width: 0),
-              buildAbilityScoreBlock(score: widget.character.strength),
-              buildAbilityScoreBlock(score: widget.character.dexterity),
-              buildAbilityScoreBlock(score: widget.character.constitution),
-              buildAbilityScoreBlock(score: widget.character.intelligence),
-              buildAbilityScoreBlock(score: widget.character.wisdom),
-              buildAbilityScoreBlock(score: widget.character.charisma)
-            ],
-        ))
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              spacing: 10,
+              children: [
+                const SizedBox(width: 0),
+                buildAbilityScoreBlock(score: widget.character.strength),
+                buildAbilityScoreBlock(score: widget.character.dexterity),
+                buildAbilityScoreBlock(score: widget.character.constitution),
+                buildAbilityScoreBlock(score: widget.character.intelligence),
+                buildAbilityScoreBlock(score: widget.character.wisdom),
+                buildAbilityScoreBlock(score: widget.character.charisma)
+              ],
+            ))
       ]),
     );
   }
@@ -56,12 +59,12 @@ class _AbilityScoreTabState extends State<AbilityScoreTab> {
   Column buildAbilityScoreBlock({
     required AbilityScore score,
   }) {
-    
     // Increment/decrement logic helper methods
     void decrementScore() {
       if (score.value > 8) {
         score.value--;
-        widget.onPointsRemainingChanged(widget.pointsRemaining + score.abilityScoreCost);
+        widget.onPointsRemainingChanged(
+            widget.pointsRemaining + score.abilityScoreCost);
       }
     }
 
@@ -70,7 +73,7 @@ class _AbilityScoreTabState extends State<AbilityScoreTab> {
         final cost = score.abilityScoreCost;
         if (cost <= widget.pointsRemaining) {
           widget.onPointsRemainingChanged(widget.pointsRemaining - cost);
-          score.value ++;
+          score.value++;
         }
       }
     }
@@ -117,7 +120,8 @@ class _AbilityScoreTabState extends State<AbilityScoreTab> {
                   if (canRemove)
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                        backgroundColor: ThemeManager.instance.currentScheme.backingColour,
+                        backgroundColor:
+                            ThemeManager.instance.currentScheme.backingColour,
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(4)),
                         ),
@@ -138,10 +142,10 @@ class _AbilityScoreTabState extends State<AbilityScoreTab> {
                   if (canAdd)
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                        backgroundColor:
-                            (score.abilityScoreCost > widget.pointsRemaining)
-                                ? unavailableColor 
-                                : ThemeManager.instance.currentScheme.backingColour,
+                        backgroundColor: (score.abilityScoreCost >
+                                widget.pointsRemaining)
+                            ? unavailableColor
+                            : ThemeManager.instance.currentScheme.backingColour,
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(4)),
                         ),
@@ -166,9 +170,7 @@ class _AbilityScoreTabState extends State<AbilityScoreTab> {
         const SizedBox(height: 10),
 
         // Race and Feat Increases
-        Row(
-        crossAxisAlignment: CrossAxisAlignment.center, 
-        children: [
+        Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
           const SizedBox(width: 19),
           Text(
             textAlign: TextAlign.center,
@@ -202,7 +204,10 @@ class _AbilityScoreTabState extends State<AbilityScoreTab> {
             borderRadius: const BorderRadius.all(Radius.circular(5)),
           ),
           child: Text(
-            (score.value + widget.character.raceAbilityScoreIncreases[index] + widget.character.featsASIScoreIncreases[index]).toString(),
+            (score.value +
+                    widget.character.raceAbilityScoreIncreases[index] +
+                    widget.character.featsASIScoreIncreases[index])
+                .toString(),
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 50,

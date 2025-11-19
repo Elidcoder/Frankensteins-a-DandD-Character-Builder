@@ -24,18 +24,16 @@ class Item implements Content {
   @JsonKey(name: 'EquipmentType')
   List<String> equipmentType;
 
-  Item({
-    required this.name,
-    required this.sourceBook,
-    required this.equipmentType,
-    required this.cost,
-    required this.weight,
-    required this.stackable,
-    this.description
-  });
+  Item(
+      {required this.name,
+      required this.sourceBook,
+      required this.equipmentType,
+      required this.cost,
+      required this.weight,
+      required this.stackable,
+      this.description});
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$ItemToJson(this);
-
 }

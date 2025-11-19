@@ -13,17 +13,16 @@ class Weapon extends Item {
   @JsonKey(name: 'DamageDiceAndType')
   List<List<String>> damageDiceAndType;
 
-  Weapon({
-    required super.name,
-    required super.sourceBook,
-    required super.cost,
-    required super.stackable,
-    required super.weight,
-    required super.equipmentType,
-    super.description,
-    required this.damageDiceAndType,
-    required this.properties
-  });
+  Weapon(
+      {required super.name,
+      required super.sourceBook,
+      required super.cost,
+      required super.stackable,
+      required super.weight,
+      required super.equipmentType,
+      super.description,
+      required this.damageDiceAndType,
+      required this.properties});
 
   factory Weapon.fromJson(Map<String, dynamic> json) {
     return Weapon(
@@ -35,7 +34,9 @@ class Weapon extends Item {
       equipmentType: json["EquipmentType"].cast<String>() as List<String>,
       description: json["Description"],
       properties: json["Properties"].cast<String>() as List<String>,
-      damageDiceAndType: (json["DamageDiceAndType"] as List).map((i) => List<String>.from(i)).toList(),
+      damageDiceAndType: (json["DamageDiceAndType"] as List)
+          .map((i) => List<String>.from(i))
+          .toList(),
     );
   }
 

@@ -4,16 +4,16 @@ Frankenstein's is a free, open-source desktop application designed to help you c
 
 ## Features
 
-- **Character Management:**  
+- **Character Management:**
   Create and edit D&D 5e characters. Generate professional-quality PDF character sheets with a single click.
-  
-- **Custom Spell Creation:**  
+
+- **Custom Spell Creation:**
   Design and integrate your own spells into your characters.
 
-- **Content Import & Sharing:**  
+- **Content Import & Sharing:**
   Easily import content created by others, search through your content library, and delete items you no longer need.
 
-- **User-Friendly Interface:**  
+- **User-Friendly Interface:**
   Enjoy a modern, responsive desktop interface that makes character creation straightforward.
 
 ## Installation
@@ -25,7 +25,7 @@ Frankenstein's is a free, open-source desktop application designed to help you c
    cd your-repository
    ```
 
-2. **Install Dependencies:**  
+2. **Install Dependencies:**
    Ensure you have both [Dart](https://dart.dev/get-dart) and [Flutter](https://flutter.dev/docs/get-started/install) installed on your system.
 
 3. **Run the Application:**
@@ -36,19 +36,19 @@ Frankenstein's is a free, open-source desktop application designed to help you c
 
 ## Future Enhancements
 
-- **Code Refactoring:**  
+- **Code Refactoring:**
   Streamline and reduce duplicate code for easier maintenance.
 
-- **Enhanced Spell Selection:**  
+- **Enhanced Spell Selection:**
   Expand the spell selection method to support a broader variety of class options.
 
-- **Expanded Custom Content:**  
+- **Expanded Custom Content:**
   Allow users to create custom classes, armours, and more beyond spells.
 
-- **Interactive Gameplay Features:**  
+- **Interactive Gameplay Features:**
   Improve the echo feature to support live D&D gameplay sessions alongside character creation.
 
-- **Mobile Adaptation:**  
+- **Mobile Adaptation:**
   Reformat the UI to develop dedicated iOS and Android versions of the app.
 
 ## License

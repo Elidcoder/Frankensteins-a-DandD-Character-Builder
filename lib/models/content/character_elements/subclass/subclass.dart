@@ -19,9 +19,10 @@ class Subclass implements Content {
   @JsonKey(name: 'MainOrSpellcastingAbility')
   final String mainOrSpellcastingAbility;
   @JsonKey(name: 'GainAtEachLevel')
-  final List<List<List<String>>> gainAtEachLevel; 
-  
-  factory Subclass.fromJson(Map<String, dynamic> json) => _$SubclassFromJson(json);
+  final List<List<List<String>>> gainAtEachLevel;
+
+  factory Subclass.fromJson(Map<String, dynamic> json) =>
+      _$SubclassFromJson(json);
 
   Map<String, dynamic> toJson() => _$SubclassToJson(this);
 
