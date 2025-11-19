@@ -42,7 +42,7 @@ class EditTop extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            const RegularTop(pagechoice: "Main Menu")));
+                            const RegularTop(isMainMenu: true)));
               }),
           actions: <Widget>[
             IconButton(

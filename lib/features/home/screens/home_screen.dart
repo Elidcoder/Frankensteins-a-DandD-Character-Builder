@@ -1,9 +1,14 @@
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:frankenstein/core/services/global_list_manager.dart'
-    show GlobalListManager;
+import 'package:frankenstein/features/character_creation/screens/character_creation_screen.dart'
+    show CreateACharacter;
+import 'package:frankenstein/features/character_management/screens/view_characters_screen.dart'
+    show MyCharacters;
+import 'package:frankenstein/features/content_search/screens/content_search_screen.dart'
+    show SearchForContent;
+import 'package:frankenstein/features/custom_content/screens/overview_screen.dart'
+    show CustomContent;
+import 'package:frankenstein/features/custom_content/screens/sharing_content_screen.dart'
+    show SharingContent;
 
 import '../../../core/theme/theme_manager.dart';
 import '../../../core/utils/style_utils.dart';
@@ -66,12 +71,12 @@ class MainMenuState extends State<MainMenu> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _buildNavigationButton(
-            "Create a \ncharacter", "Create a Character", context),
+            "Create a \ncharacter", () => CreateACharacter(), context),
         const SizedBox(width: 120),
         _buildNavigationButton(
-            "Search for\ncontent", "Search for Content", context),
+            "Search for\ncontent", () => SearchForContent(), context),
         const SizedBox(width: 120),
-        _buildNavigationButton("My \ncharacters", "My Characters", context)
+        _buildNavigationButton("My \ncharacters", () => MyCharacters(), context)
       ],
     );
   }
@@ -81,22 +86,20 @@ class MainMenuState extends State<MainMenu> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        /* Download content button */
-        StyleUtils.buildStyledOutlinedButton(
-          text: "Download\nContent",
-          padding: const EdgeInsets.fromLTRB(45, 25, 45, 25),
-          onPressed: () => _handleDownloadContent(context),
-        ),
+        /* Sharing content button */
+        _buildNavigationButton(
+            "Share \ncontent", () => SharingContent(), context),
         const SizedBox(width: 100),
         /* Create content button */
-        _buildNavigationButton("Create \ncontent", "Custom Content", context)
+        _buildNavigationButton(
+            "Create \ncontent", () => CustomContent(), context)
       ],
     );
   }
 
   /// Builds a navigation button that takes the user to another page
   Widget _buildNavigationButton(
-      String text, String pagechoice, BuildContext context) {
+      String text, Widget Function() pagechoice, BuildContext context) {
     return StyleUtils.buildStyledOutlinedButton(
       text: text,
       onPressed: () {
@@ -107,28 +110,6 @@ class MainMenuState extends State<MainMenu> {
         );
       },
     );
-  }
-
-  /// Handles the download content file picker functionality
-  Future<void> _handleDownloadContent(BuildContext context) async {
-    final result = await FilePicker.platform.pickFiles(
-      dialogTitle:
-          "Navigate to and select a Json file to download the contents from, this content can then be used in your characters",
-      type: FileType.custom,
-      allowedExtensions: ["json"],
-    );
-
-    try {
-      if (result == null) throw Exception("File cannot be found");
-      if (result.files.single.path == null) {
-        throw Exception("File path is null");
-      }
-      await GlobalListManager()
-          .loadContentFromFile(File(result.files.single.path!));
-    } catch (err) {
-      // ignore: use_build_context_synchronously (mounted check ensures correctness)
-      if (mounted) _showErrorDialog(context, err);
-    }
   }
 
   /// Displays a popup with helpful information for new users
@@ -184,7 +165,7 @@ class MainMenuState extends State<MainMenu> {
       "• Create a Character - This is the section to build your character,\nit contains tabs which will guide you through the creation process.",
       "• Search for Content - This is the section to look through your content,\nit allows you to search through and delete much of that content.",
       "• My Characters - This is the section to look through your characters,\nit allows you to search through, delete, edit and get their PDF.",
-      "• Download Content - This is a button to install content,\nit allows you to select content to install from your computer.",
+      "• Share Content - This is a section to manage shared content,\nit allows you to download content from JSON files to use in your characters.",
       "• Create Content - This is the section to create new content,\nit takes you to another page to select the type of content. Once there,\nyou can create that type of content, saving it to your app.",
     ];
 
@@ -195,28 +176,5 @@ class MainMenuState extends State<MainMenu> {
               ],
             ))
         .toList();
-  }
-
-  /// Display an error dialog letting the user know that the download was bad
-  void _showErrorDialog(BuildContext context, Object error) {
-    showDialog(
-      context: context,
-      builder: (context) => StyleUtils.buildStyledAlertDialog(
-        title: "Error",
-        content: error.toString(),
-        titleWidget: StyleUtils.buildStyledLargeTextBox(
-          text: "Json format incorrect, reformat and try again!",
-          color: Colors.red,
-        ),
-        actions: [
-          StyleUtils.buildStyledTextButton(
-            text: "Continue",
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      ),
-    );
   }
 }
