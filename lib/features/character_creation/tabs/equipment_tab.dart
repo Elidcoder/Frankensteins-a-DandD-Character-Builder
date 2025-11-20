@@ -138,13 +138,10 @@ class _EquipmentTabState extends State<EquipmentTab> {
 
                                   /* Display the characters available money */
                                   const SizedBox(height: 6),
-                                  Text(
-                                      "You have ${widget.character.currency["Platinum Pieces"]} platinum, ${widget.character.currency["Gold Pieces"]} gold, ${widget.character.currency["Electrum Pieces"]} electrum, ${widget.character.currency["Silver Pieces"]} silver and ${widget.character.currency["Copper Pieces"]} copper pieces to spend",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w700,
-                                          color: ThemeManager.instance
-                                              .currentScheme.backingColour)),
+                                  StyleUtils.buildStyledSmallTextBox(
+                                    text:
+                                        "You have ${widget.character.currency["Platinum Pieces"]} platinum, ${widget.character.currency["Gold Pieces"]} gold, ${widget.character.currency["Electrum Pieces"]} electrum, ${widget.character.currency["Silver Pieces"]} silver and ${widget.character.currency["Copper Pieces"]} copper pieces to spend",
+                                  ),
 
                                   /* Row of buttons for Armour, Weapons & Items */
                                   const SizedBox(height: 6),
@@ -195,6 +192,9 @@ class _EquipmentTabState extends State<EquipmentTab> {
                                                             .textColour,
                                                         fontSize: 22)),
                                                 Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
                                                   children: [
                                                     /* Button to toggle the light armour filter */
                                                     makeStyledFilterToggle(
@@ -265,6 +265,9 @@ class _EquipmentTabState extends State<EquipmentTab> {
                                                             .textColour,
                                                         fontSize: 22)),
                                                 Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
                                                   children: [
                                                     /* Button to toggle the ranged filter */
                                                     makeStyledFilterToggle(
@@ -321,6 +324,9 @@ class _EquipmentTabState extends State<EquipmentTab> {
                                                             .textColour,
                                                         fontSize: 22)),
                                                 Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
                                                   children: [
                                                     /* Button to toggle the stackable filter */
                                                     makeStyledFilterToggle(
@@ -383,6 +389,8 @@ class _EquipmentTabState extends State<EquipmentTab> {
                                                         .textColour,
                                                     fontSize: 22)),
                                             Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 /* Button to select items that cost platinum. */
                                                 makeCoinFilterToggle(
