@@ -1,0 +1,55 @@
+{
+  "contentType": "feats",
+  "feats": [
+    {
+      "Abilities": [
+        [
+          "Gained",
+          "Initiative",
+          "5"
+        ],
+        [
+          "Bonus",
+          "Alert",
+          "You can't be surprised while you are conscious."
+        ],
+        [
+          "Bonus",
+          "Alert",
+          "Other creatures don't gain advantage on attack rolls against you as a result of being hidden from you."
+        ]
+      ],
+      "Description": "Always on the lookout for danger, you gain the following benefits:",
+      "IsHalfFeat": true,
+      "Name": "Alert",
+      "NumberOfTimesTakeable": 4,
+      "SourceBook": "Player's Handbook"
+    },
+    {
+      "Abilities": [
+        [
+          "Gained",
+          "Initiative",
+          "5"
+        ],
+        [
+          "Bonus",
+          "Alert",
+          "You can't be surprised while you are conscious."
+        ],
+        [
+          "Bonus",
+          "Alert",
+          "Other creatures don't gain advantage on attack rolls against you as a result of being hidden from you."
+        ]
+      ],
+      "Description": "Always on the lookout for danger, you gain the following benefits:",
+      "IsHalfFeat": false,
+      "Name": "Alrt2",
+      "NumberOfTimesTakeable": 4,
+      "SourceBook": "Player's Handbook"
+    }
+  ],
+  "lastUpdated": "2025-07-17T20:09:22.907002",
+  "version": "1.0"
+}

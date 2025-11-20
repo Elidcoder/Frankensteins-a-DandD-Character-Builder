@@ -1,0 +1,93 @@
+{
+  "contentType": "races",
+  "lastUpdated": "2025-07-17T20:09:22.873993",
+  "races": [
+    {
+      "abilities": null,
+      "abilityScoreMap": [
+        1,
+        1,
+        5,
+        1,
+        1,
+        1
+      ],
+      "darkVision": 0,
+      "gainedProficiencies": null,
+      "languages": [
+        "Common",
+        "Extra"
+      ],
+      "mystery1S": 0,
+      "mystery2S": 2,
+      "name": "Human",
+      "resistances": null,
+      "sourceBook": "Player's Handbook",
+      "subRaces": null,
+      "toolProficiencies": [
+        "Dragon chess"
+      ],
+      "walkingSpeed": 30
+    },
+    {
+      "abilities": [
+        "You know the thaumaturgy cantrip. When you reach 3rd level, you can cast the hellish rebuke spell as a 2nd-level spell once with this trait and regain the ability to do so when you finish a long rest. When you reach 5th level, you can cast the darkness spell once with this trait and regain the ability to do so when you finish a long rest. Charisma is your spellcasting ability for these spells"
+      ],
+      "abilityScoreMap": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        2
+      ],
+      "darkVision": 0,
+      "gainedProficiencies": null,
+      "languages": [
+        "Common",
+        "Infernal"
+      ],
+      "mystery1S": 2,
+      "mystery2S": 0,
+      "name": "Tiefling",
+      "resistances": [
+        "Fire"
+      ],
+      "sourceBook": "Player's Handbook",
+      "subRaces": null,
+      "toolProficiencies": null,
+      "walkingSpeed": 30
+    },
+    {
+      "abilities": [
+        "You have advantage on saving throws against being charmed, and magic cant put you to sleep.",
+        "Elves dont need to sleep. Instead, they meditate deeply, remaining semiconscious, for 4 hours a day. (The Common word for such meditation is \u201ctrance.\u201d) While meditating, you can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. After resting in this way, you gain the same benefit that a human does from 8 hours of sleep."
+      ],
+      "abilityScoreMap": [
+        0,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "darkVision": 0,
+      "gainedProficiencies": null,
+      "languages": [
+        "Common",
+        "Elvish"
+      ],
+      "mystery1S": 0,
+      "mystery2S": 0,
+      "name": "Elf",
+      "resistances": [
+        "Fire"
+      ],
+      "sourceBook": "Player's Handbook",
+      "subRaces": null,
+      "toolProficiencies": null,
+      "walkingSpeed": 30
+    }
+  ],
+  "version": "1.0"
+}
