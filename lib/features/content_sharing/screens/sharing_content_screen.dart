@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:frankenstein/shared/widgets/top_bar.dart' show RegularTop;
 
 import '../../../core/services/global_list_manager.dart' show GlobalListManager;
 import '../../../core/theme/theme_manager.dart';
@@ -70,7 +71,8 @@ class SharingContent extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ExportContent()),
+                          builder: (context) =>
+                              RegularTop(pagechoice: () => ExportContent())),
                     );
                   },
                   child: Text(
