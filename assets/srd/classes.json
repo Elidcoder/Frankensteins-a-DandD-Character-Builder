@@ -1,0 +1,296 @@
+{
+  "classes": [
+    {
+      "classType": "Martial",
+      "equipmentOptions": [
+        [
+          [
+            "Chain mail"
+          ],
+          [
+            "Leather Armour",
+            "Longbow",
+            20,
+            "Arrow"
+          ]
+        ],
+        [
+          [
+            "Martial Weapon",
+            "Shield"
+          ],
+          [
+            2,
+            "Martial Weapon"
+          ]
+        ],
+        [
+          [
+            "Light Crossbow",
+            20,
+            "Bolt"
+          ],
+          [
+            2,
+            "Handaxe"
+          ]
+        ],
+        [
+          [
+            "Dungeoneer pack"
+          ],
+          [
+            "Explorer pack"
+          ]
+        ]
+      ],
+      "gainAtEachLevel": [
+        [
+          [
+            "Level",
+            "1"
+          ],
+          [
+            "Bonus",
+            "Second Wind",
+            "You have a limited well of stamina that you can draw on to protect yourself from harm. On your turn, you can use a bonus action to regain hit points equal to 1d10 + your fighter level. Once you use this feature, you must finish a short or long rest before you can use it again."
+          ],
+          [
+            "Choice",
+            "Choose your fighting style",
+            [
+              "ACBonus",
+              "Defense",
+              "1",
+              "Armour"
+            ],
+            [
+              "Bonus",
+              "Interception",
+              "When a creature you can see hits a target, other than you, within 5 feet of you with an attack, you can use your reaction to reduce the damage the target takes by 1d10 + your proficiency bonus (to a minimum of 0 damage). You must be wielding a shield or a simple or martial weapon to use this reaction."
+            ],
+            [
+              "Choice",
+              "Superior Technique",
+              [
+                "Bonus",
+                "Ambush",
+                "When you make a Dexterity (Stealth) check or an initiative roll, you can expend one superiority die and add the die to the roll, provided you aren't incapacitated."
+              ],
+              [
+                "Bonus",
+                "Brace",
+                "L"
+              ]
+            ]
+          ]
+        ],
+        [
+          [
+            "Level",
+            "2"
+          ],
+          [
+            "Bonus",
+            "Action Surge",
+            "You can push yourself beyond your normal limits for a moment. On your turn, you can take one additional action. Once you use this feature, you must finish a short or long rest before you can use it again."
+          ]
+        ],
+        [
+          [
+            "Nothing",
+            "3"
+          ]
+        ],
+        [
+          [
+            "Level",
+            "4"
+          ],
+          [
+            "ASI"
+          ]
+        ],
+        [
+          [
+            "Nothing",
+            "5"
+          ]
+        ],
+        [
+          [
+            "Nothing",
+            "6"
+          ]
+        ],
+        [
+          [
+            "Nothing",
+            "7"
+          ]
+        ],
+        [
+          [
+            "Nothing",
+            "8"
+          ]
+        ],
+        [
+          [
+            "Nothing",
+            "9"
+          ]
+        ],
+        [
+          [
+            "Nothing",
+            "10"
+          ]
+        ],
+        [
+          [
+            "Nothing",
+            "11"
+          ]
+        ],
+        [
+          [
+            "Nothing",
+            "12"
+          ]
+        ],
+        [
+          [
+            "Nothing",
+            "13"
+          ]
+        ],
+        [
+          [
+            "Nothing",
+            "14"
+          ]
+        ],
+        [
+          [
+            "Nothing",
+            "15"
+          ]
+        ],
+        [
+          [
+            "Nothing",
+            "16"
+          ]
+        ],
+        [
+          [
+            "Nothing",
+            "17"
+          ]
+        ],
+        [
+          [
+            "Nothing",
+            "18"
+          ]
+        ]
+      ],
+      "mainOrSpellcastingAbility": "Strength",
+      "maxHitDiceRoll": 10,
+      "multiclassingRequirements": [
+        13,
+        13,
+        0,
+        0,
+        0,
+        0,
+        5
+      ],
+      "name": "Fighter",
+      "numberOfSkillChoices": 2,
+      "optionsForSkillProficiencies": [
+        "Acrobatics",
+        "Animal Handling",
+        "Athletics",
+        "History",
+        "Insight",
+        "Intimidation",
+        "Perception",
+        "Survival"
+      ],
+      "proficienciesGained": null,
+      "roundDown": null,
+      "savingThrowProficiencies": [
+        "Strength",
+        "Constitution"
+      ],
+      "sourceBook": "Player's Handbook",
+      "spellsAndSpellSlots": null,
+      "spellsKnownFormula": null,
+      "spellsKnownPerLevel": null
+    },
+    {
+      "classType": "Full Caster",
+      "equipmentOptions": [],
+      "gainAtEachLevel": [
+        [
+          [
+            "Level",
+            "1"
+          ],
+          [
+            "Bonus",
+            "Ritual Casting",
+            "You can cast a wizard spell as a ritual if that spell has the ritual tag and you have the spell in your spellbook. You dont need to have the spell prepared."
+          ],
+          [
+            "Bonus",
+            "Arcane Recovery",
+            "You have learned to regain some of your magical energy by studying your spellbook. Once per day when you finish a short rest, you can choose expended spell slots to recover. The spell slots can have a combined level that is equal to or less than half your wizard level (rounded up), and none of the slots can be 6th level or higher. For example, if you're a 4th-level wizard, you can recover up to two levels worth of spell slots. You can recover either a 2nd-level spell slot or two 1st-level spell slots."
+          ]
+        ],
+        [
+          [
+            "Nothing",
+            "2"
+          ]
+        ]
+      ],
+      "mainOrSpellcastingAbility": "Intelligence",
+      "maxHitDiceRoll": 6,
+      "multiclassingRequirements": [
+        0,
+        0,
+        0,
+        13,
+        0,
+        0,
+        6
+      ],
+      "name": "Wizard",
+      "numberOfSkillChoices": 2,
+      "optionsForSkillProficiencies": [
+        "Arcana",
+        "History",
+        "Insight",
+        "Investigation",
+        "Medicine",
+        "Religion"
+      ],
+      "proficienciesGained": null,
+      "roundDown": null,
+      "savingThrowProficiencies": [
+        "Intelligence",
+        "Wisdom"
+      ],
+      "sourceBook": "Player's Handbook",
+      "spellsAndSpellSlots": null,
+      "spellsKnownFormula": "level + intelligence",
+      "spellsKnownPerLevel": null
+    }
+  ],
+  "contentType": "classes",
+  "lastUpdated": "2025-07-17T20:09:22.848460",
+  "version": "1.0"
+}

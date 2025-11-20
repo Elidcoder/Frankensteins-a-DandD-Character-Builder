@@ -203,19 +203,26 @@ class _ClassTabState extends State<ClassTab> {
                   child: const Icon(Icons.exposure_plus_1),
                 ),
                 appBar: StyleUtils.buildStyledAppBar(
-                  title:
-                      "${widget.charLevel - widget.character.classLevels.reduce(sum)} class level(s) unselected",
+                  title: (widget.charLevel -
+                              widget.character.classLevels.reduce(sum) >
+                          0)
+                      ? "${widget.charLevel - widget.character.classLevels.reduce(sum)} class level(s) unselected"
+                      : "Class Levels: ${GlobalListManager().classList.asMap().entries.where((entry) => widget.character.classLevels[entry.key] != 0).map((entry) => "${entry.value.name} - ${widget.character.classLevels[entry.key]}").join(", ")}",
                   automaticallyImplyLeading: false,
                   bottom: PreferredSize(
                     preferredSize: const Size.fromHeight(60),
                     child: Column(
                       children: [
                         /* Class choices available and taken to/by the user. */
-                        Center(
-                            child: StyleUtils.buildStyledSmallTextBox(
-                                text: widget.character.classList.isNotEmpty
-                                    ? "Levels in Classes: ${GlobalListManager().classList.asMap().entries.where((entry) => widget.character.classLevels[entry.key] != 0).map((entry) => "${entry.value.name} - ${widget.character.classLevels[entry.key]}").join(", ")}"
-                                    : "No levels selected in any class")),
+                        (widget.charLevel -
+                                    widget.character.classLevels.reduce(sum) >
+                                0)
+                            ? Center(
+                                child: StyleUtils.buildStyledSmallTextBox(
+                                    text: widget.character.classList.isNotEmpty
+                                        ? "Class Levels: ${GlobalListManager().classList.asMap().entries.where((entry) => widget.character.classLevels[entry.key] != 0).map((entry) => "${entry.value.name} - ${widget.character.classLevels[entry.key]}").join(", ")}"
+                                        : "No levels selected in any class"))
+                            : Text(""),
                         const SizedBox(height: 3),
                         TabBar(
                           tabs: [
@@ -329,13 +336,17 @@ class _ClassTabState extends State<ClassTab> {
                                                       .name);
 
                                               if (GlobalListManager()
-                                                  .classList[index]
-                                                  .gainAtEachLevel[widget
-                                                      .character
-                                                      .classLevels[index]]
-                                                  .where((element) =>
-                                                      element[0] == "Choice")
-                                                  .isEmpty) {
+                                                      .classList[index]
+                                                      .gainAtEachLevel[widget
+                                                          .character
+                                                          .classLevels[index]]
+                                                      .where((element) =>
+                                                          element[0] ==
+                                                          "Choice")
+                                                      .isEmpty &&
+                                                  widget.character.classList
+                                                          .length !=
+                                                      1) {
                                                 newWidgetsInPlay.add(StyleUtils
                                                     .buildStyledSmallTextBox(
                                                         text:

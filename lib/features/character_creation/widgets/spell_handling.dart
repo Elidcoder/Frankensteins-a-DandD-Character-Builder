@@ -26,24 +26,34 @@ class SpellSelectionsState extends State<SpellSelections> {
   List<dynamic> thisDescription;
   SpellSelectionsState(this.allSpellsSelected, this.thisDescription);
 
-  // Filters out unavailable spells
-  static List<Spell> allAvailableSpells = GlobalListManager()
-      .spellList
-      .where((spell) => isAllowedContent(spell))
-      .toList();
-
   @override
   void initState() {
     super.initState();
     _initialisedSpells = GlobalListManager().initialiseSpellList();
   }
 
-  /// Organizes spells by level
+  /// Returns the highest spell level available for selection
+  int getHighestLevel() {
+    return 1; // For now, returns 1 (shows cantrips and level 1)
+  }
+
+  /// Filters out unavailable spells
+  List<Spell> get allAvailableSpells => GlobalListManager()
+      .spellList
+      .where((spell) => isAllowedContent(spell))
+      .toList();
+
+  /// Organizes spells by level, filtered up to the highest available level
   Map<int, List<Spell>> _groupSpellsByLevel() {
+    final maxLevel = getHighestLevel();
     final grouped = <int, List<Spell>>{};
+
     for (final spell in allAvailableSpells) {
-      grouped.putIfAbsent(spell.level, () => []).add(spell);
+      if (spell.level <= maxLevel) {
+        grouped.putIfAbsent(spell.level, () => []).add(spell);
+      }
     }
+
     return Map.fromEntries(
       grouped.entries.toList()..sort((a, b) => a.key.compareTo(b.key)),
     );
@@ -108,7 +118,9 @@ class SpellSelectionsState extends State<SpellSelections> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 8, vertical: 4),
                                         child: Text(
-                                          "Level $spellLevel",
+                                          spellLevel == 0
+                                              ? "Cantrips"
+                                              : "Level $spellLevel",
                                           style: TextStyle(
                                             color: ThemeManager.instance
                                                 .currentScheme.textColour,
@@ -123,99 +135,88 @@ class SpellSelectionsState extends State<SpellSelections> {
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 5),
-                                      child: SizedBox(
-                                        height: 500,
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.vertical,
-                                          child: Wrap(
-                                            spacing: 8,
-                                            runSpacing: 8,
-                                            children: [
-                                              for (final spell in spellsAtLevel)
-                                                /* Button to select a spell */
-                                                OutlinedButton(
-                                                  style:
-                                                      OutlinedButton.styleFrom(
-                                                    backgroundColor: (thisDescription[
-                                                                1]
+                                      child: Wrap(
+                                        spacing: 8,
+                                        runSpacing: 8,
+                                        children: [
+                                          for (final spell in spellsAtLevel)
+                                            /* Button to select a spell */
+                                            OutlinedButton(
+                                              style: OutlinedButton.styleFrom(
+                                                backgroundColor: (thisDescription[
+                                                            1]
+                                                        .contains(spell)
+                                                    ? positiveColor
+                                                    : (allSpellsSelected
                                                             .contains(spell)
-                                                        ? positiveColor
-                                                        : (allSpellsSelected
-                                                                .contains(spell)
-                                                            ? unavailableColor
-                                                            : ThemeManager
-                                                                .instance
-                                                                .currentScheme
-                                                                .backgroundColour)),
-                                                    side: BorderSide(
-                                                      color: ThemeManager
-                                                          .instance
-                                                          .currentScheme
-                                                          .backingColour,
-                                                      width: 1,
-                                                    ),
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
+                                                        ? unavailableColor
+                                                        : ThemeManager
+                                                            .instance
+                                                            .currentScheme
+                                                            .backgroundColour)),
+                                                side: BorderSide(
+                                                  color: ThemeManager
+                                                      .instance
+                                                      .currentScheme
+                                                      .backingColour,
+                                                  width: 1,
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
                                                         horizontal: 10,
                                                         vertical: 6),
-                                                  ),
-                                                  onPressed: () {
-                                                    setState(
-                                                      () {
-                                                        if (thisDescription[1]
+                                              ),
+                                              onPressed: () {
+                                                setState(
+                                                  () {
+                                                    if (thisDescription[1]
+                                                        .contains(spell)) {
+                                                      thisDescription[1]
+                                                          .remove(spell);
+                                                      allSpellsSelected
+                                                          .remove(spell);
+                                                      thisDescription[2]++;
+                                                    } else {
+                                                      if (thisDescription[2] >
+                                                          0) {
+                                                        if (!allSpellsSelected
                                                             .contains(spell)) {
                                                           thisDescription[1]
-                                                              .remove(spell);
+                                                              .add(spell);
                                                           allSpellsSelected
-                                                              .remove(spell);
-                                                          thisDescription[2]++;
-                                                        } else {
-                                                          if (thisDescription[
-                                                                  2] >
-                                                              0) {
-                                                            if (!allSpellsSelected
-                                                                .contains(
-                                                                    spell)) {
-                                                              thisDescription[1]
-                                                                  .add(spell);
-                                                              allSpellsSelected
-                                                                  .add(spell);
-                                                              thisDescription[
-                                                                  2] -= 1;
-                                                            }
-                                                          }
+                                                              .add(spell);
+                                                          thisDescription[2] -=
+                                                              1;
                                                         }
-                                                        tabRebuildNotifier
-                                                            .value++;
-                                                      },
-                                                    );
+                                                      }
+                                                    }
+                                                    tabRebuildNotifier.value++;
                                                   },
+                                                );
+                                              },
 
-                                                  /* Spell name */
-                                                  child: Text(
-                                                    spell.name,
-                                                    style: TextStyle(
-                                                      color: (thisDescription[1]
+                                              /* Spell name */
+                                              child: Text(
+                                                spell.name,
+                                                style: TextStyle(
+                                                  color: (thisDescription[1]
+                                                          .contains(spell)
+                                                      ? Colors.white
+                                                      : (allSpellsSelected
                                                               .contains(spell)
-                                                          ? Colors.white
-                                                          : (allSpellsSelected
-                                                                  .contains(
-                                                                      spell)
-                                                              ? ThemeManager
-                                                                  .instance
-                                                                  .currentScheme
-                                                                  .textColour
-                                                              : ThemeManager
-                                                                  .instance
-                                                                  .currentScheme
-                                                                  .textColour)),
-                                                      fontSize: 13,
-                                                    ),
-                                                  ),
+                                                          ? ThemeManager
+                                                              .instance
+                                                              .currentScheme
+                                                              .textColour
+                                                          : ThemeManager
+                                                              .instance
+                                                              .currentScheme
+                                                              .textColour)),
+                                                  fontSize: 13,
                                                 ),
-                                            ],
-                                          ),
-                                        ),
+                                              ),
+                                            ),
+                                        ],
                                       ),
                                     ),
                                   ],

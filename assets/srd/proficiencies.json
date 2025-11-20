@@ -1,0 +1,45 @@
+{
+  "contentType": "proficiencies",
+  "lastUpdated": "2025-07-17T20:09:22.986541",
+  "proficiencies": [
+    {
+      "ProficiencyTree": [
+        "Skill",
+        "Perception"
+      ]
+    },
+    {
+      "ProficiencyTree": [
+        "Weapon",
+        "Martial",
+        "Melee",
+        "Shortsword"
+      ]
+    },
+    {
+      "ProficiencyTree": [
+        "Weapon",
+        "Martial",
+        "Melee",
+        "LongSword"
+      ]
+    },
+    {
+      "ProficiencyTree": [
+        "Weapon",
+        "Martial",
+        "Ranged",
+        "Shortbow"
+      ]
+    },
+    {
+      "ProficiencyTree": [
+        "Weapon",
+        "Martial",
+        "Ranged",
+        "Longbow"
+      ]
+    }
+  ],
+  "version": "1.0"
+}

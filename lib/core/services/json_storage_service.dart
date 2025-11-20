@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:frankenstein/core/services/storage_service.dart'
     show StorageService;
 import 'package:frankenstein/core/services/storage_service.dart';
@@ -36,9 +37,14 @@ class JsonStorageService implements StorageService {
 
       // Initialise content storage
       _baseDirectory = Directory(path.join(appDocsDir.path, _contentPath));
-      if (!await _baseDirectory.exists()) {
+      final isFirstRun = !await _baseDirectory.exists();
+
+      if (isFirstRun) {
         await _baseDirectory.create(recursive: true);
         debugPrint('Created main storage directory: ${_baseDirectory.path}');
+
+        // Copy default SRD content from assets on first run
+        await _initializeDefaultContent();
       } else {
         debugPrint(
             'Using existing main storage directory: ${_baseDirectory.path}');
@@ -64,6 +70,47 @@ class JsonStorageService implements StorageService {
       debugPrint('JsonStorageService initialization failed: $e');
       return false;
     }
+  }
+
+  /// Copies default SRD content from assets to storage directory on first run
+  Future<void> _initializeDefaultContent() async {
+    debugPrint('Initializing default SRD content from assets...');
+
+    final contentFiles = [
+      'backgrounds.json',
+      'classes.json',
+      'feats.json',
+      'items.json',
+      'languages.json',
+      'proficiencies.json',
+      'races.json',
+      'spells.json',
+      'themes.json',
+    ];
+
+    int successCount = 0;
+    int failCount = 0;
+
+    for (final fileName in contentFiles) {
+      try {
+        // Load from assets using rootBundle (doesn't require BuildContext)
+        final assetPath = 'assets/srd/$fileName';
+        final assetContent = await rootBundle.loadString(assetPath);
+
+        // Write to storage directory
+        final targetFile = File(path.join(_baseDirectory.path, fileName));
+        await targetFile.writeAsString(assetContent);
+        successCount++;
+        debugPrint('Copied $fileName from assets to storage');
+      } catch (e) {
+        failCount++;
+        debugPrint('Failed to copy $fileName from assets: $e');
+        // Continue with other files even if one fails
+      }
+    }
+
+    debugPrint(
+        'Content initialization complete: $successCount succeeded, $failCount failed');
   }
 
   String _getFullPath(String fileName) {
