@@ -273,16 +273,16 @@ Container buildBanner(Text value, Text label, [bool isBig = false]) {
 
 Container buildProficiencyBonusBanner(Character userCharacter) {
   return buildBanner(
-      Text((userCharacter.inspired) ? "X" : "",
+      Text(
+          formatNumber(proficiencyBonus[userCharacter.classLevels
+              .reduce((value, element) => value + element)] as int),
           style: const TextStyle(fontSize: 13)),
       Text(" Proficiency Bonus", style: const TextStyle(fontSize: 7.6)));
 }
 
 Container buildInspirationBanner(Character userCharacter) {
   return buildBanner(
-      Text(
-          formatNumber(proficiencyBonus[userCharacter.classLevels
-              .reduce((value, element) => value + element)] as int),
+      Text((userCharacter.inspired) ? "X" : "",
           style: const TextStyle(fontSize: 13)),
       Text(" Inspiration", style: const TextStyle(fontSize: 9.4)));
 }

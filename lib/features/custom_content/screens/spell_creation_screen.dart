@@ -18,26 +18,38 @@ class MakeASpell extends StatefulWidget {
 class MainMakeASpell extends State<MakeASpell> {
   late Future<void> _initialisedSpells;
 
-  String name = "";
-  String effect = "";
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController effectController = TextEditingController();
+  final TextEditingController materialController = TextEditingController();
+  final TextEditingController availableToController = TextEditingController();
+  final TextEditingController castingController = TextEditingController();
+  final TextEditingController durationController = TextEditingController();
+  final TextEditingController rangeController = TextEditingController();
+  final TextEditingController rangeUnitController = TextEditingController();
 
   String? spellSchool;
   int? level;
-  bool? verbal = false;
-  bool? somatic = false;
-  String? material;
-  String? range;
-  String rangeUnit = "";
-  bool? ritual = false;
-  String casting = "";
-  String duration = "";
-  List<dynamic> timings = [];
-  String availableTo = "";
+  bool verbal = false;
+  bool somatic = false;
+  bool ritual = false;
 
   @override
   void initState() {
     super.initState();
     _initialisedSpells = GlobalListManager().initialiseSpellList();
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    effectController.dispose();
+    materialController.dispose();
+    availableToController.dispose();
+    castingController.dispose();
+    durationController.dispose();
+    rangeController.dispose();
+    rangeUnitController.dispose();
+    super.dispose();
   }
 
   @override
@@ -60,27 +72,24 @@ class MainMakeASpell extends State<MakeASpell> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            //TextField(),
-
                             SizedBox(
                               width: 450,
                               height: 50,
                               child: StyleUtils.buildStyledTextField(
                                 hintText: "Spell name here e.g. My Spell",
-                                textController: TextEditingController(),
+                                textController: nameController,
                                 textColor: StyleUtils.currentTextColor,
-                                backingColor: (name.replaceAll(" ", "") != "")
-                                    ? StyleUtils.backingColor
-                                    : Colors.red,
+                                backingColor:
+                                    (nameController.text.replaceAll(" ", "") !=
+                                            "")
+                                        ? StyleUtils.backingColor
+                                        : Colors.red,
                                 filled: true,
                                 onChanged: (groupNameEnteredValue) {
-                                  setState(() {
-                                    name = groupNameEnteredValue;
-                                  });
+                                  setState(() {});
                                 },
                               ),
                             ),
-
                             SizedBox(
                                 width: 170,
                                 height: 70,
@@ -108,7 +117,6 @@ class MainMakeASpell extends State<MakeASpell> {
                                             .currentScheme.backingColour,
                                       ),
                                       onChanged: (String? value) {
-                                        // This is called when the user selects an item.
                                         setState(() {
                                           spellSchool = value!;
                                         });
@@ -155,6 +163,7 @@ class MainMakeASpell extends State<MakeASpell> {
                           width: 620,
                           height: 70,
                           child: TextField(
+                              controller: effectController,
                               maxLines: 4,
                               minLines: 4,
                               cursorColor: Colors.blue,
@@ -174,12 +183,7 @@ class MainMakeASpell extends State<MakeASpell> {
                                   border: const OutlineInputBorder(
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.all(
-                                          Radius.circular(12)))),
-                              onChanged: (effectEnteredValue) {
-                                setState(() {
-                                  effect = effectEnteredValue;
-                                });
-                              }),
+                                          Radius.circular(12))))),
                         ),
 
                         SizedBox(
@@ -270,7 +274,7 @@ class MainMakeASpell extends State<MakeASpell> {
                                         value: somatic,
                                         onChanged: (bool? value) {
                                           setState(() {
-                                            somatic = value;
+                                            somatic = value ?? false;
                                           });
                                         },
                                         activeColor: ThemeManager.instance
@@ -288,7 +292,7 @@ class MainMakeASpell extends State<MakeASpell> {
                                     value: verbal,
                                     onChanged: (bool? value) {
                                       setState(() {
-                                        verbal = value;
+                                        verbal = value ?? false;
                                       });
                                     },
                                     activeColor: ThemeManager
@@ -306,13 +310,14 @@ class MainMakeASpell extends State<MakeASpell> {
                               width: 305,
                               height: 70,
                               child: TextField(
+                                  controller: materialController,
                                   cursorColor: Colors.blue,
                                   style: TextStyle(
                                       color: ThemeManager
                                           .instance.currentScheme.textColour),
                                   decoration: InputDecoration(
                                       hintText:
-                                          "Materials required e.g. 3 diamonds worth 100gp",
+                                          "Material: e.g. 3 100gp diamonds",
                                       hintStyle: TextStyle(
                                           fontWeight: FontWeight.w700,
                                           color: ThemeManager.instance
@@ -323,25 +328,21 @@ class MainMakeASpell extends State<MakeASpell> {
                                       border: const OutlineInputBorder(
                                           borderSide: BorderSide.none,
                                           borderRadius: BorderRadius.all(
-                                              Radius.circular(12)))),
-                                  onChanged: (materialsEnteredValue) {
-                                    setState(() {
-                                      material = materialsEnteredValue;
-                                    });
-                                  }),
+                                              Radius.circular(12))))),
                             ),
                             const SizedBox(width: 10),
                             SizedBox(
                               width: 305,
                               height: 70,
                               child: TextField(
+                                  controller: availableToController,
                                   cursorColor: Colors.blue,
                                   style: TextStyle(
                                       color: ThemeManager
                                           .instance.currentScheme.textColour),
                                   decoration: InputDecoration(
                                       hintText:
-                                          "Can be cast by: e.g. Wizard, Sorcerer, ...",
+                                          "Available to: Wizard, Sorcerer, ...",
                                       hintStyle: TextStyle(
                                           fontWeight: FontWeight.w700,
                                           color: ThemeManager.instance
@@ -352,12 +353,7 @@ class MainMakeASpell extends State<MakeASpell> {
                                       border: const OutlineInputBorder(
                                           borderSide: BorderSide.none,
                                           borderRadius: BorderRadius.all(
-                                              Radius.circular(12)))),
-                                  onChanged: (castableByEnteredValue) {
-                                    setState(() {
-                                      availableTo = castableByEnteredValue;
-                                    });
-                                  }),
+                                              Radius.circular(12))))),
                             ),
                           ],
                         ),
@@ -367,13 +363,14 @@ class MainMakeASpell extends State<MakeASpell> {
                               width: 305,
                               height: 70,
                               child: TextField(
+                                  controller: castingController,
                                   cursorColor: Colors.blue,
                                   style: TextStyle(
                                       color: ThemeManager
                                           .instance.currentScheme.textColour),
                                   decoration: InputDecoration(
                                       hintText:
-                                          "Casting requirement e.g. 1, Action",
+                                          "Casting time: Number, Unit of time",
                                       hintStyle: TextStyle(
                                           fontWeight: FontWeight.w700,
                                           color: ThemeManager.instance
@@ -384,24 +381,20 @@ class MainMakeASpell extends State<MakeASpell> {
                                       border: const OutlineInputBorder(
                                           borderSide: BorderSide.none,
                                           borderRadius: BorderRadius.all(
-                                              Radius.circular(12)))),
-                                  onChanged: (castingEnteredValue) {
-                                    setState(() {
-                                      casting = castingEnteredValue;
-                                    });
-                                  }),
+                                              Radius.circular(12))))),
                             ),
                             const SizedBox(width: 10),
                             SizedBox(
                               width: 305,
                               height: 70,
                               child: TextField(
+                                  controller: durationController,
                                   cursorColor: Colors.blue,
                                   style: TextStyle(
                                       color: ThemeManager
                                           .instance.currentScheme.textColour),
                                   decoration: InputDecoration(
-                                      hintText: "Duration e.g. 2, Bonus Action",
+                                      hintText: "Duration: Number, Time period",
                                       hintStyle: TextStyle(
                                           fontWeight: FontWeight.w700,
                                           color: ThemeManager.instance
@@ -412,12 +405,7 @@ class MainMakeASpell extends State<MakeASpell> {
                                       border: const OutlineInputBorder(
                                           borderSide: BorderSide.none,
                                           borderRadius: BorderRadius.all(
-                                              Radius.circular(12)))),
-                                  onChanged: (durationEnteredValue) {
-                                    setState(() {
-                                      duration = durationEnteredValue;
-                                    });
-                                  }),
+                                              Radius.circular(12))))),
                             ),
                           ],
                         ),
@@ -429,39 +417,35 @@ class MainMakeASpell extends State<MakeASpell> {
                                   width: 192.5,
                                   height: 70,
                                   child: TextField(
+                                      controller: rangeController,
                                       cursorColor: Colors.blue,
                                       style: TextStyle(
                                           color: ThemeManager.instance
                                               .currentScheme.textColour),
                                       decoration: InputDecoration(
-                                          hintText: "Range: e.g. Touch / 60",
+                                          hintText:
+                                              "Range: Touch / Self / Number",
                                           hintStyle: TextStyle(
                                               fontWeight: FontWeight.w700,
                                               color: ThemeManager.instance
                                                   .currentScheme.textColour),
                                           filled: true,
-                                          fillColor: (range != null &&
-                                                  ((double.tryParse(range ?? "") != null) ||
-                                                      (["SELF", "TOUCH"].contains(range!.toUpperCase()) ||
-                                                          (double.tryParse(range ?? "") !=
-                                                              null))))
+                                          fillColor: _isValidRange()
                                               ? ThemeManager.instance
                                                   .currentScheme.backingColour
                                               : Colors.red,
                                           border: const OutlineInputBorder(
                                               borderSide: BorderSide.none,
-                                              borderRadius: BorderRadius.all(Radius.circular(12)))),
-                                      onChanged: (rangeEnteredValue) {
-                                        setState(() {
-                                          range = rangeEnteredValue;
-                                        });
-                                      }),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(12)))),
+                                      onChanged: (_) => setState(() {})),
                                 ),
                                 const SizedBox(width: 10),
                                 SizedBox(
                                   width: 192.5,
                                   height: 70,
                                   child: TextField(
+                                      controller: rangeUnitController,
                                       cursorColor: Colors.blue,
                                       style: TextStyle(
                                           color: ThemeManager.instance
@@ -473,20 +457,15 @@ class MainMakeASpell extends State<MakeASpell> {
                                               color: ThemeManager.instance
                                                   .currentScheme.textColour),
                                           filled: true,
-                                          fillColor: (rangeUnit.replaceAll(" ", "") != "" ||
-                                                  (["SELF", "TOUCH"].contains((range ?? "")
-                                                      .toUpperCase())))
+                                          fillColor: _isValidRangeUnit()
                                               ? ThemeManager.instance
                                                   .currentScheme.backingColour
                                               : Colors.red,
                                           border: const OutlineInputBorder(
                                               borderSide: BorderSide.none,
-                                              borderRadius: BorderRadius.all(Radius.circular(12)))),
-                                      onChanged: (rangeUnitEnteredValue) {
-                                        setState(() {
-                                          rangeUnit = rangeUnitEnteredValue;
-                                        });
-                                      }),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(12)))),
+                                      onChanged: (_) => setState(() {})),
                                 ),
                                 Expanded(
                                     child: CheckboxListTile(
@@ -497,7 +476,7 @@ class MainMakeASpell extends State<MakeASpell> {
                                   value: ritual,
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      ritual = value;
+                                      ritual = value ?? false;
                                     });
                                   },
                                   activeColor: ThemeManager
@@ -515,51 +494,52 @@ class MainMakeASpell extends State<MakeASpell> {
                               : Colors.grey,
                           padding: const EdgeInsets.fromLTRB(55, 25, 55, 25),
                           onPressed: () async {
-                            // Should really have a flag TODO() or it cld be triggered multiple times
-                            //check the spell is in an accepted form
-                            if (validateSpell()) {
-                              //check it doesn't have the same name as another spell
-                              if (GlobalListManager()
-                                  .spellList
-                                  .where((element) => element.name == name)
-                                  .toList()
-                                  .isEmpty) {
-                                //add the new spell to the list of spells
-                                // add flag to prevent double tapping etc.
-                                // TODO(SAVE RESULT AND SHOW POPUP BASED ON IT)
-                                await GlobalListManager().saveSpell(Spell(
-                                    name: name,
-                                    sourceBook: "MADE BY USER",
-                                    range:
-                                        "$range ${rangeUnit.replaceAll(" ", "")}",
-                                    ritual: ritual,
-                                    spellSchool:
-                                        spellSchool ?? "This should never run",
-                                    effect: effect,
-                                    availableTo: availableTo
-                                        .replaceAll(", ", ",")
-                                        .replaceAll(" ,", ",")
-                                        .split(","),
-                                    level: level ?? 0,
-                                    timings: [
-                                      ...casting.split(","),
-                                      ...duration.split(",")
-                                    ],
-                                    somatic: somatic,
-                                    verbal: verbal,
-                                    material: material));
+                            if (!validateSpell()) return;
 
-                                //display the popup and return home TODO(CHOOSE POPUP BASED ON SAVE RESULT)
-                                setState(() {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => InitialTop()),
-                                  );
-                                  showCreationDialog(context);
-                                });
-                              }
+                            // Check if spell name already exists
+                            if (GlobalListManager().spellList.any((spell) =>
+                                spell.name == nameController.text.trim())) {
+                              return;
                             }
+
+                            // Create and save the new spell
+                            final newSpell = Spell(
+                              name: nameController.text.trim(),
+                              sourceBook: "MADE BY USER",
+                              range:
+                                  "${rangeController.text.trim()} ${rangeUnitController.text.trim()}",
+                              ritual: ritual,
+                              spellSchool: spellSchool!,
+                              effect: effectController.text.trim(),
+                              availableTo: availableToController.text
+                                  .split(',')
+                                  .map((s) => s.trim())
+                                  .where((s) => s.isNotEmpty)
+                                  .toList(),
+                              level: level!,
+                              timings: [
+                                ...castingController.text
+                                    .split(',')
+                                    .map((s) => s.trim()),
+                                ...durationController.text
+                                    .split(',')
+                                    .map((s) => s.trim()),
+                              ].where((s) => s.isNotEmpty).toList(),
+                              somatic: somatic,
+                              verbal: verbal,
+                              material: materialController.text.trim().isEmpty
+                                  ? null
+                                  : materialController.text.trim(),
+                            );
+                            await GlobalListManager().saveSpell(newSpell);
+
+                            if (!context.mounted) return;
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const InitialTop()),
+                            );
+                            showCreationDialog(context);
                           },
                         )
                       ])
@@ -571,12 +551,12 @@ class MainMakeASpell extends State<MakeASpell> {
       context: context,
       builder: (context) => StyleUtils.buildStyledAlertDialog(
         title: 'Success!',
-        content: 'Spell created correctly!',
+        content: 'Success!',
         contentWidget: Text(
-          'Spell created correctly!',
+          'Spell created and added to your content!',
           style: StyleUtils.buildDefaultTextStyle(
             color: Colors.green,
-            fontSize: 50,
+            fontSize: 30,
             fontWeight: FontWeight.w800,
           ),
         ),
@@ -592,28 +572,23 @@ class MainMakeASpell extends State<MakeASpell> {
     );
   }
 
-  bool validateName() {
-    return name.replaceAll(" ", "") != "";
+  bool _isValidRange() {
+    final range = rangeController.text.trim().toUpperCase();
+    return range.isNotEmpty &&
+        (['SELF', 'TOUCH'].contains(range) || double.tryParse(range) != null);
   }
 
-  bool validateLevel() {
-    return level != null;
-  }
-
-  bool validateSchool() {
-    return spellSchool != null;
-  }
-
-  bool validateRange() {
-    return range != null &&
-        (["SELF", "TOUCH"].contains(range!.toUpperCase()) ||
-            (double.tryParse(range ?? "") != null));
+  bool _isValidRangeUnit() {
+    final range = rangeController.text.trim().toUpperCase();
+    final rangeUnit = rangeUnitController.text.trim();
+    return ['SELF', 'TOUCH'].contains(range) || rangeUnit.isNotEmpty;
   }
 
   bool validateSpell() {
-    return validateName() &&
-        validateLevel() &&
-        validateSchool() &&
-        validateRange();
+    return nameController.text.trim().isNotEmpty &&
+        level != null &&
+        spellSchool != null &&
+        _isValidRange() &&
+        _isValidRangeUnit();
   }
 }

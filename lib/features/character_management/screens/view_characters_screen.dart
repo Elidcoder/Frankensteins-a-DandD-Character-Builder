@@ -1,5 +1,6 @@
 // External Imports
 import "package:flutter/material.dart";
+import "package:frankenstein/features/character_creation/screens/character_creation_screen.dart";
 
 import "../../../core/services/global_list_manager.dart";
 import "../../../core/theme/theme_manager.dart";
@@ -69,7 +70,7 @@ class MainMyCharacters extends State<MyCharacters> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            const RegularTop(pagechoice: "Create a Character")),
+                            RegularTop(pagechoice: () => CreateACharacter())),
                   );
                 });
               },

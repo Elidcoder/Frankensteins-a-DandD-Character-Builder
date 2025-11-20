@@ -45,45 +45,20 @@ class _ClassTabState extends State<ClassTab> {
   late Future<void> _initialisedClasses;
 
   bool scoresFailRequirement(Character character, List<int> requirements) {
-    int count = 0;
-    if (character.strength.value +
-            character.raceAbilityScoreIncreases[0] +
-            character.featsASIScoreIncreases[0] >=
-        requirements[0]) {
-      count++;
-    }
-    if (character.dexterity.value +
-            character.raceAbilityScoreIncreases[1] +
-            character.featsASIScoreIncreases[1] >=
-        requirements[1]) {
-      count++;
-    }
-    if (character.constitution.value +
-            character.raceAbilityScoreIncreases[2] +
-            character.featsASIScoreIncreases[2] >=
-        requirements[2]) {
-      count++;
-    }
-    if (character.intelligence.value +
-            character.raceAbilityScoreIncreases[3] +
-            character.featsASIScoreIncreases[3] >=
-        requirements[3]) {
-      count++;
-    }
-    if (character.wisdom.value +
-            character.raceAbilityScoreIncreases[4] +
-            character.featsASIScoreIncreases[4] >=
-        requirements[4]) {
-      count++;
-    }
-    if (character.charisma.value +
-            character.raceAbilityScoreIncreases[5] +
-            character.featsASIScoreIncreases[5] >=
-        requirements[5]) {
-      count++;
+    final baseValues =
+        character.abilityScores.map((score) => score.value).toList();
+
+    var count = 0;
+    for (var i = 0; i < baseValues.length; i++) {
+      final bonus = character.raceAbilityScoreIncreases[i] +
+          character.featsASIScoreIncreases[i];
+
+      if (baseValues[i] + bonus >= requirements[i]) {
+        count++;
+      }
     }
 
-    return count >= requirements[6];
+    return count < requirements[6];
   }
 
   bool multiclassingPossible(Class selectedClass) {
@@ -105,7 +80,7 @@ class _ClassTabState extends State<ClassTab> {
     }
 
     // Check they satisfy their last added class's requirements
-    return scoresFailRequirement(widget.character,
+    return !scoresFailRequirement(widget.character,
         GlobalListManager().classList.last.multiclassingRequirements);
   }
 

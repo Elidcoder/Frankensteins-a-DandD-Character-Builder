@@ -2,39 +2,20 @@
 import "package:flutter/material.dart";
 import "package:frankenstein/core/services/global_list_manager.dart"
     show GlobalListManager;
-import "package:frankenstein/features/character_creation/screens/character_creation_screen.dart"
-    show CreateACharacter;
-import "package:frankenstein/features/character_management/screens/view_characters_screen.dart"
-    show MyCharacters;
-import "package:frankenstein/features/content_search/screens/content_search_screen.dart"
-    show SearchForContent;
-import "package:frankenstein/features/custom_content/screens/overview_screen.dart"
-    show CustomContent;
 
 import '../../core/theme/colour_scheme.dart';
 // Project imports
 import "../../core/theme/theme_manager.dart";
 import "../../core/utils/style_utils.dart";
-import "../../features/custom_content/screens/spell_creation_screen.dart"
-    show MakeASpell;
 import "../../features/home/screens/home_screen.dart" show MainMenu;
 import "simple_color_picker.dart";
-
-/* A map of all the pages that can be navigated to. */
-final Map<String, Widget Function()> PAGELINKER = {
-  "Main Menu": () => MainMenu(),
-  "Create a Character": () => CreateACharacter(),
-  "Search for Content": () => SearchForContent(),
-  "My Characters": () => MyCharacters(),
-  "Custom Content": () => CustomContent(),
-  "Create spells": () => MakeASpell(),
-};
 
 /* Takes a parameter - the page you want to go too
  * Creates a bar and the top and then displays the requested page. */
 class RegularTop extends StatefulWidget {
-  final String? pagechoice;
-  const RegularTop({super.key, this.pagechoice});
+  final Widget Function()? pagechoice;
+  final bool isMainMenu;
+  const RegularTop({super.key, this.pagechoice, this.isMainMenu = false});
   static const String appTitle = "Frankenstein's - a D&D 5e character builder";
 
   @override
@@ -67,24 +48,24 @@ class _RegularTopState extends State<RegularTop> {
         title: RegularTop.appTitle,
         smallTitle: true,
         leading: IconButton(
-            icon: (widget.pagechoice == "Main Menu")
+            icon: (widget.isMainMenu)
                 ? const Icon(Icons.image)
                 : const Icon(Icons.home),
-            tooltip: (widget.pagechoice == "Main Menu")
+            tooltip: (widget.isMainMenu)
                 ? "Put logo here"
                 : "Return to the main menu",
             onPressed: () {
-              if (widget.pagechoice != "Main Menu") {
+              if (!widget.isMainMenu) {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            const RegularTop(pagechoice: "Main Menu")));
+                            const RegularTop(isMainMenu: true)));
               }
             }),
         actions: <Widget>[
           /* Presents a back button only if one isn't generated. */
-          if (widget.pagechoice == "Main Menu")
+          if (widget.isMainMenu)
             IconButton(
                 icon: const Icon(Icons.arrow_back),
                 tooltip: "Return to the previous page",
@@ -103,7 +84,7 @@ class _RegularTopState extends State<RegularTop> {
       ),
 
       /* Take the user to the page they chose. */
-      body: PAGELINKER[widget.pagechoice]?.call() ?? const MainMenu(),
+      body: widget.pagechoice?.call() ?? const MainMenu(),
     );
   }
 
@@ -334,10 +315,10 @@ class _RegularTopState extends State<RegularTop> {
                                   Center(
                                       child: Row(
                                     children: [
-                                      /* Mini version of the button that makes the download content popup */
+                                      /* Mini version of the button that makes the share content popup */
                                       const SizedBox(width: 50),
                                       buildStyledMockButton(
-                                          "Download\nContent",
+                                          "Share\nContent",
                                           GlobalListManager()
                                               .themeList
                                               .reversed

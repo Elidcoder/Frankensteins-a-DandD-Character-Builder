@@ -1,5 +1,7 @@
 // External Import
 import "package:flutter/material.dart";
+import "package:frankenstein/features/custom_content/screens/spell_creation_screen.dart"
+    show MakeASpell;
 
 import "../../../core/theme/theme_manager.dart";
 import "../../../core/utils/style_utils.dart";
@@ -44,7 +46,7 @@ class CustomContent extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              const RegularTop(pagechoice: "Create spells")),
+                              RegularTop(pagechoice: () => MakeASpell())),
                     );
                   },
                   child: Text(
