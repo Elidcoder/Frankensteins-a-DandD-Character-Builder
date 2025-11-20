@@ -546,7 +546,12 @@ class _EquipmentTabState extends State<EquipmentTab> {
                                                 ? SingleChildScrollView(
                                                     scrollDirection:
                                                         Axis.horizontal,
+                                                    padding: const EdgeInsets
+                                                        .symmetric(vertical: 8),
                                                     child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
                                                       children: [
                                                         /* Button for the first option */
                                                         ElevatedButton(
@@ -580,7 +585,13 @@ class _EquipmentTabState extends State<EquipmentTab> {
                                                                       .currentScheme
                                                                       .textColour)),
                                                         ),
-
+                                                        const SizedBox(
+                                                            width: 5),
+                                                        StyleUtils
+                                                            .buildStyledTinyTextBox(
+                                                                text: "or"),
+                                                        const SizedBox(
+                                                            width: 7),
                                                         /* Button for the second option */
                                                         ElevatedButton(
                                                           style: OutlinedButton.styleFrom(
